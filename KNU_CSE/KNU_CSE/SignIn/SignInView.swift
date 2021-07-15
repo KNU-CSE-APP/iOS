@@ -169,14 +169,6 @@ class ViewController: UIViewController {
             make.height.equalTo(height).multipliedBy(2)
         }
         
-//        emailTextLabel.snp.makeConstraints{ make in
-//            make.width.equalTo(pwTextField.snp.width).multipliedBy(0.2)
-//            make.left.equalTo(emailTextLabel.snp.right)
-//            make.right.equalToSuperview().offset(0)
-//            make.top.equalToSuperview()
-//            make.height.equalTo(height).multipliedBy(2)
-//        }
-        
         // MARK: - 비밀번호
         pwTextField.snp.makeConstraints{ make in
             make.left.equalToSuperview().offset(left_margin)
@@ -201,6 +193,7 @@ class ViewController: UIViewController {
             make.height.equalTo(height)
         }
         
+        // MARK: - 자동로그인 버튼
         autoSignInBox.snp.makeConstraints{ make in
             make.width.equalTo(signUpBtn.snp.width).multipliedBy(0.25)
             make.height.equalTo(signUpBtn.snp.height)
