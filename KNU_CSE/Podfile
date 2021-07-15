@@ -17,4 +17,5 @@ target 'KNU_CSE' do
   end
   pod 'Alamofire'
   pod 'SnapKit'
+  pod 'M13Checkbox'
 end

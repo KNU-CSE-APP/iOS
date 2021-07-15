@@ -19,7 +19,7 @@ protocol BaseApiRequest {
     var requestMethod: RequestHttpMethod?{ get }
     var requestBodyObject: BaseObject?{ get }
     func request() -> URLRequest
-    var enviroment: Environment { get }
+    var enviroment: Environment? { get }
 }
 
 extension BaseApiRequest{
@@ -53,6 +53,8 @@ extension BaseApiRequest{
         switch enviroment {
         case .SignIn:
             return "http://218.233.221.188:5002/SignIn"
+        case .SignUp:
+            return "http://218.233.221.188:5002/SignUp"
         default:
             return "http://api.myjson.com/"
         }
@@ -66,6 +68,7 @@ enum RequestHttpMethod{
 
 enum Environment{
     case SignIn
+    case SignUp
 }
 
 

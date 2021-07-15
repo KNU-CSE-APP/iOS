@@ -1,3 +1,4 @@
 ${PODS_ROOT}/Target Support Files/Pods-KNU_CSE/Pods-KNU_CSE-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework
+${BUILT_PRODUCTS_DIR}/M13Checkbox/M13Checkbox.framework
 ${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework
