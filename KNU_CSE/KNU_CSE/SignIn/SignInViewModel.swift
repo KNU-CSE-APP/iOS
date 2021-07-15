@@ -22,12 +22,5 @@ class SignInViewModel {
     func bind(listener: Listener?) {
         self.listener = listener
     }
-
-    
-//    public func getEvent(successHandler: @escaping (Response) -> (), failHandler: @escaping (Error) -> ()) {
-//        let signInRequest = SignInRequest(requestBodyObject: self.account, requestMethod: .Post, enviroment: .SignIn)
-//        sendRequest(request: signInRequest, type: Response.self, successHandler: successHandler, failHandler: failHandler)
-//    }
-//
 }
 

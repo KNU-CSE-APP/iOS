@@ -19,7 +19,6 @@ class BindingTextField: UITextField {
     }
     
     @objc func textFieldDidChange() {
-        //UITextField에 이미 있는 프로퍼티
         guard let text = text else { return }
         textChanged(text)
     }
