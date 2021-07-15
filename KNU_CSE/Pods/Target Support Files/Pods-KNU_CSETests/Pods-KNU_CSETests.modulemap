@@ -1,0 +1,6 @@
+framework module Pods_KNU_CSETests {
+  umbrella header "Pods-KNU_CSETests-umbrella.h"
+
+  export *
+  module * { export * }
+}
