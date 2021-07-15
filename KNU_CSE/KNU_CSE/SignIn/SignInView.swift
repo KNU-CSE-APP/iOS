@@ -149,7 +149,6 @@ class ViewController: UIViewController {
         let title_height = 200
         let height = 40
         let top_padding = 20
-        let title_To_textField_margin = 3
         let left_margin = 30
         let right_margin = -30
         
