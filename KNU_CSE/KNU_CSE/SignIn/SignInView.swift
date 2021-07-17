@@ -55,7 +55,8 @@ class ViewController: UIViewController {
                 if self.signInViewModel.SignInCheck(){
                     self.signInViewModel.getEvent(successHandler: { response in
                         if response.result == 1 {
-                            
+                            self.saveAccountKeyChain()
+                            self.pushTabView()
                         }
                         self.indicator.stopIndicator()
                     }, failHandler: { Error in
@@ -79,7 +80,6 @@ class ViewController: UIViewController {
             signUpBtn.addAction{
                 let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "SignUpView")
                 self.navigationController?.pushViewController(pushVC!, animated: true)
-                self.navigationController?.navigationBar.isHidden = false
             }
         }
     }
@@ -88,11 +88,14 @@ class ViewController: UIViewController {
         didSet{
             let checkbox : M13Checkbox = autoSignInBox.checkBox
             autoSignInBox.setColor(tintColor: .white, textColor: .white)
+            autoSignInBox.setChecked(checkState: UserDefaults.standard.bool(forKey: "checkState"))
             autoSignInBox.bind {
                 switch checkbox.checkState {
                     case .checked:
+                        UserDefaults.standard.setValue(true, forKey: "checkState")
                         break
                     case .unchecked:
+                        UserDefaults.standard.setValue(false, forKey: "checkState")
                         break
                     case .mixed:
                         break
@@ -109,25 +112,17 @@ class ViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        self.setNavigationView()
         self.navigationController?.navigationBar.isHidden = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = Color.mainColor
-        appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        
-
-        self.navigationController?.navigationBar.tintColor = .white
-        self.navigationController?.navigationBar.standardAppearance = appearance
-        self.navigationController?.navigationBar.compactAppearance = appearance
-        self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        self.navigationController?.navigationBar.isHidden = false
     }
     
     func initUI(){
         self.view.backgroundColor = Color.mainColor
-        
+
         accountUI = UIView()
         emailTextField = BindingTextField()
         pwTextField = BindingTextField()
@@ -202,6 +197,35 @@ class ViewController: UIViewController {
             make.height.equalTo(signUpBtn.snp.height)
             make.top.equalTo(signUpBtn.snp.bottom).offset(top_padding)
             make.trailing.equalTo(right_margin)
+        }
+    }
+    
+    
+}
+
+extension ViewController{
+    func setNavigationView(){
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = Color.mainColor
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+
+        self.navigationController?.navigationBar.tintColor = .white
+        self.navigationController?.navigationBar.standardAppearance = appearance
+        self.navigationController?.navigationBar.compactAppearance = appearance
+        self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
+    }
+    
+    func pushTabView(){
+        let pushVC = (self.storyboard?.instantiateViewController(withIdentifier: "TabView"))!
+        self.navigationController?.pushViewController(pushVC, animated: true)
+    }
+    
+    func saveAccountKeyChain(){
+        if autoSignInBox.checkBox.checkState == .checked{
+            self.signInViewModel.storeUserAccount()
+        }else{
+            self.signInViewModel.removeUserAccount()
         }
     }
 }

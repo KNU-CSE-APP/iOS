@@ -66,6 +66,15 @@ class CheckBox : UIView{
         }
     }
     
+    func setChecked(checkState:Bool){
+        if checkState{
+            self.checkBox.checkState = .checked
+        }else{
+            self.checkBox.checkState = .unchecked
+        }
+        
+    }
+    
     func bind(callBack: @escaping () -> Void){
         action = callBack
         checkBox.addTarget(self, action: #selector(stateDidChange(_:)), for: .valueChanged)

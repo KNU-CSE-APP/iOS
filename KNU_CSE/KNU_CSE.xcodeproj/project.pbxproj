@@ -31,6 +31,8 @@
 		68F1A60726A2D481007B4B86 /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A60626A2D481007B4B86 /* Indicator.swift */; };
 		68F1A60C26A307AB007B4B86 /* StringSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A60B26A307AB007B4B86 /* StringSet.swift */; };
 		68F1A60F26A30D07007B4B86 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A60E26A30D07007B4B86 /* Alert.swift */; };
+		68F1A61226A3120D007B4B86 /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A61126A3120D007B4B86 /* TabView.swift */; };
+		68F1A61426A32356007B4B86 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A61326A32355007B4B86 /* StorageManager.swift */; };
 		9AACC46FE6327A8A8FEE1371 /* Pods_KNU_CSE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AEB9BE74D13DB6D6DE35FAE /* Pods_KNU_CSE.framework */; };
 		AE59CA79AE6C9CF423411766 /* Pods_KNU_CSE_KNU_CSEUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C3849D4B5E75A8D54F61D53 /* Pods_KNU_CSE_KNU_CSEUITests.framework */; };
 		B614ABCE044BEAE18AECD334 /* Pods_KNU_CSETests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F57A9F2B8C44351C36B27DE /* Pods_KNU_CSETests.framework */; };
@@ -87,6 +89,8 @@
 		68F1A60626A2D481007B4B86 /* Indicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Indicator.swift; sourceTree = "<group>"; };
 		68F1A60B26A307AB007B4B86 /* StringSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringSet.swift; sourceTree = "<group>"; };
 		68F1A60E26A30D07007B4B86 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
+		68F1A61126A3120D007B4B86 /* TabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabView.swift; sourceTree = "<group>"; };
+		68F1A61326A32355007B4B86 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		7F57A9F2B8C44351C36B27DE /* Pods_KNU_CSETests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KNU_CSETests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A621397DE389C29CC60A0AD /* Pods-KNU_CSE.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KNU_CSE.debug.xcconfig"; path = "Target Support Files/Pods-KNU_CSE/Pods-KNU_CSE.debug.xcconfig"; sourceTree = "<group>"; };
 		949F8006B59C6CB5B5F67EA7 /* Pods-KNU_CSETests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KNU_CSETests.debug.xcconfig"; path = "Target Support Files/Pods-KNU_CSETests/Pods-KNU_CSETests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -206,6 +210,7 @@
 		68F1A5F426A0090B007B4B86 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				68F1A61526A344E2007B4B86 /* KeyChain */,
 				68F1A60D26A30CFB007B4B86 /* Alert */,
 				68F1A60A26A30792007B4B86 /* String */,
 				68F1A60926A2D491007B4B86 /* UI */,
@@ -269,8 +274,17 @@
 		68F1A61026A31169007B4B86 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				68F1A61126A3120D007B4B86 /* TabView.swift */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		68F1A61526A344E2007B4B86 /* KeyChain */ = {
+			isa = PBXGroup;
+			children = (
+				68F1A61326A32355007B4B86 /* StorageManager.swift */,
+			);
+			path = KeyChain;
 			sourceTree = "<group>";
 		};
 		B5A7CE24CAB6AED332D2F148 /* Frameworks */ = {
@@ -538,12 +552,14 @@
 				68F1A5BC26A0088B007B4B86 /* SignInView.swift in Sources */,
 				68F1A5B826A0088B007B4B86 /* AppDelegate.swift in Sources */,
 				68F1A5ED26A008FF007B4B86 /* GetEventListApiRequest.swift in Sources */,
+				68F1A61426A32356007B4B86 /* StorageManager.swift in Sources */,
 				68F1A60C26A307AB007B4B86 /* StringSet.swift in Sources */,
 				68F1A60F26A30D07007B4B86 /* Alert.swift in Sources */,
 				68F1A5F826A0090B007B4B86 /* SignUpViewModel.swift in Sources */,
 				68F1A60526A1598A007B4B86 /* SignInModel.swift in Sources */,
 				68F1A60726A2D481007B4B86 /* Indicator.swift in Sources */,
 				68F1A5EF26A008FF007B4B86 /* BaseApiRequest.swift in Sources */,
+				68F1A61226A3120D007B4B86 /* TabView.swift in Sources */,
 				68F1A5BA26A0088B007B4B86 /* SceneDelegate.swift in Sources */,
 				68F1A5F626A0090B007B4B86 /* SignUpModel.swift in Sources */,
 				68F1A60326A0A73B007B4B86 /* Color.swift in Sources */,
