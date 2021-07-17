@@ -52,19 +52,21 @@ class ViewController: UIViewController {
             signInBtn.setTitle("로그인", for: .normal)
             signInBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
             signInBtn.addAction{
-                self.signInViewModel.getEvent(successHandler: { response in
-                    if response.result == 1 {
-                        let alert = UIAlertController(title: "회원가입성공", message: "확인 버튼을 누르면 로그인 페이지로 이동합니다.", preferredStyle: .alert)
-                        let actionDefault = UIAlertAction(title: "확인", style: .default){ (action) in}
-                        alert.addAction(actionDefault)
-                        self.present(alert, animated: true, completion: nil)
-                    }
-                    self.indicator.stopIndicator()
-                }, failHandler: { Error in
-                    print(Error)
-                }, asyncHandler: {
-                    self.indicator.startIndicator()
-                })
+                if self.signInViewModel.SignInCheck(){
+                    self.signInViewModel.getEvent(successHandler: { response in
+                        if response.result == 1 {
+                            
+                        }
+                        self.indicator.stopIndicator()
+                    }, failHandler: { Error in
+                        print(Error)
+                    }, asyncHandler: {
+                        self.indicator.startIndicator()
+                    })
+                }else {
+                    let alert = Alert(title: "로그인 실패", message: "아이디와 비밀번호를 입력하세요.", viewController: self)
+                    alert.popUpDefaultAlert(action: nil)
+                }
             }
         }
     }

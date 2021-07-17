@@ -29,6 +29,8 @@
 		68F1A60326A0A73B007B4B86 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A60226A0A73B007B4B86 /* Color.swift */; };
 		68F1A60526A1598A007B4B86 /* SignInModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A60426A1598A007B4B86 /* SignInModel.swift */; };
 		68F1A60726A2D481007B4B86 /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A60626A2D481007B4B86 /* Indicator.swift */; };
+		68F1A60C26A307AB007B4B86 /* StringSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A60B26A307AB007B4B86 /* StringSet.swift */; };
+		68F1A60F26A30D07007B4B86 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A60E26A30D07007B4B86 /* Alert.swift */; };
 		9AACC46FE6327A8A8FEE1371 /* Pods_KNU_CSE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AEB9BE74D13DB6D6DE35FAE /* Pods_KNU_CSE.framework */; };
 		AE59CA79AE6C9CF423411766 /* Pods_KNU_CSE_KNU_CSEUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C3849D4B5E75A8D54F61D53 /* Pods_KNU_CSE_KNU_CSEUITests.framework */; };
 		B614ABCE044BEAE18AECD334 /* Pods_KNU_CSETests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F57A9F2B8C44351C36B27DE /* Pods_KNU_CSETests.framework */; };
@@ -83,6 +85,8 @@
 		68F1A60226A0A73B007B4B86 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		68F1A60426A1598A007B4B86 /* SignInModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInModel.swift; sourceTree = "<group>"; };
 		68F1A60626A2D481007B4B86 /* Indicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Indicator.swift; sourceTree = "<group>"; };
+		68F1A60B26A307AB007B4B86 /* StringSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringSet.swift; sourceTree = "<group>"; };
+		68F1A60E26A30D07007B4B86 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		7F57A9F2B8C44351C36B27DE /* Pods_KNU_CSETests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KNU_CSETests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A621397DE389C29CC60A0AD /* Pods-KNU_CSE.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KNU_CSE.debug.xcconfig"; path = "Target Support Files/Pods-KNU_CSE/Pods-KNU_CSE.debug.xcconfig"; sourceTree = "<group>"; };
 		949F8006B59C6CB5B5F67EA7 /* Pods-KNU_CSETests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KNU_CSETests.debug.xcconfig"; path = "Target Support Files/Pods-KNU_CSETests/Pods-KNU_CSETests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -148,6 +152,7 @@
 				68F1A60126A0A72D007B4B86 /* Color */,
 				68F1A5FA26A01028007B4B86 /* SignIn */,
 				68F1A5F026A0090B007B4B86 /* SignUp */,
+				68F1A61026A31169007B4B86 /* Main */,
 				68F1A5E726A008FF007B4B86 /* Web Service */,
 				68F1A5B726A0088B007B4B86 /* AppDelegate.swift */,
 				68F1A5B926A0088B007B4B86 /* SceneDelegate.swift */,
@@ -201,6 +206,8 @@
 		68F1A5F426A0090B007B4B86 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				68F1A60D26A30CFB007B4B86 /* Alert */,
+				68F1A60A26A30792007B4B86 /* String */,
 				68F1A60926A2D491007B4B86 /* UI */,
 				68F1A60826A2D486007B4B86 /* Indicator */,
 			);
@@ -241,6 +248,29 @@
 				68F1A5FF26A07FE7007B4B86 /* CheckBox.swift */,
 			);
 			path = UI;
+			sourceTree = "<group>";
+		};
+		68F1A60A26A30792007B4B86 /* String */ = {
+			isa = PBXGroup;
+			children = (
+				68F1A60B26A307AB007B4B86 /* StringSet.swift */,
+			);
+			path = String;
+			sourceTree = "<group>";
+		};
+		68F1A60D26A30CFB007B4B86 /* Alert */ = {
+			isa = PBXGroup;
+			children = (
+				68F1A60E26A30D07007B4B86 /* Alert.swift */,
+			);
+			path = Alert;
+			sourceTree = "<group>";
+		};
+		68F1A61026A31169007B4B86 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 		B5A7CE24CAB6AED332D2F148 /* Frameworks */ = {
@@ -508,6 +538,8 @@
 				68F1A5BC26A0088B007B4B86 /* SignInView.swift in Sources */,
 				68F1A5B826A0088B007B4B86 /* AppDelegate.swift in Sources */,
 				68F1A5ED26A008FF007B4B86 /* GetEventListApiRequest.swift in Sources */,
+				68F1A60C26A307AB007B4B86 /* StringSet.swift in Sources */,
+				68F1A60F26A30D07007B4B86 /* Alert.swift in Sources */,
 				68F1A5F826A0090B007B4B86 /* SignUpViewModel.swift in Sources */,
 				68F1A60526A1598A007B4B86 /* SignInModel.swift in Sources */,
 				68F1A60726A2D481007B4B86 /* Indicator.swift in Sources */,

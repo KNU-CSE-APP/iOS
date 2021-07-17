@@ -31,4 +31,13 @@ class Account : BaseObject{
         fatalError("init(from:) has not been implemented")
     }
     
+    func Check() -> Bool{
+        if email != "" &&  password != "" && password2 != ""
+            && username != "" && nickname != ""
+            && student_id != "" && gender != "" && major != ""{
+            return true
+        }else{
+            return false
+        }
+    }
 }

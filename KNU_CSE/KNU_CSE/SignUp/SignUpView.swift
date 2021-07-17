@@ -9,10 +9,13 @@ import UIKit
 import SnapKit
 import M13Checkbox
 
+enum SignUpEnum{
+    
+}
 
 class SignUpView: UIViewController {
     
-    
+    var indicator : IndicatorView!
     
     var signUpViewModel : SignUpViewModel = SignUpViewModel(listener: nil)
     
@@ -41,10 +44,8 @@ class SignUpView: UIViewController {
                 }, failHandler: { Error in
                     print(Error)
                 }, asyncHandler: {
-                    let alert = UIAlertController(title: "인증번호 전송", message: "인증번호가 해당 이메일로 전송되었습니다.", preferredStyle: .alert)
-                    let actionDefault = UIAlertAction(title: "확인", style: .default){ (action) in}
-                    alert.addAction(actionDefault)
-                    self.present(alert, animated: true, completion: nil)
+                    let alert = Alert(title: "인증번호 전송", message: "인증번호가 해당 이메일로 전송되었습니다.", viewController: self)
+                    alert.popUpDefaultAlert(action: nil)
                 })
             }
         }
@@ -71,15 +72,14 @@ class SignUpView: UIViewController {
             confirmCodeBtn.addAction{
                 self.signUpViewModel.getEvent(successHandler: { response in
                     if response.result == 1 {
-                        let alert = UIAlertController(title: "인증 성공", message: "이메일 인증을 완료했습니다.", preferredStyle: .alert)
-                        let actionDefault = UIAlertAction(title: "확인", style: .default){ (action) in}
-                        alert.addAction(actionDefault)
-                        self.present(alert, animated: true, completion: nil)
+                        let alert = Alert(title: "인증 성공", message: "이메일 인증을 완료했습니다.", viewController: self)
+                        alert.popUpDefaultAlert(action: nil)
                     }
+                    self.indicator.stopIndicator()
                 }, failHandler: { Error in
                     print(Error)
                 }, asyncHandler: {
-                    
+                    self.indicator.startIndicator()
                 })
             }
         }
@@ -208,7 +208,7 @@ class SignUpView: UIViewController {
     var genderFemale : CheckBox!{
         didSet{
             self.view.addSubview(genderFemale)
-            let checkbox : M13Checkbox = majorGlob.checkBox
+            let checkbox : M13Checkbox = genderFemale.checkBox
             genderFemale.bind {
                 switch checkbox.checkState {
                     case .checked:
@@ -233,23 +233,25 @@ class SignUpView: UIViewController {
             registerBtn.setTitle("회원가입", for: .normal)
             registerBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
             registerBtn.addAction{
-                self.signUpViewModel.getEvent(successHandler: { response in
-                    if response.result == 1 {
-                        let alert = UIAlertController(title: "회원가입성공", message: "확인 버튼을 누르면 로그인 페이지로 이동합니다.", preferredStyle: .alert)
-                        let actionDefault = UIAlertAction(title: "확인", style: .default){ (action) in
-                            self.navigationController?.popViewController(animated: true)
+                if self.signUpViewModel.SignUpCheck(){
+                    self.signUpViewModel.getEvent(successHandler: { response in
+                        if response.result == 1 {
+                            let alert = Alert(title: "회원가입성공", message: "확인 버튼을 누르면 로그인 페이지로 이동합니다.", viewController: self)
+                            alert.popUpDefaultAlert(action: nil)
                         }
-                        alert.addAction(actionDefault)
-                        self.present(alert, animated: true, completion: nil)
-                    }
-                }, failHandler: { Error in
-                    print(Error)
-                }, asyncHandler: {
-                    
-                })
+                    }, failHandler: { Error in
+                        print(Error)
+                    }, asyncHandler: {
+                        
+                    })
+                }else{
+                    let alert = Alert(title: "회원가입 실패", message: "모든 정보를 입력하지 않았습니다.", viewController: self)
+                    alert.popUpDefaultAlert(action: nil)
+                }
             }
         }
     }
+    
     let emailTitle : SignUpUILabel = SignUpUILabel(text: "이메일")
     let pwTitle : SignUpUILabel = SignUpUILabel(text: "비밀번호")
     let pw2Title : SignUpUILabel = SignUpUILabel(text: "비밀번호 재확인")
@@ -273,11 +275,27 @@ class SignUpView: UIViewController {
         setupConstraints()
     }
     
-    @objc func handleTap(sender: UITapGestureRecognizer) {
-        print("tap")
+    func initUI(){
+        emailTextField = BindingTextField()
+        emailCodeTextField = BindingTextField()
+        pwTextField = BindingTextField()
+        pw2TextField = BindingTextField()
+        userNameTextField = BindingTextField()
+        nickNameTextField = BindingTextField()
+        stuidTextField = BindingTextField()
         
+        majorCom = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "심컴")
+        majorGlob = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "글솦")
+        genderMale = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "남")
+        genderFemale = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "여")
+        
+        sendCodeBtn = UIButton()
+        confirmCodeBtn = UIButton()
+        registerBtn = UIButton()
+        
+        indicator = IndicatorView(viewController: self)
     }
-
+    
     func addView(){
         self.view.addSubview(emailTextField)
         self.view.addSubview(emailCodeTextField)
@@ -303,25 +321,6 @@ class SignUpView: UIViewController {
         self.view.addSubview(genderTitle)
         
         self.view.addSubview(registerBtn)
-    }
-    
-    func initUI(){
-        emailTextField = BindingTextField()
-        emailCodeTextField = BindingTextField()
-        pwTextField = BindingTextField()
-        pw2TextField = BindingTextField()
-        userNameTextField = BindingTextField()
-        nickNameTextField = BindingTextField()
-        stuidTextField = BindingTextField()
-        
-        majorCom = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "심컴")
-        majorGlob = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "글솦")
-        genderMale = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "남")
-        genderFemale = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "여")
-        
-        sendCodeBtn = UIButton()
-        confirmCodeBtn = UIButton()
-        registerBtn = UIButton()
     }
     
     func setupConstraints(){

@@ -26,5 +26,9 @@ class SignInViewModel {
         let signUpRequest = Request(requestBodyObject: self.account, requestMethod: .Post, enviroment: .SignIn)
         signUpRequest.sendRequest(request: signUpRequest, type: Response.self, successHandler: successHandler, failHandler: failHandler, asyncHandler: asyncHandler)
     }
+    
+    func SignInCheck()-> Bool{
+        return account.Check()
+    }
 }
 

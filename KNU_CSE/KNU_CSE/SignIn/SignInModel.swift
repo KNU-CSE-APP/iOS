@@ -20,4 +20,12 @@ class SignInModel : BaseObject{
     required init(from decoder: Decoder) throws {
         fatalError("init(from:) has not been implemented")
     }
+    
+    func Check() -> Bool{
+        if email != "" &&  password != ""{
+            return true
+        }else{
+            return false
+        }
+    }
 }
