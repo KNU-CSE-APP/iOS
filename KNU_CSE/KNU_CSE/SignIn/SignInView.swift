@@ -11,7 +11,7 @@ import M13Checkbox
 
 class ViewController: UIViewController {
     
-    var signInViewModel : SignUpViewModel = SignUpViewModel(listener: nil)
+    var signInViewModel : SignInViewModel = SignInViewModel(listener: nil)
     
     var accountUI : UIView! {
         didSet{
@@ -54,7 +54,6 @@ class ViewController: UIViewController {
                     if response.result == 1 {
                         let alert = UIAlertController(title: "회원가입성공", message: "확인 버튼을 누르면 로그인 페이지로 이동합니다.", preferredStyle: .alert)
                         let actionDefault = UIAlertAction(title: "확인", style: .default){ (action) in
-
                         }
                         alert.addAction(actionDefault)
                         self.present(alert, animated: true, completion: nil)
@@ -149,7 +148,6 @@ class ViewController: UIViewController {
         let title_height = 200
         let height = 40
         let top_padding = 20
-        let title_To_textField_margin = 3
         let left_margin = 30
         let right_margin = -30
         

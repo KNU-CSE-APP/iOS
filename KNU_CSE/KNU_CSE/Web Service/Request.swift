@@ -6,12 +6,12 @@
 //
 import Alamofire
 
-struct SignUpRequest: BaseApiRequest {
+struct Request: BaseApiRequest {
     var requestBodyObject: BaseObject?
     var requestMethod: RequestHttpMethod? = RequestHttpMethod.Post
     var enviroment: Environment?
     
-    mutating func setBodyObject(bodyObject: Account) {
+    mutating func setBodyObject(bodyObject: BaseObject?) {
         self.requestBodyObject = bodyObject
     }
     

@@ -12,8 +12,7 @@ import UIKit
 class SignInViewModel {
     typealias Listener = (Account) -> Void
     var listener: Listener?
-    var account: Account = Account(email: "", password: "", password2: "", username: "", nickname: "", student_id: "", gender: "", major: "")
-
+    var account: SignInModel = SignInModel(email: "", password: "")
     
     init(listener : Listener?){
         self.listener = listener
@@ -21,6 +20,11 @@ class SignInViewModel {
     
     func bind(listener: Listener?) {
         self.listener = listener
+    }
+    
+    public func getEvent(successHandler: @escaping (Response) -> (), failHandler: @escaping (Error) -> ()) {
+        let signUpRequest = Request(requestBodyObject: self.account, requestMethod: .Post, enviroment: .SignIn)
+        signUpRequest.sendRequest(request: signUpRequest, type: Response.self, successHandler: successHandler, failHandler: failHandler)
     }
 }
 

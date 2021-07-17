@@ -499,8 +499,6 @@ class SignUpView: UIViewController {
             make.top.equalTo(majorCom.snp.bottom).offset(top_padding)
             make.height.equalTo(height)
         }
-        
-        
     }
 }
 
