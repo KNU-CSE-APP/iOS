@@ -11,7 +11,6 @@ import M13Checkbox
 
 class SignUpView: UIViewController {
     
-    
     var signUpViewModel : SignUpViewModel = SignUpViewModel(listener: nil)
     
     var emailTextField: BindingTextField! {
@@ -36,7 +35,6 @@ class SignUpView: UIViewController {
                     if response.result == 1 {
                         let alert = UIAlertController(title: "회원가입성공", message: "확인 버튼을 누르면 로그인 페이지로 이동합니다.", preferredStyle: .alert)
                         let actionDefault = UIAlertAction(title: "확인", style: .default){ (action) in
-                            
                         }
                         alert.addAction(actionDefault)
                         self.present(alert, animated: true, completion: nil)
