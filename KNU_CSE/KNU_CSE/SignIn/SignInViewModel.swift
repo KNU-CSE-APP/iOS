@@ -49,5 +49,12 @@ class SignInViewModel {
             print("Fail remove UserAccount")
         }
     }
+    
+    func checkUserAccount()->Bool{
+        guard StorageManager.shared.readUser() != nil else {
+            return false
+        }
+        return true
+    }
 }
 

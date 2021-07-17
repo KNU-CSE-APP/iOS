@@ -55,7 +55,7 @@ class ViewController: UIViewController {
                 if self.signInViewModel.SignInCheck(){
                     self.signInViewModel.getEvent(successHandler: { response in
                         if response.result == 1 {
-                            self.saveAccountKeyChain()
+                            self.saveKeyChain()
                             self.pushTabView()
                         }
                         self.indicator.stopIndicator()
@@ -112,6 +112,7 @@ class ViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        self.checkKeyChain()
         self.setNavigationView()
         self.navigationController?.navigationBar.isHidden = true
     }
@@ -221,11 +222,17 @@ extension ViewController{
         self.navigationController?.pushViewController(pushVC, animated: true)
     }
     
-    func saveAccountKeyChain(){
+    func saveKeyChain(){
         if autoSignInBox.checkBox.checkState == .checked{
             self.signInViewModel.storeUserAccount()
         }else{
             self.signInViewModel.removeUserAccount()
+        }
+    }
+    
+    func checkKeyChain(){
+        if self.signInViewModel.checkUserAccount(){
+            self.pushTabView()
         }
     }
 }
