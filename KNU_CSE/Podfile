@@ -18,4 +18,5 @@ target 'KNU_CSE' do
   pod 'Alamofire'
   pod 'SnapKit'
   pod 'M13Checkbox'
+  pod 'NVActivityIndicatorView'
 end

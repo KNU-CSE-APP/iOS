@@ -9,7 +9,10 @@ import UIKit
 import SnapKit
 import M13Checkbox
 
+
 class SignUpView: UIViewController {
+    
+    
     
     var signUpViewModel : SignUpViewModel = SignUpViewModel(listener: nil)
     
@@ -33,14 +36,15 @@ class SignUpView: UIViewController {
             sendCodeBtn.addAction{
                 self.signUpViewModel.getEvent(successHandler: { response in
                     if response.result == 1 {
-                        let alert = UIAlertController(title: "회원가입성공", message: "확인 버튼을 누르면 로그인 페이지로 이동합니다.", preferredStyle: .alert)
-                        let actionDefault = UIAlertAction(title: "확인", style: .default){ (action) in
-                        }
-                        alert.addAction(actionDefault)
-                        self.present(alert, animated: true, completion: nil)
+                        
                     }
                 }, failHandler: { Error in
                     print(Error)
+                }, asyncHandler: {
+                    let alert = UIAlertController(title: "인증번호 전송", message: "인증번호가 해당 이메일로 전송되었습니다.", preferredStyle: .alert)
+                    let actionDefault = UIAlertAction(title: "확인", style: .default){ (action) in}
+                    alert.addAction(actionDefault)
+                    self.present(alert, animated: true, completion: nil)
                 })
             }
         }
@@ -67,15 +71,15 @@ class SignUpView: UIViewController {
             confirmCodeBtn.addAction{
                 self.signUpViewModel.getEvent(successHandler: { response in
                     if response.result == 1 {
-                        let alert = UIAlertController(title: "회원가입성공", message: "확인 버튼을 누르면 로그인 페이지로 이동합니다.", preferredStyle: .alert)
-                        let actionDefault = UIAlertAction(title: "확인", style: .default){ (action) in
-                           
-                        }
+                        let alert = UIAlertController(title: "인증 성공", message: "이메일 인증을 완료했습니다.", preferredStyle: .alert)
+                        let actionDefault = UIAlertAction(title: "확인", style: .default){ (action) in}
                         alert.addAction(actionDefault)
                         self.present(alert, animated: true, completion: nil)
                     }
                 }, failHandler: { Error in
                     print(Error)
+                }, asyncHandler: {
+                    
                 })
             }
         }
@@ -240,6 +244,8 @@ class SignUpView: UIViewController {
                     }
                 }, failHandler: { Error in
                     print(Error)
+                }, asyncHandler: {
+                    
                 })
             }
         }

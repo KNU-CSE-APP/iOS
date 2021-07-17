@@ -1,24 +1,30 @@
 PODS:
   - Alamofire (5.4.3)
   - M13Checkbox (3.4.0)
+  - NVActivityIndicatorView (5.1.1):
+    - NVActivityIndicatorView/Base (= 5.1.1)
+  - NVActivityIndicatorView/Base (5.1.1)
   - SnapKit (5.0.1)
 
 DEPENDENCIES:
   - Alamofire
   - M13Checkbox
+  - NVActivityIndicatorView
   - SnapKit
 
 SPEC REPOS:
   trunk:
     - Alamofire
     - M13Checkbox
+    - NVActivityIndicatorView
     - SnapKit
 
 SPEC CHECKSUMS:
   Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
   M13Checkbox: 6f59404540ac98ba83a3d1afac335895a40c6a5d
+  NVActivityIndicatorView: 1f6c5687f1171810aa27a3296814dc2d7dec3667
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
 
-PODFILE CHECKSUM: ab8fadf1b5375edb8c50ad51cd0f0c43eec6af39
+PODFILE CHECKSUM: 8fb622f60f309d8b2326976fd92c66ad74964309
 
 COCOAPODS: 1.10.1

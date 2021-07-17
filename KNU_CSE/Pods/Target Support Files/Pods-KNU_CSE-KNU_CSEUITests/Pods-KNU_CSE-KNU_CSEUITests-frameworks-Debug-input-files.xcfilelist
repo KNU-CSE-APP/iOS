@@ -1,4 +1,5 @@
 ${PODS_ROOT}/Target Support Files/Pods-KNU_CSE-KNU_CSEUITests/Pods-KNU_CSE-KNU_CSEUITests-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework
 ${BUILT_PRODUCTS_DIR}/M13Checkbox/M13Checkbox.framework
+${BUILT_PRODUCTS_DIR}/NVActivityIndicatorView/NVActivityIndicatorView.framework
 ${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework

@@ -11,6 +11,8 @@ import M13Checkbox
 
 class ViewController: UIViewController {
     
+    var indicator : IndicatorView!
+    
     var signInViewModel : SignInViewModel = SignInViewModel(listener: nil)
     
     var accountUI : UIView! {
@@ -53,13 +55,15 @@ class ViewController: UIViewController {
                 self.signInViewModel.getEvent(successHandler: { response in
                     if response.result == 1 {
                         let alert = UIAlertController(title: "회원가입성공", message: "확인 버튼을 누르면 로그인 페이지로 이동합니다.", preferredStyle: .alert)
-                        let actionDefault = UIAlertAction(title: "확인", style: .default){ (action) in
-                        }
+                        let actionDefault = UIAlertAction(title: "확인", style: .default){ (action) in}
                         alert.addAction(actionDefault)
                         self.present(alert, animated: true, completion: nil)
                     }
+                    self.indicator.stopIndicator()
                 }, failHandler: { Error in
                     print(Error)
+                }, asyncHandler: {
+                    self.indicator.startIndicator()
                 })
             }
         }
@@ -85,10 +89,8 @@ class ViewController: UIViewController {
             autoSignInBox.bind {
                 switch checkbox.checkState {
                     case .checked:
-                      
                         break
                     case .unchecked:
-
                         break
                     case .mixed:
                         break
@@ -102,7 +104,6 @@ class ViewController: UIViewController {
         initUI()
         addView()
         setupConstraints()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -122,17 +123,6 @@ class ViewController: UIViewController {
         self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }
     
-    func addView(){
-        accountUI.addSubview(emailTextField)
-        accountUI.addSubview(pwTextField)
-        
-        self.view.addSubview(accountUI)
-        self.view.addSubview(pwTextField)
-        self.view.addSubview(signInBtn)
-        self.view.addSubview(signUpBtn)
-        self.view.addSubview(autoSignInBox)
-    }
-    
     func initUI(){
         self.view.backgroundColor = Color.mainColor
         
@@ -142,6 +132,19 @@ class ViewController: UIViewController {
         signInBtn = UIButton()
         signUpBtn = UIButton()
         autoSignInBox = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "자동로그인")
+        
+        indicator = IndicatorView(viewController: self)
+    }
+    
+    func addView(){
+        accountUI.addSubview(emailTextField)
+        accountUI.addSubview(pwTextField)
+        
+        self.view.addSubview(accountUI)
+        self.view.addSubview(pwTextField)
+        self.view.addSubview(signInBtn)
+        self.view.addSubview(signUpBtn)
+        self.view.addSubview(autoSignInBox)
     }
     
     func setupConstraints(){
@@ -199,5 +202,4 @@ class ViewController: UIViewController {
             make.trailing.equalTo(right_margin)
         }
     }
-    
 }
