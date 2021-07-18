@@ -39,15 +39,12 @@ class MyPageView : UIViewController{
             testbtn2.setTitle("test", for: .normal)
             testbtn2.setTitleColor(.black, for: .highlighted)
             testbtn2.addAction {
-                
-                
             }
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        //push했기때문에 backbutton 없애기
-        self.navigationItem.setHidesBackButton(true, animated: true);
+        self.navigationController?.navigationBar.topItem?.title = "마이페이지"
     }
     
     override func viewDidLoad() {

@@ -40,17 +40,17 @@
             </objects>
             <point key="canvasLocation" x="-458" y="416"/>
         </scene>
-        <!--좌석 예약-->
+        <!--강의실 예약-->
         <scene sceneID="aTh-EF-evw">
             <objects>
-                <viewController id="6a1-Rf-tYp" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SeatReservationView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="6a1-Rf-tYp" customClass="SeatReservationView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="j3u-z1-PWr">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="MGu-2u-1Ws"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="좌석 예약" image="arrow.up.bin.fill" catalog="system" id="b9L-aw-mZ8"/>
+                    <tabBarItem key="tabBarItem" title="강의실 예약" image="arrow.up.bin.fill" catalog="system" id="b9L-aw-mZ8"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eOV-F7-r6M" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -59,7 +59,7 @@
         <!--학부 공지-->
         <scene sceneID="WB2-t6-IKl">
             <objects>
-                <viewController id="o3d-0y-Nco" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NoticeView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="o3d-0y-Nco" customClass="NoticeView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="g9C-G5-wN4">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -95,7 +95,7 @@
         <!--자유 게시판-->
         <scene sceneID="IvD-pA-hAs">
             <objects>
-                <viewController id="P8g-YX-9qv" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="BoardView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="P8g-YX-9qv" customClass="BoardView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="DB5-w5-5vK">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -112,7 +112,7 @@
         <!--마이페이지-->
         <scene sceneID="cBB-Ws-usU">
             <objects>
-                <viewController id="CE3-6f-FOg" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MyPageView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="CE3-6f-FOg" customClass="MyPageView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="88h-in-DSG">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
