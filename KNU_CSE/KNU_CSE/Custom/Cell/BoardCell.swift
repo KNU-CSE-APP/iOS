@@ -1,23 +1,21 @@
 //
-//  SeatReservationCell.swift
+//  BoardCell.swift
 //  KNU_CSE
 //
-//  Created by junseok on 2021/07/18.
+//  Created by junseok on 2021/07/19.
 //
 
 import UIKit
 import SnapKit
 
-class ClassRoomCell : UITableViewCell {
-    static let identifier = "ClassRoomCell"
+class BoardCell : UITableViewCell {
+    static let identifier = "BoardCell"
     var titleLabel = UILabel()
-    var testButton = UIButton()
-    
     var action :()->() = {}
     
-    var classRoom : ClassRoom!{
+    var board : Board!{
         didSet{
-            let title = "\(classRoom.building)-\(classRoom.roomNum)호(\(classRoom.currentSeat)/\(classRoom.totalSeat))"
+            let title = "\(board.building)-\(board.roomNum)호(\(board.currentSeat)/\(board.totalSeat))"
             self.setTitle(title: title)
         }
     }
@@ -27,13 +25,16 @@ class ClassRoomCell : UITableViewCell {
         titleLabel.textAlignment = .center
     }
     
-    func setAction(action:@escaping()->()){
-        self.action = action
-        self.testButton.addTarget(self, action: #selector(pushView), for: .touchUpInside)
+    override func prepareForReuse() {
+        
     }
-
+    
     @objc func pushView(){
         self.action()
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -48,20 +49,14 @@ class ClassRoomCell : UITableViewCell {
     }
     
     func initUI(){
-        
+        //contentView.isUserInteractionEnabled = true
     }
     
     func addView(){
-        self.contentView.addSubview(testButton)
-        self.testButton.addSubview(titleLabel)
+        self.contentView.addSubview(titleLabel)
     }
     
     func setUpConstraints(){
-        testButton.snp.makeConstraints{ make in
-            make.width.equalToSuperview()
-            make.height.equalToSuperview()
-        }
-        
         titleLabel.snp.makeConstraints{ make in
             make.width.equalToSuperview()
             make.height.equalToSuperview()

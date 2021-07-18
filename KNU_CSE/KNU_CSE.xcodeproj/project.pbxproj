@@ -15,6 +15,11 @@
 		681D37BF26A451B5000D9FE8 /* ClassRoomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37BE26A451B5000D9FE8 /* ClassRoomModel.swift */; };
 		681D37C426A45442000D9FE8 /* ClassRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37C326A45442000D9FE8 /* ClassRoomCell.swift */; };
 		681D37CA26A467CA000D9FE8 /* ReservationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37C926A467CA000D9FE8 /* ReservationView.swift */; };
+		681D37CF26A48A4B000D9FE8 /* BoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37CE26A48A4B000D9FE8 /* BoardViewModel.swift */; };
+		681D37D126A48A55000D9FE8 /* BoardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37D026A48A55000D9FE8 /* BoardModel.swift */; };
+		681D37D326A48A64000D9FE8 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37D226A48A64000D9FE8 /* MyPageViewModel.swift */; };
+		681D37D526A48A6F000D9FE8 /* MyPageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37D426A48A6F000D9FE8 /* MyPageModel.swift */; };
+		681D37D726A48B37000D9FE8 /* BoardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37D626A48B37000D9FE8 /* BoardCell.swift */; };
 		68F1A5B826A0088B007B4B86 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5B726A0088B007B4B86 /* AppDelegate.swift */; };
 		68F1A5BA26A0088B007B4B86 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5B926A0088B007B4B86 /* SceneDelegate.swift */; };
 		68F1A5BC26A0088B007B4B86 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5BB26A0088B007B4B86 /* SignInView.swift */; };
@@ -75,6 +80,11 @@
 		681D37BE26A451B5000D9FE8 /* ClassRoomModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomModel.swift; sourceTree = "<group>"; };
 		681D37C326A45442000D9FE8 /* ClassRoomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomCell.swift; sourceTree = "<group>"; };
 		681D37C926A467CA000D9FE8 /* ReservationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationView.swift; sourceTree = "<group>"; };
+		681D37CE26A48A4B000D9FE8 /* BoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewModel.swift; sourceTree = "<group>"; };
+		681D37D026A48A55000D9FE8 /* BoardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardModel.swift; sourceTree = "<group>"; };
+		681D37D226A48A64000D9FE8 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
+		681D37D426A48A6F000D9FE8 /* MyPageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageModel.swift; sourceTree = "<group>"; };
+		681D37D626A48B37000D9FE8 /* BoardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardCell.swift; sourceTree = "<group>"; };
 		68F1A5B426A0088B007B4B86 /* KNU_CSE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KNU_CSE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68F1A5B726A0088B007B4B86 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		68F1A5B926A0088B007B4B86 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -156,6 +166,8 @@
 			isa = PBXGroup;
 			children = (
 				681D37BA26A4279F000D9FE8 /* BoardView.swift */,
+				681D37CE26A48A4B000D9FE8 /* BoardViewModel.swift */,
+				681D37D026A48A55000D9FE8 /* BoardModel.swift */,
 			);
 			path = Board;
 			sourceTree = "<group>";
@@ -164,6 +176,8 @@
 			isa = PBXGroup;
 			children = (
 				681D37B426A419F3000D9FE8 /* MyPageView.swift */,
+				681D37D226A48A64000D9FE8 /* MyPageViewModel.swift */,
+				681D37D426A48A6F000D9FE8 /* MyPageModel.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -172,6 +186,7 @@
 			isa = PBXGroup;
 			children = (
 				681D37C326A45442000D9FE8 /* ClassRoomCell.swift */,
+				681D37D626A48B37000D9FE8 /* BoardCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -192,6 +207,13 @@
 				681D37C926A467CA000D9FE8 /* ReservationView.swift */,
 			);
 			path = Reservation;
+			sourceTree = "<group>";
+		};
+		681D37CB26A47FC7000D9FE8 /* Delegate */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Delegate;
 			sourceTree = "<group>";
 		};
 		68D5448F26A40E220072C2A4 /* KNU Notice  */ = {
@@ -285,6 +307,7 @@
 		68F1A5F426A0090B007B4B86 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				681D37CB26A47FC7000D9FE8 /* Delegate */,
 				681D37C226A4542F000D9FE8 /* Cell */,
 				68F1A61526A344E2007B4B86 /* KeyChain */,
 				68F1A60D26A30CFB007B4B86 /* Alert */,
@@ -631,6 +654,7 @@
 				68F1A5F726A0090B007B4B86 /* SignUpView.swift in Sources */,
 				68F1A5BC26A0088B007B4B86 /* SignInView.swift in Sources */,
 				681D37BD26A4519B000D9FE8 /* ClassRoomViewModel.swift in Sources */,
+				681D37D126A48A55000D9FE8 /* BoardModel.swift in Sources */,
 				681D37BF26A451B5000D9FE8 /* ClassRoomModel.swift in Sources */,
 				68F1A5B826A0088B007B4B86 /* AppDelegate.swift in Sources */,
 				68F1A5ED26A008FF007B4B86 /* GetEventListApiRequest.swift in Sources */,
@@ -638,6 +662,7 @@
 				68F1A60C26A307AB007B4B86 /* StringSet.swift in Sources */,
 				68F1A60F26A30D07007B4B86 /* Alert.swift in Sources */,
 				681D37BB26A4279F000D9FE8 /* BoardView.swift in Sources */,
+				681D37D526A48A6F000D9FE8 /* MyPageModel.swift in Sources */,
 				681D37CA26A467CA000D9FE8 /* ReservationView.swift in Sources */,
 				68F1A5F826A0090B007B4B86 /* SignUpViewModel.swift in Sources */,
 				68F1A60526A1598A007B4B86 /* SignInModel.swift in Sources */,
@@ -657,6 +682,9 @@
 				68F1A5EE26A008FF007B4B86 /* BaseObject.swift in Sources */,
 				681D37B926A42782000D9FE8 /* ClassRoomView.swift in Sources */,
 				68F1A5FE26A07147007B4B86 /* SignUpUILabel.swift in Sources */,
+				681D37CF26A48A4B000D9FE8 /* BoardViewModel.swift in Sources */,
+				681D37D726A48B37000D9FE8 /* BoardCell.swift in Sources */,
+				681D37D326A48A64000D9FE8 /* MyPageViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

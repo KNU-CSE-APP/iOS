@@ -51,21 +51,24 @@ class ClassRoomView : UIViewController{
             make.bottom.equalToSuperview()
         }
     }
-    
 }
 
 extension ClassRoomView : UITableViewDataSource{
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return classRoomViewModel.lecture.count
+        return classRoomViewModel.classrooms.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ClassRoomCell.identifier, for: indexPath) as! ClassRoomCell
         cell.selectionStyle = .none
-        cell.classRoom = classRoomViewModel.lecture[indexPath.row]
-        //cell.setTitle(title: title)
-        
+        cell.classRoom = classRoomViewModel.classrooms[indexPath.row]
+        cell.setAction{
+            let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "SignUpView")
+            self.navigationController?.pushViewController(pushVC!, animated: true)
+            print("click")
+        }
         return cell
     }
+    
 }
