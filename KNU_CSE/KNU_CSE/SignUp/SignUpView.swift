@@ -13,7 +13,7 @@ enum SignUpEnum{
     
 }
 
-class SignUpView: UIViewController {
+class SignUpView: UIViewController{
     
     var indicator : IndicatorView!
     
@@ -23,6 +23,7 @@ class SignUpView: UIViewController {
         didSet {
             emailTextField.draw()
             emailTextField.setUpText(text: "@knu.ac.kr", on: .right, color: .black)
+            emailTextField.delegate = self
             emailTextField.bind { [weak self] email in
                 self?.signUpViewModel.account.email = email
             }
@@ -88,6 +89,7 @@ class SignUpView: UIViewController {
     var pwTextField: BindingTextField! {
         didSet {
             pwTextField.isSecureTextEntry = true
+            pwTextField.delegate = self
             pwTextField.textContentType = .password
             pwTextField.draw()
             pwTextField.setUpImage(imageName: "eye.fill", on: .right, color: UIColor.darkGray, width:40, height: 40)
@@ -100,6 +102,7 @@ class SignUpView: UIViewController {
     var pw2TextField: BindingTextField! {
         didSet {
             pw2TextField.isSecureTextEntry = true
+            pw2TextField.delegate = self
             pw2TextField.textContentType = .password
             pw2TextField.draw()
             pw2TextField.setUpImage(imageName: "eye.fill", on: .right, color: UIColor.darkGray, width:40, height: 40)
@@ -112,6 +115,7 @@ class SignUpView: UIViewController {
     var userNameTextField: BindingTextField! {
         didSet {
             userNameTextField.draw()
+            userNameTextField.delegate = self
             userNameTextField.bind { [weak self] userName in
                 self?.signUpViewModel.account.username = userName
             }
@@ -121,6 +125,7 @@ class SignUpView: UIViewController {
     var nickNameTextField: BindingTextField! {
         didSet {
             nickNameTextField.draw()
+            nickNameTextField.delegate = self
             nickNameTextField.bind { [weak self] nickName in
                 self?.signUpViewModel.account.nickname = nickName
             }
@@ -237,12 +242,15 @@ class SignUpView: UIViewController {
                     self.signUpViewModel.getEvent(successHandler: { response in
                         if response.result == 1 {
                             let alert = Alert(title: "회원가입성공", message: "확인 버튼을 누르면 로그인 페이지로 이동합니다.", viewController: self)
-                            alert.popUpDefaultAlert(action: nil)
+                            alert.popUpDefaultAlert(action: { (action) in
+                                self.navigationController?.popViewController(animated: true)
+                            })
                         }
+                        self.indicator.stopIndicator()
                     }, failHandler: { Error in
                         print(Error)
                     }, asyncHandler: {
-                        
+                        self.indicator.startIndicator()
                     })
                 }else{
                     let alert = Alert(title: "회원가입 실패", message: "모든 정보를 입력하지 않았습니다.", viewController: self)
@@ -502,6 +510,20 @@ class SignUpView: UIViewController {
             make.top.equalTo(majorCom.snp.bottom).offset(top_padding)
             make.height.equalTo(height)
         }
+    }
+}
+
+extension SignUpView: UITextFieldDelegate{
+    
+    //touch any space then keyboard shut down
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
+        self.view.endEditing(true)
+    }
+
+    //if keyboard show up and press return button then keyboard shutdown
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
 
