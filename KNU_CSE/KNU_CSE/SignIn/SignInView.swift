@@ -61,6 +61,9 @@ class ViewController: UIViewController {
                         self.indicator.stopIndicator()
                     }, failHandler: { Error in
                         print(Error)
+                        let alert = Alert(title: "로그인 실패", message: "네트워크 상태를 확인하세요.", viewController: self)
+                        alert.popUpDefaultAlert(action: nil)
+                        self.indicator.stopIndicator()
                     }, asyncHandler: {
                         self.indicator.startIndicator()
                     })

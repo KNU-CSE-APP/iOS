@@ -40,20 +40,90 @@
             </objects>
             <point key="canvasLocation" x="-458" y="416"/>
         </scene>
-        <!--Tab View-->
-        <scene sceneID="zeU-6D-jdW">
+        <!--좌석 예약-->
+        <scene sceneID="aTh-EF-evw">
             <objects>
-                <viewController storyboardIdentifier="TabView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="pq6-Tg-htX" customClass="TabView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="pVV-Gu-F64">
+                <viewController id="6a1-Rf-tYp" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="j3u-z1-PWr">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="thH-XO-b79"/>
+                        <viewLayoutGuide key="safeArea" id="MGu-2u-1Ws"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <tabBarItem key="tabBarItem" title="좌석 예약" image="arrow.up.bin.fill" catalog="system" id="b9L-aw-mZ8"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="yPt-HT-RzO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eOV-F7-r6M" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="447" y="853"/>
+            <point key="canvasLocation" x="1668" y="975"/>
+        </scene>
+        <!--학부 공지-->
+        <scene sceneID="WB2-t6-IKl">
+            <objects>
+                <viewController id="o3d-0y-Nco" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="g9C-G5-wN4">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="BUY-LQ-gJH"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="학부 공지" image="paperplane.fill" catalog="system" id="geE-B8-kVH"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dXd-JD-gV9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="948" y="975"/>
+        </scene>
+        <!--Tab View-->
+        <scene sceneID="DZy-T7-ycg">
+            <objects>
+                <tabBarController storyboardIdentifier="TabView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="h2f-AE-pEF" customClass="TabView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="YE9-Sy-Icy">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="o3d-0y-Nco" kind="relationship" relationship="viewControllers" id="mzo-wG-Uq3"/>
+                        <segue destination="6a1-Rf-tYp" kind="relationship" relationship="viewControllers" id="Fvd-1f-lXW"/>
+                        <segue destination="P8g-YX-9qv" kind="relationship" relationship="viewControllers" id="ugw-C0-En9"/>
+                        <segue destination="CE3-6f-FOg" kind="relationship" relationship="viewControllers" id="1BC-4g-JCV"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aGv-XS-Ea3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-281" y="1392"/>
+        </scene>
+        <!--자유 게시판-->
+        <scene sceneID="IvD-pA-hAs">
+            <objects>
+                <viewController id="P8g-YX-9qv" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="DB5-w5-5vK">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="zax-KD-gI0"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="자유 게시판" image="arrowshape.zigzag.forward.fill" catalog="system" id="9KJ-Ky-gQe"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sET-2d-3XH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="929" y="1671"/>
+        </scene>
+        <!--마이페이지-->
+        <scene sceneID="cBB-Ws-usU">
+            <objects>
+                <viewController id="CE3-6f-FOg" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="88h-in-DSG">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="h9J-Z5-Bx8"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="마이페이지" image="person.fill" catalog="system" id="2lV-fo-XA9"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="y0q-Ns-wtM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1659" y="1675"/>
         </scene>
         <!--Sign Up View-->
         <scene sceneID="a4q-dq-Fww">
@@ -72,6 +142,10 @@
         </scene>
     </scenes>
     <resources>
+        <image name="arrow.up.bin.fill" catalog="system" width="128" height="93"/>
+        <image name="arrowshape.zigzag.forward.fill" catalog="system" width="128" height="93"/>
+        <image name="paperplane.fill" catalog="system" width="128" height="118"/>
+        <image name="person.fill" catalog="system" width="128" height="120"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

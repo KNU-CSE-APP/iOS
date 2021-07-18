@@ -1,14 +1,14 @@
 //
-//  TabView.swift
+//  MyPageView.swift
 //  KNU_CSE
 //
-//  Created by junseok on 2021/07/17.
+//  Created by junseok on 2021/07/18.
 //
 
 import UIKit
 import SnapKit
 
-class TabView : UIViewController{
+class MyPageView : UIViewController{
     
     var testbtn :UIButton!{
         didSet{
@@ -16,7 +16,19 @@ class TabView : UIViewController{
             testbtn.setTitle("로그아웃", for: .normal)
             testbtn.setTitleColor(.black, for: .highlighted)
             testbtn.addAction {
-                self.navigationController?.popViewController(animated: true)
+                //UserDefaults.standard.removeObject(forKey: "checkState")
+                guard StorageManager.shared.readUser() != nil else {
+                    print("유저 정보 없음")
+                    self.navigationController?.popViewController(animated: true)
+                    return
+                }
+                
+                if StorageManager.shared.deleteUser(){
+                    print("삭제성공")
+                    self.navigationController?.popViewController(animated: true)
+                }else{
+                    print("삭제싪패")
+                }
             }
         }
     }
@@ -27,8 +39,8 @@ class TabView : UIViewController{
             testbtn2.setTitle("test", for: .normal)
             testbtn2.setTitleColor(.black, for: .highlighted)
             testbtn2.addAction {
-                let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "SignUpView")
-                self.navigationController?.pushViewController(pushVC!, animated: true)
+                
+                
             }
         }
     }

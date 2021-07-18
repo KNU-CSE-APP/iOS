@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		681D37B526A419F3000D9FE8 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37B426A419F3000D9FE8 /* MyPageView.swift */; };
 		68F1A5B826A0088B007B4B86 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5B726A0088B007B4B86 /* AppDelegate.swift */; };
 		68F1A5BA26A0088B007B4B86 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5B926A0088B007B4B86 /* SceneDelegate.swift */; };
 		68F1A5BC26A0088B007B4B86 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5BB26A0088B007B4B86 /* SignInView.swift */; };
@@ -59,6 +60,7 @@
 		01E2502C70FDF0FB99351F22 /* Pods-KNU_CSETests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KNU_CSETests.release.xcconfig"; path = "Target Support Files/Pods-KNU_CSETests/Pods-KNU_CSETests.release.xcconfig"; sourceTree = "<group>"; };
 		0AEB9BE74D13DB6D6DE35FAE /* Pods_KNU_CSE.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KNU_CSE.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C3849D4B5E75A8D54F61D53 /* Pods_KNU_CSE_KNU_CSEUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KNU_CSE_KNU_CSEUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		681D37B426A419F3000D9FE8 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		68F1A5B426A0088B007B4B86 /* KNU_CSE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KNU_CSE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68F1A5B726A0088B007B4B86 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		68F1A5B926A0088B007B4B86 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -127,6 +129,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		681D37B026A412E6000D9FE8 /* Seat Reservation */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Seat Reservation";
+			sourceTree = "<group>";
+		};
+		681D37B126A41372000D9FE8 /* Board */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Board;
+			sourceTree = "<group>";
+		};
+		681D37B326A413AD000D9FE8 /* MyPage */ = {
+			isa = PBXGroup;
+			children = (
+				681D37B426A419F3000D9FE8 /* MyPageView.swift */,
+			);
+			path = MyPage;
+			sourceTree = "<group>";
+		};
+		68D5448F26A40E220072C2A4 /* KNU Notice  */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "KNU Notice ";
+			sourceTree = "<group>";
+		};
 		68F1A5AB26A0088B007B4B86 = {
 			isa = PBXGroup;
 			children = (
@@ -156,7 +187,7 @@
 				68F1A60126A0A72D007B4B86 /* Color */,
 				68F1A5FA26A01028007B4B86 /* SignIn */,
 				68F1A5F026A0090B007B4B86 /* SignUp */,
-				68F1A61026A31169007B4B86 /* Main */,
+				68F1A61026A31169007B4B86 /* Main Tab */,
 				68F1A5E726A008FF007B4B86 /* Web Service */,
 				68F1A5B726A0088B007B4B86 /* AppDelegate.swift */,
 				68F1A5B926A0088B007B4B86 /* SceneDelegate.swift */,
@@ -271,12 +302,16 @@
 			path = Alert;
 			sourceTree = "<group>";
 		};
-		68F1A61026A31169007B4B86 /* Main */ = {
+		68F1A61026A31169007B4B86 /* Main Tab */ = {
 			isa = PBXGroup;
 			children = (
+				68D5448F26A40E220072C2A4 /* KNU Notice  */,
+				681D37B026A412E6000D9FE8 /* Seat Reservation */,
+				681D37B126A41372000D9FE8 /* Board */,
+				681D37B326A413AD000D9FE8 /* MyPage */,
 				68F1A61126A3120D007B4B86 /* TabView.swift */,
 			);
-			path = Main;
+			path = "Main Tab";
 			sourceTree = "<group>";
 		};
 		68F1A61526A344E2007B4B86 /* KeyChain */ = {
@@ -565,6 +600,7 @@
 				68F1A60326A0A73B007B4B86 /* Color.swift in Sources */,
 				68F1A5FC26A01080007B4B86 /* SignInViewModel.swift in Sources */,
 				68F1A5F926A0090B007B4B86 /* BindingTextField.swift in Sources */,
+				681D37B526A419F3000D9FE8 /* MyPageView.swift in Sources */,
 				68F1A60026A07FE7007B4B86 /* CheckBox.swift in Sources */,
 				68F1A5EC26A008FF007B4B86 /* Request.swift in Sources */,
 				68F1A5EE26A008FF007B4B86 /* BaseObject.swift in Sources */,
