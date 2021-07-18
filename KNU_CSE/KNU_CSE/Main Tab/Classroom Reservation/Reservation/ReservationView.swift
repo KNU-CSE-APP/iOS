@@ -10,15 +10,17 @@ import UIKit
 
 class ReservationView : UIViewController, ClassDataDelegate{
     
+    var reservationViewModel : ReservationViewModel = ReservationViewModel()
+    
     override func viewWillAppear(_ animated: Bool) {
-       // self.navigationController?.navigationBar.topItem?.title = "강의실 예약"
+        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        self.navigationController?.navigationBar.topItem?.backBarButtonItem = backBarButtonItem
     }
     
     override func viewDidLoad() {
         initUI()
         addView()
         setupConstraints()
-        
     }
     
     func initUI(){
@@ -34,6 +36,11 @@ class ReservationView : UIViewController, ClassDataDelegate{
     }
     
     func sendData(data: ClassRoom) {
-        print(data.building, data.roomId)
+        reservationViewModel.setClassRoom(classRoom: data)
+        setNavigationTitle(title: "\(data.building)-\(data.roomId)호")
+    }
+    
+    func setNavigationTitle(title:String){
+        self.navigationItem.title = title
     }
 }
