@@ -8,8 +8,8 @@
 import Foundation
 import UIKit
 
-class ReservationView : UIViewController{
-
+class ReservationView : UIViewController, ClassDataDelegate{
+    
     override func viewWillAppear(_ animated: Bool) {
        // self.navigationController?.navigationBar.topItem?.title = "강의실 예약"
     }
@@ -18,6 +18,7 @@ class ReservationView : UIViewController{
         initUI()
         addView()
         setupConstraints()
+        
     }
     
     func initUI(){
@@ -32,4 +33,7 @@ class ReservationView : UIViewController{
         
     }
     
+    func sendData(data: ClassRoom) {
+        print(data.building, data.roomId)
+    }
 }

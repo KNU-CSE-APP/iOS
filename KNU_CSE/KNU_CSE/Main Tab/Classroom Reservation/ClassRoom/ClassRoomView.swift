@@ -11,6 +11,7 @@ import UIKit
 class ClassRoomView : UIViewController{
 
     let classRoomViewModel : ClassRoomViewModel = ClassRoomViewModel()
+    var delegate: ClassDataDelegate?
     
     var cellRowHeight : CGFloat!
     
@@ -64,9 +65,11 @@ extension ClassRoomView : UITableViewDataSource{
         cell.selectionStyle = .none
         cell.classRoom = classRoomViewModel.classrooms[indexPath.row]
         cell.setAction{
-            let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "SignUpView")
+            let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "ReservationView") as? ReservationView
             self.navigationController?.pushViewController(pushVC!, animated: true)
-            print("click")
+            self.delegate = pushVC
+            self.delegate?.sendData(data: self.classRoomViewModel.classrooms[indexPath.row])
+            
         }
         return cell
     }

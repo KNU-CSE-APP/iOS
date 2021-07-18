@@ -140,6 +140,21 @@
             </objects>
             <point key="canvasLocation" x="432" y="109"/>
         </scene>
+        <!--Reservation View-->
+        <scene sceneID="nEe-yW-XSV">
+            <objects>
+                <viewController storyboardIdentifier="ReservationView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="2AY-2Z-OAL" customClass="ReservationView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="n5J-FJ-x7r">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="ef4-mu-DxO"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mZa-60-qRb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2996" y="975"/>
+        </scene>
     </scenes>
     <resources>
         <image name="arrow.up.bin.fill" catalog="system" width="128" height="93"/>
