@@ -9,8 +9,12 @@
 /* Begin PBXBuildFile section */
 		681D37B526A419F3000D9FE8 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37B426A419F3000D9FE8 /* MyPageView.swift */; };
 		681D37B726A42748000D9FE8 /* NoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37B626A42748000D9FE8 /* NoticeView.swift */; };
-		681D37B926A42782000D9FE8 /* SeatReservationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37B826A42782000D9FE8 /* SeatReservationView.swift */; };
+		681D37B926A42782000D9FE8 /* ClassRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37B826A42782000D9FE8 /* ClassRoomView.swift */; };
 		681D37BB26A4279F000D9FE8 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37BA26A4279F000D9FE8 /* BoardView.swift */; };
+		681D37BD26A4519B000D9FE8 /* ClassRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37BC26A4519B000D9FE8 /* ClassRoomViewModel.swift */; };
+		681D37BF26A451B5000D9FE8 /* ClassRoomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37BE26A451B5000D9FE8 /* ClassRoomModel.swift */; };
+		681D37C426A45442000D9FE8 /* ClassRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37C326A45442000D9FE8 /* ClassRoomCell.swift */; };
+		681D37CA26A467CA000D9FE8 /* ReservationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37C926A467CA000D9FE8 /* ReservationView.swift */; };
 		68F1A5B826A0088B007B4B86 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5B726A0088B007B4B86 /* AppDelegate.swift */; };
 		68F1A5BA26A0088B007B4B86 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5B926A0088B007B4B86 /* SceneDelegate.swift */; };
 		68F1A5BC26A0088B007B4B86 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5BB26A0088B007B4B86 /* SignInView.swift */; };
@@ -65,8 +69,12 @@
 		4C3849D4B5E75A8D54F61D53 /* Pods_KNU_CSE_KNU_CSEUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KNU_CSE_KNU_CSEUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		681D37B426A419F3000D9FE8 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		681D37B626A42748000D9FE8 /* NoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeView.swift; sourceTree = "<group>"; };
-		681D37B826A42782000D9FE8 /* SeatReservationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeatReservationView.swift; sourceTree = "<group>"; };
+		681D37B826A42782000D9FE8 /* ClassRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomView.swift; sourceTree = "<group>"; };
 		681D37BA26A4279F000D9FE8 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
+		681D37BC26A4519B000D9FE8 /* ClassRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomViewModel.swift; sourceTree = "<group>"; };
+		681D37BE26A451B5000D9FE8 /* ClassRoomModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomModel.swift; sourceTree = "<group>"; };
+		681D37C326A45442000D9FE8 /* ClassRoomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomCell.swift; sourceTree = "<group>"; };
+		681D37C926A467CA000D9FE8 /* ReservationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationView.swift; sourceTree = "<group>"; };
 		68F1A5B426A0088B007B4B86 /* KNU_CSE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KNU_CSE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68F1A5B726A0088B007B4B86 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		68F1A5B926A0088B007B4B86 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -135,12 +143,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		681D37B026A412E6000D9FE8 /* Seat Reservation */ = {
+		681D37B026A412E6000D9FE8 /* Classroom Reservation */ = {
 			isa = PBXGroup;
 			children = (
-				681D37B826A42782000D9FE8 /* SeatReservationView.swift */,
+				681D37C526A46783000D9FE8 /* ClassRoom */,
+				681D37C826A467B0000D9FE8 /* Reservation */,
 			);
-			path = "Seat Reservation";
+			path = "Classroom Reservation";
 			sourceTree = "<group>";
 		};
 		681D37B126A41372000D9FE8 /* Board */ = {
@@ -157,6 +166,32 @@
 				681D37B426A419F3000D9FE8 /* MyPageView.swift */,
 			);
 			path = MyPage;
+			sourceTree = "<group>";
+		};
+		681D37C226A4542F000D9FE8 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				681D37C326A45442000D9FE8 /* ClassRoomCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		681D37C526A46783000D9FE8 /* ClassRoom */ = {
+			isa = PBXGroup;
+			children = (
+				681D37B826A42782000D9FE8 /* ClassRoomView.swift */,
+				681D37BC26A4519B000D9FE8 /* ClassRoomViewModel.swift */,
+				681D37BE26A451B5000D9FE8 /* ClassRoomModel.swift */,
+			);
+			path = ClassRoom;
+			sourceTree = "<group>";
+		};
+		681D37C826A467B0000D9FE8 /* Reservation */ = {
+			isa = PBXGroup;
+			children = (
+				681D37C926A467CA000D9FE8 /* ReservationView.swift */,
+			);
+			path = Reservation;
 			sourceTree = "<group>";
 		};
 		68D5448F26A40E220072C2A4 /* KNU Notice  */ = {
@@ -250,10 +285,11 @@
 		68F1A5F426A0090B007B4B86 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				681D37C226A4542F000D9FE8 /* Cell */,
 				68F1A61526A344E2007B4B86 /* KeyChain */,
 				68F1A60D26A30CFB007B4B86 /* Alert */,
 				68F1A60A26A30792007B4B86 /* String */,
-				68F1A60926A2D491007B4B86 /* UI */,
+				68F1A60926A2D491007B4B86 /* ExtensionUI */,
 				68F1A60826A2D486007B4B86 /* Indicator */,
 			);
 			path = Custom;
@@ -285,14 +321,14 @@
 			path = Indicator;
 			sourceTree = "<group>";
 		};
-		68F1A60926A2D491007B4B86 /* UI */ = {
+		68F1A60926A2D491007B4B86 /* ExtensionUI */ = {
 			isa = PBXGroup;
 			children = (
 				68F1A5F526A0090B007B4B86 /* BindingTextField.swift */,
 				68F1A5FD26A07147007B4B86 /* SignUpUILabel.swift */,
 				68F1A5FF26A07FE7007B4B86 /* CheckBox.swift */,
 			);
-			path = UI;
+			path = ExtensionUI;
 			sourceTree = "<group>";
 		};
 		68F1A60A26A30792007B4B86 /* String */ = {
@@ -315,7 +351,7 @@
 			isa = PBXGroup;
 			children = (
 				68D5448F26A40E220072C2A4 /* KNU Notice  */,
-				681D37B026A412E6000D9FE8 /* Seat Reservation */,
+				681D37B026A412E6000D9FE8 /* Classroom Reservation */,
 				681D37B126A41372000D9FE8 /* Board */,
 				681D37B326A413AD000D9FE8 /* MyPage */,
 				68F1A61126A3120D007B4B86 /* TabView.swift */,
@@ -594,17 +630,21 @@
 			files = (
 				68F1A5F726A0090B007B4B86 /* SignUpView.swift in Sources */,
 				68F1A5BC26A0088B007B4B86 /* SignInView.swift in Sources */,
+				681D37BD26A4519B000D9FE8 /* ClassRoomViewModel.swift in Sources */,
+				681D37BF26A451B5000D9FE8 /* ClassRoomModel.swift in Sources */,
 				68F1A5B826A0088B007B4B86 /* AppDelegate.swift in Sources */,
 				68F1A5ED26A008FF007B4B86 /* GetEventListApiRequest.swift in Sources */,
 				68F1A61426A32356007B4B86 /* StorageManager.swift in Sources */,
 				68F1A60C26A307AB007B4B86 /* StringSet.swift in Sources */,
 				68F1A60F26A30D07007B4B86 /* Alert.swift in Sources */,
 				681D37BB26A4279F000D9FE8 /* BoardView.swift in Sources */,
+				681D37CA26A467CA000D9FE8 /* ReservationView.swift in Sources */,
 				68F1A5F826A0090B007B4B86 /* SignUpViewModel.swift in Sources */,
 				68F1A60526A1598A007B4B86 /* SignInModel.swift in Sources */,
 				68F1A60726A2D481007B4B86 /* Indicator.swift in Sources */,
 				68F1A5EF26A008FF007B4B86 /* BaseApiRequest.swift in Sources */,
 				681D37B726A42748000D9FE8 /* NoticeView.swift in Sources */,
+				681D37C426A45442000D9FE8 /* ClassRoomCell.swift in Sources */,
 				68F1A61226A3120D007B4B86 /* TabView.swift in Sources */,
 				68F1A5BA26A0088B007B4B86 /* SceneDelegate.swift in Sources */,
 				68F1A5F626A0090B007B4B86 /* SignUpModel.swift in Sources */,
@@ -615,7 +655,7 @@
 				68F1A60026A07FE7007B4B86 /* CheckBox.swift in Sources */,
 				68F1A5EC26A008FF007B4B86 /* Request.swift in Sources */,
 				68F1A5EE26A008FF007B4B86 /* BaseObject.swift in Sources */,
-				681D37B926A42782000D9FE8 /* SeatReservationView.swift in Sources */,
+				681D37B926A42782000D9FE8 /* ClassRoomView.swift in Sources */,
 				68F1A5FE26A07147007B4B86 /* SignUpUILabel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

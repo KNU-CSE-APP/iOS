@@ -43,7 +43,7 @@
         <!--강의실 예약-->
         <scene sceneID="aTh-EF-evw">
             <objects>
-                <viewController storyboardIdentifier="SeatReservationView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="6a1-Rf-tYp" customClass="SeatReservationView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ClassRoomView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="6a1-Rf-tYp" customClass="ClassRoomView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="j3u-z1-PWr">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
