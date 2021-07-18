@@ -61,7 +61,7 @@ class ViewController: UIViewController {
                         self.indicator.stopIndicator()
                     }, failHandler: { Error in
                         print(Error)
-                        let alert = Alert(title: "로그인 실패", message: "네트워크 상태를 확인하세요.", viewController: self)
+                        let alert = Alert(title: "로그인 실패", message: "네트워크 상태를 확인하세요", viewController: self)
                         alert.popUpDefaultAlert(action: nil)
                         self.indicator.stopIndicator()
                     }, asyncHandler: {
@@ -198,7 +198,7 @@ class ViewController: UIViewController {
         // MARK: - 자동로그인 버튼
         autoSignInBox.snp.makeConstraints{ make in
             make.width.equalTo(signUpBtn.snp.width).multipliedBy(0.25)
-            make.height.equalTo(signUpBtn.snp.height)
+            make.height.equalTo(height)
             make.top.equalTo(signUpBtn.snp.bottom).offset(top_padding)
             make.trailing.equalTo(right_margin)
         }

@@ -48,7 +48,6 @@ class CheckBox : UIView{
     func setUpCheckBox(){
         checkBox.snp.makeConstraints{ make in
             make.width.equalTo(height * 0.5)
-            make.height.equalTo(height * 0.5)
             make.leading.equalToSuperview().offset(0)
             make.top.equalTo(height * 0.25)
             make.bottom.equalTo(height * 0.25)

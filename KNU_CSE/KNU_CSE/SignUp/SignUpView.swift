@@ -348,38 +348,35 @@ class SignUpView: UIViewController{
         }
         
         emailTextField.snp.makeConstraints{ make in
-            make.width.equalTo(pwTitle).multipliedBy(0.6)
-            make.left.equalTo(left_margin)
-            make.right.equalTo(sendCodeBtn.snp.left).offset(-10)
+            make.width.equalTo(pwTitle).multipliedBy(0.7)
+            make.leading.equalTo(left_margin)
+            
             make.top.equalTo(emailTitle.snp.bottom).offset(title_To_textField_margin)
             make.height.equalTo(height)
         }
         
         sendCodeBtn.snp.makeConstraints{ make in
-            make.width.equalTo(pwTitle).multipliedBy(0.2)
-            make.left.equalTo(emailTextField.snp.right).offset(10)
-            make.right.equalTo(right_margin)
+            make.leading.equalTo(emailTextField.snp.trailing).offset(10)
+            make.trailing.equalTo(right_margin)
             make.top.equalTo(emailTitle.snp.bottom).offset(title_To_textField_margin)
             make.height.equalTo(height)
         }
-        
+
         // MARK: - Email code
         emailCodeTextField.snp.makeConstraints{ make in
-            make.width.equalTo(pwTitle).multipliedBy(0.6)
-            make.left.equalTo(left_margin)
-            make.right.equalTo(confirmCodeBtn.snp.left).offset(-10)
+            make.width.equalTo(pwTitle).multipliedBy(0.7)
+            make.leading.equalTo(left_margin)
             make.top.equalTo(emailTextField.snp.bottom).offset(top_padding)
             make.height.equalTo(height)
         }
-        
+
         confirmCodeBtn.snp.makeConstraints{ make in
-            make.width.equalTo(pwTitle).multipliedBy(0.2)
-            make.left.equalTo(emailCodeTextField.snp.right).offset(10)
-            make.right.equalTo(right_margin)
+            make.leading.equalTo(emailCodeTextField.snp.trailing).offset(10)
+            make.trailing.equalTo(right_margin)
             make.top.equalTo(emailTextField.snp.bottom).offset(top_padding)
             make.height.equalTo(height)
         }
-        
+
         // MARK: - 비밀번호
         pwTitle.snp.makeConstraints{ make in
             make.left.equalTo(left_margin)
@@ -387,14 +384,14 @@ class SignUpView: UIViewController{
             make.top.equalTo(emailCodeTextField.snp.bottom).offset(top_padding)
             make.height.equalTo(title_height)
         }
-        
+
         pwTextField.snp.makeConstraints{ make in
             make.left.equalTo(left_margin)
             make.right.equalTo(right_margin)
             make.top.equalTo(pwTitle.snp.bottom).offset(title_To_textField_margin)
             make.height.equalTo(height)
         }
-        
+
         // MARK: - 비밀번호 확인
         pw2Title.snp.makeConstraints{ make in
             make.left.equalTo(left_margin)
@@ -402,14 +399,14 @@ class SignUpView: UIViewController{
             make.top.equalTo(pwTextField.snp.bottom).offset(top_padding)
             make.height.equalTo(title_height)
         }
-        
+
         pw2TextField.snp.makeConstraints{ make in
             make.left.equalTo(left_margin)
             make.right.equalTo(right_margin)
             make.top.equalTo(pw2Title.snp.bottom).offset(title_To_textField_margin)
             make.height.equalTo(height)
         }
-        
+
         // MARK: - 이름
         userNameTitle.snp.makeConstraints{ make in
             make.left.equalTo(left_margin)
@@ -417,15 +414,15 @@ class SignUpView: UIViewController{
             make.top.equalTo(pw2TextField.snp.bottom).offset(top_padding)
             make.height.equalTo(title_height)
         }
-        
+
         userNameTextField.snp.makeConstraints{ make in
             make.left.equalTo(left_margin)
             make.right.equalTo(right_margin)
             make.top.equalTo(userNameTitle.snp.bottom).offset(title_To_textField_margin)
             make.height.equalTo(height)
         }
-        
-        
+
+
         // MARK: - 닉네임
         nickNameTitle.snp.makeConstraints{ make in
             make.left.equalTo(left_margin)
@@ -433,14 +430,14 @@ class SignUpView: UIViewController{
             make.top.equalTo(userNameTextField.snp.bottom).offset(top_padding)
             make.height.equalTo(title_height)
         }
-        
+
         nickNameTextField.snp.makeConstraints{ make in
             make.left.equalTo(left_margin)
             make.right.equalTo(right_margin)
             make.top.equalTo(nickNameTitle.snp.bottom).offset(title_To_textField_margin)
             make.height.equalTo(height)
         }
-        
+
         // MARK: - 학번
         stuidTitle.snp.makeConstraints{ make in
             make.left.equalTo(left_margin)
@@ -448,14 +445,14 @@ class SignUpView: UIViewController{
             make.top.equalTo(nickNameTextField.snp.bottom).offset(top_padding)
             make.height.equalTo(title_height)
         }
-        
+
         stuidTextField.snp.makeConstraints{ make in
             make.left.equalTo(left_margin)
             make.right.equalTo(right_margin)
             make.top.equalTo(stuidTitle.snp.bottom).offset(title_To_textField_margin)
             make.height.equalTo(height)
         }
-        
+
         // MARK: - Checkbox 제목
         majorTitle.snp.makeConstraints{ make in
             make.leading.equalTo(left_margin)
@@ -463,45 +460,44 @@ class SignUpView: UIViewController{
             make.top.equalTo(stuidTextField.snp.bottom).offset(top_padding)
             make.height.equalTo(title_height)
         }
-        
+
         genderTitle.snp.makeConstraints{ make in
             make.leading.equalTo(majorTitle.snp.trailing)
             make.width.equalTo(stuidTextField.snp.width).multipliedBy(0.5)
             make.top.equalTo(stuidTextField.snp.bottom).offset(top_padding)
             make.height.equalTo(title_height)
         }
-        
+
         // MARK: - 전공
         majorCom.snp.makeConstraints{ make in
             make.width.equalTo(stuidTextField.snp.width).multipliedBy(0.25)
             make.height.equalTo(stuidTextField.snp.height)
             make.top.equalTo(majorTitle.snp.bottom).offset(title_To_textField_margin)
             make.leading.equalTo(left_margin)
-            
         }
-        
+
         majorGlob.snp.makeConstraints{ make in
             make.width.equalTo(stuidTextField.snp.width).multipliedBy(0.25)
             make.height.equalTo(stuidTextField.snp.height)
             make.top.equalTo(majorTitle.snp.bottom).offset(title_To_textField_margin)
             make.leading.equalTo(majorCom.snp.trailing).offset(0)
-            
+
         }
-        
+
         genderMale.snp.makeConstraints{ make in
             make.width.equalTo(stuidTextField.snp.width).multipliedBy(0.25)
             make.height.equalTo(stuidTextField.snp.height)
             make.top.equalTo(majorTitle.snp.bottom).offset(title_To_textField_margin)
             make.leading.equalTo(majorGlob.snp.trailing).offset(0)
-            
+
         }
-        
+
         genderFemale.snp.makeConstraints{ make in
             make.width.equalTo(stuidTextField.snp.width).multipliedBy(0.25)
             make.height.equalTo(stuidTextField.snp.height)
             make.top.equalTo(majorTitle.snp.bottom).offset(title_To_textField_margin)
             make.leading.equalTo(genderMale.snp.trailing).offset(0)
-            
+
         }
         // MARK: - 회원가입 버튼
         registerBtn.snp.makeConstraints{ make in
