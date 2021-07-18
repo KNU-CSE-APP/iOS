@@ -17,6 +17,7 @@ class NoticeView : UIViewController, WKUIDelegate{
             let webConfiguration = WKWebViewConfiguration()
             webView = WKWebView(frame: .zero, configuration: webConfiguration)
             webView.uiDelegate = self
+            webView.allowsBackForwardNavigationGestures = true
             
             let URL = URL(string:"https://computer.knu.ac.kr/06_sub/02_sub.html")
             let request = URLRequest(url: URL!)
