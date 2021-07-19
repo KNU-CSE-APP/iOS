@@ -92,7 +92,7 @@
             </objects>
             <point key="canvasLocation" x="-281" y="1392"/>
         </scene>
-        <!--자유 게시판-->
+        <!--자유게시판-->
         <scene sceneID="IvD-pA-hAs">
             <objects>
                 <viewController storyboardIdentifier="BoardView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="P8g-YX-9qv" customClass="BoardView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
@@ -102,7 +102,7 @@
                         <viewLayoutGuide key="safeArea" id="zax-KD-gI0"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="자유 게시판" image="arrowshape.zigzag.forward.fill" catalog="system" id="9KJ-Ky-gQe"/>
+                    <tabBarItem key="tabBarItem" title="자유게시판" image="arrowshape.zigzag.forward.fill" catalog="system" id="9KJ-Ky-gQe"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sET-2d-3XH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -153,7 +153,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mZa-60-qRb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2996" y="975"/>
+            <point key="canvasLocation" x="2995.6521739130435" y="975"/>
         </scene>
     </scenes>
     <resources>

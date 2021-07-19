@@ -53,7 +53,7 @@ class ViewController: UIViewController {
             signInBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
             signInBtn.addAction{
                 if self.signInViewModel.SignInCheck(){
-                    self.signInViewModel.getEvent(successHandler: { response in
+                    self.signInViewModel.SignInRequest(successHandler: { response in
                         if response.result == 1 {
                             self.saveKeyChain()
                             self.pushTabView()
@@ -235,7 +235,19 @@ extension ViewController{
     
     func checkKeyChain(){
         if self.signInViewModel.checkUserAccount(){
-            self.pushTabView()
+            self.signInViewModel.SignInRequest(successHandler: { response in
+                if response.result == 1 {
+                    self.pushTabView()
+                }
+                self.indicator.stopIndicator()
+            }, failHandler: { Error in
+                print(Error)
+                let alert = Alert(title: "로그인 실패", message: "네트워크 상태를 확인하세요", viewController: self)
+                alert.popUpDefaultAlert(action: nil)
+                self.indicator.stopIndicator()
+            }, asyncHandler: {
+                self.indicator.startIndicator()
+            })
         }
     }
 }

@@ -22,9 +22,9 @@ class SignInViewModel {
         self.listener = listener
     }
     
-    public func getEvent(successHandler: @escaping (Response) -> (), failHandler: @escaping (Error) -> (),asyncHandler:@escaping()->()) {
-        let signUpRequest = Request(requestBodyObject: self.account, requestMethod: .Post, enviroment: .SignIn)
-        signUpRequest.sendRequest(request: signUpRequest, type: Response.self, successHandler: successHandler, failHandler: failHandler, asyncHandler: asyncHandler)
+    public func SignInRequest(successHandler: @escaping (Response) -> (), failHandler: @escaping (Error) -> (),asyncHandler:@escaping()->()) {
+        let request = Request(requestBodyObject: self.account, requestMethod: .Post, enviroment: .SignIn)
+        request.sendRequest(request: request, type: Response.self, successHandler: successHandler, failHandler: failHandler, asyncHandler: asyncHandler)
     }
     
     func SignInCheck()-> Bool{

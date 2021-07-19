@@ -19,7 +19,6 @@ final class StorageManager {
   private init() { }
 
   // MARK: Keychain
-  
   private let account = "Service"
   private let service = Bundle.main.bundleIdentifier
 
