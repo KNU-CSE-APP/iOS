@@ -8,10 +8,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Navigation Controller-->
+        <!--Sign In Navigation View-->
         <scene sceneID="fKX-Yf-uL6">
             <objects>
-                <navigationController id="w5r-46-zbb" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="SignInNavigationView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="w5r-46-zbb" customClass="SignInNavigationView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Jrh-hF-1wQ">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>

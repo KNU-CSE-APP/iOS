@@ -33,6 +33,7 @@
 		681D37EE26A70493000D9FE8 /* ReservationCheckViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37ED26A70493000D9FE8 /* ReservationCheckViewModel.swift */; };
 		681D37F026A707F1000D9FE8 /* ReservationCheckModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37EF26A707F1000D9FE8 /* ReservationCheckModel.swift */; };
 		681D37F226A70FE2000D9FE8 /* ReservationCheckDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37F126A70FE2000D9FE8 /* ReservationCheckDelegate.swift */; };
+		681D37F426A737AE000D9FE8 /* SignInNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37F326A737AE000D9FE8 /* SignInNavigationView.swift */; };
 		68F1A5B826A0088B007B4B86 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5B726A0088B007B4B86 /* AppDelegate.swift */; };
 		68F1A5BA26A0088B007B4B86 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5B926A0088B007B4B86 /* SceneDelegate.swift */; };
 		68F1A5BC26A0088B007B4B86 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5BB26A0088B007B4B86 /* SignInView.swift */; };
@@ -111,6 +112,7 @@
 		681D37ED26A70493000D9FE8 /* ReservationCheckViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationCheckViewModel.swift; sourceTree = "<group>"; };
 		681D37EF26A707F1000D9FE8 /* ReservationCheckModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationCheckModel.swift; sourceTree = "<group>"; };
 		681D37F126A70FE2000D9FE8 /* ReservationCheckDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationCheckDelegate.swift; sourceTree = "<group>"; };
+		681D37F326A737AE000D9FE8 /* SignInNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInNavigationView.swift; sourceTree = "<group>"; };
 		68F1A5B426A0088B007B4B86 /* KNU_CSE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KNU_CSE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68F1A5B726A0088B007B4B86 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		68F1A5B926A0088B007B4B86 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -366,6 +368,7 @@
 		68F1A5FA26A01028007B4B86 /* SignIn */ = {
 			isa = PBXGroup;
 			children = (
+				681D37F326A737AE000D9FE8 /* SignInNavigationView.swift */,
 				68F1A5BB26A0088B007B4B86 /* SignInView.swift */,
 				68F1A5FB26A01080007B4B86 /* SignInViewModel.swift */,
 				68F1A60426A1598A007B4B86 /* SignInModel.swift */,
@@ -736,6 +739,7 @@
 				681D37DB26A4AAAC000D9FE8 /* ReservationViewModel.swift in Sources */,
 				68F1A60026A07FE7007B4B86 /* CheckBox.swift in Sources */,
 				68F1A5EC26A008FF007B4B86 /* Request.swift in Sources */,
+				681D37F426A737AE000D9FE8 /* SignInNavigationView.swift in Sources */,
 				68F1A5EE26A008FF007B4B86 /* BaseObject.swift in Sources */,
 				681D37B926A42782000D9FE8 /* ClassRoomView.swift in Sources */,
 				68F1A5FE26A07147007B4B86 /* SignUpUILabel.swift in Sources */,

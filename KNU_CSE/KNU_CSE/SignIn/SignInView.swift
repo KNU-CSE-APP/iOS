@@ -30,6 +30,7 @@ class ViewController: UIViewController {
             emailTextField.bind { [weak self] email in
                 self?.signInViewModel.account.email = email
             }
+            
         }
     }
     
