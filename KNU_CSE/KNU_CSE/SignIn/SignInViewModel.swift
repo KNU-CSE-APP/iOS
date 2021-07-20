@@ -42,6 +42,17 @@ class SignInViewModel {
         }
     }
     
+    func storeUserEmail(){
+        guard StorageManager.shared.readUser() != nil else {
+            StorageManager.shared.createUser(User(email: account.email, password: ""))
+            return
+        }
+        
+        if StorageManager.shared.deleteUser(){
+            StorageManager.shared.createUser(User(email: account.email, password: ""))
+        }
+    }
+    
     func removeUserAccount(){
         if StorageManager.shared.deleteUser(){
             print("Success remove UserAccount")
@@ -51,10 +62,12 @@ class SignInViewModel {
     }
     
     func checkUserAccount()->Bool{
-        guard StorageManager.shared.readUser() != nil else {
+        guard let user = StorageManager.shared.readUser() else {
             return false
         }
-        return true
+        
+        if user.password == ""{ return false }
+        else { return true }
     }
 }
 

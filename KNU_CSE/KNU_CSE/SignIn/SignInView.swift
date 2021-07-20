@@ -229,7 +229,7 @@ extension ViewController{
         if autoSignInBox.checkBox.checkState == .checked{
             self.signInViewModel.storeUserAccount()
         }else{
-            self.signInViewModel.removeUserAccount()
+            self.signInViewModel.storeUserEmail()
         }
     }
     

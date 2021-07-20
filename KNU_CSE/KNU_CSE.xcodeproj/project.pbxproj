@@ -366,9 +366,9 @@
 		68F1A5FA26A01028007B4B86 /* SignIn */ = {
 			isa = PBXGroup;
 			children = (
-				68F1A60426A1598A007B4B86 /* SignInModel.swift */,
 				68F1A5BB26A0088B007B4B86 /* SignInView.swift */,
 				68F1A5FB26A01080007B4B86 /* SignInViewModel.swift */,
+				68F1A60426A1598A007B4B86 /* SignInModel.swift */,
 			);
 			path = SignIn;
 			sourceTree = "<group>";

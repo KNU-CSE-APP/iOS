@@ -19,4 +19,6 @@ struct ReservationCheckViewModel{
         self.classRoom = classRoom
         reservationCheckModel = ReservationCheckModel.returnCheckModel(email: email, roomNum: classRoom.roomNum, seatNumber: classSeat.seatNumber)
     }
+    
+    
 }

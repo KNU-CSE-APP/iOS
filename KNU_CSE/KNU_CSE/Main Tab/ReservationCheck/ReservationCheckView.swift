@@ -50,7 +50,7 @@ class ReservationCheckView: UIViewController, ViewProtocol{
             cancelBtn.backgroundColor = .white
             cancelBtn.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .regular)
             cancelBtn.addAction {
-                self.dismiss(animated: true, completion: nil)
+                self.navigationController?.popViewController(animated: true)
             }
         }
     }
@@ -157,6 +157,7 @@ extension ReservationCheckView : UITableViewDataSource{
 
 extension ReservationCheckView:ReservationCheckDelegate{
     func sendData(classRoom: ClassRoom, classSeat: ClassSeat) {
+        print(StorageManager.shared.readUser()?.email, StorageManager.shared.readUser()?.password)
         self.reservationCheckViewModel = ReservationCheckViewModel(email: "sdfsdfs", building: classRoom.building, classSeat: classSeat, classRoom: classRoom)
         
         contentList = [contentText.inform(classRoom.building,String(classRoom.roomNum),String(classSeat.seatNumber)), contentText.status("사용가능"), contentText.startTime(""), contentText.endTime("")]
