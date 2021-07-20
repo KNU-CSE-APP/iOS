@@ -22,6 +22,7 @@ class ClassRoomView : UIViewController{
             classTableView.dataSource = self
             classTableView.rowHeight = cellRowHeight * 0.1
             classTableView.tableFooterView = UIView(frame: .zero)
+            classTableView.separatorInset.left = 0
         }
     }
     

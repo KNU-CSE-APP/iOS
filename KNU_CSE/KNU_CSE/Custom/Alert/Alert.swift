@@ -25,4 +25,12 @@ struct Alert{
         self.alert.addAction(actionDefault)
         self.viewController.present(alert, animated: true, completion: nil)
     }
+    
+    func popUpNormalAlert(action:((UIAlertAction)->())?){
+        let actionCancel = UIAlertAction(title: "취소", style: .destructive, handler: nil)
+        let actionDefault = UIAlertAction(title: "확인", style: .default,handler: action)
+        self.alert.addAction(actionCancel)
+        self.alert.addAction(actionDefault)
+        self.viewController.present(alert, animated: true, completion: nil)
+    }
 }

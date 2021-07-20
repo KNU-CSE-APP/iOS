@@ -8,10 +8,11 @@
 import Foundation
 import UIKit
 
-class ReservationView : UIViewController, ClassDataDelegate{
+class ReservationView : UIViewController{
     
     let cellNumbersofLine:Int = 4
     var reservationViewModel :ReservationViewModel = ReservationViewModel()
+    var delegate: ReservationCheckDelegate?
     
     var usableView : UIView!{
         didSet{
@@ -36,6 +37,20 @@ class ReservationView : UIViewController, ClassDataDelegate{
         didSet{
             unusableLabel.text = "사용불가"
             unusableLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        }
+    }
+    
+    var seatPicBtn : UIButton!{
+        didSet{
+            seatPicBtn.setTitle("배치도 보기", for: .normal)
+            seatPicBtn.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+            seatPicBtn.backgroundColor = Color.subColor
+            seatPicBtn.layer.cornerRadius = 7
+            seatPicBtn.addAction {
+                let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "SeatPicView") as? SeatPicView
+                pushVC?.modalPresentationStyle = .popover
+                self.navigationController?.present(pushVC!, animated: true, completion: nil)
+            }
         }
     }
     
@@ -73,6 +88,7 @@ class ReservationView : UIViewController, ClassDataDelegate{
         usableLabel = UILabel()
         unusableView = UIView()
         unusableLabel = UILabel()
+        seatPicBtn = UIButton()
         seatCollectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewFlowLayout())
     }
     
@@ -81,6 +97,7 @@ class ReservationView : UIViewController, ClassDataDelegate{
         self.view.addSubview(usableLabel)
         self.view.addSubview(unusableView)
         self.view.addSubview(unusableLabel)
+        self.view.addSubview(seatPicBtn)
         self.view.addSubview(seatCollectionView)
     }
     
@@ -89,6 +106,8 @@ class ReservationView : UIViewController, ClassDataDelegate{
         let titleViewWidth = self.view.frame.width * 0.05
         let titleLabelWidth = self.view.frame.width * 0.2
         let titleTopMargin = 15
+        let btnWidth = self.view.frame.width * 0.25
+        let btnHeight = btnWidth * 0.3
         
         usableView.snp.makeConstraints{ make in
             make.top.equalTo(self.view.safeAreaLayoutGuide).offset(titleTopMargin)
@@ -118,18 +137,20 @@ class ReservationView : UIViewController, ClassDataDelegate{
             make.leading.equalTo(unusableView.snp.trailing).offset(5)
         }
         
+        seatPicBtn.snp.makeConstraints{ make in
+            make.top.equalTo(unusableLabel.snp.bottom).offset(10)
+            make.right.equalToSuperview().offset(-10)
+            make.width.equalTo(btnWidth)
+            make.height.equalTo(btnHeight)
+        }
+        
         seatCollectionView.snp.makeConstraints{ make in
-            make.top.equalTo(unusableLabel.snp.bottom).offset(titleTopMargin)
+            make.top.equalTo(seatPicBtn.snp.bottom).offset(titleTopMargin)
             make.left.right.equalTo(0)
             make.bottom.equalToSuperview()
         }
     }
-    
-    func sendData(data: ClassRoom) {
-        reservationViewModel.setClassRoomNum(classRoomNum: data.roomNum)
-        setNavigationTitle(title: "\(data.building)-\(data.roomId)호")
-    }
-    
+   
     func setNavigationTitle(title:String){
         self.navigationItem.title = title
     }
@@ -147,8 +168,24 @@ extension ReservationView:UICollectionViewDataSource, UICollectionViewDelegate{
         }
         cell.classSeat = reservationViewModel.classSeat[indexPath.row]
         cell.setBtnAction {
-            print("zz")
+            let alert = Alert(title: "좌석 예약", message: "\(indexPath.row+1)번 좌석을 예약하시겠습니까?", viewController: self)
+            alert.popUpNormalAlert{ (action) in
+                guard let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "ReservationCheckView") as? ReservationCheckView else{
+                    return
+                }
+                self.navigationController?.pushViewController(pushVC, animated: true)
+                self.delegate = pushVC
+                self.delegate?.sendData(classRoom: self.reservationViewModel.classRoom, classSeat: self.reservationViewModel.classSeat[indexPath.row])
+            }
         }
         return cell
     }
+}
+
+extension ReservationView:ClassDataDelegate{
+    func sendData(data: ClassRoom) {
+        reservationViewModel.setClassRoom(classRoom: data)
+        setNavigationTitle(title: "\(data.building)-\(data.roomId)호")
+    }
+    
 }

@@ -9,15 +9,16 @@ import Foundation
 
 struct ReservationViewModel{
     var classSeat : [ClassSeat] = []
+    var classRoom : ClassRoom!
     typealias classRoomType = Int
-    var classRoomNum : classRoomType?
+    var classRoomNum : classRoomType!
     
     init(){
         self.setClassSeat()
     }
     
-    mutating func setClassRoomNum(classRoomNum:classRoomType){
-        self.classRoomNum = classRoomNum
+    mutating func setClassRoom(classRoom:ClassRoom){
+        self.classRoom = classRoom
     }
     
     mutating func setClassSeat(){
@@ -34,4 +35,9 @@ struct ReservationViewModel{
         self.classSeat.append(ClassSeat(seatId: 11, seatNumber: 11, status: false))
         self.classSeat.append(ClassSeat(seatId: 12 , seatNumber: 12, status: true))
     }
+    
+    mutating func showSeatPicture(){
+        
+    }
+    
 }

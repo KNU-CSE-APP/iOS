@@ -19,7 +19,7 @@ class ClassSeatCell:UICollectionViewCell{
         }set(newValue){
             _classSeat = newValue
             self.isUsable = newValue.status
-            self.seatBtn.setTitle(String(self.classSeat.seatId), for: .normal)
+            self.seatBtn.setTitle(String(self.classSeat.seatNumber), for: .normal)
         }
     }
     
@@ -73,6 +73,7 @@ class ClassSeatCell:UICollectionViewCell{
     
     func setUsable(){
         seatBtn.backgroundColor = Color.green
+        seatBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
         seatBtn.addAction {
             self.action()
         }

@@ -24,6 +24,15 @@
 		681D37DB26A4AAAC000D9FE8 /* ReservationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37DA26A4AAAC000D9FE8 /* ReservationViewModel.swift */; };
 		681D37DD26A5BF2D000D9FE8 /* ClassSeatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37DC26A5BF2D000D9FE8 /* ClassSeatCell.swift */; };
 		681D37DF26A5DABC000D9FE8 /* ReservationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37DE26A5DABC000D9FE8 /* ReservationModel.swift */; };
+		681D37E126A5E7B2000D9FE8 /* UIControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37E026A5E7B2000D9FE8 /* UIControl.swift */; };
+		681D37E326A6ACBC000D9FE8 /* SeatPicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37E226A6ACBC000D9FE8 /* SeatPicView.swift */; };
+		681D37E526A6AD36000D9FE8 /* ViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37E426A6AD36000D9FE8 /* ViewProtocol.swift */; };
+		681D37E726A6BF58000D9FE8 /* testImage.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 681D37E626A6BF58000D9FE8 /* testImage.jpeg */; };
+		681D37EA26A6C6A8000D9FE8 /* ReservationCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37E926A6C6A8000D9FE8 /* ReservationCheckView.swift */; };
+		681D37EC26A6CD87000D9FE8 /* ReservationCheckCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37EB26A6CD87000D9FE8 /* ReservationCheckCell.swift */; };
+		681D37EE26A70493000D9FE8 /* ReservationCheckViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37ED26A70493000D9FE8 /* ReservationCheckViewModel.swift */; };
+		681D37F026A707F1000D9FE8 /* ReservationCheckModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37EF26A707F1000D9FE8 /* ReservationCheckModel.swift */; };
+		681D37F226A70FE2000D9FE8 /* ReservationCheckDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37F126A70FE2000D9FE8 /* ReservationCheckDelegate.swift */; };
 		68F1A5B826A0088B007B4B86 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5B726A0088B007B4B86 /* AppDelegate.swift */; };
 		68F1A5BA26A0088B007B4B86 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5B926A0088B007B4B86 /* SceneDelegate.swift */; };
 		68F1A5BC26A0088B007B4B86 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5BB26A0088B007B4B86 /* SignInView.swift */; };
@@ -93,6 +102,15 @@
 		681D37DA26A4AAAC000D9FE8 /* ReservationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationViewModel.swift; sourceTree = "<group>"; };
 		681D37DC26A5BF2D000D9FE8 /* ClassSeatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassSeatCell.swift; sourceTree = "<group>"; };
 		681D37DE26A5DABC000D9FE8 /* ReservationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationModel.swift; sourceTree = "<group>"; };
+		681D37E026A5E7B2000D9FE8 /* UIControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIControl.swift; sourceTree = "<group>"; };
+		681D37E226A6ACBC000D9FE8 /* SeatPicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeatPicView.swift; sourceTree = "<group>"; };
+		681D37E426A6AD36000D9FE8 /* ViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewProtocol.swift; sourceTree = "<group>"; };
+		681D37E626A6BF58000D9FE8 /* testImage.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = testImage.jpeg; sourceTree = "<group>"; };
+		681D37E926A6C6A8000D9FE8 /* ReservationCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationCheckView.swift; sourceTree = "<group>"; };
+		681D37EB26A6CD87000D9FE8 /* ReservationCheckCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationCheckCell.swift; sourceTree = "<group>"; };
+		681D37ED26A70493000D9FE8 /* ReservationCheckViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationCheckViewModel.swift; sourceTree = "<group>"; };
+		681D37EF26A707F1000D9FE8 /* ReservationCheckModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationCheckModel.swift; sourceTree = "<group>"; };
+		681D37F126A70FE2000D9FE8 /* ReservationCheckDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationCheckDelegate.swift; sourceTree = "<group>"; };
 		68F1A5B426A0088B007B4B86 /* KNU_CSE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KNU_CSE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68F1A5B726A0088B007B4B86 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		68F1A5B926A0088B007B4B86 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -196,6 +214,7 @@
 				681D37C326A45442000D9FE8 /* ClassRoomCell.swift */,
 				681D37D626A48B37000D9FE8 /* BoardCell.swift */,
 				681D37DC26A5BF2D000D9FE8 /* ClassSeatCell.swift */,
+				681D37EB26A6CD87000D9FE8 /* ReservationCheckCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -213,9 +232,11 @@
 		681D37C826A467B0000D9FE8 /* Reservation */ = {
 			isa = PBXGroup;
 			children = (
+				681D37E626A6BF58000D9FE8 /* testImage.jpeg */,
 				681D37C926A467CA000D9FE8 /* ReservationView.swift */,
 				681D37DA26A4AAAC000D9FE8 /* ReservationViewModel.swift */,
 				681D37DE26A5DABC000D9FE8 /* ReservationModel.swift */,
+				681D37E226A6ACBC000D9FE8 /* SeatPicView.swift */,
 			);
 			path = Reservation;
 			sourceTree = "<group>";
@@ -224,8 +245,20 @@
 			isa = PBXGroup;
 			children = (
 				681D37D826A4A75F000D9FE8 /* ClassDataDelegate.swift */,
+				681D37E426A6AD36000D9FE8 /* ViewProtocol.swift */,
+				681D37F126A70FE2000D9FE8 /* ReservationCheckDelegate.swift */,
 			);
 			path = Delegate;
+			sourceTree = "<group>";
+		};
+		681D37E826A6C692000D9FE8 /* ReservationCheck */ = {
+			isa = PBXGroup;
+			children = (
+				681D37E926A6C6A8000D9FE8 /* ReservationCheckView.swift */,
+				681D37ED26A70493000D9FE8 /* ReservationCheckViewModel.swift */,
+				681D37EF26A707F1000D9FE8 /* ReservationCheckModel.swift */,
+			);
+			path = ReservationCheck;
 			sourceTree = "<group>";
 		};
 		68D5448F26A40E220072C2A4 /* KNU Notice  */ = {
@@ -362,6 +395,7 @@
 				68F1A5F526A0090B007B4B86 /* BindingTextField.swift */,
 				68F1A5FD26A07147007B4B86 /* SignUpUILabel.swift */,
 				68F1A5FF26A07FE7007B4B86 /* CheckBox.swift */,
+				681D37E026A5E7B2000D9FE8 /* UIControl.swift */,
 			);
 			path = ExtensionUI;
 			sourceTree = "<group>";
@@ -387,6 +421,7 @@
 			children = (
 				68D5448F26A40E220072C2A4 /* KNU Notice  */,
 				681D37B026A412E6000D9FE8 /* Classroom Reservation */,
+				681D37E826A6C692000D9FE8 /* ReservationCheck */,
 				681D37B126A41372000D9FE8 /* Board */,
 				681D37B326A413AD000D9FE8 /* MyPage */,
 				68F1A61126A3120D007B4B86 /* TabView.swift */,
@@ -534,6 +569,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				68F1A5C426A0088D007B4B86 /* LaunchScreen.storyboard in Resources */,
+				681D37E726A6BF58000D9FE8 /* testImage.jpeg in Resources */,
 				68F1A5C126A0088D007B4B86 /* Assets.xcassets in Resources */,
 				68F1A5BF26A0088B007B4B86 /* Main.storyboard in Resources */,
 			);
@@ -667,6 +703,7 @@
 				68F1A5BC26A0088B007B4B86 /* SignInView.swift in Sources */,
 				681D37BD26A4519B000D9FE8 /* ClassRoomViewModel.swift in Sources */,
 				681D37D126A48A55000D9FE8 /* BoardModel.swift in Sources */,
+				681D37EA26A6C6A8000D9FE8 /* ReservationCheckView.swift in Sources */,
 				681D37BF26A451B5000D9FE8 /* ClassRoomModel.swift in Sources */,
 				68F1A5B826A0088B007B4B86 /* AppDelegate.swift in Sources */,
 				68F1A5ED26A008FF007B4B86 /* GetEventListApiRequest.swift in Sources */,
@@ -678,15 +715,20 @@
 				681D37D526A48A6F000D9FE8 /* MyPageModel.swift in Sources */,
 				681D37CA26A467CA000D9FE8 /* ReservationView.swift in Sources */,
 				68F1A5F826A0090B007B4B86 /* SignUpViewModel.swift in Sources */,
+				681D37F026A707F1000D9FE8 /* ReservationCheckModel.swift in Sources */,
 				68F1A60526A1598A007B4B86 /* SignInModel.swift in Sources */,
+				681D37E326A6ACBC000D9FE8 /* SeatPicView.swift in Sources */,
 				68F1A60726A2D481007B4B86 /* Indicator.swift in Sources */,
+				681D37E126A5E7B2000D9FE8 /* UIControl.swift in Sources */,
 				68F1A5EF26A008FF007B4B86 /* BaseApiRequest.swift in Sources */,
 				681D37B726A42748000D9FE8 /* NoticeView.swift in Sources */,
+				681D37E526A6AD36000D9FE8 /* ViewProtocol.swift in Sources */,
 				681D37C426A45442000D9FE8 /* ClassRoomCell.swift in Sources */,
 				68F1A61226A3120D007B4B86 /* TabView.swift in Sources */,
 				68F1A5BA26A0088B007B4B86 /* SceneDelegate.swift in Sources */,
 				68F1A5F626A0090B007B4B86 /* SignUpModel.swift in Sources */,
 				68F1A60326A0A73B007B4B86 /* Color.swift in Sources */,
+				681D37EC26A6CD87000D9FE8 /* ReservationCheckCell.swift in Sources */,
 				681D37DF26A5DABC000D9FE8 /* ReservationModel.swift in Sources */,
 				68F1A5FC26A01080007B4B86 /* SignInViewModel.swift in Sources */,
 				68F1A5F926A0090B007B4B86 /* BindingTextField.swift in Sources */,
@@ -699,7 +741,9 @@
 				68F1A5FE26A07147007B4B86 /* SignUpUILabel.swift in Sources */,
 				681D37DD26A5BF2D000D9FE8 /* ClassSeatCell.swift in Sources */,
 				681D37CF26A48A4B000D9FE8 /* BoardViewModel.swift in Sources */,
+				681D37F226A70FE2000D9FE8 /* ReservationCheckDelegate.swift in Sources */,
 				681D37D726A48B37000D9FE8 /* BoardCell.swift in Sources */,
+				681D37EE26A70493000D9FE8 /* ReservationCheckViewModel.swift in Sources */,
 				681D37D326A48A64000D9FE8 /* MyPageViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

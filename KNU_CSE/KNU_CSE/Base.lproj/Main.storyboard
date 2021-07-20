@@ -125,6 +125,36 @@
             </objects>
             <point key="canvasLocation" x="1659" y="1675"/>
         </scene>
+        <!--Seat Pic View-->
+        <scene sceneID="gfq-Ax-yDp">
+            <objects>
+                <viewController storyboardIdentifier="SeatPicView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Mi4-pH-Iuc" customClass="SeatPicView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8aj-D7-wx5">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="g0x-Yq-gPR"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Om4-3n-dgZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3907" y="975"/>
+        </scene>
+        <!--Reservation Check View-->
+        <scene sceneID="AgA-XW-jg5">
+            <objects>
+                <viewController storyboardIdentifier="ReservationCheckView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="cU6-jt-h5F" customClass="ReservationCheckView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Pox-Rp-twN">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="4fc-G2-vMw"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aok-jT-zin" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4714" y="975"/>
+        </scene>
         <!--Sign Up View-->
         <scene sceneID="a4q-dq-Fww">
             <objects>
