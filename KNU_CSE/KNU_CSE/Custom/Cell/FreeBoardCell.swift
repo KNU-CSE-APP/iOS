@@ -8,21 +8,16 @@
 import UIKit
 import SnapKit
 
-class BoardCell : UITableViewCell {
-    static let identifier = "BoardCell"
+class FreeBoardCell : UITableViewCell {
+    static let identifier = "FreeBoardCell"
     var titleLabel = UILabel()
     var action :()->() = {}
     
-    var board : Board!{
+    var board : FreeBoard!{
         didSet{
             let title = "\(board.building)-\(board.roomNum)호(\(board.currentSeat)/\(board.totalSeat))"
             self.setTitle(title: title)
         }
-    }
-    
-    func setTitle(title: String) {
-        titleLabel.text = title
-        titleLabel.textAlignment = .center
     }
     
     override func prepareForReuse() {
@@ -49,7 +44,7 @@ class BoardCell : UITableViewCell {
     }
     
     func initUI(){
-        //contentView.isUserInteractionEnabled = true
+        
     }
     
     func addView(){
@@ -62,4 +57,12 @@ class BoardCell : UITableViewCell {
             make.height.equalToSuperview()
         }
     }
+}
+
+extension FreeBoardCell{
+    func setTitle(title: String) {
+        titleLabel.text = title
+        titleLabel.textAlignment = .center
+    }
+    
 }

@@ -54,7 +54,7 @@ class ClassSeatCell:UICollectionViewCell{
     func draw(){
         initUI()
         addView()
-        setupConstraints()
+        setUpConstraints()
     }
     
     func initUI(){
@@ -65,7 +65,7 @@ class ClassSeatCell:UICollectionViewCell{
         self.contentView.addSubview(seatBtn)
     }
     
-    func setupConstraints(){
+    func setUpConstraints(){
         seatBtn.snp.makeConstraints{ make in
             make.left.right.top.bottom.equalToSuperview()
         }

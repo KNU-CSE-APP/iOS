@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Board:BaseObject{
+class FreeBoard:BaseObject{
     var roomId : Int
     var roomNum : Int
     var building : String
