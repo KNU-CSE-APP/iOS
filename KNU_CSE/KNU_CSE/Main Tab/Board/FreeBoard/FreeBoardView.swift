@@ -64,7 +64,9 @@ extension FreeBoardView : UITableViewDataSource{
         let cell = tableView.dequeueReusableCell(withIdentifier: FreeBoardCell.identifier, for: indexPath) as! FreeBoardCell
         cell.selectionStyle = .none
         cell.board = freeBordViewModel.boards[indexPath.row]
+        cell.cellBtn.addAction {
+            print("\(indexPath.row)")
+        }
         return cell
     }
-    
 }

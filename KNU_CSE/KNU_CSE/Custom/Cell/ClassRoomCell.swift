@@ -11,7 +11,7 @@ import SnapKit
 class ClassRoomCell : UITableViewCell {
     static let identifier = "ClassRoomCell"
     var titleLabel = UILabel()
-    var testButton = UIButton()
+    var cellBtn = UIButton()
     
     var action :()->() = {}
     
@@ -29,7 +29,7 @@ class ClassRoomCell : UITableViewCell {
     
     func setAction(action:@escaping()->()){
         self.action = action
-        self.testButton.addTarget(self, action: #selector(pushView), for: .touchUpInside)
+        self.cellBtn.addTarget(self, action: #selector(pushView), for: .touchUpInside)
     }
 
     @objc func pushView(){
@@ -52,12 +52,12 @@ class ClassRoomCell : UITableViewCell {
     }
     
     func addView(){
-        self.contentView.addSubview(testButton)
-        self.testButton.addSubview(titleLabel)
+        self.contentView.addSubview(cellBtn)
+        self.cellBtn.addSubview(titleLabel)
     }
     
     func setUpConstraints(){
-        testButton.snp.makeConstraints{ make in
+        cellBtn.snp.makeConstraints{ make in
             make.width.equalToSuperview()
             make.height.equalToSuperview()
         }

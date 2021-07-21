@@ -35,6 +35,11 @@ class BoardView:UIViewController, ViewProtocol{
         }
     }
     
+    var pageView:UIView!
+    
+    var freeBoardVC : FreeBoardView!
+    var noticeBoardVC : FreeBoardView!
+    
     override func viewDidLoad() {
         initUI()
         addView()
@@ -45,11 +50,15 @@ class BoardView:UIViewController, ViewProtocol{
     func initUI() {
         self.tabCollectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewFlowLayout())
         self.highlightView = UIView()
+        self.pageView = UIView()
+        self.freeBoardVC = self.storyboard?.instantiateViewController(withIdentifier: "FreeBoardView") as? FreeBoardView
+        self.noticeBoardVC = self.storyboard?.instantiateViewController(withIdentifier: "FreeBoardView") as? FreeBoardView
     }
     
     func addView() {
         self.view.addSubview(tabCollectionView)
         self.view.addSubview(highlightView)
+        self.view.addSubview(pageView)
     }
     
     func setUpConstraints() {
@@ -61,6 +70,13 @@ class BoardView:UIViewController, ViewProtocol{
             make.left.equalToSuperview().offset(title_left_Margin)
             make.right.equalToSuperview()
             make.height.equalTo(collectionViewHeihgt)
+        }
+        
+        self.pageView.snp.makeConstraints{ make in
+            make.top.equalTo(self.highlightView.snp.bottom).offset(5)
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide)
         }
     }
     
@@ -79,18 +95,25 @@ extension BoardView:UICollectionViewDataSource, UICollectionViewDelegate{
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let titleList:[String] = ["자유게시판", "학생회 공지"]
-        
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BoardTitleCell.identifier, for: indexPath) as? BoardTitleCell else{
             return UICollectionViewCell()
         }
-        
         cell.setTitle(title: titleList[indexPath.row])
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == tabCollectionView {
+           
             upDateHighlightView(indexPath: indexPath)
+            if indexPath.row == 0{
+                self.addFreeBoardVC()
+                self.removeNoticeBoardVC()
+                
+            }else{
+                self.removeFreeBoardVC()
+                self.addNoticeBoardVC()
+            }
         }
     }
 }
@@ -104,9 +127,35 @@ extension BoardView{
                 make.leading.equalTo(leading)
                 make.width.equalTo(self.cellWidth)
                 make.height.equalTo(self.collectionViewHeihgt*0.1)
-
             }
-            self.highlightView.superview?.layoutIfNeeded()
         }, completion: nil)
+    }
+    
+    func addFreeBoardVC(){
+        pageView.addSubview(freeBoardVC.view)
+        freeBoardVC.view.snp.makeConstraints{ make in
+            make.left.right.top.bottom.equalToSuperview()
+        }
+        freeBoardVC.didMove(toParent: self)
+    }
+    
+    func removeFreeBoardVC(){
+        freeBoardVC.willMove(toParent: nil)
+        freeBoardVC.view.removeFromSuperview()
+        freeBoardVC.removeFromParent()
+    }
+    
+    func addNoticeBoardVC(){
+        pageView.addSubview(noticeBoardVC.view)
+        noticeBoardVC.view.snp.makeConstraints{ make in
+            make.left.right.top.bottom.equalToSuperview()
+        }
+        noticeBoardVC.didMove(toParent: self)
+    }
+    
+    func removeNoticeBoardVC(){
+        noticeBoardVC.willMove(toParent: nil)
+        noticeBoardVC.view.removeFromSuperview()
+        noticeBoardVC.removeFromParent()
     }
 }

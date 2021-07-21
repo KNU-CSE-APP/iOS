@@ -12,6 +12,7 @@ class FreeBoardCell : UITableViewCell {
     static let identifier = "FreeBoardCell"
     var titleLabel = UILabel()
     var action :()->() = {}
+    var cellBtn = UIButton()
     
     var board : FreeBoard!{
         didSet{
@@ -48,13 +49,19 @@ class FreeBoardCell : UITableViewCell {
     }
     
     func addView(){
-        self.contentView.addSubview(titleLabel)
+        self.contentView.addSubview(cellBtn)
+        self.cellBtn.addSubview(titleLabel)
+        //self.contentView.addSubview(titleLabel)
     }
     
     func setUpConstraints(){
+        
+        cellBtn.snp.makeConstraints{ make in
+            make.left.right.top.bottom.equalToSuperview()
+        }
+        
         titleLabel.snp.makeConstraints{ make in
-            make.width.equalToSuperview()
-            make.height.equalToSuperview()
+            make.left.right.top.bottom.equalToSuperview()
         }
     }
 }
