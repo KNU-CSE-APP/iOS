@@ -8,16 +8,28 @@
 import Foundation
 
 struct FreeBoardViewModel{
-    var boards : [FreeBoard] = []
+    var boards : [Board] = []
     
     init(){
         self.setUpBoards()
     }
     
     mutating func setUpBoards(){
-        boards.append(FreeBoard(roomId: 101, roomNum: 101, building: "IT4", totalSeat: 30, currentSeat: 10))
-        boards.append(FreeBoard(roomId: 102, roomNum: 102, building: "IT4", totalSeat: 30, currentSeat: 11))
-        boards.append(FreeBoard(roomId: 103, roomNum: 103, building: "IT4", totalSeat: 30, currentSeat: 12))
-        boards.append(FreeBoard(roomId: 104, roomNum: 104, building: "IT4", totalSeat: 30, currentSeat: 13))
+        boards.append(Board(boardId: 1, category: 0, title: "테스트 게시판1", content: "테스트 게시판1", author: "노준석", date: "2021 07.24 23:11",numberOfcomment: 1))
+        boards.append(Board(boardId: 1, category: 0, title: "테스트 게시판2", content: "ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss", author: "노준석", date: "2021 07.24 23:12",numberOfcomment: 1))
+        boards.append(Board(boardId: 1, category: 0, title: "테스트 게시판3", content: "테스트 게시판3", author: "노준석", date: "2021 07.24 23:13",numberOfcomment: 1))
+        boards.append(Board(boardId: 1, category: 0, title: "테스트 게시판4", content: "테스트 게시판4", author: "노준석", date: "2021 07.24 23:14",numberOfcomment: 1))
+        boards.append(Board(boardId: 1, category: 0, title: "테스트 게시판5", content: "테스트 게시판5", author: "노준석", date: "2021 07.24 23:15",numberOfcomment: 1))
+        boards.append(Board(boardId: 1, category: 0, title: "테스트 게시판6", content: "테스트 게시판6", author: "노준석", date: "2021 07.24 23:16",numberOfcomment: 1))
+        boards.append(Board(boardId: 1, category: 0, title: "테스트 게시판7", content: "테스트 게시판7", author: "노준석", date: "2021 07.24 23:17",numberOfcomment: 1))
+        boards.append(Board(boardId: 1, category: 0, title: "테스트 게시판7", content: "테스트 게시판7", author: "노준석", date: "2021 07.24 23:17",numberOfcomment: 1))
+        boards.append(Board(boardId: 1, category: 0, title: "테스트 게시판7", content: "테스트 게시판7", author: "노준석", date: "2021 07.24 23:17",numberOfcomment: 1))
+        boards.append(Board(boardId: 1, category: 0, title: "테스트 게시판7", content: "테스트 게시판7", author: "노준석", date: "2021 07.24 23:17",numberOfcomment: 1))
+        boards.append(Board(boardId: 1, category: 0, title: "테스트 게시판7", content: "테스트 게시판7", author: "노준석", date: "2021 07.24 23:17",numberOfcomment: 1))
+        boards.append(Board(boardId: 1, category: 0, title: "테스트 게시판7", content: "테스트 게시판7", author: "노준석", date: "2021 07.24 23:17",numberOfcomment: 1))
+        boards.append(Board(boardId: 1, category: 0, title: "테스트 게시판7", content: "테스트 게시판7", author: "노준석", date: "2021 07.24 23:17",numberOfcomment: 1))
+        boards.append(Board(boardId: 1, category: 0, title: "테스트 게시판7", content: "테스트 게시판7", author: "노준석", date: "2021 07.24 23:17",numberOfcomment: 1))
+        boards.append(Board(boardId: 1, category: 0, title: "테스트 게시판7", content: "테스트 게시판7", author: "노준석", date: "2021 07.24 23:17",numberOfcomment: 1))
+        boards.append(Board(boardId: 1, category: 0, title: "테스트 게시판7", content: "테스트 게시판7", author: "노준석", date: "2021 07.24 23:17",numberOfcomment: 1))
     }
 }

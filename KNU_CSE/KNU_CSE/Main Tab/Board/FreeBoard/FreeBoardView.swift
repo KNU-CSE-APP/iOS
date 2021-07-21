@@ -16,11 +16,11 @@ class FreeBoardView : UIViewController{
     
     var freeboardTableView :UITableView!{
         didSet{
-            freeboardTableView.translatesAutoresizingMaskIntoConstraints = false
             freeboardTableView.register(FreeBoardCell.self, forCellReuseIdentifier: FreeBoardCell.identifier)
             freeboardTableView.dataSource = self
-            freeboardTableView.rowHeight = cellRowHeight * 0.1
+            freeboardTableView.rowHeight = cellRowHeight * 0.115
             freeboardTableView.tableFooterView = UIView(frame: .zero)
+            freeboardTableView.separatorInset.left = 0
         }
     }
     
@@ -49,7 +49,7 @@ class FreeBoardView : UIViewController{
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.top.equalTo(self.view.safeAreaLayoutGuide)
-            make.bottom.equalToSuperview()
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide)
         }
     }
 }
@@ -63,7 +63,8 @@ extension FreeBoardView : UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FreeBoardCell.identifier, for: indexPath) as! FreeBoardCell
         cell.selectionStyle = .none
-        cell.board = freeBordViewModel.boards[indexPath.row]
+        cell.viewModel = freeBordViewModel.boards[indexPath.row]
+        cell.height = cellRowHeight * 0.115
         cell.cellBtn.addAction {
             print("\(indexPath.row)")
         }

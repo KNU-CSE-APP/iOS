@@ -61,5 +61,6 @@ extension BoardTitleCell{
     func setTitle(title: String) {
         titleLabel.text = title
         titleLabel.textAlignment = .center
+        titleLabel.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
     }
 }

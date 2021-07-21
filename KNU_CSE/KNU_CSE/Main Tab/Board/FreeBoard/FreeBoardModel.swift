@@ -7,19 +7,23 @@
 
 import Foundation
 
-class FreeBoard:BaseObject{
-    var roomId : Int
-    var roomNum : Int
-    var building : String
-    var totalSeat : Int
-    var currentSeat : Int
+class Board:BaseObject{
+    var boardId : Int
+    var category : Int
+    var title : String
+    var content : String
+    var author : String
+    var date : String
+    var numberOfcomment:Int
     
-    init(roomId:Int, roomNum:Int, building:String, totalSeat:Int, currentSeat:Int) {
-        self.roomId = roomId
-        self.roomNum = roomNum
-        self.building = building
-        self.totalSeat = totalSeat
-        self.currentSeat = currentSeat
+    init(boardId:Int, category:Int, title:String, content:String, author:String, date:String, numberOfcomment:Int) {
+        self.boardId = boardId
+        self.category = category
+        self.title = title
+        self.content = content
+        self.author = author
+        self.date = date
+        self.numberOfcomment = numberOfcomment
         super.init()
     }
     
