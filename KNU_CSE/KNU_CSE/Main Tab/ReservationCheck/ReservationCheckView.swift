@@ -75,6 +75,7 @@ class ReservationCheckView: UIViewController, ViewProtocol{
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         initUI()
         addView()
         setUpConstraints()

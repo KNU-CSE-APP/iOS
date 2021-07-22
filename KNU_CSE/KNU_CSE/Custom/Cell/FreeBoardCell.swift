@@ -69,13 +69,13 @@ class FreeBoardCell : UITableViewCell {
     var action :()->() = {}
     var cellBtn = UIButton()
     
-    var viewModel : Board!{
+    var board : Board!{
         didSet{
-            self.setAuthorText(title: viewModel.author)
-            self.setDateText(title: viewModel.date)
-            self.setTitleText(title: viewModel.title)
-            self.setContentText(title: viewModel.content)
-            self.setCommentText(title: String(viewModel.numberOfcomment))
+            self.setAuthorText(title: board.author)
+            self.setDateText(title: board.date)
+            self.setTitleText(title: board.title)
+            self.setContentText(title: board.content)
+            self.setCommentText(title: String(board.numberOfcomment))
         }
     }
     

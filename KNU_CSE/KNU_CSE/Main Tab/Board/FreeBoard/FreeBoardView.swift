@@ -8,11 +8,12 @@
 import Foundation
 import UIKit
 
-class FreeBoardView : UIViewController{
+class FreeBoardView : UINavigationController{
     
     let freeBordViewModel : FreeBoardViewModel = FreeBoardViewModel()
     
     var cellRowHeight : CGFloat!
+    var boardDelegate:BoardDataDelegate?
     
     var freeboardTableView :UITableView!{
         didSet{
@@ -24,12 +25,12 @@ class FreeBoardView : UIViewController{
         }
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.topItem?.title = "자유게시판"
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         self.initUI()
         self.addView()
         self.setupConstraints()
@@ -62,12 +63,27 @@ extension FreeBoardView : UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FreeBoardCell.identifier, for: indexPath) as! FreeBoardCell
+        let board = freeBordViewModel.boards[indexPath.row]
+        
         cell.selectionStyle = .none
-        cell.viewModel = freeBordViewModel.boards[indexPath.row]
+        cell.board = board
         cell.height = cellRowHeight * 0.115
         cell.cellBtn.addAction {
-            print("\(indexPath.row)")
+            self.pushDetaiView(board: board)
         }
         return cell
+    }
+}
+
+
+extension FreeBoardView{
+    func pushDetaiView(board:Board){
+        let pushVC = (self.storyboard?.instantiateViewController(withIdentifier: "BoardDetailView")) as? BoardDetailView
+        self.boardDelegate = pushVC
+        self.boardDelegate?.sendBoard(board: board)
+        
+        if let parentVC = self.parent as? BoardView {
+            parentVC.navigationController?.pushViewController(pushVC!, animated: true)
+        }
     }
 }

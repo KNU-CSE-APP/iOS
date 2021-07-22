@@ -132,6 +132,7 @@ extension BoardView{
     }
     
     func addFreeBoardVC(){
+        self.addChild(freeBoardVC)
         pageView.addSubview(freeBoardVC.view)
         freeBoardVC.view.snp.makeConstraints{ make in
             make.left.right.top.bottom.equalToSuperview()
@@ -146,6 +147,7 @@ extension BoardView{
     }
     
     func addNoticeBoardVC(){
+        self.addChild(noticeBoardVC)
         pageView.addSubview(noticeBoardVC.view)
         noticeBoardVC.view.snp.makeConstraints{ make in
             make.left.right.top.bottom.equalToSuperview()
