@@ -24,6 +24,7 @@ class ViewController: UIViewController {
     
     var emailTextField: BindingTextField! {
         didSet {
+            emailTextField.delegate = self
             emailTextField.prefixDraw(text: "이메일", on: .left)
             emailTextField.setUpText(text: "@knu.ac.kr", on: .right, color: .black)
             emailTextField.backgroundColor = .white
@@ -36,6 +37,7 @@ class ViewController: UIViewController {
     
     var pwTextField: BindingTextField! {
         didSet {
+            pwTextField.delegate = self
             pwTextField.isSecureTextEntry = true
             pwTextField.backgroundColor = .white
             pwTextField.setupUpperBorder()

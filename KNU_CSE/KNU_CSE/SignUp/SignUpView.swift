@@ -19,6 +19,8 @@ class SignUpView: UIViewController{
     
     var signUpViewModel : SignUpViewModel = SignUpViewModel(listener: nil)
     
+    let containerView = UIView()
+    
     var emailTextField: BindingTextField! {
         didSet {
             emailTextField.draw()
@@ -55,6 +57,7 @@ class SignUpView: UIViewController{
     var emailCodeTextField: BindingTextField! {
         didSet {
             emailCodeTextField.draw()
+            emailCodeTextField.delegate = self
             emailCodeTextField.keyboardType = .numberPad
             emailCodeTextField.placeholder = "인증번호를 입력하세요."
             emailCodeTextField.bind { [weak self] email in
@@ -119,6 +122,7 @@ class SignUpView: UIViewController{
             userNameTextField.bind { [weak self] userName in
                 self?.signUpViewModel.account.username = userName
             }
+            addKeyBoardAnimaion(textField: userNameTextField)
         }
     }
     
@@ -129,20 +133,21 @@ class SignUpView: UIViewController{
             nickNameTextField.bind { [weak self] nickName in
                 self?.signUpViewModel.account.nickname = nickName
             }
+            addKeyBoardAnimaion(textField: nickNameTextField)
         }
     }
     
     var stuidTextField: BindingTextField! {
         didSet {
             stuidTextField.keyboardType = .numberPad
+            stuidTextField.delegate = self
             stuidTextField.draw()
             stuidTextField.bind { [weak self] student_id in
                 self?.signUpViewModel.account.student_id = student_id
             }
+            addKeyBoardAnimaion(textField: stuidTextField)
         }
     }
-    
-   
     
     var majorCom : CheckBox!{
         didSet{
@@ -278,9 +283,9 @@ class SignUpView: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        initUI()
-        addView()
-        setupConstraints()
+        self.initUI()
+        self.addView()
+        self.setupConstraints()
     }
     
     func initUI(){
@@ -305,30 +310,11 @@ class SignUpView: UIViewController{
     }
     
     func addView(){
-        self.view.addSubview(emailTextField)
-        self.view.addSubview(emailCodeTextField)
-        self.view.addSubview(sendCodeBtn)
+        self.view.addSubview(containerView)
         
-        self.view.addSubview(emailCodeTextField)
-        self.view.addSubview(confirmCodeBtn)
-        
-        self.view.addSubview(pwTextField)
-        self.view.addSubview(pw2TextField)
-        
-        self.view.addSubview(userNameTextField)
-        self.view.addSubview(nickNameTextField)
-        self.view.addSubview(stuidTextField)
-        
-        self.view.addSubview(emailTitle)
-        self.view.addSubview(pwTitle)
-        self.view.addSubview(pw2Title)
-        self.view.addSubview(userNameTitle)
-        self.view.addSubview(nickNameTitle)
-        self.view.addSubview(stuidTitle)
-        self.view.addSubview(majorTitle)
-        self.view.addSubview(genderTitle)
-        
-        self.view.addSubview(registerBtn)
+        _ =  [emailTextField,emailCodeTextField,sendCodeBtn,emailCodeTextField,confirmCodeBtn,pwTextField,pw2TextField,userNameTextField,nickNameTextField,stuidTextField,emailTitle,pwTitle,pw2Title,userNameTitle,nickNameTitle,stuidTitle,majorTitle,genderTitle,registerBtn].map{
+            self.containerView.addSubview($0)
+        }
     }
     
     func setupConstraints(){
@@ -339,11 +325,17 @@ class SignUpView: UIViewController{
         let left_margin = 30
         let right_margin = -30
         
+        self.containerView.snp.makeConstraints{ make in
+            make.top.equalTo(self.view.safeAreaLayoutGuide)
+            make.left.right.equalToSuperview()
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide)
+        }
+        
         // MARK: - Email
         emailTitle.snp.makeConstraints{ make in
             make.left.equalTo(left_margin)
             make.right.equalTo(right_margin)
-            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(top_padding)
+            make.top.equalToSuperview().offset(top_padding)
             make.height.equalTo(title_height)
         }
         
@@ -481,7 +473,6 @@ class SignUpView: UIViewController{
             make.height.equalTo(stuidTextField.snp.height)
             make.top.equalTo(majorTitle.snp.bottom).offset(title_To_textField_margin)
             make.leading.equalTo(majorCom.snp.trailing).offset(0)
-
         }
 
         genderMale.snp.makeConstraints{ make in
@@ -489,7 +480,6 @@ class SignUpView: UIViewController{
             make.height.equalTo(stuidTextField.snp.height)
             make.top.equalTo(majorTitle.snp.bottom).offset(title_To_textField_margin)
             make.leading.equalTo(majorGlob.snp.trailing).offset(0)
-
         }
 
         genderFemale.snp.makeConstraints{ make in
@@ -509,16 +499,37 @@ class SignUpView: UIViewController{
     }
 }
 
-extension SignUpView: UITextFieldDelegate{
+extension SignUpView{
+    func addKeyBoardAnimaion(textField:BindingTextField){
+        textField.addTarget(self, action:#selector(setKeyBoardAction), for: .editingDidBegin)
+        textField.addTarget(self, action: #selector(removeKeyBoardAction), for: .editingDidEnd)
+    }
     
-    //touch any space then keyboard shut down
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
-        self.view.endEditing(true)
+    @objc func setKeyBoardAction(){
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil);
+
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil);
+    }
+    
+    @objc func removeKeyBoardAction(){
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        animateWithKeyboard(notification: notification) { (keyboardFrame) in
+            self.containerView.snp.updateConstraints{ make in
+                make.top.equalTo(self.view.safeAreaLayoutGuide).offset(-keyboardFrame.height)
+                make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-keyboardFrame.height)
+            }
+        }
     }
 
-    //if keyboard show up and press return button then keyboard shutdown
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
+    @objc func keyboardWillHide(notification: NSNotification) {
+        animateWithKeyboard(notification: notification) { (keyboardFrame) in
+            self.containerView.snp.updateConstraints{ make in
+                make.top.equalTo(self.view.safeAreaLayoutGuide)
+                make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(0)
+            }
+        }
     }
 }

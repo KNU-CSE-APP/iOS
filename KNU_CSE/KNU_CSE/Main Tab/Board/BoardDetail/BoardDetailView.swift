@@ -7,13 +7,19 @@
 
 import UIKit
 
-class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate, UITableViewDelegate{
+class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     
     var boardDetailViewModel = BoardDetailViewModel()
+    let textViewPlaceHolder = "댓글을 입력해주세요."
+    var textViewHeight:CGFloat!
+    var textViewPadding:CGFloat = 5
+    var imageWidth:CGFloat!
     
     var scrollView:UIScrollView!{
         didSet{
             scrollView.alwaysBounceVertical = true
+            let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
+            scrollView.addGestureRecognizer(tap)
         }
     }
     
@@ -76,19 +82,56 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate, UITable
         }
     }
     
+    var stackView:UIStackView!{
+        didSet{
+            stackView.axis = .vertical
+            stackView.distribution = .fill
+            addToStackView()
+        }
+    }
+    
+    var textFieldView:UIView!{
+        didSet{
+            textFieldView.backgroundColor = .white
+        }
+    }
+    
     var borderLine:UIView!{
         didSet{
-            borderLine.layer.borderWidth = 1
+            borderLine.layer.borderWidth = 0.5
             borderLine.layer.borderColor = UIColor.lightGray.cgColor
         }
     }
     
-    var commentTableView:UITableView!{
+    var textField:UITextView!{
         didSet{
-            commentTableView.register(CommentTableCell.self, forCellReuseIdentifier: CommentTableCell.identifier)
-            commentTableView.rowHeight = self.view.frame.height * 0.1
-            commentTableView.dataSource = self
-            commentTableView.separatorInset.left = 0
+            textField.delegate = self
+            textField.backgroundColor = UIColor.gray.withAlphaComponent(0.1)
+            textField.layer.cornerRadius = 10
+            textField.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+            textField.textColor = UIColor.lightGray
+            let top_padding:CGFloat = textViewPadding * 2
+            let bottom_padding:CGFloat = textViewPadding * 2
+            if let font = textField.font {
+                self.textViewHeight = font.lineHeight + top_padding + bottom_padding + textViewPadding + textViewPadding
+                self.imageWidth = textViewHeight-(textViewPadding*3)
+            }
+        
+            textField.isScrollEnabled = false
+            textField.textContainerInset = UIEdgeInsets(top: top_padding, left: 10, bottom: bottom_padding, right: imageWidth)
+            textField.text = textViewPlaceHolder
+        }
+    }
+    
+    var textFieldBtn:UIButton!{
+        didSet{
+            let image = UIImage(systemName: "paperplane.circle.fill")?.resized(toWidth: imageWidth)
+            textFieldBtn.setImage(image?.withTintColor(Color.mainColor), for: .normal)
+            textFieldBtn.tintColor = Color.mainColor
+            textFieldBtn.setTitleColor(Color.mainColor.withAlphaComponent(0.5), for: .highlighted)
+            textFieldBtn.addAction {
+                print("ttttttt")
+            }
         }
     }
     
@@ -100,6 +143,8 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate, UITable
         self.initUI()
         self.addView()
         self.setUpConstraints()
+        
+        self.setKeyBoardAction()
     }
     
     func initUI(){
@@ -111,26 +156,34 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate, UITable
         contentLabel = UILabel()
         commentImage = UIImageView()
         commentLabel = UILabel()
-        borderLine = UIView()
         
-        commentTableView = UITableView()
+        stackView = UIStackView()
+        
+        textFieldView = UIView()
+        borderLine = UIView()
+        textField = UITextView()
+        textFieldBtn = UIButton()
     }
     
     func addView(){
         self.view.addSubview(scrollView)
         self.scrollView.addSubview(boardContentView)
-        _ = [authorLabel, dateLabel, titleLabel, contentLabel, commentImage, commentLabel, borderLine, commentTableView].map { self.boardContentView.addSubview($0)}
+        _ = [authorLabel, dateLabel, titleLabel, contentLabel, commentImage, commentLabel, stackView].map { self.boardContentView.addSubview($0)}
+        
+        self.view.addSubview(textFieldView)
+        _ = [borderLine,textField,textFieldBtn].map{
+            self.textFieldView.addSubview($0)
+        }
     }
     
     func setUpConstraints(){
         let height = self.view.frame.height * 0.2
-        let tableHeight = self.view.frame.height * 0.1 * CGFloat(self.boardDetailViewModel.comments.count)
         
         self.scrollView.snp.makeConstraints{ make in
             make.top.equalTo(self.view.safeAreaLayoutGuide)
             make.left.equalTo(self.view.safeAreaLayoutGuide)
             make.right.equalTo(self.view.safeAreaLayoutGuide)
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide)
+            make.bottom.equalTo(self.textFieldView.snp.top)
         }
         
         self.boardContentView.snp.makeConstraints{ make in
@@ -180,22 +233,40 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate, UITable
             make.width.equalTo(height*0.1)
         }
         
+        self.stackView.snp.makeConstraints{ make in
+            make.top.equalTo(commentImage.snp.bottom).offset(10)
+            make.left.equalTo(self.view.safeAreaLayoutGuide).offset(0)
+            make.right.equalTo(self.view.safeAreaLayoutGuide).offset(0)
+            make.bottom.equalToSuperview().offset(-5)//아래 여백 주기
+        }
+        
+        self.textFieldView.snp.makeConstraints{ make in
+            make.left.equalTo(self.view.safeAreaLayoutGuide).offset(0)
+            make.right.equalTo(self.view.safeAreaLayoutGuide).offset(0)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide)
+            make.height.equalTo(textViewHeight)
+        }
+        
         self.borderLine.snp.makeConstraints{ make in
-            make.top.equalTo(commentLabel.snp.bottom).offset(15)
-            make.left.equalTo(self.view.safeAreaLayoutGuide).offset(0)
-            make.right.equalTo(self.view.safeAreaLayoutGuide).offset(0)
+            make.top.equalToSuperview()
+            make.left.equalToSuperview().offset(0)
+            make.right.equalToSuperview().offset(0)
             make.height.equalTo(0.5)
-            //make.bottom.equalToSuperview()//필수
         }
         
-        self.commentTableView.snp.makeConstraints{make in
-            make.top.equalTo(borderLine.snp.bottom).offset(0)
-            make.left.equalTo(self.view.safeAreaLayoutGuide).offset(0)
-            make.right.equalTo(self.view.safeAreaLayoutGuide).offset(0)
-            make.height.equalTo(tableHeight)
-            make.bottom.equalToSuperview().offset(-20)//아래 여백 주기
+        self.textField.snp.makeConstraints{ make in
+            make.top.equalTo(self.borderLine.snp.bottom).offset(textViewPadding)
+            make.left.equalToSuperview().offset(10)
+            make.right.equalToSuperview().offset(-10)
+            make.bottom.equalToSuperview().offset(-textViewPadding)
         }
         
+        self.textFieldBtn.snp.makeConstraints{ make in
+            make.bottom.equalToSuperview()
+            make.right.equalTo(textField.snp.right)
+            make.width.equalTo(textViewHeight)
+            make.height.equalTo(textViewHeight)
+        }
     }
 }
 
@@ -208,21 +279,89 @@ extension BoardDetailView{
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         self.navigationController?.navigationBar.topItem?.backBarButtonItem = backBarButtonItem
     }
+    
+    func addToStackView(){
+        for i in 0..<self.boardDetailViewModel.comments.count{
+            let comment = self.boardDetailViewModel.comments[i]
+            let commentView = CommentCell(comment: comment)
+            stackView.addArrangedSubview(commentView)
+            for j in 0..<comment.replyList.count{
+                let reply = comment.replyList[j]
+                let replyView = ReplyCell(reply: reply)
+                stackView.addArrangedSubview(replyView)
+            }
+        }
+    }
+    
+    func setKeyBoardAction(){
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil);
+
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil);
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        animateWithKeyboard(notification: notification) { (keyboardFrame) in
+            self.textFieldView.snp.updateConstraints{ make in
+                make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-keyboardFrame.height+self.view.safeAreaInsets.bottom)
+            }
+        }
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification) {
+        animateWithKeyboard(notification: notification) { (keyboardFrame) in
+            self.textFieldView.snp.updateConstraints{ make in
+                make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(0)
+            }
+        }
+    }
 }
 
-extension BoardDetailView:UITableViewDataSource{
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.boardDetailViewModel.comments.count
+extension BoardDetailView:UITextViewDelegate{
+    
+    func textViewDidChange(_ textView: UITextView) {
+        adjustTextViewHeight(textView: textView)
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: CommentTableCell.identifier, for: indexPath) as! CommentTableCell
-        cell.comment = self.boardDetailViewModel.comments[indexPath.row]
-        let testView = UIView()
-        testView.backgroundColor = .yellow
-        testView
-        return cell
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        setUpPlaceHolder(textView: textView)
     }
     
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text == ""{
+            setUpPlaceHolder(textView: textView)
+        }
+    }
     
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if textView.text == "\n"{
+            //textView.resignFirstResponder()
+        }
+        return true
+    }
+    
+    func setUpPlaceHolder(textView:UITextView){
+        if textView.text == textViewPlaceHolder{
+            textView.text = ""
+            textView.textColor = UIColor.black
+        }else if textView.text == ""{
+            textView.text = textViewPlaceHolder
+            textView.textColor = UIColor.lightGray
+        }
+    }
+    
+    func adjustTextViewHeight(textView:UITextView) {
+        let fixedWidth = textView.frame.size.width
+        
+        let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
+        
+        if newSize.height > CGFloat(textViewHeight) * CGFloat(2.5) {
+            textField.isScrollEnabled = true
+        }else {
+            textField.isScrollEnabled = false
+            self.textFieldView.snp.updateConstraints{ make in
+                //textfieldView의 높이는 textfield의 size에 위아래 padding을 넣어준 값
+                make.height.equalTo(newSize.height+textViewPadding+textViewPadding)
+            }
+        }
+    }
 }

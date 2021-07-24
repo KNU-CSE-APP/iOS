@@ -35,7 +35,11 @@ class BoardView:UIViewController, ViewProtocol{
         }
     }
     
-    var pageView:UIView!
+    var pageView:UIView!{
+        didSet{
+            
+        }
+    }
     
     var freeBoardVC : FreeBoardView!
     var noticeBoardVC : FreeBoardView!

@@ -11,7 +11,7 @@ import SnapKit
 
 class BindingTextField: UITextField {
     var textChanged: (String) -> Void = { _ in }
-    let textfont : UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
+    var textfont : UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
     
     func bind(callBack: @escaping (String) -> Void) {
         textChanged = callBack
@@ -172,5 +172,19 @@ extension BindingTextField {
 extension UITextField{
     func setUpBorderColor(color : UIColor){
         self.layer.borderColor = color.cgColor
+    }
+}
+
+extension UIViewController: UITextFieldDelegate{
+    
+    //touch any space then keyboard shut down
+    open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
+        self.view.endEditing(true)
+    }
+
+    //if keyboard show up and press return button then keyboard shutdown
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

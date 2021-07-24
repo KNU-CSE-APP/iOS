@@ -19,7 +19,7 @@ class FreeBoardView : UINavigationController{
         didSet{
             freeboardTableView.register(FreeBoardCell.self, forCellReuseIdentifier: FreeBoardCell.identifier)
             freeboardTableView.dataSource = self
-            freeboardTableView.rowHeight = cellRowHeight * 0.115
+            freeboardTableView.rowHeight = cellRowHeight * 0.12
             freeboardTableView.tableFooterView = UIView(frame: .zero)
             freeboardTableView.separatorInset.left = 0
         }
