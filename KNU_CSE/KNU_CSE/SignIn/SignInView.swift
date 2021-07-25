@@ -254,3 +254,17 @@ extension ViewController{
         }
     }
 }
+
+extension ViewController: UITextFieldDelegate{
+
+    //touch any space then keyboard shut down
+    open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
+        self.view.endEditing(true)
+    }
+
+    //if keyboard show up and press return button then keyboard shutdown
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
