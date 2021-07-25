@@ -9,7 +9,6 @@ import UIKit
 
 class CommentCell : UIView {
     let titleHeight:CGFloat = 30
-    
     var borderLine:UIView!{
         didSet{
             borderLine.layer.borderWidth = 0.3
@@ -145,9 +144,5 @@ class CommentCell : UIView {
             make.left.equalTo(self.dateLabel.snp.right).offset(10)
             make.bottom.equalToSuperview().offset(bottom_margin)
         }
-    }
-    
-    @objc func test(){
-        print("tqtqtqtq")
     }
 }

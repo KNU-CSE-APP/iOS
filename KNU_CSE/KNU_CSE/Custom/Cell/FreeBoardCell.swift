@@ -66,9 +66,6 @@ class FreeBoardCell : UITableViewCell {
         }
     }
     
-    var action :()->() = {}
-    var cellBtn = UIButton()
-    
     var board : Board!{
         didSet{
             self.setAuthorText(title: board.author)
@@ -83,15 +80,10 @@ class FreeBoardCell : UITableViewCell {
         
     }
     
-    @objc func pushView(){
-        self.action()
-    }
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.initUI()
         self.addView()
-        //self.setUpConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -108,22 +100,16 @@ class FreeBoardCell : UITableViewCell {
     }
     
     func addView(){
-        self.contentView.addSubview(cellBtn)
-        self.cellBtn.addSubview(authorLabel)
-        self.cellBtn.addSubview(dateLabel)
-        self.cellBtn.addSubview(titleLabel)
-        self.cellBtn.addSubview(contentLabel)
-        self.cellBtn.addSubview(commentImage)
-        self.cellBtn.addSubview(commentLabel)
+        self.contentView.addSubview(authorLabel)
+        self.contentView.addSubview(dateLabel)
+        self.contentView.addSubview(titleLabel)
+        self.contentView.addSubview(contentLabel)
+        self.contentView.addSubview(commentImage)
+        self.contentView.addSubview(commentLabel)
     }
     
     func setUpConstraints(){
 
-        self.cellBtn.snp.makeConstraints{ make in
-            make.width.equalToSuperview()
-            make.height.equalToSuperview()
-        }
-        
         self.authorLabel.snp.makeConstraints{ make in
             make.top.equalToSuperview().offset(10)
             make.left.equalToSuperview().offset(20)

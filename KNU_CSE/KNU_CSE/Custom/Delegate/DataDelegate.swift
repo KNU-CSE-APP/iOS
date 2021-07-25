@@ -10,3 +10,7 @@ import Foundation
 protocol BoardDataDelegate{
     func sendBoard(board:Board)
 }
+
+protocol CommentDataDelegate {
+    func sendComment(comment:Comment)
+}

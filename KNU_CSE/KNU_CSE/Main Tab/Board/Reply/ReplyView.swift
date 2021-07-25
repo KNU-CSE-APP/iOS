@@ -1,19 +1,19 @@
 //
-//  DetailView.swift
+//  ReplyView.swift
 //  KNU_CSE
 //
-//  Created by junseok on 2021/07/22.
+//  Created by junseok on 2021/07/25.
 //
 
 import UIKit
-class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
-    
+
+class ReplyView:UIViewController, ViewProtocol, CommentDataDelegate{
+
     var selectedView:CommentCell? = nil
     
-    var boardDetailViewModel = BoardDetailViewModel()
-    var delegate:CommentDataDelegate?
+    var replyViewModel = ReplyViewModel()
     
-    let commentPlaceHolder = "댓글을 입력해주세요."
+    let replyPlaceHolder = "답글을 입력해주세요."
     var textViewHeight:CGFloat!
     var textViewPadding:CGFloat = 5
     var imageWidth:CGFloat!
@@ -27,63 +27,6 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     }
     
     var boardContentView:UIView = UIView()
-    
-    var authorLabel:UILabel!{
-        didSet{
-            authorLabel.text = boardDetailViewModel.board.author
-            authorLabel.textAlignment = .left
-            authorLabel.textColor = UIColor.black
-            authorLabel.font = UIFont.systemFont(ofSize: 15, weight: .light)
-        }
-    }
-    
-    var dateLabel:UILabel!{
-        didSet{
-            dateLabel.text = boardDetailViewModel.board.date
-            dateLabel.textAlignment = .right
-            dateLabel.textColor = UIColor.black
-            dateLabel.font = UIFont.systemFont(ofSize: 14, weight: .thin)
-        }
-    }
-    
-    var titleLabel:UILabel!{
-        didSet{
-            titleLabel.text = boardDetailViewModel.board.title
-            titleLabel.textAlignment = .left
-            titleLabel.textColor = UIColor.black
-            titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-            titleLabel.numberOfLines = 0
-            titleLabel.sizeToFit()
-        }
-    }
-    
-    var contentLabel:UILabel!{
-        didSet{
-            contentLabel.text = boardDetailViewModel.board.content
-            contentLabel.textAlignment = .left
-            contentLabel.textColor = UIColor.black
-            contentLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-            contentLabel.numberOfLines = 0
-            contentLabel.sizeToFit()
-        }
-    }
-    
-    var commentImage:UIImageView!{
-        didSet{
-            let image = UIImage(systemName: "text.bubble.fill")
-            commentImage.image = image
-            commentImage.tintColor = .lightGray
-        }
-    }
-    
-    var commentLabel:UILabel!{
-        didSet{
-            commentLabel.text = String(boardDetailViewModel.board.numberOfcomment)
-            commentLabel.textAlignment = .left
-            commentLabel.textColor = UIColor.black
-            commentLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        }
-    }
     
     var stackView:UIStackView!{
         didSet{
@@ -126,7 +69,7 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
 
     var placeholderLabel : UILabel!{
         didSet{
-            placeholderLabel.text = commentPlaceHolder
+            placeholderLabel.text = replyPlaceHolder
             placeholderLabel.font = textField.font
             placeholderLabel.textColor = UIColor.lightGray
             placeholderLabel.isHidden = !textField.text.isEmpty
@@ -140,14 +83,15 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
             textFieldBtn.tintColor = Color.mainColor
             textFieldBtn.setTitleColor(Color.mainColor.withAlphaComponent(0.5), for: .highlighted)
             textFieldBtn.addAction {
-                self.boardDetailViewModel.sendComment()
+                self.replyViewModel.sendReply()
             }
             textFieldBtn.isHidden = true
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        //self.hideBackBtnTitle()
+        self.hideBackBtnTitle()
+        self.setNavigationTitle(title: "답글달기")
     }
     
     override func viewDidLoad() {
@@ -161,13 +105,6 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     func initUI(){
         scrollView = UIScrollView()
         
-        authorLabel = UILabel()
-        dateLabel = UILabel()
-        titleLabel = UILabel()
-        contentLabel = UILabel()
-        commentImage = UIImageView()
-        commentLabel = UILabel()
-        
         stackView = UIStackView()
         
         textFieldView = UIView()
@@ -180,7 +117,7 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     func addView(){
         self.view.addSubview(scrollView)
         self.scrollView.addSubview(boardContentView)
-        _ = [authorLabel, dateLabel, titleLabel, contentLabel, commentImage, commentLabel, stackView].map { self.boardContentView.addSubview($0)}
+        _ = [ stackView].map { self.boardContentView.addSubview($0)}
         
         self.view.addSubview(textFieldView)
         _ = [borderLine,textField,textFieldBtn].map{
@@ -207,48 +144,8 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
             make.bottom.equalToSuperview()//필수
         }
         
-        self.authorLabel.snp.makeConstraints{ make in
-            make.top.equalTo(boardContentView.snp.top).offset(15)
-            make.left.equalToSuperview().offset(20)
-            make.width.equalToSuperview().multipliedBy(0.5)
-            make.height.equalTo(height*0.1)
-        }
-        
-        self.dateLabel.snp.makeConstraints{ make in
-            make.top.equalTo(authorLabel.snp.top)
-            make.left.equalTo(self.authorLabel.snp.right)
-            make.right.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
-            make.height.equalTo(height*0.1)
-        }
-        
-        self.titleLabel.snp.makeConstraints{ make in
-            make.top.equalTo(authorLabel.snp.bottom).offset(5)
-            make.left.equalTo(self.view.safeAreaLayoutGuide).offset(20)
-            make.right.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
-        }
-        
-        self.contentLabel.snp.makeConstraints{ make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(5)
-            make.left.equalTo(self.view.safeAreaLayoutGuide).offset(20)
-            make.right.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
-        }
-        
-        self.commentLabel.snp.makeConstraints{ make in
-            make.top.equalTo(self.contentLabel.snp.bottom).offset(0)
-            make.right.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
-            make.height.equalTo(height*0.1)
-            make.width.equalTo(height*0.1)
-        }
-        
-        self.commentImage.snp.makeConstraints{ make in
-            make.top.equalTo(self.contentLabel.snp.bottom).offset(0)
-            make.right.equalTo(commentLabel.snp.left).offset(-5)
-            make.height.equalTo(height*0.1)
-            make.width.equalTo(height*0.1)
-        }
-        
         self.stackView.snp.makeConstraints{ make in
-            make.top.equalTo(commentImage.snp.bottom).offset(10)
+            make.top.equalTo(boardContentView.snp.top).offset(0)
             make.left.equalTo(self.view.safeAreaLayoutGuide).offset(0)
             make.right.equalTo(self.view.safeAreaLayoutGuide).offset(0)
             make.bottom.equalToSuperview().offset(-5)//아래 여백 주기
@@ -291,35 +188,30 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
 }
 
 
-extension BoardDetailView{
+extension ReplyView{
     
-    /// BoardView로 부터의 Delegation을 전달받음
-    func sendBoard(board: Board) {
-        self.boardDetailViewModel.board = board
+    /// BoardDetailView로 부터의 Delegation을 전달받음
+    func sendComment(comment: Comment) {
+        self.replyViewModel.comment = comment
     }
     
     /// StackView에 CommentCell, ReplyCell 추가
     func addToStackView(){
-        for i in 0..<self.boardDetailViewModel.comments.count{
-            let comment = self.boardDetailViewModel.comments[i]
-            let commentView = CommentCell(comment: comment)
-            commentView.replyBtn.addAction {
-                self.pushView(comment)
-            }
-            stackView.addArrangedSubview(commentView)
-            for j in 0..<comment.replyList.count{
-                let reply = comment.replyList[j]
-                let replyView = ReplyCell(reply: reply)
-                stackView.addArrangedSubview(replyView)
-            }
+        guard let comment = self.replyViewModel.comment else {
+            return
         }
-    }
-    
-    func pushView(_ comment:Comment){
-        let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "ReplyView") as? ReplyView
-        self.navigationController?.pushViewController(pushVC!, animated: true)
-        self.delegate = pushVC
-        self.delegate?.sendComment(comment: comment)
+        
+        let commentView = CommentCell(comment: comment)
+        commentView.replyBtn.isHidden = true
+        commentView.replyBtn.addAction {
+            
+        }
+        stackView.addArrangedSubview(commentView)
+        for j in 0..<comment.replyList.count{
+            let reply = comment.replyList[j]
+            let replyView = ReplyCell(reply: reply)
+            stackView.addArrangedSubview(replyView)
+        }
     }
     
     func setKeyBoardAction(){
@@ -343,14 +235,23 @@ extension BoardDetailView{
             }
         }
     }
+    
+    func hideBackBtnTitle(){
+        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        self.navigationController?.navigationBar.topItem?.backBarButtonItem = backBarButtonItem
+    }
+    
+    func setNavigationTitle(title:String){
+        self.navigationItem.title = title
+    }
 }
 
-extension BoardDetailView:UITextViewDelegate{
+extension ReplyView:UITextViewDelegate{
     
     func textViewDidChange(_ textView: UITextView) {
         self.adjustTextViewHeight(textView: textView)
         self.placeholderLabel.isHidden = !textView.text.isEmpty
-        self.boardDetailViewModel.listener!(textView.text)
+        self.replyViewModel.listener!(textView.text)
         self.hideSendBtn(text:textView.text)
     }
     
@@ -371,8 +272,8 @@ extension BoardDetailView:UITextViewDelegate{
     }
     
     func textViewBinding(){
-        boardDetailViewModel.bind{ text in
-            self.boardDetailViewModel.comment.content = text
+        replyViewModel.bind{ text in
+            self.replyViewModel.reply.content = text
         }
     }
     
@@ -384,4 +285,3 @@ extension BoardDetailView:UITextViewDelegate{
         }
     }
 }
-

@@ -16,7 +16,6 @@ class BoardView:UIViewController, ViewProtocol{
         didSet{
             let layout = tabCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
             layout.itemSize = CGSize(width: cellWidth, height: collectionViewHeihgt!)
-            //layout.minimumInteritemSpacing = 0
         }
     }
     
@@ -32,6 +31,28 @@ class BoardView:UIViewController, ViewProtocol{
     var highlightView:UIView!{
         didSet{
             highlightView.backgroundColor = Color.mainColor
+        }
+    }
+    
+    var searchBtn:UIButton!{
+        didSet{
+            let image = UIImage(systemName: "magnifyingglass")?.resized(toWidth: 25)
+            searchBtn.setImage(image?.withTintColor(Color.mainColor), for: .normal)
+            searchBtn.addAction {
+                let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "BoardSearchView") as? BoardSearchView
+                self.navigationController?.pushViewController(pushVC!, animated: true)
+            }
+        }
+    }
+    
+    var writeBoardhBtn:UIButton!{
+        didSet{
+            let image = UIImage(systemName: "pencil")?.resized(toWidth: 25)
+            writeBoardhBtn.setImage(image?.withTintColor(Color.mainColor), for: .normal)
+            writeBoardhBtn.addAction {
+                let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "BoardWriteView") as? BoardWriteView
+                self.navigationController?.pushViewController(pushVC!, animated: true)
+            }
         }
     }
     
@@ -54,6 +75,8 @@ class BoardView:UIViewController, ViewProtocol{
     func initUI() {
         self.tabCollectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewFlowLayout())
         self.highlightView = UIView()
+        self.searchBtn = UIButton()
+        self.writeBoardhBtn = UIButton()
         self.pageView = UIView()
         self.freeBoardVC = self.storyboard?.instantiateViewController(withIdentifier: "FreeBoardView") as? FreeBoardView
         self.noticeBoardVC = self.storyboard?.instantiateViewController(withIdentifier: "FreeBoardView") as? FreeBoardView
@@ -62,6 +85,8 @@ class BoardView:UIViewController, ViewProtocol{
     func addView() {
         self.view.addSubview(tabCollectionView)
         self.view.addSubview(highlightView)
+        self.view.addSubview(searchBtn)
+        self.view.addSubview(writeBoardhBtn)
         self.view.addSubview(pageView)
     }
     
@@ -76,12 +101,27 @@ class BoardView:UIViewController, ViewProtocol{
             make.height.equalTo(collectionViewHeihgt)
         }
         
+        self.searchBtn.snp.makeConstraints{ make in
+            make.top.equalTo(self.tabCollectionView.snp.top)
+            make.right.equalTo(self.tabCollectionView.snp.right).offset(-10)
+            make.bottom.equalTo(self.tabCollectionView.snp.bottom)
+            make.width.equalTo(self.tabCollectionView.snp.height)
+        }
+        
+        self.writeBoardhBtn.snp.makeConstraints{ make in
+            make.top.equalTo(self.tabCollectionView.snp.top)
+            make.right.equalTo(self.searchBtn.snp.left).offset(-10)
+            make.bottom.equalTo(self.tabCollectionView.snp.bottom)
+            make.width.equalTo(self.tabCollectionView.snp.height)
+        }
+        
         self.pageView.snp.makeConstraints{ make in
             make.top.equalTo(self.highlightView.snp.bottom).offset(5)
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.bottom.equalTo(self.view.safeAreaLayoutGuide)
         }
+        
     }
     
     func selectCell(){

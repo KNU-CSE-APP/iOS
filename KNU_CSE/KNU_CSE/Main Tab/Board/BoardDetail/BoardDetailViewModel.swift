@@ -10,9 +10,15 @@ import Foundation
 struct BoardDetailViewModel{
     var board:Board!
     var comments:[Comment] = []
+    var comment:CommentTextModel = CommentTextModel()
+    var listener:((String)->Void)?
     
     init(){
         self.setComment()
+    }
+    
+    mutating func bind(listener:((String)->Void)?) {
+        self.listener = listener
     }
     
     mutating func setComment(){
@@ -24,10 +30,22 @@ struct BoardDetailViewModel{
         replys.append(Reply(replyId: 1, content: "하하하하하", date: "2021 07.24 23:19", author: "대댓글test4"))
         self.comments[0].setReplyList(replyList: replys)
         
-        self.comments.append(Comment(commentId: 123, content: "hihi zz", date: "2021 07.24 23:17", author: "댓글2"))
+        self.comments.append(Comment(commentId: 124, content: "hihi zz", date: "2021 07.24 23:17", author: "댓글2"))
         var replys2:[Reply] = []
         replys2.append(Reply(replyId: 1, content: "ㅎㅇㅎㅇㅎㅇㅎㅇ", date: "2021 07.24 23:16", author: "대댓글2"))
         replys2.append(Reply(replyId: 1, content: "안녕하세용", date: "2021 07.24 23:16", author: "대댓글2"))
         self.comments[1].setReplyList(replyList: replys2)
     }
+    
+    func sendComment(){
+        self.comment.email = "zz"
+        self.comment.boardId = self.board.boardId
+        print(comment.email, comment.boardId, comment.content)
+    }
+}
+
+class CommentTextModel:BaseObject{
+    var email:String!
+    var boardId:Int!
+    var content:String!
 }

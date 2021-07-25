@@ -11,7 +11,6 @@ import SnapKit
 class ClassRoomCell : UITableViewCell {
     static let identifier = "ClassRoomCell"
     var titleLabel = UILabel()
-    var cellBtn = UIButton()
     
     var action :()->() = {}
     
@@ -26,16 +25,7 @@ class ClassRoomCell : UITableViewCell {
         titleLabel.text = title
         titleLabel.textAlignment = .center
     }
-    
-    func setAction(action:@escaping()->()){
-        self.action = action
-        self.cellBtn.addTarget(self, action: #selector(pushView), for: .touchUpInside)
-    }
 
-    @objc func pushView(){
-        self.action()
-    }
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.initUI()
@@ -52,15 +42,10 @@ class ClassRoomCell : UITableViewCell {
     }
     
     func addView(){
-        self.contentView.addSubview(cellBtn)
-        self.cellBtn.addSubview(titleLabel)
+        self.contentView.addSubview(titleLabel)
     }
     
     func setUpConstraints(){
-        cellBtn.snp.makeConstraints{ make in
-            make.width.equalToSuperview()
-            make.height.equalToSuperview()
-        }
         
         titleLabel.snp.makeConstraints{ make in
             make.width.equalToSuperview()

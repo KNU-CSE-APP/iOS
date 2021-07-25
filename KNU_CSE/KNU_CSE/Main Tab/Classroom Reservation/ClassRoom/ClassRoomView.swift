@@ -20,6 +20,7 @@ class ClassRoomView : UIViewController{
             classTableView.translatesAutoresizingMaskIntoConstraints = false
             classTableView.register(ClassRoomCell.self, forCellReuseIdentifier: ClassRoomCell.identifier)
             classTableView.dataSource = self
+            classTableView.delegate = self
             classTableView.rowHeight = cellRowHeight * 0.1
             classTableView.tableFooterView = UIView(frame: .zero)
             classTableView.separatorInset.left = 0
@@ -65,14 +66,19 @@ extension ClassRoomView : UITableViewDataSource{
         let cell = tableView.dequeueReusableCell(withIdentifier: ClassRoomCell.identifier, for: indexPath) as! ClassRoomCell
         cell.selectionStyle = .none
         cell.classRoom = classRoomViewModel.classrooms[indexPath.row]
-        cell.setAction{
-            let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "ReservationView") as? ReservationView
-            self.navigationController?.pushViewController(pushVC!, animated: true)
-            self.delegate = pushVC
-            self.delegate?.sendData(data: self.classRoomViewModel.classrooms[indexPath.row])
-            
-        }
         return cell
     }
+}
+
+extension ClassRoomView:UITableViewDelegate{
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.pushView(indexPath)
+    }
     
+    func pushView(_ indexPath:IndexPath){
+        let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "ReservationView") as? ReservationView
+        self.navigationController?.pushViewController(pushVC!, animated: true)
+        self.delegate = pushVC
+        self.delegate?.sendData(data: self.classRoomViewModel.classrooms[indexPath.row])
+    }
 }
