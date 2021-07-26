@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import BTNavigationDropdownMenu
 
 class BoardWriteView:UIViewController, ViewProtocol{
     
@@ -20,7 +21,7 @@ class BoardWriteView:UIViewController, ViewProtocol{
         didSet{
             titleField.placeholder = "제목을 입력하세요."
             titleField.delegate = self
-            titleField.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+            titleField.font = UIFont.systemFont(ofSize: 17, weight: .regular)
             titleField.addTarget(self, action: #selector(setRightItemColor), for: .editingChanged)
             if let font = titleField.font {
                 self.textFieldHeight = font.lineHeight + 20
@@ -38,7 +39,7 @@ class BoardWriteView:UIViewController, ViewProtocol{
     var contentField:UITextView!{
         didSet{
             contentField.delegate = self
-            contentField.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+            contentField.font = UIFont.systemFont(ofSize: 17, weight: .regular)
             contentField.isScrollEnabled = false
         }
     }
@@ -56,12 +57,39 @@ class BoardWriteView:UIViewController, ViewProtocol{
     var contentCheck:Bool = false
     var rightItemButton:UIBarButtonItem!{
         didSet{
-            rightItemButton.title = "작성하기"
+            rightItemButton.title = "작성"
             rightItemButton.style = .plain
             rightItemButton.tintColor = .white.withAlphaComponent(0.7)
             rightItemButton.target = self
             rightItemButton.action = #selector(addTapped)
             self.navigationItem.rightBarButtonItem = rightItemButton
+        }
+    }
+    
+    let menu:[String] = ["잡담하기", "정보구하기", "팀원 구하기"]
+    var navigatiopDropDown:BTNavigationDropdownMenu!{
+        didSet{
+            navigatiopDropDown.menuTitleColor = .white
+            
+            //cell detail setting
+            navigatiopDropDown.cellHeight = 40
+            navigatiopDropDown.cellBackgroundColor = Color.mainColor
+            navigatiopDropDown.cellSelectionColor = Color.mainColor.withAlphaComponent(0.5)
+            navigatiopDropDown.cellTextLabelFont = UIFont.systemFont(ofSize: 17, weight: .semibold)
+            navigatiopDropDown.cellTextLabelColor = UIColor.white
+            navigatiopDropDown.cellTextLabelAlignment = .center
+            navigatiopDropDown.cellSeparatorColor = .white
+            
+            navigatiopDropDown.animationDuration = 0.5
+            
+            //if dropdown show then setup backgroundcolor
+            navigatiopDropDown.maskBackgroundOpacity = 0.1
+            navigatiopDropDown.maskBackgroundColor = .black
+            
+            self.navigationItem.titleView = navigatiopDropDown
+            self.navigatiopDropDown.didSelectItemAtIndexHandler = {[weak self] (indexPath: Int) -> () in
+                    print("Did select item at index: \(indexPath)")
+            }
         }
     }
     
@@ -85,6 +113,7 @@ class BoardWriteView:UIViewController, ViewProtocol{
         self.contentField = UITextView()
         self.contentPlaceHolder = UILabel()
         self.rightItemButton = UIBarButtonItem()
+        self.navigatiopDropDown = BTNavigationDropdownMenu(title: "카테고리를 설정해주세요.", items: self.menu)
     }
     
     func addView() {
@@ -107,7 +136,7 @@ class BoardWriteView:UIViewController, ViewProtocol{
         }
         
         self.titleField.snp.makeConstraints{ make in
-            make.top.equalToSuperview().offset(10)
+            make.top.equalToSuperview().offset(15)
             make.left.equalTo(self.view.safeAreaLayoutGuide).offset(left_margin+padding)
             make.right.equalTo(self.view.safeAreaLayoutGuide).offset(right_margin)
             make.height.equalTo(textFieldHeight)

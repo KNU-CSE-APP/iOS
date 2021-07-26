@@ -90,7 +90,6 @@ extension BoardSearchView{
         BoardVC.willMove(toParent: nil)
         BoardVC.view.removeFromSuperview()
         BoardVC.removeFromParent()
-        
     }
 }
 

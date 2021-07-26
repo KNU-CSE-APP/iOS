@@ -19,4 +19,6 @@ target 'KNU_CSE' do
   pod 'SnapKit'
   pod 'M13Checkbox'
   pod 'NVActivityIndicatorView'
+  pod 'DropDown'
+  pod 'BTNavigationDropdownMenu'
 end
