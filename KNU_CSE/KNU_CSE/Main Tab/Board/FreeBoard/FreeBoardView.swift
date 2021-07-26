@@ -38,8 +38,8 @@ class FreeBoardView : UIViewController{
     }
     
     func initUI(){
-        cellRowHeight = self.view.frame.height
-        freeboardTableView = UITableView()
+        self.cellRowHeight = self.view.frame.height
+        self.freeboardTableView = UITableView()
     }
     
     func addView(){

@@ -34,49 +34,48 @@ class BoardView:UIViewController, ViewProtocol{
         }
     }
     
-    var searchBtn:UIButton!{
+    var searchBtn:UIBarButtonItem!{
         didSet{
-            let image = UIImage(systemName: "magnifyingglass")?.resized(toWidth: 25)
-            searchBtn.setImage(image?.withTintColor(Color.mainColor), for: .normal)
-            searchBtn.addAction {
-                let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "BoardSearchView") as? BoardSearchView
-                self.navigationController?.pushViewController(pushVC!, animated: true)
-            }
+            searchBtn.style = .plain
+            searchBtn.tintColor = .white
+            searchBtn.target = self
+            let image = UIImage(systemName: "magnifyingglass")
+            searchBtn.image = image
+            searchBtn.action = #selector(pushBoardSearchView)
+        }
+    }
+
+    var selectedTabIndex:Int = 0
+    var writeBoardhBtn:UIBarButtonItem!{
+        didSet{
+            writeBoardhBtn.style = .plain
+            writeBoardhBtn.tintColor = .white
+            writeBoardhBtn.target = self
+            let image = UIImage(systemName: "pencil")
+            writeBoardhBtn.image = image
+            writeBoardhBtn.action = #selector(pushBoardWriteView)
         }
     }
     
-    var writeBoardhBtn:UIButton!{
-        didSet{
-            let image = UIImage(systemName: "pencil")?.resized(toWidth: 25)
-            writeBoardhBtn.setImage(image?.withTintColor(Color.mainColor), for: .normal)
-            writeBoardhBtn.addAction {
-                let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "BoardWriteView") as? BoardWriteView
-                self.navigationController?.pushViewController(pushVC!, animated: true)
-            }
-        }
-    }
-    
-    var pageView:UIView!{
-        didSet{
-            
-        }
-    }
-    
+    var pageView:UIView!
     var freeBoardVC : FreeBoardView!
     var noticeBoardVC : FreeBoardView!
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.reloadNavigationItems(selectedTabIndex:self.selectedTabIndex)
+    }
     override func viewDidLoad() {
-        initUI()
-        addView()
-        setUpConstraints()
-        selectCell()
+        self.initUI()
+        self.addView()
+        self.setUpConstraints()
+        self.selectCell()
     }
     
     func initUI() {
         self.tabCollectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewFlowLayout())
         self.highlightView = UIView()
-        self.searchBtn = UIButton()
-        self.writeBoardhBtn = UIButton()
+        self.searchBtn = UIBarButtonItem()
+        self.writeBoardhBtn = UIBarButtonItem()
         self.pageView = UIView()
         self.freeBoardVC = self.storyboard?.instantiateViewController(withIdentifier: "FreeBoardView") as? FreeBoardView
         self.noticeBoardVC = self.storyboard?.instantiateViewController(withIdentifier: "FreeBoardView") as? FreeBoardView
@@ -85,8 +84,6 @@ class BoardView:UIViewController, ViewProtocol{
     func addView() {
         self.view.addSubview(tabCollectionView)
         self.view.addSubview(highlightView)
-        self.view.addSubview(searchBtn)
-        self.view.addSubview(writeBoardhBtn)
         self.view.addSubview(pageView)
     }
     
@@ -99,20 +96,6 @@ class BoardView:UIViewController, ViewProtocol{
             make.left.equalToSuperview().offset(title_left_Margin)
             make.right.equalToSuperview()
             make.height.equalTo(collectionViewHeihgt)
-        }
-        
-        self.searchBtn.snp.makeConstraints{ make in
-            make.top.equalTo(self.tabCollectionView.snp.top)
-            make.right.equalTo(self.tabCollectionView.snp.right).offset(-10)
-            make.bottom.equalTo(self.tabCollectionView.snp.bottom)
-            make.width.equalTo(self.tabCollectionView.snp.height)
-        }
-        
-        self.writeBoardhBtn.snp.makeConstraints{ make in
-            make.top.equalTo(self.tabCollectionView.snp.top)
-            make.right.equalTo(self.searchBtn.snp.left).offset(-10)
-            make.bottom.equalTo(self.tabCollectionView.snp.bottom)
-            make.width.equalTo(self.tabCollectionView.snp.height)
         }
         
         self.pageView.snp.makeConstraints{ make in
@@ -148,12 +131,11 @@ extension BoardView:UICollectionViewDataSource, UICollectionViewDelegate{
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == tabCollectionView {
-           
-            upDateHighlightView(indexPath: indexPath)
+            self.reloadNavigationItems(selectedTabIndex: indexPath.row)
+            self.upDateHighlightView(indexPath: indexPath)
             if indexPath.row == 0{
                 self.addFreeBoardVC()
                 self.removeNoticeBoardVC()
-                
             }else{
                 self.removeFreeBoardVC()
                 self.addNoticeBoardVC()
@@ -163,6 +145,17 @@ extension BoardView:UICollectionViewDataSource, UICollectionViewDelegate{
 }
 
 extension BoardView{
+    
+    @objc func pushBoardWriteView(){
+        let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "BoardWriteView") as? BoardWriteView
+        self.navigationController?.pushViewController(pushVC!, animated: true)
+    }
+    
+    @objc func pushBoardSearchView(){
+        let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "BoardSearchView") as? BoardSearchView
+        self.navigationController?.pushViewController(pushVC!, animated: true)
+    }
+    
     func upDateHighlightView(indexPath:IndexPath){
         let leading = cellWidth * CGFloat(indexPath.row) + (CGFloat(indexPath.row) * 24) + title_left_Margin
         UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseOut, animations: {
@@ -203,5 +196,21 @@ extension BoardView{
         noticeBoardVC.willMove(toParent: nil)
         noticeBoardVC.view.removeFromSuperview()
         noticeBoardVC.removeFromParent()
+    }
+    
+    func reloadNavigationItems(selectedTabIndex:Int){
+        self.selectedTabIndex = selectedTabIndex
+        switch selectedTabIndex {
+        case 0:
+            let parent = self.parent as? TabView
+            parent?.setNavigationItemWithSearchWrite()
+            break
+        case 1:
+            let parent = self.parent as? TabView
+            parent?.setNavigationItemWithSearch()
+            break
+        default:
+            break
+        }
     }
 }
