@@ -28,6 +28,7 @@ class SignUpView: UIViewController{
             emailTextField.delegate = self
             emailTextField.bind { [weak self] email in
                 self?.signUpViewModel.account.email = email
+                self?.checkChangeValue()
             }
         }
     }
@@ -62,6 +63,7 @@ class SignUpView: UIViewController{
             emailCodeTextField.placeholder = "인증번호를 입력하세요."
             emailCodeTextField.bind { [weak self] email in
                 self?.signUpViewModel.account.email = email
+                self?.checkChangeValue()
             }
         }
     }
@@ -98,6 +100,7 @@ class SignUpView: UIViewController{
             pwTextField.setUpImage(imageName: "eye.fill", on: .right, color: UIColor.darkGray, width:40, height: 40)
             pwTextField.bind { [weak self] pw in
                 self?.signUpViewModel.account.password = pw
+                self?.checkChangeValue()
             }
         }
     }
@@ -111,6 +114,7 @@ class SignUpView: UIViewController{
             pw2TextField.setUpImage(imageName: "eye.fill", on: .right, color: UIColor.darkGray, width:40, height: 40)
             pw2TextField.bind { [weak self] pw2 in
                 self?.signUpViewModel.account.password2 = pw2
+                self?.checkChangeValue()
             }
         }
     }
@@ -121,6 +125,7 @@ class SignUpView: UIViewController{
             userNameTextField.delegate = self
             userNameTextField.bind { [weak self] userName in
                 self?.signUpViewModel.account.username = userName
+                self?.checkChangeValue()
             }
             addKeyBoardAnimaion(textField: userNameTextField)
         }
@@ -132,6 +137,7 @@ class SignUpView: UIViewController{
             nickNameTextField.delegate = self
             nickNameTextField.bind { [weak self] nickName in
                 self?.signUpViewModel.account.nickname = nickName
+                self?.checkChangeValue()
             }
             addKeyBoardAnimaion(textField: nickNameTextField)
         }
@@ -144,6 +150,7 @@ class SignUpView: UIViewController{
             stuidTextField.draw()
             stuidTextField.bind { [weak self] student_id in
                 self?.signUpViewModel.account.student_id = student_id
+                self?.checkChangeValue()
             }
             addKeyBoardAnimaion(textField: stuidTextField)
         }
@@ -151,7 +158,6 @@ class SignUpView: UIViewController{
     
     var majorCom : CheckBox!{
         didSet{
-            self.view.addSubview(majorCom)
             let checkbox : M13Checkbox = majorCom.checkBox
             majorCom.bind {
                 switch checkbox.checkState {
@@ -167,13 +173,13 @@ class SignUpView: UIViewController{
                     case .mixed:
                         break
                 }
+                self.checkChangeValue()
             }
         }
     }
     
     var majorGlob : CheckBox!{
         didSet{
-            self.view.addSubview(majorGlob)
             let checkbox : M13Checkbox = majorGlob.checkBox
             majorGlob.bind {
                 switch checkbox.checkState {
@@ -189,13 +195,13 @@ class SignUpView: UIViewController{
                     case .mixed:
                         break
                 }
+                self.checkChangeValue()
             }
         }
     }
     
     var genderMale : CheckBox!{
         didSet{
-            self.view.addSubview(genderMale)
             let checkbox : M13Checkbox = genderMale.checkBox
             genderMale.bind {
                 switch checkbox.checkState {
@@ -211,13 +217,13 @@ class SignUpView: UIViewController{
                     case .mixed:
                         break
                 }
+                self.checkChangeValue()
             }
         }
     }
     
     var genderFemale : CheckBox!{
         didSet{
-            self.view.addSubview(genderFemale)
             let checkbox : M13Checkbox = genderFemale.checkBox
             genderFemale.bind {
                 switch checkbox.checkState {
@@ -233,35 +239,17 @@ class SignUpView: UIViewController{
                     case .mixed:
                         break
                 }
+                self.checkChangeValue()
             }
         }
     }
     
     var registerBtn : UIButton! {
         didSet{
-            registerBtn.backgroundColor = Color.mainColor
+            registerBtn.backgroundColor = UIColor.lightGray
             registerBtn.setTitle("회원가입", for: .normal)
             registerBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
-            registerBtn.addAction{
-                if self.signUpViewModel.SignUpCheck(){
-                    self.signUpViewModel.getEvent(successHandler: { response in
-                        if response.result == 1 {
-                            let alert = Alert(title: "회원가입성공", message: "확인 버튼을 누르면 로그인 페이지로 이동합니다.", viewController: self)
-                            alert.popUpDefaultAlert(action: { (action) in
-                                self.navigationController?.popViewController(animated: true)
-                            })
-                        }
-                        self.indicator.stopIndicator()
-                    }, failHandler: { Error in
-                        print(Error)
-                    }, asyncHandler: {
-                        self.indicator.startIndicator()
-                    })
-                }else{
-                    let alert = Alert(title: "회원가입 실패", message: "모든 정보를 입력하지 않았습니다.", viewController: self)
-                    alert.popUpDefaultAlert(action: nil)
-                }
-            }
+            registerBtn.layer.cornerRadius = 5
         }
     }
     
@@ -312,7 +300,7 @@ class SignUpView: UIViewController{
     func addView(){
         self.view.addSubview(containerView)
         
-        _ =  [emailTextField,emailCodeTextField,sendCodeBtn,emailCodeTextField,confirmCodeBtn,pwTextField,pw2TextField,userNameTextField,nickNameTextField,stuidTextField,emailTitle,pwTitle,pw2Title,userNameTitle,nickNameTitle,stuidTitle,majorTitle,genderTitle,registerBtn].map{
+        _ =  [emailTextField,emailCodeTextField,sendCodeBtn,emailCodeTextField,confirmCodeBtn,pwTextField,pw2TextField,userNameTextField,nickNameTextField,stuidTextField,emailTitle,pwTitle,pw2Title,userNameTitle,nickNameTitle,stuidTitle,majorTitle,majorCom,majorGlob,genderTitle,genderMale,genderFemale,registerBtn].map{
             self.containerView.addSubview($0)
         }
     }
@@ -546,4 +534,42 @@ extension SignUpView: UITextFieldDelegate{
         textField.resignFirstResponder()
         return true
     }
+    
+    func checkChangeValue(){
+        if self.signUpViewModel.SignUpCheck(){
+            self.addBtnAction()
+        }else{
+            self.removeBtnAction()
+        }
+    }
+    
+    func addBtnAction(){
+        registerBtn.backgroundColor = Color.mainColor
+        registerBtn.addAction{
+            if self.signUpViewModel.SignUpCheck(){
+                self.signUpViewModel.getEvent(successHandler: { response in
+                    if response.result == 1 {
+                        let alert = Alert(title: "회원가입성공", message: "확인 버튼을 누르면 로그인 페이지로 이동합니다.", viewController: self)
+                        alert.popUpDefaultAlert(action: { (action) in
+                            self.navigationController?.popViewController(animated: true)
+                        })
+                    }
+                    self.indicator.stopIndicator()
+                }, failHandler: { Error in
+                    print(Error)
+                }, asyncHandler: {
+                    self.indicator.startIndicator()
+                })
+            }else{
+                let alert = Alert(title: "회원가입 실패", message: "모든 정보를 입력하지 않았습니다.", viewController: self)
+                alert.popUpDefaultAlert(action: nil)
+            }
+        }
+    }
+    
+    func removeBtnAction(){
+        registerBtn.backgroundColor = UIColor.lightGray
+        registerBtn.removeTarget(nil, action: nil, for: .allEvents)
+    }
 }
+

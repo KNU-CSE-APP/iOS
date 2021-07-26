@@ -175,16 +175,7 @@ extension BoardWriteView{
         self.navigationItem.title = title
     }
     
-    @objc func setRightItemColor(){
-        if titleField.text != "" && contentField.text != ""{
-            self.contentCheck = true
-            rightItemButton.tintColor = .white
-        }else{
-            self.contentCheck = false
-            rightItemButton.tintColor = .white.withAlphaComponent(0.7)
-        }
-    }
-    
+ 
     @objc func addTapped(){
         if contentCheck{
             print("ok")
@@ -205,5 +196,15 @@ extension BoardWriteView:UITextFieldDelegate{
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    @objc func setRightItemColor(){
+        if titleField.text != "" && contentField.text != ""{
+            self.contentCheck = true
+            rightItemButton.tintColor = .white
+        }else{
+            self.contentCheck = false
+            rightItemButton.tintColor = .white.withAlphaComponent(0.7)
+        }
     }
 }
