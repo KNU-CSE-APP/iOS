@@ -9,62 +9,34 @@ import UIKit
 
 class BoardSearchView:UIViewController, ViewProtocol{
     
-    var scrollView:UIScrollView!{
+    var searchController:UISearchController!{
         didSet{
-            scrollView.alwaysBounceVertical = true
-        }
-    }
-    
-    var textFieldHeight:CGFloat!
-    var titleField:UITextField!{
-        didSet{
-            if let font = titleField.font {
-                self.textFieldHeight = font.lineHeight + 16
-            }
+            self.searchController.isActive = true
+            self.searchController.obscuresBackgroundDuringPresentation = false
+            self.searchController.hidesNavigationBarDuringPresentation = false
             
-            let view = UIView(frame: CGRect(x: 0, y: 0, width: self.textFieldHeight, height: self.textFieldHeight))
-            let imageView = UIImageView()
-            let image = UIImage(systemName: "magnifyingglass")?.resized(toWidth: self.textFieldHeight*0.6)
+            let searchBar = searchController.searchBar
+            searchBar.delegate = self
+            searchBar.placeholder = "검색어를 입력하세요"
+            searchBar.tintColor = .white
+            searchBar.setValue("취소", forKey: "cancelButtonText")
             
-            titleField.placeholder = "검색어를 입력하세요."
-            titleField.delegate = self
-            titleField.addTarget(self, action: #selector(removeKeyBoardAction), for: .editingDidEnd)
-            titleField.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-            titleField.backgroundColor = .white.withAlphaComponent(0.4)
-            titleField.layer.cornerRadius = 10
-            titleField.textColor = .white
-            
-            imageView.frame = CGRect(x: self.textFieldHeight*0.2, y: self.textFieldHeight*0.2, width: self.textFieldHeight*0.6, height: self.textFieldHeight*0.6)
-            
-            imageView.image = image?.withTintColor(.white)
-            view.addSubview(imageView)
-            
-            titleField.enablesReturnKeyAutomatically = true // textfield에 text가 있을 때 return key 활성화
-            
-            titleField.leftView = view
-            titleField.leftViewMode = .always
-            titleField.returnKeyType = .search
-            self.navigationItem.titleView = titleField
-        }
-    }
-    
-    var contentCheck:Bool = false
-    var rightItemButton:UIBarButtonItem!{
-        didSet{
-            rightItemButton.title = "취소"
-            rightItemButton.style = .plain
-            rightItemButton.tintColor = .white
-            rightItemButton.target = self
-            rightItemButton.action = #selector(removeBoardView)
-            self.navigationItem.rightBarButtonItem = rightItemButton
+            let textField = searchBar.searchTextField
+            textField.backgroundColor = .white
+            navigationItem.setHidesBackButton(true, animated: false)
+            navigationItem.titleView = searchBar
         }
     }
     
     var BoardVC : FreeBoardView!
     
     override func viewWillAppear(_ animated: Bool) {
-        self.hideBackBtnTitle()
-        self.setNavigationTitle(title: "")
+        self.navigationItem.title = "게시물 검색"
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
     }
     
     override func viewDidLoad() {
@@ -72,12 +44,11 @@ class BoardSearchView:UIViewController, ViewProtocol{
         self.initUI()
         self.addView()
         self.setUpConstraints()
+        self.setKeyBoardAction()
     }
     
     func initUI() {
-        self.scrollView = UIScrollView()
-        self.titleField = UITextField()
-        self.rightItemButton = UIBarButtonItem()
+        self.searchController = UISearchController(searchResultsController: nil)
         self.BoardVC = storyboard?.instantiateViewController(withIdentifier: "FreeBoardView") as? FreeBoardView
     }
     
@@ -86,15 +57,12 @@ class BoardSearchView:UIViewController, ViewProtocol{
     }
     
     func setUpConstraints() {
-        self.titleField.snp.makeConstraints{ make in
-            make.width.equalTo(250)
-            make.height.equalTo(textFieldHeight)
-        }
+        
     }
 }
 
 extension BoardSearchView{
-    
+
     func addBoardView(){
         self.addChild(BoardVC)
         self.view.addSubview(BoardVC.view)
@@ -108,41 +76,32 @@ extension BoardSearchView{
         }
     }
     
+    //if press cancel button then pop
+    @objc func popViewController(){
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    func setKeyBoardAction(){
+        NotificationCenter.default.addObserver(self, selector: #selector(removeBoardView), name: UIResponder.keyboardWillShowNotification, object: nil)
+    }
+    
+    //if keyboard show up then remove BoardVC
     @objc func removeBoardView(){
         BoardVC.willMove(toParent: nil)
         BoardVC.view.removeFromSuperview()
         BoardVC.removeFromParent()
-        titleField.resignFirstResponder()
+        
     }
-    
-    @objc func removeKeyBoardAction(){
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    func hideBackBtnTitle(){
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-        self.navigationController?.navigationBar.topItem?.backBarButtonItem = backBarButtonItem
-    }
-    
-    func setNavigationTitle(title:String){
-        self.navigationItem.title = title
-    }
-    
 }
 
-extension BoardSearchView:UITextFieldDelegate{
-    //if return key press then keyboard shut down
-    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField.returnKeyType == .search{
-            textField.resignFirstResponder()
-            self.addBoardView()
-        }
-        return true
+extension BoardSearchView:UISearchBarDelegate{
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        self.addBoardView()
     }
     
-    func addSearchButtonOnKeyBoard(){
-        let searchBtn:UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
-        searchBtn.barStyle = .default
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        self.popViewController()
     }
 }
- 
+
+

@@ -26,10 +26,6 @@ class FreeBoardView : UIViewController{
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.navigationBar.topItem?.title = "자유게시판"
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.initUI()

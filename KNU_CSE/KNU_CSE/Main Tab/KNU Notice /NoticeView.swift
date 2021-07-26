@@ -25,10 +25,6 @@ class NoticeView : UIViewController, WKUIDelegate{
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.navigationBar.topItem?.title = "공지사항"
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         initUI()

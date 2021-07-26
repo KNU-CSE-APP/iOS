@@ -27,10 +27,6 @@ class ClassRoomView : UIViewController{
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.navigationBar.topItem?.title = "강의실 예약"
-    }
-    
     override func viewDidLoad() {
         initUI()
         addView()

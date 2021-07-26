@@ -20,7 +20,6 @@ class BoardWriteView:UIViewController, ViewProtocol{
         didSet{
             titleField.placeholder = "제목을 입력하세요."
             titleField.delegate = self
-            titleField.addTarget(self, action: #selector(removeKeyBoardAction), for: .editingDidEnd)
             titleField.font = UIFont.systemFont(ofSize: 15, weight: .regular)
             titleField.addTarget(self, action: #selector(setRightItemColor), for: .editingChanged)
             if let font = titleField.font {
@@ -140,10 +139,6 @@ class BoardWriteView:UIViewController, ViewProtocol{
 }
 
 extension BoardWriteView{
-    @objc func removeKeyBoardAction(){
-        NotificationCenter.default.removeObserver(self)
-    }
-    
     func setKeyBoardAction(){
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil);
 

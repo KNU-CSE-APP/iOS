@@ -43,10 +43,6 @@ class MyPageView : UIViewController{
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.navigationBar.topItem?.title = "마이페이지"
-    }
-    
     override func viewDidLoad() {
         initUI()
         addView()

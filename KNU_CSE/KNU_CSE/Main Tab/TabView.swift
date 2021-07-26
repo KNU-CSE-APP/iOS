@@ -84,11 +84,20 @@ extension TabView:UITabBarControllerDelegate{
     
     func tabChangedTo(selectedIndex: Int) {
         switch selectedIndex {
-        case 2:
-            //self.setNavigationItemWithSearchWrite()
-            break
-        default:
+        case 0:
+            self.navigationItem.title = "공지사항"
             self.navigationItem.rightBarButtonItems = nil
+        case 1:
+            self.navigationItem.title = "강의실 예약"
+            self.navigationItem.rightBarButtonItems = nil
+        case 2:
+            self.navigationItem.title = "자유게시판"
+            break
+        case 3:
+            self.navigationItem.title = "마이페이지"
+            self.navigationItem.rightBarButtonItems = nil
+        default:
+            
             break
         }
     }

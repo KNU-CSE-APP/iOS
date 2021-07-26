@@ -147,7 +147,7 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        //self.hideBackBtnTitle()
+        
     }
     
     override func viewDidLoad() {
