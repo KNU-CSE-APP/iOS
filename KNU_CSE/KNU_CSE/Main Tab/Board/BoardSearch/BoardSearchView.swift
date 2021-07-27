@@ -25,6 +25,8 @@ class BoardSearchView:UIViewController, ViewProtocol{
             textField.backgroundColor = .white
             navigationItem.setHidesBackButton(true, animated: false)
             navigationItem.titleView = searchBar
+            
+           
         }
     }
     
@@ -45,6 +47,7 @@ class BoardSearchView:UIViewController, ViewProtocol{
         self.addView()
         self.setUpConstraints()
         self.setKeyBoardAction()
+        self.setTextfiledBecomeFirstResponder()
     }
     
     func initUI() {
@@ -90,6 +93,13 @@ extension BoardSearchView{
         BoardVC.willMove(toParent: nil)
         BoardVC.view.removeFromSuperview()
         BoardVC.removeFromParent()
+    }
+    
+    func setTextfiledBecomeFirstResponder(){
+        //0.6 밑으로는 안됨
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.6){
+            self.searchController.searchBar.becomeFirstResponder()
+        }
     }
 }
 

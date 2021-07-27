@@ -94,7 +94,6 @@ class BoardWriteView:UIViewController, ViewProtocol{
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.hideBackBtnTitle()
         self.setNavigationTitle(title: "게시물 작성")
     }
     
@@ -105,6 +104,7 @@ class BoardWriteView:UIViewController, ViewProtocol{
         self.setUpConstraints()
         self.setKeyBoardAction()
     }
+    
     
     func initUI() {
         self.scrollView = UIScrollView()
@@ -190,16 +190,11 @@ extension BoardWriteView{
         }
     }
     
-    func hideBackBtnTitle(){
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-        self.navigationController?.navigationBar.topItem?.backBarButtonItem = backBarButtonItem
-    }
-    
     func setNavigationTitle(title:String){
         self.navigationItem.title = title
     }
     
- 
+    
     @objc func addTapped(){
         if contentCheck{
             print("ok")
@@ -212,7 +207,10 @@ extension BoardWriteView:UITextViewDelegate{
         self.contentPlaceHolder.isHidden = !textView.text.isEmpty
         self.setRightItemColor()
     }
-
+    
+    @objc func popView(){
+        self.navigationController?.popViewController(animated: true)
+    }
 }
 
 extension BoardWriteView:UITextFieldDelegate{

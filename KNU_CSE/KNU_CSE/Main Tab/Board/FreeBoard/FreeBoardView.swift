@@ -76,7 +76,6 @@ extension FreeBoardView:UITableViewDelegate{
     }
 }
 
-
 extension FreeBoardView{
     func pushDetaiView(board:Board){
         let pushVC = (self.storyboard?.instantiateViewController(withIdentifier: "BoardDetailView")) as? BoardDetailView

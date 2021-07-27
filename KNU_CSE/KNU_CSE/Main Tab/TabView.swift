@@ -92,6 +92,7 @@ extension TabView:UITabBarControllerDelegate{
             self.navigationItem.rightBarButtonItems = nil
         case 2:
             self.navigationItem.title = "자유게시판"
+            self.navigationItem.backButtonTitle = ""
             break
         case 3:
             self.navigationItem.title = "마이페이지"
