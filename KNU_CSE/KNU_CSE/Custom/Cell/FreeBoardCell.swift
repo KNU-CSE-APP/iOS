@@ -66,6 +66,14 @@ class FreeBoardCell : UITableViewCell {
         }
     }
     
+    var categoryLabel:UILabel!{
+        didSet{
+            self.categoryLabel.textAlignment = .center
+            self.categoryLabel.textColor = UIColor.lightGray
+            self.categoryLabel.font = UIFont.systemFont(ofSize: 11, weight: .regular)
+        }
+    }
+    
     var board : Board!{
         didSet{
             self.setAuthorText(title: board.author)
@@ -73,6 +81,7 @@ class FreeBoardCell : UITableViewCell {
             self.setTitleText(title: board.title)
             self.setContentText(title: board.content)
             self.setCommentText(title: String(board.numberOfcomment))
+            self.setCategoryText(title: board.category)
         }
     }
     
@@ -95,6 +104,7 @@ class FreeBoardCell : UITableViewCell {
         dateLabel = UILabel()
         titleLabel = UILabel()
         contentLabel = UILabel()
+        categoryLabel = UILabel()
         commentImage = UIImageView()
         commentLabel = UILabel()
     }
@@ -104,6 +114,7 @@ class FreeBoardCell : UITableViewCell {
         self.contentView.addSubview(dateLabel)
         self.contentView.addSubview(titleLabel)
         self.contentView.addSubview(contentLabel)
+        self.contentView.addSubview(categoryLabel)
         self.contentView.addSubview(commentImage)
         self.contentView.addSubview(commentLabel)
     }
@@ -152,6 +163,13 @@ class FreeBoardCell : UITableViewCell {
             make.width.equalTo(height*0.15)
         }
         
+        self.categoryLabel.snp.makeConstraints{ make in
+            make.top.equalTo(self.contentLabel.snp.bottom).offset(3)
+            make.left.equalToSuperview().offset(20)
+            make.height.equalTo(height*0.15)
+            //make.width.equalTo(height*0.15)
+        }
+        
     }
 }
 
@@ -175,4 +193,11 @@ extension FreeBoardCell{
     func setCommentText(title: String) {
         commentLabel.text = title
     }
+    
+    func setCategoryText(title : String){
+        categoryLabel.text = "#\(title)"
+    }
 }
+
+
+

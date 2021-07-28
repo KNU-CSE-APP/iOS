@@ -110,6 +110,21 @@
             </objects>
             <point key="canvasLocation" x="929" y="1671"/>
         </scene>
+        <!--User Inform View-->
+        <scene sceneID="jSZ-jO-baW">
+            <objects>
+                <viewController storyboardIdentifier="UserInformView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="c4w-Xt-Nxc" customClass="UserInformView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="FXx-rG-7hm">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="MMW-zx-4q9"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MUO-HE-IaR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="928" y="2546"/>
+        </scene>
         <!--마이페이지-->
         <scene sceneID="cBB-Ws-usU">
             <objects>
@@ -260,6 +275,81 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tfI-8o-EpD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="6525" y="1712"/>
+        </scene>
+        <!--Edit Pw View-->
+        <scene sceneID="PpF-YB-1Ql">
+            <objects>
+                <viewController storyboardIdentifier="EditPwView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="auu-B8-iJn" customClass="EditPwView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="FNa-H7-dsG">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="PtR-wf-23G"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Bzs-X3-A6M" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1667" y="2546"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="To6-s7-8Uc">
+            <objects>
+                <viewController id="KT7-nF-t0g" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="YvQ-GM-h1a">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="lUY-lw-xyL"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7J0-23-iSi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2432" y="3242"/>
+        </scene>
+        <!--Written Baord List View-->
+        <scene sceneID="Sfg-KA-Zam">
+            <objects>
+                <viewController storyboardIdentifier="WrittenBaordListView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uvz-MC-BIa" customClass="WrittenBaordListView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="STc-UP-aSj">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="Bd2-wB-eFH"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iwh-vN-6bj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="929" y="3242"/>
+        </scene>
+        <!--App Setting View-->
+        <scene sceneID="B56-aZ-lGA">
+            <objects>
+                <viewController storyboardIdentifier="AppSettingView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ahK-hw-j8M" customClass="AppSettingView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="EjS-xr-cxH">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="K8Y-4R-Yc0"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8I7-Fp-y1m" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1694" y="3242"/>
+        </scene>
+        <!--Reservation Hist View-->
+        <scene sceneID="lgM-Ad-Ncl">
+            <objects>
+                <viewController storyboardIdentifier="ReservationHistView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ADc-RS-aJ5" customClass="ReservationHistView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="zPo-2a-9YG">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="Wdd-q9-gaz"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Zen-aN-FlU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2412" y="2546"/>
         </scene>
     </scenes>
     <resources>

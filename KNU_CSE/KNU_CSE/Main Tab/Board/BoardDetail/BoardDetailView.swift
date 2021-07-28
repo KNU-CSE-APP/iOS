@@ -68,6 +68,15 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
         }
     }
     
+    var categoryLabel:UILabel!{
+        didSet{
+            categoryLabel.text = "#\(boardDetailViewModel.board.category)"
+            categoryLabel.textAlignment = .center
+            categoryLabel.textColor = UIColor.lightGray
+            categoryLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        }
+    }
+    
     var commentImage:UIImageView!{
         didSet{
             let image = UIImage(systemName: "text.bubble.fill")
@@ -165,6 +174,7 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
         dateLabel = UILabel()
         titleLabel = UILabel()
         contentLabel = UILabel()
+        categoryLabel = UILabel()
         commentImage = UIImageView()
         commentLabel = UILabel()
         
@@ -180,7 +190,7 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     func addView(){
         self.view.addSubview(scrollView)
         self.scrollView.addSubview(boardContentView)
-        _ = [authorLabel, dateLabel, titleLabel, contentLabel, commentImage, commentLabel, stackView].map { self.boardContentView.addSubview($0)}
+        _ = [authorLabel, dateLabel, titleLabel, contentLabel, categoryLabel, commentImage, commentLabel, stackView].map { self.boardContentView.addSubview($0)}
         
         self.view.addSubview(textFieldView)
         _ = [borderLine,textField,textFieldBtn].map{
@@ -245,6 +255,12 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
             make.right.equalTo(commentLabel.snp.left).offset(-5)
             make.height.equalTo(height*0.1)
             make.width.equalTo(height*0.1)
+        }
+        
+        self.categoryLabel.snp.makeConstraints{ make in
+            make.top.equalTo(self.contentLabel.snp.bottom).offset(5)
+            make.left.equalToSuperview().offset(20)
+            make.height.equalTo(height*0.1)
         }
         
         self.stackView.snp.makeConstraints{ make in

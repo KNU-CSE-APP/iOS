@@ -9,14 +9,14 @@ import Foundation
 
 class Board:BaseObject{
     var boardId : Int
-    var category : Int
+    var category : String
     var title : String
     var content : String
     var author : String
     var date : String
     var numberOfcomment:Int
     
-    init(boardId:Int, category:Int, title:String, content:String, author:String, date:String, numberOfcomment:Int) {
+    init(boardId:Int, category:String, title:String, content:String, author:String, date:String, numberOfcomment:Int) {
         self.boardId = boardId
         self.category = category
         self.title = title

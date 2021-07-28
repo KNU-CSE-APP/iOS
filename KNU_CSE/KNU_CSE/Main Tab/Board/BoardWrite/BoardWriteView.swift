@@ -10,6 +10,8 @@ import BTNavigationDropdownMenu
 
 class BoardWriteView:UIViewController, ViewProtocol{
     
+    let categoryTitle:[String] = ["잡담하기", "정보", "팀원 구하기", "수업", "팀원 구하기", "팀원 구하기", "팀원 구하기", "팀원 구하기", "팀원 구하기"]
+    
     var scrollView:UIScrollView!{
         didSet{
             scrollView.alwaysBounceVertical = true
@@ -33,6 +35,27 @@ class BoardWriteView:UIViewController, ViewProtocol{
         didSet{
             borderLine.layer.borderWidth = 0.3
             borderLine.layer.borderColor = UIColor.lightGray.cgColor
+        }
+    }
+    
+    var categoryLabel:UILabel!{
+        didSet{
+            categoryLabel.text = "추천 카테고리"
+        }
+    }
+    
+    var categoryScroll:UIScrollView!{
+        didSet{
+            categoryScroll.alwaysBounceHorizontal = true
+        }
+    }
+    
+    var categoryStack:UIStackView!{
+        didSet{
+            categoryStack.axis = .horizontal
+            categoryStack.distribution = .equalSpacing
+            categoryStack.spacing = 10
+            self.addStackView()
         }
     }
     
@@ -110,6 +133,11 @@ class BoardWriteView:UIViewController, ViewProtocol{
         self.scrollView = UIScrollView()
         self.titleField = UITextField()
         self.borderLine = UIView()
+        
+        self.categoryLabel = UILabel()
+        self.categoryScroll = UIScrollView()
+        self.categoryStack = UIStackView()
+        
         self.contentField = UITextView()
         self.contentPlaceHolder = UILabel()
         self.rightItemButton = UIBarButtonItem()
@@ -118,15 +146,17 @@ class BoardWriteView:UIViewController, ViewProtocol{
     
     func addView() {
         self.view.addSubview(scrollView)
-        _ = [titleField, borderLine, contentField, contentPlaceHolder].map{
+        _ = [titleField, borderLine, contentField, contentPlaceHolder, categoryLabel, categoryScroll].map{
             self.scrollView.addSubview($0)
         }
+        self.categoryScroll.addSubview(categoryStack)
     }
     
     func setUpConstraints() {
         let left_margin = 20
         let right_margin = -20
         let padding = 5
+        let category_height = 50
         
         self.scrollView.snp.makeConstraints{ make in
             make.top.equalTo(self.view.safeAreaLayoutGuide)
@@ -149,8 +179,19 @@ class BoardWriteView:UIViewController, ViewProtocol{
             make.height.equalTo(0.3)
         }
         
-        self.contentField.snp.makeConstraints{ make in
+        self.categoryScroll.snp.makeConstraints{ make in
             make.top.equalTo(self.borderLine.snp.bottom).offset(10)
+            make.left.equalTo(self.view.safeAreaLayoutGuide).offset(left_margin)
+            make.right.equalTo(self.view.safeAreaLayoutGuide).offset(right_margin)
+            make.height.equalTo(category_height)
+        }
+        
+        self.categoryStack.snp.makeConstraints{ make in
+            make.left.right.top.bottom.equalToSuperview()
+        }
+        
+        self.contentField.snp.makeConstraints{ make in
+            make.top.equalTo(self.categoryScroll.snp.bottom).offset(10)
             make.left.equalTo(self.view.safeAreaLayoutGuide).offset(left_margin)
             make.right.equalTo(self.view.safeAreaLayoutGuide).offset(right_margin)
             make.bottom.equalToSuperview()
@@ -228,5 +269,43 @@ extension BoardWriteView:UITextFieldDelegate{
             self.contentCheck = false
             rightItemButton.tintColor = .white.withAlphaComponent(0.7)
         }
+    }
+}
+
+
+extension BoardWriteView{
+    func addStackView(){
+        for i in 0..<categoryTitle.count{
+            self.categoryStack.addArrangedSubview(addingCustomButton(buttonTitle: categoryTitle[i], buttonFontSize: 15, buttonCount: 1))
+        }
+    }
+    
+    func addingCustomButton(buttonTitle : String, buttonFontSize: CGFloat, buttonCount : Int) -> UIButton
+    {
+        let ownButton = UIButton()
+        ownButton.setTitle(buttonTitle, for: UIControl.State.normal)
+        ownButton.titleLabel?.font = UIFont.systemFont(ofSize: buttonFontSize)
+        ownButton.backgroundColor = .white
+        ownButton.setTitleColor(UIColor.black, for: .normal)
+        ownButton.setTitleColor(UIColor.black.withAlphaComponent(0.5), for: .highlighted)
+        ownButton.addTarget(self, action: #selector(ownButtonAction), for: .touchUpInside)
+        ownButton.layer.borderWidth = 0.5
+        ownButton.layer.borderColor = UIColor.lightGray.cgColor
+        ownButton.layer.cornerRadius = 10
+        
+        let buttonTitleSize = (buttonTitle as NSString).size(withAttributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: buttonFontSize + 1)])
+
+        let height = buttonTitleSize.height * 1.5
+        let width = buttonTitleSize.width + 20
+        ownButton.snp.makeConstraints{ make in
+            make.width.equalTo(width)
+            make.height.equalTo(height)
+        }
+        return ownButton
+    }
+
+    @objc func ownButtonAction(sender: UIButton)
+    {
+        print("\n\n Title  \(sender.titleLabel?.text)")
     }
 }
