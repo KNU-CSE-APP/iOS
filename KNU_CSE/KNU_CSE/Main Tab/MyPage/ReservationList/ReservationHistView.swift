@@ -42,7 +42,7 @@ class ReservationHistView: UIViewController, ViewProtocol{
     
     var cancelBtn:UIButton!{
         didSet{
-            cancelBtn.setTitle("예약 취소", for: .normal)
+            cancelBtn.setTitle("좌석 반납", for: .normal)
             cancelBtn.setTitleColor(.black, for: .normal)
             cancelBtn.setTitleColor(UIColor.lightGray.withAlphaComponent(0.3), for: .highlighted)
             cancelBtn.layer.borderWidth = 0.5

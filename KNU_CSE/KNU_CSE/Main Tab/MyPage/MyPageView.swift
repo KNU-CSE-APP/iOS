@@ -131,10 +131,10 @@ extension MyPageView:UITableViewDelegate{
     }
 }
 
-extension MyPageView{
+extension UIViewController{
     
-    func pushView<typeOfVC:UIViewController>(identifier:String, typeOfVC:typeOfVC.Type){
-        guard let VC = storyboard?.instantiateViewController(withIdentifier: identifier) as? typeOfVC else{
+    func pushView<T:UIViewController>(identifier:String, typeOfVC:T.Type){
+        guard let VC = storyboard?.instantiateViewController(withIdentifier: identifier) as? T else{
             return
         }
         self.navigationController?.pushViewController(VC, animated: true)

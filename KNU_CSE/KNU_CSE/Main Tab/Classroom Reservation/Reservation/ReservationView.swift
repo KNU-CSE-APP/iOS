@@ -167,18 +167,26 @@ extension ReservationView:UICollectionViewDataSource, UICollectionViewDelegate{
             return UICollectionViewCell()
         }
         cell.classSeat = reservationViewModel.classSeat[indexPath.row]
-        cell.setBtnAction {
-            let alert = Alert(title: "좌석 예약", message: "\(indexPath.row+1)번 좌석을 예약하시겠습니까?", viewController: self)
+        cell.setBtnAction {[weak self] in
+            guard let classRoom = self?.reservationViewModel.classRoom, let classSeats = self?.reservationViewModel.classSeat else{
+                return
+            }
+            
+            let alert = Alert(title: "좌석 확인", message: "다음 좌석을 예약하시겠습니까?\n\(classRoom.building)-\(classRoom.roomNum)호 \(indexPath.row+1)번\n\n *반드시 착석 후 좌석을 예약해주세요.", viewController: self!)
             alert.popUpNormalAlert{ (action) in
-                guard let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "ReservationCheckView") as? ReservationCheckView else{
-                    return
-                }
-                self.navigationController?.pushViewController(pushVC, animated: true)
-                self.delegate = pushVC
-                self.delegate?.sendData(classRoom: self.reservationViewModel.classRoom, classSeat: self.reservationViewModel.classSeat[indexPath.row])
+                self?.pushToReservationCheckView(classRoom: classRoom, classSeat: classSeats, index: indexPath.row)
             }
         }
         return cell
+    }
+    
+    func pushToReservationCheckView(classRoom:ClassRoom, classSeat:[ClassSeat], index:Int){
+        guard let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "ReservationCheckView") as? ReservationCheckView else{
+            return
+        }
+        self.navigationController?.pushViewController(pushVC, animated: true)
+        self.delegate = pushVC
+        self.delegate?.sendData(classRoom: classRoom, classSeat: classSeat[index])
     }
 }
 

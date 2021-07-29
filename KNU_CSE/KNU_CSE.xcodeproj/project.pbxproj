@@ -84,6 +84,7 @@
 		68F861D926B1C96400934BD2 /* ReservationHistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F861D826B1C96400934BD2 /* ReservationHistViewModel.swift */; };
 		68F861DB26B1CC2D00934BD2 /* ReservationHistModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F861DA26B1CC2D00934BD2 /* ReservationHistModel.swift */; };
 		68F861DD26B1DE3B00934BD2 /* AppSettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F861DC26B1DE3B00934BD2 /* AppSettingCell.swift */; };
+		68F861DF26B2D31D00934BD2 /* ProfileTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F861DE26B2D31D00934BD2 /* ProfileTableCell.swift */; };
 		9AACC46FE6327A8A8FEE1371 /* Pods_KNU_CSE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AEB9BE74D13DB6D6DE35FAE /* Pods_KNU_CSE.framework */; };
 		AE59CA79AE6C9CF423411766 /* Pods_KNU_CSE_KNU_CSEUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C3849D4B5E75A8D54F61D53 /* Pods_KNU_CSE_KNU_CSEUITests.framework */; };
 		B614ABCE044BEAE18AECD334 /* Pods_KNU_CSETests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F57A9F2B8C44351C36B27DE /* Pods_KNU_CSETests.framework */; };
@@ -193,6 +194,7 @@
 		68F861D826B1C96400934BD2 /* ReservationHistViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationHistViewModel.swift; sourceTree = "<group>"; };
 		68F861DA26B1CC2D00934BD2 /* ReservationHistModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationHistModel.swift; sourceTree = "<group>"; };
 		68F861DC26B1DE3B00934BD2 /* AppSettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingCell.swift; sourceTree = "<group>"; };
+		68F861DE26B2D31D00934BD2 /* ProfileTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableCell.swift; sourceTree = "<group>"; };
 		7F57A9F2B8C44351C36B27DE /* Pods_KNU_CSETests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KNU_CSETests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A621397DE389C29CC60A0AD /* Pods-KNU_CSE.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KNU_CSE.debug.xcconfig"; path = "Target Support Files/Pods-KNU_CSE/Pods-KNU_CSE.debug.xcconfig"; sourceTree = "<group>"; };
 		949F8006B59C6CB5B5F67EA7 /* Pods-KNU_CSETests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KNU_CSETests.debug.xcconfig"; path = "Target Support Files/Pods-KNU_CSETests/Pods-KNU_CSETests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -278,6 +280,7 @@
 				681D380E26A9FC51000D9FE8 /* CommentCell.swift */,
 				681D381026AAA908000D9FE8 /* ReplyCell.swift */,
 				68F861C426B1A6CF00934BD2 /* MyPageViewCell.swift */,
+				68F861DE26B2D31D00934BD2 /* ProfileTableCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -920,6 +923,7 @@
 				68F1A5EE26A008FF007B4B86 /* BaseObject.swift in Sources */,
 				681D37B926A42782000D9FE8 /* ClassRoomView.swift in Sources */,
 				681D37F926A73F71000D9FE8 /* BoardTitleCollectionCell.swift in Sources */,
+				68F861DF26B2D31D00934BD2 /* ProfileTableCell.swift in Sources */,
 				68F1A5FE26A07147007B4B86 /* SignUpUILabel.swift in Sources */,
 				681D37DD26A5BF2D000D9FE8 /* ClassSeatCell.swift in Sources */,
 				681D37CF26A48A4B000D9FE8 /* FreeBoardViewModel.swift in Sources */,

@@ -18,7 +18,7 @@ class ReservationCheckView: UIViewController, ViewProtocol{
     
     var cautionLabel:UILabel!{
         didSet{
-            cautionLabel.text = "반드시 착석 후 좌석을 예약해주시길 바랍니다."
+            cautionLabel.text = "예약 좌석 관리는 '설정 > 예약 내역'에서 가능합니다."
             cautionLabel.font = UIFont.systemFont(ofSize: 15, weight: .bold)
             cautionLabel.textColor = Color.mainColor
             cautionLabel.textAlignment = .center
@@ -40,38 +40,22 @@ class ReservationCheckView: UIViewController, ViewProtocol{
         }
     }
     
-    var cancelBtn:UIButton!{
-        didSet{
-            cancelBtn.setTitle("예약 취소", for: .normal)
-            cancelBtn.setTitleColor(.black, for: .normal)
-            cancelBtn.setTitleColor(UIColor.lightGray.withAlphaComponent(0.3), for: .highlighted)
-            cancelBtn.layer.borderWidth = 0.5
-            cancelBtn.layer.borderColor = UIColor.lightGray.cgColor
-            cancelBtn.backgroundColor = .white
-            cancelBtn.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-            cancelBtn.addAction {
-                self.navigationController?.popViewController(animated: true)
-            }
-        }
-    }
-    
     var reservationBtn:UIButton!{
         didSet{
-            reservationBtn.setTitle("예약 확정", for: .normal)
+            reservationBtn.setTitle("확인", for: .normal)
             reservationBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
             reservationBtn.setTitleColor(.white, for: .normal)
             reservationBtn.backgroundColor = Color.mainColor
             reservationBtn.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-            reservationBtn.addAction {
-                
+            reservationBtn.addAction { [weak self] in
+                self?.popView()
             }
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-        self.navigationController?.navigationBar.topItem?.backBarButtonItem = backBarButtonItem
-        self.setNavigationTitle(title: "좌석배정확정")
+        self.setNavigationTitle(title: "좌석예약정보")
+        self.navigationItem.setHidesBackButton(true, animated: true)
     }
     
     override func viewDidLoad() {
@@ -84,14 +68,12 @@ class ReservationCheckView: UIViewController, ViewProtocol{
     func initUI() {
         reserTableView = UITableView()
         cautionLabel = UILabel()
-        cancelBtn = UIButton()
         reservationBtn = UIButton()
     }
     
     func addView() {
         self.view.addSubview(reserTableView)
         self.view.addSubview(cautionLabel)
-        self.view.addSubview(cancelBtn)
         self.view.addSubview(reservationBtn)
     }
     
@@ -102,7 +84,6 @@ class ReservationCheckView: UIViewController, ViewProtocol{
         let labelHeight = self.view.frame.height * 0.3 / CGFloat(self.titleList.count) / 1.5
         let btnWidth = self.view.frame.width * 0.25
         let btnHeight = btnWidth * 0.4
-        let btn_left_Margin = -CGFloat(btnWidth*0.5) - 10
         
         self.cautionLabel.snp.makeConstraints{ make in
             make.left.equalTo(left_Margin)
@@ -118,15 +99,8 @@ class ReservationCheckView: UIViewController, ViewProtocol{
             make.height.equalToSuperview().multipliedBy(0.3)
         }
         
-        self.cancelBtn.snp.makeConstraints{ make in
-            make.centerX.equalTo(self.reserTableView).offset(btn_left_Margin)
-            make.top.equalTo(self.reserTableView.snp.bottom).offset(10)
-            make.width.equalTo(btnWidth)
-            make.height.equalTo(btnHeight)
-        }
-        
         self.reservationBtn.snp.makeConstraints{ make in
-            make.left.equalTo(cancelBtn.snp.right).offset(10)
+            make.centerX.equalTo(self.reserTableView)
             make.top.equalTo(self.reserTableView.snp.bottom).offset(10)
             make.width.equalTo(btnWidth)
             make.height.equalTo(btnHeight)
@@ -137,6 +111,12 @@ class ReservationCheckView: UIViewController, ViewProtocol{
         self.navigationItem.title = title
     }
     
+    func popView(){
+        guard let viewControllers = self.navigationController?.viewControllers as? [UIViewController] else {
+            return
+        }
+        self.navigationController?.popToViewController(viewControllers[viewControllers.count-3], animated: true)
+    }
 }
 
 extension ReservationCheckView : UITableViewDataSource{
@@ -160,7 +140,7 @@ extension ReservationCheckView:ReservationCheckDelegate{
     func sendData(classRoom: ClassRoom, classSeat: ClassSeat) {
         self.reservationCheckViewModel = ReservationCheckViewModel(email: "sdfsdfs", building: classRoom.building, classSeat: classSeat, classRoom: classRoom)
         
-        contentList = [contentText.inform(classRoom.building,String(classRoom.roomNum),String(classSeat.seatNumber)), contentText.status("사용가능"), contentText.startTime(""), contentText.endTime("")]
+        contentList = [contentText.inform(classRoom.building,String(classRoom.roomNum),String(classSeat.seatNumber)), contentText.status("예약 완료"), contentText.startTime(""), contentText.endTime("")]
     }
     
     func setCellTitleText(contentText:contentText)->String{
