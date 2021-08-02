@@ -35,83 +35,82 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     var authorImageView:UIImageView!{
         didSet{
             self.imageSize = authorLabel.font.lineHeight + 4
-            
-            authorImageView.image = self.image
-            authorImageView.clipsToBounds = true
-            authorImageView.contentMode = .scaleAspectFill
-            authorImageView.layer.borderWidth = 1
-            authorImageView.layer.borderColor = UIColor.clear.cgColor
-            authorImageView.layer.cornerRadius = imageSize / 4
-            authorImageView.frame.size = CGSize(width: imageSize, height: imageSize)
-            authorImageView.tintColor = .lightGray
+            self.authorImageView.image = self.image
+            self.authorImageView.clipsToBounds = true
+            self.authorImageView.contentMode = .scaleAspectFill
+            self.authorImageView.layer.borderWidth = 1
+            self.authorImageView.layer.borderColor = UIColor.clear.cgColor
+            self.authorImageView.layer.cornerRadius = imageSize / 4
+            self.authorImageView.frame.size = CGSize(width: imageSize, height: imageSize)
+            self.authorImageView.tintColor = .lightGray
         }
     }
     
     var authorLabel:UILabel!{
         didSet{
-            authorLabel.text = boardDetailViewModel.board.author
-            authorLabel.textAlignment = .left
-            authorLabel.textColor = UIColor.black
-            authorLabel.font = UIFont.systemFont(ofSize: 15, weight: .light)
-            authorLabel.sizeToFit()
+            self.authorLabel.text = boardDetailViewModel.board.author
+            self.authorLabel.textAlignment = .left
+            self.authorLabel.textColor = UIColor.black
+            self.authorLabel.font = UIFont.systemFont(ofSize: 15, weight: .light)
+            self.authorLabel.sizeToFit()
         }
     }
     
     var dateLabel:UILabel!{
         didSet{
-            dateLabel.text = boardDetailViewModel.board.date
-            dateLabel.textAlignment = .right
-            dateLabel.textColor = UIColor.black
-            dateLabel.font = UIFont.systemFont(ofSize: 14, weight: .thin)
-            dateLabel.sizeToFit()
+            self.dateLabel.text = boardDetailViewModel.board.date
+            self.dateLabel.textAlignment = .right
+            self.dateLabel.textColor = UIColor.black
+            self.dateLabel.font = UIFont.systemFont(ofSize: 14, weight: .thin)
+            self.dateLabel.sizeToFit()
         }
     }
     
     var titleLabel:UILabel!{
         didSet{
-            titleLabel.text = boardDetailViewModel.board.title
-            titleLabel.textAlignment = .left
-            titleLabel.textColor = UIColor.black
-            titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-            titleLabel.numberOfLines = 0
-            titleLabel.sizeToFit()
+            self.titleLabel.text = boardDetailViewModel.board.title
+            self.titleLabel.textAlignment = .left
+            self.titleLabel.textColor = UIColor.black
+            self.titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+            self.titleLabel.numberOfLines = 0
+            self.titleLabel.sizeToFit()
         }
     }
     
     var contentLabel:UILabel!{
         didSet{
-            contentLabel.text = boardDetailViewModel.board.content
-            contentLabel.textAlignment = .left
-            contentLabel.textColor = UIColor.black
-            contentLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-            contentLabel.numberOfLines = 0
-            contentLabel.sizeToFit()
+            self.contentLabel.text = boardDetailViewModel.board.content
+            self.contentLabel.textAlignment = .left
+            self.contentLabel.textColor = UIColor.black
+            self.contentLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+            self.contentLabel.numberOfLines = 0
+            self.contentLabel.sizeToFit()
         }
     }
     
     var categoryLabel:UILabel!{
         didSet{
-            categoryLabel.text = "#\(boardDetailViewModel.board.category)"
-            categoryLabel.textAlignment = .center
-            categoryLabel.textColor = UIColor.lightGray
-            categoryLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+            self.categoryLabel.text = "#\(boardDetailViewModel.board.category)"
+            self.categoryLabel.textAlignment = .center
+            self.categoryLabel.textColor = UIColor.lightGray
+            self.categoryLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         }
     }
     
     var commentImage:UIImageView!{
         didSet{
             let image = UIImage(systemName: "text.bubble.fill")
-            commentImage.image = image
-            commentImage.tintColor = .lightGray
+            self.commentImage.image = image
+            self.commentImage.tintColor = .lightGray
         }
     }
     
     var commentLabel:UILabel!{
         didSet{
-            commentLabel.text = String(boardDetailViewModel.board.numberOfcomment)
-            commentLabel.textAlignment = .left
-            commentLabel.textColor = UIColor.black
-            commentLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+            self.commentLabel.text = String(boardDetailViewModel.board.numberOfcomment)
+            self.commentLabel.textAlignment = .left
+            self.commentLabel.textColor = UIColor.black
+            self.commentLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         }
     }
     
