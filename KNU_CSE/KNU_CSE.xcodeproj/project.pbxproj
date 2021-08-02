@@ -24,7 +24,7 @@
 		681D37DB26A4AAAC000D9FE8 /* ReservationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37DA26A4AAAC000D9FE8 /* ReservationViewModel.swift */; };
 		681D37DD26A5BF2D000D9FE8 /* ClassSeatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37DC26A5BF2D000D9FE8 /* ClassSeatCell.swift */; };
 		681D37DF26A5DABC000D9FE8 /* ReservationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37DE26A5DABC000D9FE8 /* ReservationModel.swift */; };
-		681D37E126A5E7B2000D9FE8 /* UIControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37E026A5E7B2000D9FE8 /* UIControl.swift */; };
+		681D37E126A5E7B2000D9FE8 /* UIControl+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37E026A5E7B2000D9FE8 /* UIControl+extension.swift */; };
 		681D37E326A6ACBC000D9FE8 /* SeatPicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37E226A6ACBC000D9FE8 /* SeatPicView.swift */; };
 		681D37E526A6AD36000D9FE8 /* ViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37E426A6AD36000D9FE8 /* ViewProtocol.swift */; };
 		681D37E726A6BF58000D9FE8 /* testImage.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 681D37E626A6BF58000D9FE8 /* testImage.jpeg */; };
@@ -85,6 +85,11 @@
 		68F861DB26B1CC2D00934BD2 /* ReservationHistModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F861DA26B1CC2D00934BD2 /* ReservationHistModel.swift */; };
 		68F861DD26B1DE3B00934BD2 /* AppSettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F861DC26B1DE3B00934BD2 /* AppSettingCell.swift */; };
 		68F861DF26B2D31D00934BD2 /* ProfileTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F861DE26B2D31D00934BD2 /* ProfileTableCell.swift */; };
+		68F861E126B2EA0C00934BD2 /* UIViewController+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F861E026B2EA0C00934BD2 /* UIViewController+extension.swift */; };
+		68F861E326B2EE8A00934BD2 /* FindPwView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F861E226B2EE8A00934BD2 /* FindPwView.swift */; };
+		68F861E626B2FB4A00934BD2 /* FindPwViewModel+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F861E526B2FB4A00934BD2 /* FindPwViewModel+Model.swift */; };
+		68F861E926B427BE00934BD2 /* PhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F861E826B427BE00934BD2 /* PhotoView.swift */; };
+		68F861EB26B471D600934BD2 /* UserInformViewModel+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F861EA26B471D600934BD2 /* UserInformViewModel+Model.swift */; };
 		9AACC46FE6327A8A8FEE1371 /* Pods_KNU_CSE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AEB9BE74D13DB6D6DE35FAE /* Pods_KNU_CSE.framework */; };
 		AE59CA79AE6C9CF423411766 /* Pods_KNU_CSE_KNU_CSEUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C3849D4B5E75A8D54F61D53 /* Pods_KNU_CSE_KNU_CSEUITests.framework */; };
 		B614ABCE044BEAE18AECD334 /* Pods_KNU_CSETests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F57A9F2B8C44351C36B27DE /* Pods_KNU_CSETests.framework */; };
@@ -128,7 +133,7 @@
 		681D37DA26A4AAAC000D9FE8 /* ReservationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationViewModel.swift; sourceTree = "<group>"; };
 		681D37DC26A5BF2D000D9FE8 /* ClassSeatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassSeatCell.swift; sourceTree = "<group>"; };
 		681D37DE26A5DABC000D9FE8 /* ReservationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationModel.swift; sourceTree = "<group>"; };
-		681D37E026A5E7B2000D9FE8 /* UIControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIControl.swift; sourceTree = "<group>"; };
+		681D37E026A5E7B2000D9FE8 /* UIControl+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControl+extension.swift"; sourceTree = "<group>"; };
 		681D37E226A6ACBC000D9FE8 /* SeatPicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeatPicView.swift; sourceTree = "<group>"; };
 		681D37E426A6AD36000D9FE8 /* ViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewProtocol.swift; sourceTree = "<group>"; };
 		681D37E626A6BF58000D9FE8 /* testImage.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = testImage.jpeg; sourceTree = "<group>"; };
@@ -195,6 +200,11 @@
 		68F861DA26B1CC2D00934BD2 /* ReservationHistModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationHistModel.swift; sourceTree = "<group>"; };
 		68F861DC26B1DE3B00934BD2 /* AppSettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingCell.swift; sourceTree = "<group>"; };
 		68F861DE26B2D31D00934BD2 /* ProfileTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableCell.swift; sourceTree = "<group>"; };
+		68F861E026B2EA0C00934BD2 /* UIViewController+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+extension.swift"; sourceTree = "<group>"; };
+		68F861E226B2EE8A00934BD2 /* FindPwView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPwView.swift; sourceTree = "<group>"; };
+		68F861E526B2FB4A00934BD2 /* FindPwViewModel+Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FindPwViewModel+Model.swift"; sourceTree = "<group>"; };
+		68F861E826B427BE00934BD2 /* PhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoView.swift; sourceTree = "<group>"; };
+		68F861EA26B471D600934BD2 /* UserInformViewModel+Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInformViewModel+Model.swift"; sourceTree = "<group>"; };
 		7F57A9F2B8C44351C36B27DE /* Pods_KNU_CSETests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KNU_CSETests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A621397DE389C29CC60A0AD /* Pods-KNU_CSE.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KNU_CSE.debug.xcconfig"; path = "Target Support Files/Pods-KNU_CSE/Pods-KNU_CSE.debug.xcconfig"; sourceTree = "<group>"; };
 		949F8006B59C6CB5B5F67EA7 /* Pods-KNU_CSETests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KNU_CSETests.debug.xcconfig"; path = "Target Support Files/Pods-KNU_CSETests/Pods-KNU_CSETests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -417,6 +427,7 @@
 				68F1A60126A0A72D007B4B86 /* Color */,
 				68F1A5FA26A01028007B4B86 /* SignIn */,
 				68F1A5F026A0090B007B4B86 /* SignUp */,
+				68F861E426B2EE9100934BD2 /* FindPw */,
 				68F1A61026A31169007B4B86 /* Main Tab */,
 				68F1A5E726A008FF007B4B86 /* Web Service */,
 				68F1A5B726A0088B007B4B86 /* AppDelegate.swift */,
@@ -461,9 +472,9 @@
 		68F1A5F026A0090B007B4B86 /* SignUp */ = {
 			isa = PBXGroup;
 			children = (
-				68F1A5F126A0090B007B4B86 /* SignUpModel.swift */,
 				68F1A5F226A0090B007B4B86 /* SignUpView.swift */,
 				68F1A5F326A0090B007B4B86 /* SignUpViewModel.swift */,
+				68F1A5F126A0090B007B4B86 /* SignUpModel.swift */,
 			);
 			path = SignUp;
 			sourceTree = "<group>";
@@ -515,10 +526,11 @@
 				68F1A5F526A0090B007B4B86 /* BindingTextField.swift */,
 				68F1A5FD26A07147007B4B86 /* SignUpUILabel.swift */,
 				68F1A5FF26A07FE7007B4B86 /* CheckBox.swift */,
-				681D37E026A5E7B2000D9FE8 /* UIControl.swift */,
+				681D37E026A5E7B2000D9FE8 /* UIControl+extension.swift */,
 				681D381426AC52EA000D9FE8 /* KeyboardAnimation.swift */,
 				681D381626AC8D06000D9FE8 /* UIImage.swift */,
 				68F861D626B1C0E500934BD2 /* PaddingLabel.swift */,
+				68F861E026B2EA0C00934BD2 /* UIViewController+extension.swift */,
 			);
 			path = ExtensionUI;
 			sourceTree = "<group>";
@@ -563,7 +575,9 @@
 		68F861C626B1B18B00934BD2 /* UserInfrom */ = {
 			isa = PBXGroup;
 			children = (
+				68F861E726B427AE00934BD2 /* Photo */,
 				68F861CC26B1B2A200934BD2 /* UserInformView.swift */,
+				68F861EA26B471D600934BD2 /* UserInformViewModel+Model.swift */,
 			);
 			path = UserInfrom;
 			sourceTree = "<group>";
@@ -601,6 +615,23 @@
 				68F861DC26B1DE3B00934BD2 /* AppSettingCell.swift */,
 			);
 			path = AppSetting;
+			sourceTree = "<group>";
+		};
+		68F861E426B2EE9100934BD2 /* FindPw */ = {
+			isa = PBXGroup;
+			children = (
+				68F861E226B2EE8A00934BD2 /* FindPwView.swift */,
+				68F861E526B2FB4A00934BD2 /* FindPwViewModel+Model.swift */,
+			);
+			path = FindPw;
+			sourceTree = "<group>";
+		};
+		68F861E726B427AE00934BD2 /* Photo */ = {
+			isa = PBXGroup;
+			children = (
+				68F861E826B427BE00934BD2 /* PhotoView.swift */,
+			);
+			path = Photo;
 			sourceTree = "<group>";
 		};
 		B5A7CE24CAB6AED332D2F148 /* Frameworks */ = {
@@ -872,6 +903,7 @@
 				681D37D126A48A55000D9FE8 /* FreeBoardModel.swift in Sources */,
 				681D37EA26A6C6A8000D9FE8 /* ReservationCheckView.swift in Sources */,
 				681D37BF26A451B5000D9FE8 /* ClassRoomModel.swift in Sources */,
+				68F861E926B427BE00934BD2 /* PhotoView.swift in Sources */,
 				68F1A5B826A0088B007B4B86 /* AppDelegate.swift in Sources */,
 				68F1A5ED26A008FF007B4B86 /* GetEventListApiRequest.swift in Sources */,
 				68F1A61426A32356007B4B86 /* StorageManager.swift in Sources */,
@@ -879,6 +911,7 @@
 				681D382326ADC5D4000D9FE8 /* BoardSearchView.swift in Sources */,
 				681D37D926A4A75F000D9FE8 /* ClassDataDelegate.swift in Sources */,
 				68F1A60F26A30D07007B4B86 /* Alert.swift in Sources */,
+				68F861E126B2EA0C00934BD2 /* UIViewController+extension.swift in Sources */,
 				68F861CD26B1B2A200934BD2 /* UserInformView.swift in Sources */,
 				681D37BB26A4279F000D9FE8 /* FreeBoardView.swift in Sources */,
 				681D380D26A9CDA1000D9FE8 /* DataDelegate.swift in Sources */,
@@ -891,14 +924,16 @@
 				68F1A60526A1598A007B4B86 /* SignInModel.swift in Sources */,
 				681D37E326A6ACBC000D9FE8 /* SeatPicView.swift in Sources */,
 				68F1A60726A2D481007B4B86 /* Indicator.swift in Sources */,
-				681D37E126A5E7B2000D9FE8 /* UIControl.swift in Sources */,
+				681D37E126A5E7B2000D9FE8 /* UIControl+extension.swift in Sources */,
 				68F1A5EF26A008FF007B4B86 /* BaseApiRequest.swift in Sources */,
 				681D382626ADC61D000D9FE8 /* BoardWriteView.swift in Sources */,
 				68F861D726B1C0E500934BD2 /* PaddingLabel.swift in Sources */,
 				681D37B726A42748000D9FE8 /* NoticeView.swift in Sources */,
+				68F861EB26B471D600934BD2 /* UserInformViewModel+Model.swift in Sources */,
 				681D37E526A6AD36000D9FE8 /* ViewProtocol.swift in Sources */,
 				681D37C426A45442000D9FE8 /* ClassRoomCell.swift in Sources */,
 				681D382026ADAE85000D9FE8 /* ReplyViewModel.swift in Sources */,
+				68F861E326B2EE8A00934BD2 /* FindPwView.swift in Sources */,
 				68F1A61226A3120D007B4B86 /* TabView.swift in Sources */,
 				68F1A5BA26A0088B007B4B86 /* SceneDelegate.swift in Sources */,
 				681D380F26A9FC51000D9FE8 /* CommentCell.swift in Sources */,
@@ -918,6 +953,7 @@
 				681D380926A9C5BE000D9FE8 /* BoardDetailModel.swift in Sources */,
 				681D37DB26A4AAAC000D9FE8 /* ReservationViewModel.swift in Sources */,
 				68F1A60026A07FE7007B4B86 /* CheckBox.swift in Sources */,
+				68F861E626B2FB4A00934BD2 /* FindPwViewModel+Model.swift in Sources */,
 				68F1A5EC26A008FF007B4B86 /* Request.swift in Sources */,
 				681D37F426A737AE000D9FE8 /* SignInNavigationView.swift in Sources */,
 				68F1A5EE26A008FF007B4B86 /* BaseObject.swift in Sources */,

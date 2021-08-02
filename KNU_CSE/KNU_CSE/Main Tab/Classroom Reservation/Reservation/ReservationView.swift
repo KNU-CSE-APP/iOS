@@ -73,8 +73,7 @@ class ReservationView : UIViewController{
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-        self.navigationController?.navigationBar.topItem?.backBarButtonItem = backBarButtonItem
+        self.hideBackTitle()
     }
     
     override func viewDidLoad() {
@@ -149,10 +148,6 @@ class ReservationView : UIViewController{
             make.left.right.equalTo(0)
             make.bottom.equalToSuperview()
         }
-    }
-   
-    func setNavigationTitle(title:String){
-        self.navigationItem.title = title
     }
 }
 

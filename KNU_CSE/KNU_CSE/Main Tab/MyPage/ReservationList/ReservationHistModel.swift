@@ -7,18 +7,20 @@
 
 import Foundation
 
-class ReservationModel:BaseObject{
+class ReservationHistModel:BaseObject{
     
     var building:String
     var roomNumber:Int
     var seatNumber:Int
+    var extension_cnt:Int
     var startDate:String
     var endDate:String
     
-    init(building:String, roomNumber:Int, seatNumber:Int, startDate:String, endDate:String) {
+    init(building:String, roomNumber:Int, seatNumber:Int, extension_cnt:Int, startDate:String, endDate:String) {
         self.building = building
         self.roomNumber = roomNumber
         self.seatNumber = seatNumber
+        self.extension_cnt = extension_cnt
         self.startDate = startDate
         self.endDate = endDate
         super.init()
@@ -29,3 +31,4 @@ class ReservationModel:BaseObject{
     }
     
 }
+

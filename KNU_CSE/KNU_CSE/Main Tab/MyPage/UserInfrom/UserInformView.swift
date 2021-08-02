@@ -9,6 +9,7 @@ import UIKit
 
 class UserInformView:UIViewController, ViewProtocol{
     
+    var userInformationViewModel:UserInformViewModel = UserInformViewModel()
     let profile_width_hegiht:CGFloat = 150
     let image_width_height:CGFloat = 150 * 0.2
     let titleList:[String] = ["이름", "학번", "닉네임"]
@@ -16,16 +17,20 @@ class UserInformView:UIViewController, ViewProtocol{
     var profileBtn:UIButton!{
         didSet{
             do{
-                let url = URL(string: "https://file.mk.co.kr/meet/neds/2021/04/image_readtop_2021_330747_16177500644599916.jpg")
+                let url = URL(string: userInformationViewModel.profile.image)
                 let data =  try Data(contentsOf: url!)
-                
                 let image = UIImage(data: data)?.resized(toWidth: profile_width_hegiht)
+                
                 profileBtn.clipsToBounds = true
                 profileBtn.setImage(image, for: .normal)
                 profileBtn.layer.borderWidth = 1
                 profileBtn.layer.borderColor = UIColor.lightGray.cgColor
                 profileBtn.layer.cornerRadius = profile_width_hegiht * 0.5
                 profileBtn.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+                profileBtn.showsTouchWhenHighlighted = true
+                profileBtn.addAction { [weak self] in
+                    self?.addActionSheet()
+                }
             }catch {}
            
         }
@@ -36,10 +41,13 @@ class UserInformView:UIViewController, ViewProtocol{
             let image = UIImage(systemName: "camera.fill")?.resized(toWidth: 25)
             cameraImage.setImage(image, for: .normal)
             cameraImage.backgroundColor = .white
-            
             cameraImage.layer.borderWidth = 0.5
             cameraImage.layer.borderColor = UIColor.lightGray.cgColor
             cameraImage.layer.cornerRadius = self.image_width_height * 0.5
+            
+            cameraImage.addAction { [weak self] in
+                self?.addActionSheet()
+            }
         }
     }
     
@@ -71,6 +79,12 @@ class UserInformView:UIViewController, ViewProtocol{
             }
         }
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.setNavigationTitle(title: "회원정보")
+        self.hideBackTitle()
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -173,5 +187,37 @@ extension UserInformView{
     func removeBtnAction(){
         self.confirmBtn.backgroundColor = .lightGray.withAlphaComponent(0.5)
         self.confirmBtn.isEnabled = false
+    }
+    
+    func addActionSheet(){
+        var actionSheet = ActionSheet(viewController: self)
+        actionSheet.popUpActionSheet(edit_text: "프로필 이미지 변경", editAction: { [weak self] action in
+            self?.presentPhotoView()
+        }, remove_text: "프로필 이미지 삭제", removeAction:{ [weak self] action in
+            self?.setOriginProfile()
+        }
+    , cancel_text: "취소")
+    }
+    
+    func presentPhotoView(){
+        guard let VC = storyboard?.instantiateViewController(withIdentifier: "PhotoView") as? PhotoView else{
+            return
+        }
+        VC.modalPresentationStyle = .overFullScreen
+        VC.setListener{ [weak self] image, url in
+            do{
+                self?.profileBtn.setImage(image.resized(toWidth: (self?.profile_width_hegiht)!), for: .normal)
+                if self?.userInformationViewModel.profile.image != url{
+                    self?.addBtnAction()
+                    self?.userInformationViewModel.imageData = image.jpegData(compressionQuality: 0.5)
+                }
+            }
+        }
+        self.navigationController?.present(VC, animated: true, completion: nil)
+    }
+    
+    func setOriginProfile(){
+        let image = UIImage(systemName: "person.circle.fill")!.resized(toWidth: profile_width_hegiht)!
+        self.profileBtn.setImage(image.withTintColor(.lightGray.withAlphaComponent(0.4)), for: .normal)
     }
 }

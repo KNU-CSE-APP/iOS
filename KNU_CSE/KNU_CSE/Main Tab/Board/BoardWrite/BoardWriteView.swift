@@ -231,11 +231,6 @@ extension BoardWriteView{
         }
     }
     
-    func setNavigationTitle(title:String){
-        self.navigationItem.title = title
-    }
-    
-    
     @objc func addTapped(){
         if contentCheck{
             print("ok")

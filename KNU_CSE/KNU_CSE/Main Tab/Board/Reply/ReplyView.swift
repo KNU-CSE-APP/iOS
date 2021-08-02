@@ -90,8 +90,8 @@ class ReplyView:UIViewController, ViewProtocol, CommentDataDelegate{
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.hideBackBtnTitle()
         self.setNavigationTitle(title: "답글달기")
+        self.hideBackTitle()
     }
     
     override func viewDidLoad() {
@@ -234,15 +234,6 @@ extension ReplyView{
                 make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(0)
             }
         }
-    }
-    
-    func hideBackBtnTitle(){
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-        self.navigationController?.navigationBar.topItem?.backBarButtonItem = backBarButtonItem
-    }
-    
-    func setNavigationTitle(title:String){
-        self.navigationItem.title = title
     }
 }
 

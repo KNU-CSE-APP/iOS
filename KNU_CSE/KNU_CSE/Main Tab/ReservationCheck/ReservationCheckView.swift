@@ -81,7 +81,7 @@ class ReservationCheckView: UIViewController, ViewProtocol{
         let left_Margin = 25
         let right_Margin = -left_Margin
         let top_Margin = 25
-        let labelHeight = self.view.frame.height * 0.3 / CGFloat(self.titleList.count) / 1.5
+        let labelHeight = self.view.frame.height * 0.3 / CGFloat(self.titleList.count) / 1.4
         let btnWidth = self.view.frame.width * 0.25
         let btnHeight = btnWidth * 0.4
         
@@ -105,10 +105,6 @@ class ReservationCheckView: UIViewController, ViewProtocol{
             make.width.equalTo(btnWidth)
             make.height.equalTo(btnHeight)
         }
-    }
-    
-    func setNavigationTitle(title:String){
-        self.navigationItem.title = title
     }
     
     func popView(){

@@ -24,9 +24,8 @@ class AppSettingView:UIViewController, ViewProtocol{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-        self.navigationController?.navigationBar.topItem?.backBarButtonItem = backBarButtonItem
         self.setNavigationTitle(title: "환경설정")
+        self.hideBackTitle()
     }
     
     override func viewDidLoad() {
@@ -51,10 +50,6 @@ class AppSettingView:UIViewController, ViewProtocol{
             make.bottom.equalToSuperview()
         }
     }
-    
-    func setNavigationTitle(title:String){
-        self.navigationItem.title = title
-    }
 }
 
 
@@ -73,12 +68,12 @@ extension AppSettingView:UITableViewDataSource{
         
         switch indexPath.row {
         case 0:
-            cell.setListener{ btn in
+            cell.setListener{ [weak self] btn in
                 if btn.isOn {
-                    print("on")
+                    // 등록된 토큰이 있다면
                 }
                 else {
-                    print("off")
+                    // 등록된 토큰이 있는데 off하면 해당 토큰으로 notification이 오지 못하도록
                 }
             }
         case 1:

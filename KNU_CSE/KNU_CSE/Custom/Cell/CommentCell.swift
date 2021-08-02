@@ -9,6 +9,8 @@ import UIKit
 
 class CommentCell : UIView {
     let titleHeight:CGFloat = 30
+    var imageSize:CGFloat!
+    
     var borderLine:UIView!{
         didSet{
             borderLine.layer.borderWidth = 0.3
@@ -16,10 +18,19 @@ class CommentCell : UIView {
         }
     }
     
+    var image:UIImage!
+    
     var authorImageView:UIImageView!{
         didSet{
-            let image = UIImage(systemName: "person.crop.square.fill")
-            authorImageView.image = image
+            self.imageSize = authorLabel.font.lineHeight + 4
+            
+            authorImageView.image = self.image
+            authorImageView.clipsToBounds = true
+            authorImageView.contentMode = .scaleAspectFill
+            authorImageView.layer.borderWidth = 1
+            authorImageView.layer.borderColor = UIColor.clear.cgColor
+            authorImageView.layer.cornerRadius = imageSize / 4
+            authorImageView.frame.size = CGSize(width: imageSize, height: imageSize)
             authorImageView.tintColor = .lightGray
         }
     }
@@ -58,9 +69,6 @@ class CommentCell : UIView {
             replyBtn.setTitleColor(.black, for: .normal)
             replyBtn.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .regular)
             replyBtn.sizeToFit()
-            replyBtn.addAction {
-                print("ttttt")
-            }
         }
     }
     
@@ -69,7 +77,7 @@ class CommentCell : UIView {
     init(comment:Comment) {
         self.comment = comment
         super.init(frame: CGRect())
-        self.draw()
+        self.setImage()
         self.initUI()
         self.addView()
         self.setUpConstraints()
@@ -79,14 +87,20 @@ class CommentCell : UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    func draw(){
+    func setImage(){
+        do {
+            let url = URL(string: self.comment.image)
+            let data =  try Data(contentsOf: url!)
+            self.image = UIImage(data: data)
+        } catch  {
+            self.image = UIImage(systemName: "person.crop.square.fill")?.resized(toWidth: 100)?.withTintColor(.lightGray)
+        }
     }
     
     func initUI(){
         self.borderLine = UIView()
-        self.authorImageView = UIImageView()
         self.authorLabel = UILabel()
+        self.authorImageView = UIImageView()
         self.contentLabel = UILabel()
         self.dateLabel = UILabel()
         self.replyBtn = UIButton()
@@ -107,39 +121,39 @@ class CommentCell : UIView {
         let right_margin = -20
         let bottom_margin = -5
         
-        borderLine.snp.makeConstraints{ make in
+        self.borderLine.snp.makeConstraints{ make in
             make.top.equalToSuperview()
             make.left.equalToSuperview().offset(10)
             make.right.equalToSuperview().offset(-10)
             make.height.equalTo(0.3)
         }
         
-        authorImageView.snp.makeConstraints{ make in
+        self.authorImageView.snp.makeConstraints{ make in
             make.top.equalTo(borderLine.snp.bottom).offset(top_margin)
             make.left.equalToSuperview().offset(left_margin)
-            make.height.equalTo(authorLabel.snp.height)
-            make.width.equalTo(authorLabel.snp.height)
+            make.height.equalTo(imageSize)
+            make.width.equalTo(imageSize)
         }
         
-        authorLabel.snp.makeConstraints{ make in
-            make.top.equalTo(borderLine.snp.bottom).offset(top_margin)
-            make.left.equalTo(authorImageView.snp.right).offset(5)
+        self.authorLabel.snp.makeConstraints{ make in
+            make.centerY.equalTo(self.authorImageView)
+            make.left.equalTo(authorImageView.snp.right).offset(7)
             make.right.equalToSuperview().offset(right_margin)
         }
         
-        contentLabel.snp.makeConstraints{ make in
-            make.top.equalTo(self.authorLabel.snp.bottom).offset(5)
+        self.contentLabel.snp.makeConstraints{ make in
+            make.top.equalTo(self.authorImageView.snp.bottom).offset(5)
             make.left.equalToSuperview().offset(left_margin)
             make.right.equalToSuperview().offset(right_margin)
         }
         
-        dateLabel.snp.makeConstraints{ make in
+        self.dateLabel.snp.makeConstraints{ make in
             make.top.equalTo(self.contentLabel.snp.bottom).offset(3)
             make.left.equalToSuperview().offset(left_margin)
             make.bottom.equalToSuperview().offset(bottom_margin)
         }
         
-        replyBtn.snp.makeConstraints{ make in
+        self.replyBtn.snp.makeConstraints{ make in
             make.top.equalTo(self.contentLabel.snp.bottom).offset(3)
             make.left.equalTo(self.dateLabel.snp.right).offset(10)
             make.bottom.equalToSuperview().offset(bottom_margin)

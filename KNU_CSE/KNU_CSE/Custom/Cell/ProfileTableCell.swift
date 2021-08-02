@@ -14,15 +14,6 @@ class ProfileTableCell : UITableViewCell {
     @objc var listener : (String, String)->Void = { _, _ in }
     var origin_text:String!
     
-    func setListener(listener: @escaping(String, String)->Void ){
-        self.listener = listener
-        self.contentLabel.addTarget(self, action: #selector(textChange), for: .editingChanged)
-    }
-    
-    @objc func textChange(){
-        self.listener(origin_text, contentLabel.text!)
-    }
-    
     private var titleLabel:PaddingLabel!{
         didSet{
             titleLabel.textAlignment = .left
@@ -128,3 +119,14 @@ extension ProfileTableCell: UITextFieldDelegate{
     }
 }
 
+
+extension ProfileTableCell{
+    func setListener(listener: @escaping(String, String)->Void ){
+        self.listener = listener
+        self.contentLabel.addTarget(self, action: #selector(textChange), for: .editingChanged)
+    }
+    
+    @objc func textChange(){
+        self.listener(origin_text, contentLabel.text!)
+    }
+}

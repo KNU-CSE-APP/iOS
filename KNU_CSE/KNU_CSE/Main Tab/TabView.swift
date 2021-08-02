@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Photos
 
 class TabView : UITabBarController{
     
@@ -58,6 +59,7 @@ class TabView : UITabBarController{
     override func viewDidLoad() {
         self.delegate = self
         self.initUI()
+        self.requestNotiAuth()
     }
     
     func initUI() {
@@ -112,3 +114,17 @@ extension TabView:UITabBarControllerDelegate{
     }
     
 }
+
+extension TabView : UNUserNotificationCenterDelegate{
+    func requestNotiAuth() {
+        let authOptions = UNAuthorizationOptions(arrayLiteral: .alert, .badge, .sound)
+        UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { isSuccess, error in
+            if let error = error {
+                print(error.localizedDescription)
+            }else{
+                self.sendNotification(seconds: 10)
+            }
+        }
+    }
+}
+
