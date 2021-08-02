@@ -11,6 +11,8 @@ import M13Checkbox
 
 class ViewController: UIViewController {
     
+    var indicator : IndicatorView!
+    
     var signInViewModel : SignInViewModel = SignInViewModel(listener: nil)
     
     var accountUI : UIView! {
@@ -22,17 +24,20 @@ class ViewController: UIViewController {
     
     var emailTextField: BindingTextField! {
         didSet {
+            emailTextField.delegate = self
             emailTextField.prefixDraw(text: "이메일", on: .left)
             emailTextField.setUpText(text: "@knu.ac.kr", on: .right, color: .black)
             emailTextField.backgroundColor = .white
             emailTextField.bind { [weak self] email in
                 self?.signInViewModel.account.email = email
             }
+            
         }
     }
     
     var pwTextField: BindingTextField! {
         didSet {
+            pwTextField.delegate = self
             pwTextField.isSecureTextEntry = true
             pwTextField.backgroundColor = .white
             pwTextField.setupUpperBorder()
@@ -50,17 +55,25 @@ class ViewController: UIViewController {
             signInBtn.setTitle("로그인", for: .normal)
             signInBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
             signInBtn.addAction{
-                self.signInViewModel.getEvent(successHandler: { response in
-                    if response.result == 1 {
-                        let alert = UIAlertController(title: "회원가입성공", message: "확인 버튼을 누르면 로그인 페이지로 이동합니다.", preferredStyle: .alert)
-                        let actionDefault = UIAlertAction(title: "확인", style: .default){ (action) in
+                if self.signInViewModel.SignInCheck(){
+                    self.signInViewModel.SignInRequest(successHandler: { response in
+                        if response.result == 1 {
+                            self.saveKeyChain()
+                            self.pushTabView()
                         }
-                        alert.addAction(actionDefault)
-                        self.present(alert, animated: true, completion: nil)
-                    }
-                }, failHandler: { Error in
-                    print(Error)
-                })
+                        self.indicator.stopIndicator()
+                    }, failHandler: { Error in
+                        print(Error)
+                        let alert = Alert(title: "로그인 실패", message: "네트워크 상태를 확인하세요", viewController: self)
+                        alert.popUpDefaultAlert(action: nil)
+                        self.indicator.stopIndicator()
+                    }, asyncHandler: {
+                        self.indicator.startIndicator()
+                    })
+                }else {
+                    let alert = Alert(title: "로그인 실패", message: "아이디와 비밀번호를 입력하세요.", viewController: self)
+                    alert.popUpDefaultAlert(action: nil)
+                }
             }
         }
     }
@@ -73,7 +86,6 @@ class ViewController: UIViewController {
             signUpBtn.addAction{
                 let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "SignUpView")
                 self.navigationController?.pushViewController(pushVC!, animated: true)
-                self.navigationController?.navigationBar.isHidden = false
             }
         }
     }
@@ -82,13 +94,14 @@ class ViewController: UIViewController {
         didSet{
             let checkbox : M13Checkbox = autoSignInBox.checkBox
             autoSignInBox.setColor(tintColor: .white, textColor: .white)
+            autoSignInBox.setChecked(checkState: UserDefaults.standard.bool(forKey: "checkState"))
             autoSignInBox.bind {
                 switch checkbox.checkState {
                     case .checked:
-                      
+                        UserDefaults.standard.setValue(true, forKey: "checkState")
                         break
                     case .unchecked:
-
+                        UserDefaults.standard.setValue(false, forKey: "checkState")
                         break
                     case .mixed:
                         break
@@ -102,24 +115,29 @@ class ViewController: UIViewController {
         initUI()
         addView()
         setupConstraints()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        self.checkKeyChain()
+        self.setNavigationView()
         self.navigationController?.navigationBar.isHidden = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = Color.mainColor
-        appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        
+        self.navigationController?.navigationBar.isHidden = false
+    }
+    
+    func initUI(){
+        self.view.backgroundColor = Color.mainColor
 
-        self.navigationController?.navigationBar.tintColor = .white
-        self.navigationController?.navigationBar.standardAppearance = appearance
-        self.navigationController?.navigationBar.compactAppearance = appearance
-        self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        accountUI = UIView()
+        emailTextField = BindingTextField()
+        pwTextField = BindingTextField()
+        signInBtn = UIButton()
+        signUpBtn = UIButton()
+        autoSignInBox = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "자동로그인")
+        
+        indicator = IndicatorView(viewController: self)
     }
     
     func addView(){
@@ -131,17 +149,6 @@ class ViewController: UIViewController {
         self.view.addSubview(signInBtn)
         self.view.addSubview(signUpBtn)
         self.view.addSubview(autoSignInBox)
-    }
-    
-    func initUI(){
-        self.view.backgroundColor = Color.mainColor
-        
-        accountUI = UIView()
-        emailTextField = BindingTextField()
-        pwTextField = BindingTextField()
-        signInBtn = UIButton()
-        signUpBtn = UIButton()
-        autoSignInBox = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "자동로그인")
     }
     
     func setupConstraints(){
@@ -194,10 +201,70 @@ class ViewController: UIViewController {
         // MARK: - 자동로그인 버튼
         autoSignInBox.snp.makeConstraints{ make in
             make.width.equalTo(signUpBtn.snp.width).multipliedBy(0.25)
-            make.height.equalTo(signUpBtn.snp.height)
+            make.height.equalTo(height)
             make.top.equalTo(signUpBtn.snp.bottom).offset(top_padding)
             make.trailing.equalTo(right_margin)
         }
     }
     
+    
+}
+
+extension ViewController{
+    func setNavigationView(){
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = Color.mainColor
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+
+        self.navigationController?.navigationBar.tintColor = .white
+        self.navigationController?.navigationBar.standardAppearance = appearance
+        self.navigationController?.navigationBar.compactAppearance = appearance
+        self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
+    }
+    
+    func pushTabView(){
+        let pushVC = (self.storyboard?.instantiateViewController(withIdentifier: "TabView"))!
+        self.navigationController?.pushViewController(pushVC, animated: true)
+    }
+    
+    func saveKeyChain(){
+        if autoSignInBox.checkBox.checkState == .checked{
+            self.signInViewModel.storeUserAccount()
+        }else{
+            self.signInViewModel.storeUserEmail()
+        }
+    }
+    
+    func checkKeyChain(){
+        if self.signInViewModel.checkUserAccount(){
+            self.signInViewModel.SignInRequest(successHandler: { response in
+                if response.result == 1 {
+                    self.pushTabView()
+                }
+                self.indicator.stopIndicator()
+            }, failHandler: { Error in
+                print(Error)
+                let alert = Alert(title: "로그인 실패", message: "네트워크 상태를 확인하세요", viewController: self)
+                alert.popUpDefaultAlert(action: nil)
+                self.indicator.stopIndicator()
+            }, asyncHandler: {
+                self.indicator.startIndicator()
+            })
+        }
+    }
+}
+
+extension ViewController: UITextFieldDelegate{
+
+    //touch any space then keyboard shut down
+    open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
+        self.view.endEditing(true)
+    }
+
+    //if keyboard show up and press return button then keyboard shutdown
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
 }

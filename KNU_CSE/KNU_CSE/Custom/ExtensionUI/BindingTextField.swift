@@ -11,7 +11,7 @@ import SnapKit
 
 class BindingTextField: UITextField {
     var textChanged: (String) -> Void = { _ in }
-    let textfont : UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
+    var textfont : UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
     
     func bind(callBack: @escaping (String) -> Void) {
         textChanged = callBack
@@ -174,3 +174,5 @@ extension UITextField{
         self.layer.borderColor = color.cgColor
     }
 }
+
+

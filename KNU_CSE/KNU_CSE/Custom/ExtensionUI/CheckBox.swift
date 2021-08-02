@@ -48,7 +48,6 @@ class CheckBox : UIView{
     func setUpCheckBox(){
         checkBox.snp.makeConstraints{ make in
             make.width.equalTo(height * 0.5)
-            make.height.equalTo(height * 0.5)
             make.leading.equalToSuperview().offset(0)
             make.top.equalTo(height * 0.25)
             make.bottom.equalTo(height * 0.25)
@@ -64,6 +63,15 @@ class CheckBox : UIView{
             make.height.equalTo(height)
             make.leading.equalTo(checkBox.snp.trailing).offset(5)
         }
+    }
+    
+    func setChecked(checkState:Bool){
+        if checkState{
+            self.checkBox.checkState = .checked
+        }else{
+            self.checkBox.checkState = .unchecked
+        }
+        
     }
     
     func bind(callBack: @escaping () -> Void){

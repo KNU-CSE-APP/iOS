@@ -15,16 +15,19 @@ struct Request: BaseApiRequest {
         self.requestBodyObject = bodyObject
     }
     
-    func sendRequest<T:Codable>( request:BaseApiRequest, type :T.Type,successHandler:@escaping(T)->(),failHandler:@escaping(Error)->()){
+    func sendRequest<T:Codable>( request:BaseApiRequest, type :T.Type,successHandler:@escaping(T)->(),failHandler:@escaping(Error)->(),asyncHandler:@escaping()->()){
+        
+        asyncHandler()
         AF.request(request.request()).responseDecodable { (response:AFDataResponse<T>) in
              switch response.result{
-                       case .success(let responseEventList):
-                        successHandler(responseEventList)
-                           print("success")
-                       case .failure(let error):
-                           failHandler(error)
-                           print("fail")
+               case .success(let responseEventList):
+                successHandler(responseEventList)
+                   print("success")
+               case .failure(let error):
+                   failHandler(error)
+                   print("fail")
             }
+           
         }
     }
 }
