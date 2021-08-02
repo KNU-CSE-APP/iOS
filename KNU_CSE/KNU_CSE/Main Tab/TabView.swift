@@ -112,7 +112,6 @@ extension TabView:UITabBarControllerDelegate{
     func setNavigationItemWithSearch(){
         self.navigationItem.rightBarButtonItems = [searchBtn]
     }
-    
 }
 
 extension TabView : UNUserNotificationCenterDelegate{

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+
 class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     
     var selectedView:CommentCell? = nil
@@ -14,6 +15,8 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     var delegate:CommentDataDelegate?
     
     let commentPlaceHolder = "댓글을 입력해주세요."
+    let titleHeight:CGFloat = 30
+    var imageSize:CGFloat!
     var textViewHeight:CGFloat!
     var textViewPadding:CGFloat = 5
     var imageWidth:CGFloat!
@@ -28,12 +31,29 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     
     var boardContentView:UIView = UIView()
     
+    var image:UIImage!
+    var authorImageView:UIImageView!{
+        didSet{
+            self.imageSize = authorLabel.font.lineHeight + 4
+            
+            authorImageView.image = self.image
+            authorImageView.clipsToBounds = true
+            authorImageView.contentMode = .scaleAspectFill
+            authorImageView.layer.borderWidth = 1
+            authorImageView.layer.borderColor = UIColor.clear.cgColor
+            authorImageView.layer.cornerRadius = imageSize / 4
+            authorImageView.frame.size = CGSize(width: imageSize, height: imageSize)
+            authorImageView.tintColor = .lightGray
+        }
+    }
+    
     var authorLabel:UILabel!{
         didSet{
             authorLabel.text = boardDetailViewModel.board.author
             authorLabel.textAlignment = .left
             authorLabel.textColor = UIColor.black
             authorLabel.font = UIFont.systemFont(ofSize: 15, weight: .light)
+            authorLabel.sizeToFit()
         }
     }
     
@@ -43,6 +63,7 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
             dateLabel.textAlignment = .right
             dateLabel.textColor = UIColor.black
             dateLabel.font = UIFont.systemFont(ofSize: 14, weight: .thin)
+            dateLabel.sizeToFit()
         }
     }
     
@@ -160,6 +181,8 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        self.initImage()
         self.initUI()
         self.addView()
         self.setUpConstraints()
@@ -168,29 +191,30 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     }
     
     func initUI(){
-        scrollView = UIScrollView()
+        self.scrollView = UIScrollView()
         
-        authorLabel = UILabel()
-        dateLabel = UILabel()
-        titleLabel = UILabel()
-        contentLabel = UILabel()
-        categoryLabel = UILabel()
-        commentImage = UIImageView()
-        commentLabel = UILabel()
+        self.authorLabel = UILabel()
+        self.authorImageView = UIImageView()
+        self.dateLabel = UILabel()
+        self.titleLabel = UILabel()
+        self.contentLabel = UILabel()
+        self.categoryLabel = UILabel()
+        self.commentImage = UIImageView()
+        self.commentLabel = UILabel()
         
-        stackView = UIStackView()
+        self.stackView = UIStackView()
         
-        textFieldView = UIView()
-        borderLine = UIView()
-        textField = UITextView()
-        placeholderLabel = UILabel()
-        textFieldBtn = UIButton()
+        self.textFieldView = UIView()
+        self.borderLine = UIView()
+        self.textField = UITextView()
+        self.placeholderLabel = UILabel()
+        self.textFieldBtn = UIButton()
     }
     
     func addView(){
         self.view.addSubview(scrollView)
         self.scrollView.addSubview(boardContentView)
-        _ = [authorLabel, dateLabel, titleLabel, contentLabel, categoryLabel, commentImage, commentLabel, stackView].map { self.boardContentView.addSubview($0)}
+        _ = [authorLabel,authorImageView, dateLabel, titleLabel, contentLabel, categoryLabel, commentImage, commentLabel, stackView].map { self.boardContentView.addSubview($0)}
         
         self.view.addSubview(textFieldView)
         _ = [borderLine,textField,textFieldBtn].map{
@@ -217,10 +241,17 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
             make.bottom.equalToSuperview()//필수
         }
         
-        self.authorLabel.snp.makeConstraints{ make in
-            make.top.equalTo(boardContentView.snp.top).offset(15)
+        self.authorImageView.snp.makeConstraints{ make in
+            make.top.equalTo(boardContentView.snp.top).offset(10)
             make.left.equalToSuperview().offset(20)
-            make.width.equalToSuperview().multipliedBy(0.5)
+            make.height.equalTo(imageSize)
+            make.width.equalTo(imageSize)
+        }
+        
+        self.authorLabel.snp.makeConstraints{ make in
+            make.centerY.equalTo(self.authorImageView)
+            make.left.equalTo(self.authorImageView.snp.right).offset(5)
+            //make.width.equalToSuperview().multipliedBy(0.4)
             make.height.equalTo(height*0.1)
         }
         
@@ -401,3 +432,15 @@ extension BoardDetailView:UITextViewDelegate{
     }
 }
 
+extension BoardDetailView{
+    func initImage(){
+        do {
+            print(self.boardDetailViewModel.board.image)
+            let url = URL(string: self.boardDetailViewModel.board.image)
+            let data =  try Data(contentsOf: url!)
+            self.image = UIImage(data: data)
+        } catch  {
+            self.image = UIImage(systemName: "person.crop.square.fill")?.resized(toWidth: 100)?.withTintColor(.lightGray)
+        }
+    }
+}
