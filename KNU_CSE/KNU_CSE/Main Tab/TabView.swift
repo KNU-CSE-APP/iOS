@@ -122,7 +122,7 @@ extension TabView : UNUserNotificationCenterDelegate{
             if let error = error {
                 print(error.localizedDescription)
             }else{
-                self.sendNotification(seconds: 10)
+                
             }
         }
     }
