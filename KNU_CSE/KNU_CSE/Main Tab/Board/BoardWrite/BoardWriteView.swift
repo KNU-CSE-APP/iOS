@@ -21,11 +21,11 @@ class BoardWriteView:UIViewController, ViewProtocol{
     var textFieldHeight:CGFloat!
     var titleField:UITextField!{
         didSet{
-            titleField.placeholder = "제목을 입력하세요."
-            titleField.delegate = self
-            titleField.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-            titleField.addTarget(self, action: #selector(setRightItemColor), for: .editingChanged)
-            if let font = titleField.font {
+            self.titleField.placeholder = "제목을 입력하세요."
+            self.titleField.delegate = self
+            self.titleField.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+            self.titleField.addTarget(self, action: #selector(setRightItemColor), for: .editingChanged)
+            if let font = self.titleField.font {
                 self.textFieldHeight = font.lineHeight + 20
             }
         }
@@ -33,83 +33,84 @@ class BoardWriteView:UIViewController, ViewProtocol{
     
     var borderLine:UIView!{
         didSet{
-            borderLine.layer.borderWidth = 0.3
-            borderLine.layer.borderColor = UIColor.lightGray.cgColor
+            self.borderLine.layer.borderWidth = 0.3
+            self.borderLine.layer.borderColor = UIColor.lightGray.cgColor
         }
     }
     
     var categoryLabel:UILabel!{
         didSet{
-            categoryLabel.text = "추천 카테고리"
+            self.categoryLabel.text = "추천 카테고리"
         }
     }
     
-    var categoryScroll:UIScrollView!{
+    var categoryTable:UICollectionView!{
         didSet{
-            categoryScroll.alwaysBounceHorizontal = true
-        }
-    }
-    
-    var categoryStack:UIStackView!{
-        didSet{
-            categoryStack.axis = .horizontal
-            categoryStack.distribution = .equalSpacing
-            categoryStack.spacing = 10
-            self.addStackView()
+            let flowLayout = UICollectionViewFlowLayout()
+            flowLayout.minimumLineSpacing = .zero
+            flowLayout.minimumInteritemSpacing = 16
+            flowLayout.scrollDirection = .horizontal
+            flowLayout.sectionInset = .init(top: 5, left: 5, bottom: 5, right: 5)
+            
+            self.categoryTable.setCollectionViewLayout(flowLayout, animated: false)
+            self.categoryTable.delegate = self
+            self.categoryTable.dataSource = self
+            self.categoryTable.backgroundColor = .white
+            self.categoryTable.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.identifier)
         }
     }
     
     var contentField:UITextView!{
         didSet{
-            contentField.delegate = self
-            contentField.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-            contentField.isScrollEnabled = false
+            self.contentField.delegate = self
+            self.contentField.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+            self.contentField.isScrollEnabled = false
         }
     }
     
     let placeHolderText = "내용을 입력하세요."
     var contentPlaceHolder:UILabel!{
         didSet{
-            contentPlaceHolder.text = placeHolderText
-            contentPlaceHolder.font = contentField.font
-            contentPlaceHolder.textColor = UIColor.lightGray.withAlphaComponent(0.75)
-            contentPlaceHolder.isHidden = !contentField.text.isEmpty
+            self.contentPlaceHolder.text = self.placeHolderText
+            self.contentPlaceHolder.font = self.contentField.font
+            self.contentPlaceHolder.textColor = UIColor.lightGray.withAlphaComponent(0.75)
+            self.contentPlaceHolder.isHidden = !self.contentField.text.isEmpty
         }
     }
     
     var contentCheck:Bool = false
     var rightItemButton:UIBarButtonItem!{
         didSet{
-            rightItemButton.title = "작성"
-            rightItemButton.style = .plain
-            rightItemButton.tintColor = .white.withAlphaComponent(0.7)
-            rightItemButton.target = self
-            rightItemButton.action = #selector(addTapped)
-            self.navigationItem.rightBarButtonItem = rightItemButton
+            self.rightItemButton.title = "작성"
+            self.rightItemButton.style = .plain
+            self.rightItemButton.tintColor = .white.withAlphaComponent(0.7)
+            self.rightItemButton.target = self
+            self.rightItemButton.action = #selector(addTapped)
+            self.navigationItem.rightBarButtonItem = self.rightItemButton
         }
     }
     
     let menu:[String] = ["잡담하기", "정보구하기", "팀원 구하기"]
     var navigatiopDropDown:BTNavigationDropdownMenu!{
         didSet{
-            navigatiopDropDown.menuTitleColor = .white
+            self.navigatiopDropDown.menuTitleColor = .white
             
             //cell detail setting
-            navigatiopDropDown.cellHeight = 40
-            navigatiopDropDown.cellBackgroundColor = Color.mainColor
-            navigatiopDropDown.cellSelectionColor = Color.mainColor.withAlphaComponent(0.5)
-            navigatiopDropDown.cellTextLabelFont = UIFont.systemFont(ofSize: 17, weight: .semibold)
-            navigatiopDropDown.cellTextLabelColor = UIColor.white
-            navigatiopDropDown.cellTextLabelAlignment = .center
-            navigatiopDropDown.cellSeparatorColor = .white
+            self.navigatiopDropDown.cellHeight = 40
+            self.navigatiopDropDown.cellBackgroundColor = Color.mainColor
+            self.navigatiopDropDown.cellSelectionColor = Color.mainColor.withAlphaComponent(0.5)
+            self.navigatiopDropDown.cellTextLabelFont = UIFont.systemFont(ofSize: 17, weight: .semibold)
+            self.navigatiopDropDown.cellTextLabelColor = UIColor.white
+            self.navigatiopDropDown.cellTextLabelAlignment = .center
+            self.navigatiopDropDown.cellSeparatorColor = .white
             
-            navigatiopDropDown.animationDuration = 0.5
+            self.navigatiopDropDown.animationDuration = 0.5
             
             //if dropdown show then setup backgroundcolor
-            navigatiopDropDown.maskBackgroundOpacity = 0.1
-            navigatiopDropDown.maskBackgroundColor = .black
+            self.navigatiopDropDown.maskBackgroundOpacity = 0.1
+            self.navigatiopDropDown.maskBackgroundColor = .black
             
-            self.navigationItem.titleView = navigatiopDropDown
+            self.navigationItem.titleView = self.navigatiopDropDown
             self.navigatiopDropDown.didSelectItemAtIndexHandler = {[weak self] (indexPath: Int) -> () in
                     print("Did select item at index: \(indexPath)")
             }
@@ -135,8 +136,7 @@ class BoardWriteView:UIViewController, ViewProtocol{
         self.borderLine = UIView()
         
         self.categoryLabel = UILabel()
-        self.categoryScroll = UIScrollView()
-        self.categoryStack = UIStackView()
+        self.categoryTable = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewFlowLayout())
         
         self.contentField = UITextView()
         self.contentPlaceHolder = UILabel()
@@ -146,17 +146,16 @@ class BoardWriteView:UIViewController, ViewProtocol{
     
     func addView() {
         self.view.addSubview(scrollView)
-        _ = [titleField, borderLine, contentField, contentPlaceHolder, categoryLabel, categoryScroll].map{
+        _ = [self.titleField, self.borderLine, self.contentField, self.contentPlaceHolder, self.categoryLabel, self.categoryTable].map{
             self.scrollView.addSubview($0)
         }
-        self.categoryScroll.addSubview(categoryStack)
     }
     
     func setUpConstraints() {
         let left_margin = 20
         let right_margin = -20
         let padding = 5
-        let category_height = 50
+        let category_height = 55
         
         self.scrollView.snp.makeConstraints{ make in
             make.top.equalTo(self.view.safeAreaLayoutGuide)
@@ -179,19 +178,15 @@ class BoardWriteView:UIViewController, ViewProtocol{
             make.height.equalTo(0.3)
         }
         
-        self.categoryScroll.snp.makeConstraints{ make in
-            make.top.equalTo(self.borderLine.snp.bottom).offset(10)
+        self.categoryTable.snp.makeConstraints{ make in
+            make.top.equalTo(self.borderLine.snp.bottom).offset(5)
             make.left.equalTo(self.view.safeAreaLayoutGuide).offset(left_margin)
             make.right.equalTo(self.view.safeAreaLayoutGuide).offset(right_margin)
             make.height.equalTo(category_height)
         }
         
-        self.categoryStack.snp.makeConstraints{ make in
-            make.left.right.top.bottom.equalToSuperview()
-        }
-        
         self.contentField.snp.makeConstraints{ make in
-            make.top.equalTo(self.categoryScroll.snp.bottom).offset(10)
+            make.top.equalTo(self.categoryTable.snp.bottom).offset(10)
             make.left.equalTo(self.view.safeAreaLayoutGuide).offset(left_margin)
             make.right.equalTo(self.view.safeAreaLayoutGuide).offset(right_margin)
             make.bottom.equalToSuperview()
@@ -267,40 +262,27 @@ extension BoardWriteView:UITextFieldDelegate{
     }
 }
 
-
-extension BoardWriteView{
-    func addStackView(){
-        for i in 0..<categoryTitle.count{
-            self.categoryStack.addArrangedSubview(addingCustomButton(buttonTitle: categoryTitle[i], buttonFontSize: 15, buttonCount: 1))
-        }
+extension BoardWriteView:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.categoryTitle.count
     }
     
-    func addingCustomButton(buttonTitle : String, buttonFontSize: CGFloat, buttonCount : Int) -> UIButton
-    {
-        let ownButton = UIButton()
-        ownButton.setTitle(buttonTitle, for: UIControl.State.normal)
-        ownButton.titleLabel?.font = UIFont.systemFont(ofSize: buttonFontSize)
-        ownButton.backgroundColor = .white
-        ownButton.setTitleColor(UIColor.black, for: .normal)
-        ownButton.setTitleColor(UIColor.black.withAlphaComponent(0.5), for: .highlighted)
-        ownButton.addTarget(self, action: #selector(ownButtonAction), for: .touchUpInside)
-        ownButton.layer.borderWidth = 0.5
-        ownButton.layer.borderColor = UIColor.lightGray.cgColor
-        ownButton.layer.cornerRadius = 10
-        
-        let buttonTitleSize = (buttonTitle as NSString).size(withAttributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: buttonFontSize + 1)])
-
-        let height = buttonTitleSize.height * 1.5
-        let width = buttonTitleSize.width + 20
-        ownButton.snp.makeConstraints{ make in
-            make.width.equalTo(width)
-            make.height.equalTo(height)
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCell.identifier, for: indexPath) as? CategoryCell else{
+            return UICollectionViewCell()
         }
-        return ownButton
+        cell.setTitle(title: self.categoryTitle[indexPath.row])
+        
+        return cell
     }
-
-    @objc func ownButtonAction(sender: UIButton)
-    {
-        print("\n\n Title  \(sender.titleLabel?.text)")
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+           return CategoryCell.fittingSize(name: categoryTitle[indexPath.row])
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == categoryTable {
+            print(categoryTitle[indexPath.row])
+        }
     }
 }

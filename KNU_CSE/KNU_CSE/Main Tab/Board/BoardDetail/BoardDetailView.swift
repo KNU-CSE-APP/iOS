@@ -250,8 +250,6 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
         self.authorLabel.snp.makeConstraints{ make in
             make.centerY.equalTo(self.authorImageView)
             make.left.equalTo(self.authorImageView.snp.right).offset(5)
-            //make.width.equalToSuperview().multipliedBy(0.4)
-            make.height.equalTo(height*0.1)
         }
         
         self.dateLabel.snp.makeConstraints{ make in

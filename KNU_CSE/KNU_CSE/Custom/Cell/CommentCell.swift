@@ -35,6 +35,7 @@ class CommentCell : UIView {
         }
     }
     
+    
     var authorLabel:UILabel!{
         didSet{
             authorLabel.text = comment.author
