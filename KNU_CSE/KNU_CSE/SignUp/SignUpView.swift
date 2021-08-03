@@ -38,8 +38,8 @@ class SignUpView: UIViewController,ViewProtocol{
             sendCodeBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
             sendCodeBtn.addAction{
                 self.signUpViewModel.getEvent(successHandler: { response in
-                    if response.result == 1 {
-                        
+                    if response.success{
+                        //print("성공")
                     }
                 }, failHandler: { Error in
                     print(Error)
@@ -57,8 +57,8 @@ class SignUpView: UIViewController,ViewProtocol{
             emailCodeTextField.delegate = self
             emailCodeTextField.keyboardType = .numberPad
             emailCodeTextField.placeholder = "인증번호를 입력하세요."
-            emailCodeTextField.bind { [weak self] email in
-                self?.signUpViewModel.account.email = email
+            emailCodeTextField.bind { [weak self] permissionCode in
+                self?.signUpViewModel.account.permissionCode = permissionCode
                 self?.checkChangeValue()
             }
         }
@@ -73,7 +73,7 @@ class SignUpView: UIViewController,ViewProtocol{
             confirmCodeBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
             confirmCodeBtn.addAction{
                 self.signUpViewModel.getEvent(successHandler: { response in
-                    if response.result == 1 {
+                    if response.success{
                         let alert = Alert(title: "인증 성공", message: "이메일 인증을 완료했습니다.", viewController: self)
                         alert.popUpDefaultAlert(action: nil)
                     }
@@ -108,10 +108,10 @@ class SignUpView: UIViewController,ViewProtocol{
             pw2TextField.textContentType = .password
             pw2TextField.draw()
             pw2TextField.setUpImage(imageName: "eye.fill", on: .right, color: UIColor.darkGray, width:40, height: 40)
-            pw2TextField.bind { [weak self] pw2 in
-                self?.signUpViewModel.account.password2 = pw2
-                self?.checkChangeValue()
-            }
+//            pw2TextField.bind { [weak self] pw2 in
+//                //self?.signUpViewModel.account.password2 = pw2
+//                self?.checkChangeValue()
+//            }
         }
     }
     
@@ -144,8 +144,8 @@ class SignUpView: UIViewController,ViewProtocol{
             stuidTextField.keyboardType = .numberPad
             stuidTextField.delegate = self
             stuidTextField.draw()
-            stuidTextField.bind { [weak self] student_id in
-                self?.signUpViewModel.account.student_id = student_id
+            stuidTextField.bind { [weak self] studentId in
+                self?.signUpViewModel.account.studentId = studentId
                 self?.checkChangeValue()
             }
             addKeyBoardAnimaion(textField: stuidTextField)
@@ -541,19 +541,25 @@ extension SignUpView: UITextFieldDelegate{
         registerBtn.backgroundColor = Color.mainColor
         registerBtn.addAction{
             if self.signUpViewModel.SignUpCheck(){
-                self.signUpViewModel.getEvent(successHandler: { response in
-                    if response.result == 1 {
-                        let alert = Alert(title: "회원가입성공", message: "확인 버튼을 누르면 로그인 페이지로 이동합니다.", viewController: self)
-                        alert.popUpDefaultAlert(action: { (action) in
-                            self.navigationController?.popViewController(animated: true)
-                        })
-                    }
-                    self.indicator.stopIndicator()
-                }, failHandler: { Error in
-                    print(Error)
-                }, asyncHandler: {
-                    self.indicator.startIndicator()
-                })
+                if self.signUpViewModel.account.password != self.pw2TextField.text{
+                    let alert = Alert(title: "회원가입 실패", message: "비밀번호가 일치하지 않습니다.", viewController: self)
+                    alert.popUpDefaultAlert(action: nil)
+                }
+                else{
+                    self.signUpViewModel.getEvent(successHandler: { response in
+                        if response.success {
+                            let alert = Alert(title: "회원가입성공", message: "확인 버튼을 누르면 로그인 페이지로 이동합니다.", viewController: self)
+                            alert.popUpDefaultAlert(action: { (action) in
+                                self.navigationController?.popViewController(animated: true)
+                            })
+                        }
+                        self.indicator.stopIndicator()
+                    }, failHandler: { Error in
+                        print(Error)
+                    }, asyncHandler: {
+                        self.indicator.startIndicator()
+                    })
+                }
             }else{
                 let alert = Alert(title: "회원가입 실패", message: "모든 정보를 입력하지 않았습니다.", viewController: self)
                 alert.popUpDefaultAlert(action: nil)

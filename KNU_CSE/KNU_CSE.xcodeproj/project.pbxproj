@@ -49,6 +49,7 @@
 		681D382326ADC5D4000D9FE8 /* BoardSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D382226ADC5D4000D9FE8 /* BoardSearchView.swift */; };
 		681D382626ADC61D000D9FE8 /* BoardWriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D382526ADC61D000D9FE8 /* BoardWriteView.swift */; };
 		68C7629126B96EFA00792498 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C7629026B96EFA00792498 /* CategoryCell.swift */; };
+		68C7629326B99F7F00792498 /* ResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C7629226B99F7F00792498 /* ResponseBody.swift */; };
 		68F1A5B826A0088B007B4B86 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5B726A0088B007B4B86 /* AppDelegate.swift */; };
 		68F1A5BA26A0088B007B4B86 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5B926A0088B007B4B86 /* SceneDelegate.swift */; };
 		68F1A5BC26A0088B007B4B86 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5BB26A0088B007B4B86 /* SignInView.swift */; };
@@ -159,6 +160,7 @@
 		681D382226ADC5D4000D9FE8 /* BoardSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardSearchView.swift; sourceTree = "<group>"; };
 		681D382526ADC61D000D9FE8 /* BoardWriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardWriteView.swift; sourceTree = "<group>"; };
 		68C7629026B96EFA00792498 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
+		68C7629226B99F7F00792498 /* ResponseBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseBody.swift; sourceTree = "<group>"; };
 		68F1A5B426A0088B007B4B86 /* KNU_CSE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KNU_CSE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68F1A5B726A0088B007B4B86 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		68F1A5B926A0088B007B4B86 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -432,7 +434,7 @@
 				68F1A5F026A0090B007B4B86 /* SignUp */,
 				68F861E426B2EE9100934BD2 /* FindPw */,
 				68F1A61026A31169007B4B86 /* Main Tab */,
-				68F1A5E726A008FF007B4B86 /* Web Service */,
+				68F1A5E726A008FF007B4B86 /* Network Service */,
 				68F1A5B726A0088B007B4B86 /* AppDelegate.swift */,
 				68F1A5B926A0088B007B4B86 /* SceneDelegate.swift */,
 				68F1A5BD26A0088B007B4B86 /* Main.storyboard */,
@@ -461,15 +463,16 @@
 			path = KNU_CSEUITests;
 			sourceTree = "<group>";
 		};
-		68F1A5E726A008FF007B4B86 /* Web Service */ = {
+		68F1A5E726A008FF007B4B86 /* Network Service */ = {
 			isa = PBXGroup;
 			children = (
 				68F1A5E826A008FF007B4B86 /* Request.swift */,
 				68F1A5E926A008FF007B4B86 /* GetEventListApiRequest.swift */,
 				68F1A5EA26A008FF007B4B86 /* BaseObject.swift */,
 				68F1A5EB26A008FF007B4B86 /* BaseApiRequest.swift */,
+				68C7629226B99F7F00792498 /* ResponseBody.swift */,
 			);
-			path = "Web Service";
+			path = "Network Service";
 			sourceTree = "<group>";
 		};
 		68F1A5F026A0090B007B4B86 /* SignUp */ = {
@@ -933,6 +936,7 @@
 				68F861D726B1C0E500934BD2 /* PaddingLabel.swift in Sources */,
 				681D37B726A42748000D9FE8 /* NoticeView.swift in Sources */,
 				68F861EB26B471D600934BD2 /* UserInformViewModel+Model.swift in Sources */,
+				68C7629326B99F7F00792498 /* ResponseBody.swift in Sources */,
 				681D37E526A6AD36000D9FE8 /* ViewProtocol.swift in Sources */,
 				681D37C426A45442000D9FE8 /* ClassRoomCell.swift in Sources */,
 				681D382026ADAE85000D9FE8 /* ReplyViewModel.swift in Sources */,

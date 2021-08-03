@@ -17,9 +17,6 @@ struct UserInformViewModel{
     
 }
 
-
-
-
 class Profile:BaseObject{
     let image:String
     let Username:String

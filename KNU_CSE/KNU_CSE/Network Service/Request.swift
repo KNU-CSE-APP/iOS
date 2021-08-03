@@ -8,7 +8,7 @@ import Alamofire
 
 struct Request: BaseApiRequest {
     var requestBodyObject: BaseObject?
-    var requestMethod: RequestHttpMethod? = RequestHttpMethod.Post
+    var requestMethod: RequestHttpMethod? = RequestHttpMethod.post
     var enviroment: Environment?
     
     mutating func setBodyObject(bodyObject: BaseObject?) {
@@ -27,7 +27,7 @@ struct Request: BaseApiRequest {
                    failHandler(error)
                    print("fail")
             }
-           
+
         }
     }
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ReservationCheckModel:BaseObject{
+struct ReservationCheckModel:Codable{
     var email:String
     var roomNum:Int
     var seatNumber:Int
@@ -16,11 +16,6 @@ class ReservationCheckModel:BaseObject{
         self.email = email
         self.roomNum = roomNum
         self.seatNumber = seatNumber
-        super.init()
-    }
-    
-    required init(from decoder: Decoder) throws {
-        fatalError("init(from:) has not been implemented")
     }
     
     static func returnCheckModel(email:String, roomNum:Int, seatNumber:Int)->ReservationCheckModel{

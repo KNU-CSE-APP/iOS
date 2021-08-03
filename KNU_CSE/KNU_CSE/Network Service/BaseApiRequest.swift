@@ -23,22 +23,24 @@ protocol BaseApiRequest {
 }
 
 extension BaseApiRequest{
-    
     public func request() -> URLRequest {
         let url: URL! = URL(string: baseUrl)
         var request = URLRequest(url: url)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         switch requestMethod {
-        case .Get:
-            request.httpMethod = "GET"
+        case .get:
+            request.method = .get
             break
-        case .Post:
-            request.httpMethod = "POST"
+        case .post:
+            request.method = .post
             if(requestBodyObject != nil){
                 let jsonEncoder = JSONEncoder()
                 do {
-                    request.httpBody = try jsonEncoder.encode(requestBodyObject)
-                } catch  {
-                    print(error)
+                    if let data = try? jsonEncoder.encode(requestBodyObject.self){
+                        let jsonString = String(decoding: data, as: UTF8.self)
+                        request.httpBody = data
+                        print(jsonString)
+                    }
                 }
             }
             break
@@ -46,6 +48,7 @@ extension BaseApiRequest{
             request.httpMethod = "GET"
             break
         }
+        
         return request
     }
     
@@ -62,8 +65,8 @@ extension BaseApiRequest{
 }
 
 enum RequestHttpMethod{
-    case Get
-    case Post
+    case get
+    case post
 }
 
 enum Environment{

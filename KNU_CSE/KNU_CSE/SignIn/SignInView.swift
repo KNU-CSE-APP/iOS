@@ -57,7 +57,7 @@ class ViewController: UIViewController {
             signInBtn.addAction{
                 if self.signInViewModel.SignInCheck(){
                     self.signInViewModel.SignInRequest(successHandler: { response in
-                        if response.result == 1 {
+                        if response.success {
                             self.saveKeyChain()
                             self.pushTabView()
                         }
@@ -260,7 +260,7 @@ extension ViewController{
     func checkKeyChain(){
         if self.signInViewModel.checkUserAccount(){
             self.signInViewModel.SignInRequest(successHandler: { response in
-                if response.result == 1 {
+                if response.success {
                     self.pushTabView()
                 }
                 self.indicator.stopIndicator()
