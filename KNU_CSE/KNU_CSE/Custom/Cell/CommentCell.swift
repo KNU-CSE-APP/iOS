@@ -22,7 +22,7 @@ class CommentCell : UIView {
     
     var authorImageView:UIImageView!{
         didSet{
-            self.imageSize = authorLabel.font.lineHeight + 4
+            self.imageSize = authorLabel.font.lineHeight + 8
             
             authorImageView.image = self.image
             authorImageView.clipsToBounds = true
@@ -39,7 +39,7 @@ class CommentCell : UIView {
     var authorLabel:UILabel!{
         didSet{
             authorLabel.text = comment.author
-            authorLabel.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+            authorLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
             authorLabel.textAlignment = .left
             authorLabel.sizeToFit()
         }
@@ -48,7 +48,7 @@ class CommentCell : UIView {
     var contentLabel:UILabel!{
         didSet{
             contentLabel.text = comment.content
-            contentLabel.font = UIFont.systemFont(ofSize: 15, weight: .light)
+            contentLabel.font = UIFont.systemFont(ofSize: 15, weight: .thin)
             contentLabel.textAlignment = .left
             contentLabel.numberOfLines = 0
             contentLabel.sizeToFit()
@@ -58,7 +58,7 @@ class CommentCell : UIView {
     var dateLabel:UILabel!{
         didSet{
             dateLabel.text = comment.date
-            dateLabel.font = UIFont.systemFont(ofSize: 12, weight: .thin)
+            dateLabel.font = UIFont.systemFont(ofSize: 12, weight: .ultraLight)
             dateLabel.textAlignment = .left
             dateLabel.sizeToFit()
         }
@@ -138,7 +138,7 @@ class CommentCell : UIView {
         
         self.authorLabel.snp.makeConstraints{ make in
             make.centerY.equalTo(self.authorImageView)
-            make.left.equalTo(authorImageView.snp.right).offset(7)
+            make.left.equalTo(authorImageView.snp.right).offset(5)
             make.right.equalToSuperview().offset(right_margin)
         }
         

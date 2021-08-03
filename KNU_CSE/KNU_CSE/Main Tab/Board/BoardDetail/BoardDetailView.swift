@@ -34,7 +34,7 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     var image:UIImage!
     var authorImageView:UIImageView!{
         didSet{
-            self.imageSize = authorLabel.font.lineHeight + 4
+            self.imageSize = authorLabel.font.lineHeight + 8
             self.authorImageView.image = self.image
             self.authorImageView.clipsToBounds = true
             self.authorImageView.contentMode = .scaleAspectFill
@@ -51,7 +51,7 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
             self.authorLabel.text = boardDetailViewModel.board.author
             self.authorLabel.textAlignment = .left
             self.authorLabel.textColor = UIColor.black
-            self.authorLabel.font = UIFont.systemFont(ofSize: 15, weight: .light)
+            self.authorLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
             self.authorLabel.sizeToFit()
         }
     }
@@ -61,7 +61,7 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
             self.dateLabel.text = boardDetailViewModel.board.date
             self.dateLabel.textAlignment = .right
             self.dateLabel.textColor = UIColor.black
-            self.dateLabel.font = UIFont.systemFont(ofSize: 14, weight: .thin)
+            self.dateLabel.font = UIFont.systemFont(ofSize: 14, weight: .ultraLight)
             self.dateLabel.sizeToFit()
         }
     }
@@ -82,7 +82,7 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
             self.contentLabel.text = boardDetailViewModel.board.content
             self.contentLabel.textAlignment = .left
             self.contentLabel.textColor = UIColor.black
-            self.contentLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+            self.contentLabel.font = UIFont.systemFont(ofSize: 16, weight: .thin)
             self.contentLabel.numberOfLines = 0
             self.contentLabel.sizeToFit()
         }
@@ -110,7 +110,7 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
             self.commentLabel.text = String(boardDetailViewModel.board.numberOfcomment)
             self.commentLabel.textAlignment = .left
             self.commentLabel.textColor = UIColor.black
-            self.commentLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+            self.commentLabel.font = UIFont.systemFont(ofSize: 16, weight: .ultraLight)
         }
     }
     
@@ -249,7 +249,7 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
         
         self.authorLabel.snp.makeConstraints{ make in
             make.centerY.equalTo(self.authorImageView)
-            make.left.equalTo(self.authorImageView.snp.right).offset(5)
+            make.left.equalTo(self.authorImageView.snp.right).offset(4)
         }
         
         self.dateLabel.snp.makeConstraints{ make in

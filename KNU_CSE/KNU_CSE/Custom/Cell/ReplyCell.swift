@@ -23,7 +23,7 @@ class ReplyCell : UIView {
     
     var authorImageView:UIImageView!{
         didSet{
-            self.imageSize = authorLabel.font.lineHeight + 4
+            self.imageSize = authorLabel.font.lineHeight + 8
             
             authorImageView.image = self.image
             authorImageView.clipsToBounds = true
@@ -39,7 +39,7 @@ class ReplyCell : UIView {
     var authorLabel:UILabel!{
         didSet{
             authorLabel.text = reply.author
-            authorLabel.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+            authorLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
             authorLabel.textAlignment = .left
             authorLabel.sizeToFit()
         }
@@ -48,7 +48,7 @@ class ReplyCell : UIView {
     var contentLabel:UILabel!{
         didSet{
             contentLabel.text = reply.content
-            contentLabel.font = UIFont.systemFont(ofSize: 15, weight: .light)
+            contentLabel.font = UIFont.systemFont(ofSize: 15, weight: .thin)
             contentLabel.textAlignment = .left
             contentLabel.numberOfLines = 0
             contentLabel.sizeToFit()
@@ -58,7 +58,7 @@ class ReplyCell : UIView {
     var dateLabel:UILabel!{
         didSet{
             dateLabel.text = reply.date
-            dateLabel.font = UIFont.systemFont(ofSize: 12, weight: .thin)
+            dateLabel.font = UIFont.systemFont(ofSize: 12, weight: .ultraLight)
             dateLabel.textAlignment = .left
         }
     }
@@ -107,40 +107,40 @@ class ReplyCell : UIView {
     
     func setUpConstraints(){
         let top_margin = 10
-        let left_margin = 50
+        let left_margin = 30
         let right_margin = -20
         let bottom_margin = -5
         let arrow_width = titleHeight * 0.5
         
-        arrowImageView.snp.makeConstraints{ make in
+        self.arrowImageView.snp.makeConstraints{ make in
             make.top.equalToSuperview().offset(top_margin)
-            make.left.equalToSuperview().offset(10)
+            make.left.equalToSuperview().offset(left_margin)
             make.width.equalTo(arrow_width)
             make.height.equalTo(arrow_width)
         }
         
-        authorImageView.snp.makeConstraints{ make in
+        self.authorImageView.snp.makeConstraints{ make in
             make.top.equalToSuperview().offset(top_margin)
             make.left.equalTo(self.arrowImageView.snp.right).offset(5)
             make.height.equalTo(imageSize)
             make.width.equalTo(imageSize)
         }
         
-        authorLabel.snp.makeConstraints{ make in
+        self.authorLabel.snp.makeConstraints{ make in
             make.centerY.equalTo(self.authorImageView)
-            make.left.equalTo(authorImageView.snp.right).offset(7)
+            make.left.equalTo(authorImageView.snp.right).offset(5)
             make.right.equalToSuperview().offset(right_margin)
         }
         
-        contentLabel.snp.makeConstraints{ make in
+        self.contentLabel.snp.makeConstraints{ make in
             make.top.equalTo(self.authorImageView.snp.bottom).offset(5)
-            make.left.equalToSuperview().offset(left_margin)
+            make.left.equalTo(self.authorImageView.snp.left)
             make.right.equalToSuperview().offset(right_margin)
         }
         
-        dateLabel.snp.makeConstraints{ make in
+        self.dateLabel.snp.makeConstraints{ make in
             make.top.equalTo(self.contentLabel.snp.bottom).offset(3)
-            make.left.equalToSuperview().offset(left_margin)
+            make.left.equalTo(self.authorImageView.snp.left)
             make.right.equalToSuperview().offset(right_margin)
             make.bottom.equalToSuperview().offset(bottom_margin)
         }

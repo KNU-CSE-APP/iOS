@@ -29,7 +29,7 @@ class FreeBoardCell : UITableViewCell {
         didSet{
             dateLabel.textAlignment = .right
             dateLabel.textColor = UIColor.black
-            dateLabel.font = UIFont.systemFont(ofSize: 12, weight: .light)
+            dateLabel.font = UIFont.systemFont(ofSize: 12, weight: .ultraLight)
         }
     }
     
@@ -45,7 +45,7 @@ class FreeBoardCell : UITableViewCell {
         didSet{
             contentLabel.textAlignment = .left
             contentLabel.textColor = UIColor.black
-            contentLabel.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+            contentLabel.font = UIFont.systemFont(ofSize: 15, weight: .thin)
             contentLabel.numberOfLines = 2
         }
     }
@@ -62,7 +62,7 @@ class FreeBoardCell : UITableViewCell {
         didSet{
             commentLabel.textAlignment = .left
             commentLabel.textColor = UIColor.black
-            commentLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+            commentLabel.font = UIFont.systemFont(ofSize: 13, weight: .ultraLight)
         }
     }
     
