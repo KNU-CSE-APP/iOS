@@ -6,6 +6,7 @@
 //
 
 import UIKit
+
 class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     
     var selectedView:CommentCell? = nil
@@ -14,6 +15,8 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     var delegate:CommentDataDelegate?
     
     let commentPlaceHolder = "댓글을 입력해주세요."
+    let titleHeight:CGFloat = 30
+    var imageSize:CGFloat!
     var textViewHeight:CGFloat!
     var textViewPadding:CGFloat = 5
     var imageWidth:CGFloat!
@@ -28,69 +31,86 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     
     var boardContentView:UIView = UIView()
     
+    var image:UIImage!
+    var authorImageView:UIImageView!{
+        didSet{
+            self.imageSize = authorLabel.font.lineHeight + 8
+            self.authorImageView.image = self.image
+            self.authorImageView.clipsToBounds = true
+            self.authorImageView.contentMode = .scaleAspectFill
+            self.authorImageView.layer.borderWidth = 1
+            self.authorImageView.layer.borderColor = UIColor.clear.cgColor
+            self.authorImageView.layer.cornerRadius = imageSize / 4
+            self.authorImageView.frame.size = CGSize(width: imageSize, height: imageSize)
+            self.authorImageView.tintColor = .lightGray
+        }
+    }
+    
     var authorLabel:UILabel!{
         didSet{
-            authorLabel.text = boardDetailViewModel.board.author
-            authorLabel.textAlignment = .left
-            authorLabel.textColor = UIColor.black
-            authorLabel.font = UIFont.systemFont(ofSize: 15, weight: .light)
+            self.authorLabel.text = boardDetailViewModel.board.author
+            self.authorLabel.textAlignment = .left
+            self.authorLabel.textColor = UIColor.black
+            self.authorLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+            self.authorLabel.sizeToFit()
         }
     }
     
     var dateLabel:UILabel!{
         didSet{
-            dateLabel.text = boardDetailViewModel.board.date
-            dateLabel.textAlignment = .right
-            dateLabel.textColor = UIColor.black
-            dateLabel.font = UIFont.systemFont(ofSize: 14, weight: .thin)
+            self.dateLabel.text = boardDetailViewModel.board.date
+            self.dateLabel.textAlignment = .right
+            self.dateLabel.textColor = UIColor.black
+            self.dateLabel.font = UIFont.systemFont(ofSize: 14, weight: .ultraLight)
+            self.dateLabel.sizeToFit()
         }
     }
     
     var titleLabel:UILabel!{
         didSet{
-            titleLabel.text = boardDetailViewModel.board.title
-            titleLabel.textAlignment = .left
-            titleLabel.textColor = UIColor.black
-            titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-            titleLabel.numberOfLines = 0
-            titleLabel.sizeToFit()
+            self.titleLabel.text = boardDetailViewModel.board.title
+            self.titleLabel.textAlignment = .left
+            self.titleLabel.textColor = UIColor.black
+            self.titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+            self.titleLabel.numberOfLines = 0
+            self.titleLabel.sizeToFit()
         }
     }
     
     var contentLabel:UILabel!{
         didSet{
-            contentLabel.text = boardDetailViewModel.board.content
-            contentLabel.textAlignment = .left
-            contentLabel.textColor = UIColor.black
-            contentLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-            contentLabel.numberOfLines = 0
-            contentLabel.sizeToFit()
+            self.contentLabel.text = boardDetailViewModel.board.content
+            self.contentLabel.textAlignment = .left
+            self.contentLabel.textColor = UIColor.black
+            self.contentLabel.font = UIFont.systemFont(ofSize: 16, weight: .thin)
+            self.contentLabel.numberOfLines = 0
+            self.contentLabel.sizeToFit()
         }
     }
     
     var categoryLabel:UILabel!{
         didSet{
-            categoryLabel.text = "#\(boardDetailViewModel.board.category)"
-            categoryLabel.textAlignment = .center
-            categoryLabel.textColor = UIColor.lightGray
-            categoryLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+            self.categoryLabel.text = "#\(boardDetailViewModel.board.category)"
+            self.categoryLabel.textAlignment = .center
+            self.categoryLabel.textColor = UIColor.lightGray
+            self.categoryLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         }
     }
     
     var commentImage:UIImageView!{
         didSet{
             let image = UIImage(systemName: "text.bubble.fill")
-            commentImage.image = image
-            commentImage.tintColor = .lightGray
+            self.commentImage.image = image
+            self.commentImage.tintColor = .lightGray
         }
     }
     
     var commentLabel:UILabel!{
         didSet{
-            commentLabel.text = String(boardDetailViewModel.board.numberOfcomment)
-            commentLabel.textAlignment = .left
-            commentLabel.textColor = UIColor.black
-            commentLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+            self.commentLabel.text = String(boardDetailViewModel.board.numberOfcomment)
+            self.commentLabel.textAlignment = .left
+            self.commentLabel.textColor = UIColor.black
+            self.commentLabel.font = UIFont.systemFont(ofSize: 16, weight: .ultraLight)
         }
     }
     
@@ -160,6 +180,8 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        self.initImage()
         self.initUI()
         self.addView()
         self.setUpConstraints()
@@ -168,29 +190,30 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     }
     
     func initUI(){
-        scrollView = UIScrollView()
+        self.scrollView = UIScrollView()
         
-        authorLabel = UILabel()
-        dateLabel = UILabel()
-        titleLabel = UILabel()
-        contentLabel = UILabel()
-        categoryLabel = UILabel()
-        commentImage = UIImageView()
-        commentLabel = UILabel()
+        self.authorLabel = UILabel()
+        self.authorImageView = UIImageView()
+        self.dateLabel = UILabel()
+        self.titleLabel = UILabel()
+        self.contentLabel = UILabel()
+        self.categoryLabel = UILabel()
+        self.commentImage = UIImageView()
+        self.commentLabel = UILabel()
         
-        stackView = UIStackView()
+        self.stackView = UIStackView()
         
-        textFieldView = UIView()
-        borderLine = UIView()
-        textField = UITextView()
-        placeholderLabel = UILabel()
-        textFieldBtn = UIButton()
+        self.textFieldView = UIView()
+        self.borderLine = UIView()
+        self.textField = UITextView()
+        self.placeholderLabel = UILabel()
+        self.textFieldBtn = UIButton()
     }
     
     func addView(){
         self.view.addSubview(scrollView)
         self.scrollView.addSubview(boardContentView)
-        _ = [authorLabel, dateLabel, titleLabel, contentLabel, categoryLabel, commentImage, commentLabel, stackView].map { self.boardContentView.addSubview($0)}
+        _ = [authorLabel,authorImageView, dateLabel, titleLabel, contentLabel, categoryLabel, commentImage, commentLabel, stackView].map { self.boardContentView.addSubview($0)}
         
         self.view.addSubview(textFieldView)
         _ = [borderLine,textField,textFieldBtn].map{
@@ -217,11 +240,16 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
             make.bottom.equalToSuperview()//필수
         }
         
-        self.authorLabel.snp.makeConstraints{ make in
-            make.top.equalTo(boardContentView.snp.top).offset(15)
+        self.authorImageView.snp.makeConstraints{ make in
+            make.top.equalTo(boardContentView.snp.top).offset(10)
             make.left.equalToSuperview().offset(20)
-            make.width.equalToSuperview().multipliedBy(0.5)
-            make.height.equalTo(height*0.1)
+            make.height.equalTo(imageSize)
+            make.width.equalTo(imageSize)
+        }
+        
+        self.authorLabel.snp.makeConstraints{ make in
+            make.centerY.equalTo(self.authorImageView)
+            make.left.equalTo(self.authorImageView.snp.right).offset(4)
         }
         
         self.dateLabel.snp.makeConstraints{ make in
@@ -401,3 +429,15 @@ extension BoardDetailView:UITextViewDelegate{
     }
 }
 
+extension BoardDetailView{
+    func initImage(){
+        do {
+            print(self.boardDetailViewModel.board.image)
+            let url = URL(string: self.boardDetailViewModel.board.image)
+            let data =  try Data(contentsOf: url!)
+            self.image = UIImage(data: data)
+        } catch  {
+            self.image = UIImage(systemName: "person.crop.square.fill")?.resized(toWidth: 100)?.withTintColor(.lightGray)
+        }
+    }
+}

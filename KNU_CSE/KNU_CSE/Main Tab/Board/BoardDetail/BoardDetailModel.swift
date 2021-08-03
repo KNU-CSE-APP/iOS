@@ -8,13 +8,15 @@
 import Foundation
 
 class Comment:BaseObject{
+    var image:String!
     var commentId:Int!
     var content:String!
     var date:String!
     var author:String!
     var replyList:[Reply]!
     
-    init(commentId:Int, content:String, date:String, author:String) {
+    init(image:String, commentId:Int, content:String, date:String, author:String) {
+        self.image = image
         self.commentId = commentId
         self.content = content
         self.date = date
@@ -32,12 +34,14 @@ class Comment:BaseObject{
 }
 
 struct Reply:Codable{
+    var image:String!
     var replyId:Int!
     var content:String!
     var date:String!
     var author:String!
     
-    init(replyId:Int, content:String, date:String, author:String) {
+    init(image:String, replyId:Int, content:String, date:String, author:String) {
+        self.image = image
         self.replyId = replyId
         self.content = content
         self.date = date

@@ -8,6 +8,7 @@
 import Foundation
 
 class Board:BaseObject{
+    var image:String
     var boardId : Int
     var category : String
     var title : String
@@ -16,7 +17,8 @@ class Board:BaseObject{
     var date : String
     var numberOfcomment:Int
     
-    init(boardId:Int, category:String, title:String, content:String, author:String, date:String, numberOfcomment:Int) {
+    init(image:String, boardId:Int, category:String, title:String, content:String, author:String, date:String, numberOfcomment:Int) {
+        self.image = image
         self.boardId = boardId
         self.category = category
         self.title = title

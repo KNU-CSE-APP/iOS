@@ -78,14 +78,26 @@ class ViewController: UIViewController {
         }
     }
     
+    var findPwBtn:UIButton!{
+        didSet{
+            findPwBtn.backgroundColor = .clear
+            findPwBtn.setTitle("비밀번호 찾기", for: .normal)
+            findPwBtn.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+            findPwBtn.setTitleColor(.white.withAlphaComponent(0.5), for: .highlighted)
+            findPwBtn.addAction{ [weak self] in
+                self?.pushView(identifier: "FindPwView", typeOfVC: FindPwView.self)
+            }
+        }
+    }
+    
     var signUpBtn : UIButton! {
         didSet{
-            signUpBtn.backgroundColor = Color.subColor
+            signUpBtn.backgroundColor = .clear
             signUpBtn.setTitle("회원가입", for: .normal)
-            signUpBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
-            signUpBtn.addAction{
-                let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "SignUpView")
-                self.navigationController?.pushViewController(pushVC!, animated: true)
+            signUpBtn.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+            signUpBtn.setTitleColor(.white.withAlphaComponent(0.5), for: .highlighted)
+            signUpBtn.addAction{ [weak self] in
+                self?.pushView(identifier: "SignUpView", typeOfVC: SignUpView.self)
             }
         }
     }
@@ -130,34 +142,33 @@ class ViewController: UIViewController {
     func initUI(){
         self.view.backgroundColor = Color.mainColor
 
-        accountUI = UIView()
-        emailTextField = BindingTextField()
-        pwTextField = BindingTextField()
-        signInBtn = UIButton()
-        signUpBtn = UIButton()
-        autoSignInBox = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "자동로그인")
+        self.accountUI = UIView()
+        self.emailTextField = BindingTextField()
+        self.pwTextField = BindingTextField()
+        self.signInBtn = UIButton()
+        self.findPwBtn = UIButton()
+        self.signUpBtn = UIButton()
+        self.autoSignInBox = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "자동로그인")
         
-        indicator = IndicatorView(viewController: self)
+        self.indicator = IndicatorView(viewController: self)
     }
     
     func addView(){
         accountUI.addSubview(emailTextField)
         accountUI.addSubview(pwTextField)
-        
-        self.view.addSubview(accountUI)
-        self.view.addSubview(pwTextField)
-        self.view.addSubview(signInBtn)
-        self.view.addSubview(signUpBtn)
-        self.view.addSubview(autoSignInBox)
+        _ = [self.accountUI, self.pwTextField, self.signInBtn, self.findPwBtn, self.signUpBtn, self.autoSignInBox].map{
+            self.view.addSubview($0)
+        }
     }
     
     func setupConstraints(){
-        let title_height = 200
-        let height = 40
-        let top_padding = 20
-        let left_margin = 30
-        let right_margin = -30
-        
+        let title_height:CGFloat = 200
+        let height:CGFloat = 40
+        let top_padding:CGFloat = 20
+        let left_margin:CGFloat = 30
+        let right_margin:CGFloat = -30
+        let btn_height:CGFloat = height * 0.8
+            
         accountUI.snp.makeConstraints{ make in
             make.left.equalTo(left_margin)
             make.right.equalTo(right_margin)
@@ -190,21 +201,31 @@ class ViewController: UIViewController {
             make.height.equalTo(height)
         }
         
-        // MARK: - 회원가입 버튼
-        signUpBtn.snp.makeConstraints{ make in
-            make.left.equalTo(left_margin)
-            make.right.equalTo(right_margin)
-            make.top.equalTo(signInBtn.snp.bottom).offset(Double(top_padding) * 0.5)
-            make.height.equalTo(height)
-        }
-        
         // MARK: - 자동로그인 버튼
         autoSignInBox.snp.makeConstraints{ make in
             make.width.equalTo(signUpBtn.snp.width).multipliedBy(0.25)
             make.height.equalTo(height)
-            make.top.equalTo(signUpBtn.snp.bottom).offset(top_padding)
+            make.top.equalTo(signInBtn.snp.bottom).offset(top_padding*0.5)
             make.trailing.equalTo(right_margin)
         }
+        
+        // MARK: - 비밀번호찾기 버튼
+        findPwBtn.snp.makeConstraints{ make in
+            make.left.equalTo(left_margin)
+            make.right.equalTo(right_margin)
+            make.top.equalTo(autoSignInBox.snp.bottom).offset(top_padding)
+            make.height.equalTo(btn_height)
+        }
+        
+        // MARK: - 회원가입 버튼
+        signUpBtn.snp.makeConstraints{ make in
+            make.left.equalTo(left_margin)
+            make.right.equalTo(right_margin)
+            make.top.equalTo(findPwBtn.snp.bottom).offset(top_padding*0.5)
+            make.height.equalTo(btn_height)
+        }
+        
+       
     }
     
     

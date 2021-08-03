@@ -31,6 +31,7 @@ class ReservationCheckModel:BaseObject{
 enum titleText:String{
     case inform = "좌석정보"
     case status = "이용상태"
+    case extensionCnt = "연장횟수"
     case startTime = "입실시간"
     case endTime = "퇴실시간"
 }

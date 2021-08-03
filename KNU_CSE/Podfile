@@ -21,4 +21,5 @@ target 'KNU_CSE' do
   pod 'NVActivityIndicatorView'
   pod 'DropDown'
   pod 'BTNavigationDropdownMenu'
+  pod 'YPImagePicker'
 end

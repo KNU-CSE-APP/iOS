@@ -12,13 +12,16 @@ class ReservationHistView: UIViewController, ViewProtocol{
     
     let reservationTime:Int = 6
     
-    let titleList:[titleText] = [titleText.inform, titleText.status, titleText.startTime, titleText.endTime]
+    let titleList:[titleText] = [titleText.inform, titleText.status, titleText.extensionCnt ,titleText.startTime, titleText.endTime]
     var contents:[String]!
-    var reservationHistViewModel:ReservationHistViewModel = ReservationHistViewModel()
+    var reservationHistViewModel:ReservationHistViewModel!{
+        didSet{
+            self.reservationCheck()
+        }
+    }
     
     var cautionLabel:UILabel!{
         didSet{
-            cautionLabel.text = "반드시 착석 후 좌석을 예약해주시길 바랍니다."
             cautionLabel.font = UIFont.systemFont(ofSize: 15, weight: .bold)
             cautionLabel.textColor = Color.mainColor
             cautionLabel.textAlignment = .center
@@ -42,7 +45,7 @@ class ReservationHistView: UIViewController, ViewProtocol{
     
     var cancelBtn:UIButton!{
         didSet{
-            cancelBtn.setTitle("예약 취소", for: .normal)
+            cancelBtn.setTitle("좌석 반납", for: .normal)
             cancelBtn.setTitleColor(.black, for: .normal)
             cancelBtn.setTitleColor(UIColor.lightGray.withAlphaComponent(0.3), for: .highlighted)
             cancelBtn.layer.borderWidth = 0.5
@@ -69,28 +72,35 @@ class ReservationHistView: UIViewController, ViewProtocol{
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-        self.navigationController?.navigationBar.topItem?.backBarButtonItem = backBarButtonItem
         self.setNavigationTitle(title: "예약내역")
+        self.hideBackTitle()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        initUI()
-        addView()
-        setUpConstraints()
+        self.initUI()
+        self.addView()
+        self.setUpConstraints()
+        
+        self.reservationHistViewModel = ReservationHistViewModel()
     }
     
     func initUI() {
-        reserTableView = UITableView()
-        cautionLabel = UILabel()
-        cancelBtn = UIButton()
-        reservExtendBtn = UIButton()
+        self.cautionLabel = UILabel()
+    }
+    
+    func initTableView(){
+        self.reserTableView = UITableView()
+        self.cancelBtn = UIButton()
+        self.reservExtendBtn = UIButton()
     }
     
     func addView() {
-        self.view.addSubview(reserTableView)
         self.view.addSubview(cautionLabel)
+    }
+    
+    func addTableView(){
+        self.view.addSubview(reserTableView)
         self.view.addSubview(cancelBtn)
         self.view.addSubview(reservExtendBtn)
     }
@@ -99,17 +109,22 @@ class ReservationHistView: UIViewController, ViewProtocol{
         let left_Margin = 25
         let right_Margin = -left_Margin
         let top_Margin = 25
-        let labelHeight = self.view.frame.height * 0.3 / CGFloat(self.titleList.count) / 1.5
-        let btnWidth = self.view.frame.width * 0.25
-        let btnHeight = btnWidth * 0.4
-        let btn_left_Margin = -CGFloat(btnWidth*0.5) - 10
-        
+        let labelHeight = self.view.frame.height * 0.3 / CGFloat(self.titleList.count) / 1.4
+ 
         self.cautionLabel.snp.makeConstraints{ make in
             make.left.equalTo(left_Margin)
             make.right.equalTo(right_Margin)
             make.top.equalTo(self.view.safeAreaLayoutGuide).offset(top_Margin)
             make.height.equalTo(labelHeight)
         }
+    }
+    
+    func setUpTableViewConstraints(){
+        let left_Margin = 25
+        let right_Margin = -left_Margin
+        let btnWidth = self.view.frame.width * 0.25
+        let btnHeight = btnWidth * 0.4
+        let btn_left_Margin = -CGFloat(btnWidth*0.5) - 10
         
         self.reserTableView.snp.makeConstraints{ make in
             make.left.equalTo(left_Margin)
@@ -133,14 +148,12 @@ class ReservationHistView: UIViewController, ViewProtocol{
         }
     }
     
-    func setNavigationTitle(title:String){
-        self.navigationItem.title = title
-    }
-    
+  
 }
 
 extension ReservationHistView : UITableViewDataSource{
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+{
         return self.titleList.count
     }
     
@@ -156,5 +169,14 @@ extension ReservationHistView : UITableViewDataSource{
 }
 
 extension ReservationHistView{
-
+    func reservationCheck(){
+        if reservationHistViewModel.check(){
+            self.cautionLabel.text = "현재 예약된 좌석 정보입니다."
+            self.initTableView()
+            self.addTableView()
+            self.setUpTableViewConstraints()
+        }else{
+            self.cautionLabel.text = "예약된 좌석 정보가 없습니다."
+        }
+    }
 }

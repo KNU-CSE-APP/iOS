@@ -186,6 +186,21 @@
             </objects>
             <point key="canvasLocation" x="432" y="109"/>
         </scene>
+        <!--Find Pw View-->
+        <scene sceneID="l5J-fG-tDc">
+            <objects>
+                <viewController storyboardIdentifier="FindPwView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="u8h-QF-hFu" customClass="FindPwView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="iFb-Br-65e">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="WFd-vP-CHD"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PPI-eC-jnU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1161" y="106"/>
+        </scene>
         <!--Reservation View-->
         <scene sceneID="nEe-yW-XSV">
             <objects>
@@ -350,6 +365,21 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zen-aN-FlU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2412" y="2546"/>
+        </scene>
+        <!--Photo View-->
+        <scene sceneID="JLT-L6-v37">
+            <objects>
+                <viewController storyboardIdentifier="PhotoView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uhI-iC-Lig" customClass="PhotoView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="AHp-cG-BbE">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="PW7-zZ-e9g"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="G4k-iZ-7v7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="928" y="2546"/>
         </scene>
     </scenes>
     <resources>

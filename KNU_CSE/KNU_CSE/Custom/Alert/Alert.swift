@@ -34,3 +34,36 @@ struct Alert{
         self.viewController.present(alert, animated: true, completion: nil)
     }
 }
+
+import YPImagePicker
+
+struct ActionSheet{
+    let actionSheet = UIAlertController()
+    var viewController : UIViewController
+    var editActioon:((UIAlertAction) -> Void)?
+    var removeAction:((UIAlertAction) -> Void)?
+    
+    init(viewController:UIViewController) {
+        self.viewController = viewController
+    }
+    
+    mutating func popUpActionSheet(edit_text:String, editAction:@escaping((UIAlertAction) -> Void), remove_text:String, removeAction:@escaping((UIAlertAction) -> Void), cancel_text:String){
+        
+        self.editActioon = editAction
+        self.removeAction = removeAction
+        
+        let editBtn = UIAlertAction(title: edit_text, style: .default, handler: self.editActioon)
+        
+        let removeBtn = UIAlertAction(title: remove_text, style: .default, handler: self.removeAction)
+        
+        let cancelBtn = UIAlertAction(title: cancel_text, style: .cancel, handler: nil)
+        
+        self.actionSheet.addAction(editBtn)
+        self.actionSheet.addAction(removeBtn)
+        self.actionSheet.addAction(cancelBtn)
+        
+        self.viewController.present(self.actionSheet, animated: true, completion: nil)
+    }
+    
+    
+}

@@ -42,7 +42,6 @@ class MyPageViewCell : UITableViewCell {
     }
     
     func setListener(listener: @escaping()->Void ){
-        print(type(of: listener))
         self.listener = listener
     }
     

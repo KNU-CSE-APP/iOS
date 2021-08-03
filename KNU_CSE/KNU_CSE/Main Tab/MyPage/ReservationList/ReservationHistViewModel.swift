@@ -8,25 +8,32 @@
 import Foundation
 
 struct ReservationHistViewModel{
-    var reservationModel:ReservationModel!
     
-    var reservationCheckModel:ReservationCheckModel!
+    var reservationHistModel:ReservationHistModel!
     
     init(){
         self.setReservation()
     }
 
     mutating func setReservation(){
-        self.reservationModel = ReservationModel(building: "IT4", roomNumber: 104, seatNumber: 5,startDate: "2021-07-27 22:11:55", endDate: "2021-07-28 05:11:55")
+        self.reservationHistModel = ReservationHistModel(building: "IT4", roomNumber: 104, seatNumber: 5,extension_cnt: 1, startDate: "2021-07-27 22:11:55", endDate: "2021-07-28 05:11:55")
     }
     
     func getContentText()->[String]{
         
-        let seatInfo = "\(reservationModel.building) \(reservationModel.roomNumber)호 \(reservationModel.seatNumber)번"
-        let status = "예약중"
-        let startDate = reservationModel.startDate
-        let endDate = reservationModel.endDate
+        let seatInfo = "\(reservationHistModel.building) \(reservationHistModel.roomNumber)호 \(reservationHistModel.seatNumber)번"
+        let status = "사용중"
+        let extension_cnt = String(reservationHistModel.extension_cnt)
+        let startDate = reservationHistModel.startDate
+        let endDate = reservationHistModel.endDate
         
-        return [seatInfo, status, startDate, endDate]
+        return [seatInfo, status, extension_cnt, startDate, endDate]
+    }
+    
+    func check()-> Bool{
+        guard reservationHistModel != nil else{
+            return false
+        }
+        return true
     }
 }

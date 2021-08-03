@@ -9,11 +9,7 @@ import UIKit
 import SnapKit
 import M13Checkbox
 
-enum SignUpEnum{
-    
-}
-
-class SignUpView: UIViewController{
+class SignUpView: UIViewController,ViewProtocol{
     
     var indicator : IndicatorView!
     
@@ -263,17 +259,15 @@ class SignUpView: UIViewController{
     let genderTitle : SignUpUILabel = SignUpUILabel(text: "성별")
     
     override func viewWillAppear(_ animated: Bool) {
-        self.navigationItem.title = "회원가입"
-        
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-        self.navigationController?.navigationBar.topItem?.backBarButtonItem = backBarButtonItem
+        self.setNavigationTitle(title:"회원가입")
+        self.hideBackTitle()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.initUI()
         self.addView()
-        self.setupConstraints()
+        self.setUpConstraints()
     }
     
     func initUI(){
@@ -305,7 +299,7 @@ class SignUpView: UIViewController{
         }
     }
     
-    func setupConstraints(){
+    func setUpConstraints(){
         let title_height = self.view.frame.width * 0.05
         let height = self.view.frame.height * 0.05
         let top_padding = 15

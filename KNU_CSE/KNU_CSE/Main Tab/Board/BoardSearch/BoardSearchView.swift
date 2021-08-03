@@ -25,8 +25,6 @@ class BoardSearchView:UIViewController, ViewProtocol{
             textField.backgroundColor = .white
             navigationItem.setHidesBackButton(true, animated: false)
             navigationItem.titleView = searchBar
-            
-           
         }
     }
     
