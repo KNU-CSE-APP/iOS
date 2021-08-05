@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class SignInViewModel{
-    var signInListener: BaseAction<signInHandler> = BaseAction()
+    var signInListener: BaseAction<signInHandler, errorHandler> = BaseAction()
     
     var account: SignInModel = SignInModel(email: "", password: "")
     
@@ -20,9 +20,9 @@ class SignInViewModel{
     
     public func SignInRequest() {
         let request = Request(requestBodyObject: self.account, requestMethod: .post, enviroment: .SignIn)
-        request.sendRequest(request: request, type: ResponseBody<signInHandler,errorHandler>.self, successHandler: self.signInListener.successHandler, failHandler: self.signInListener.failHandler, asyncHandler: self.signInListener.asyncHandler, endHandler: self.signInListener.endHandler)
+        request.sendRequest(request: request, responseType: signInHandler.self, errorType: errorHandler.self, action:self.signInListener)
     }
-    
+
     func SignInCheck()-> Bool{
         return account.Check()
     }

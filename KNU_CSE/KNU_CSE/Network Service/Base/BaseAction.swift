@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct BaseAction<T:Codable>{
-    var successHandler:((ResponseBody<T,errorHandler>) -> ())!
+struct BaseAction<T:Codable, V:Codable>{
+    var successHandler:((ResponseBody<T,V>) -> ())!
     var failHandler:((Error) -> ())!
     var asyncHandler:(()->())!
     var endHandler:(()->())!
@@ -20,7 +20,7 @@ struct BaseAction<T:Codable>{
         self.endHandler = nil
     }
     
-    public mutating func binding(successHandler: @escaping (ResponseBody<T,errorHandler>) -> (), failHandler: @escaping (Error) -> (),asyncHandler:@escaping()->(),endHandler:@escaping()->()) {
+    public mutating func binding(successHandler: @escaping (ResponseBody<T,V>) -> (), failHandler: @escaping (Error) -> (),asyncHandler:@escaping()->(),endHandler:@escaping()->()) {
         self.successHandler = successHandler
         self.failHandler = failHandler
         self.asyncHandler = asyncHandler
