@@ -9,25 +9,34 @@ import Alamofire
 import Foundation
 import UIKit
 
-struct SignUpViewModel {
-    typealias Listener = (Account) -> Void
-    var listener: Listener?
+struct SignUpViewModel{
     var account: Account = Account(email: "", password: "", permissionCode: "", username: "", nickname: "", studentId: "", gender: "", major: "")
+    var codeRequestListner:BaseAction<String> = BaseAction()
+    var codeConfirmListner:BaseAction<String> = BaseAction()
+    var signUpListner:BaseAction<String> = BaseAction()
     
-    init(listener : Listener?){
-        self.listener = listener
-    }
-    
-    mutating func bind(listener: Listener?) {
-        self.listener = listener
-    }
-    
-    func getEvent(successHandler: @escaping (ResponseBody<String,errorHandler>) -> (), failHandler: @escaping (Error) -> (),asyncHandler:@escaping()->()) {
-        let signUpRequest = Request(requestBodyObject: self.account, requestMethod: .post, enviroment: .SignUp)
-        signUpRequest.sendRequest(request: signUpRequest, type: ResponseBody<String,errorHandler>.self, successHandler: successHandler, failHandler: failHandler, asyncHandler: asyncHandler)
+    init(){
+        
     }
     
     func SignUpCheck()-> Bool{
         return account.Check()
+    }
+}
+
+extension SignUpViewModel{
+    func CodeRequest() {
+        let codeRequest = Request(requestBodyObject:nil, requestMethod: .get, enviroment: .CodeRequest(self.account.email))
+        codeRequest.sendRequest(request: codeRequest, type: ResponseBody<String,errorHandler>.self, successHandler: codeRequestListner.successHandler, failHandler: codeRequestListner.failHandler, asyncHandler: codeRequestListner.asyncHandler, endHandler: codeRequestListner.endHandler)
+    }
+    
+    func CodeConfirm() {
+        let codeConfirm = Request(requestBodyObject:account.getEmailRequest(), requestMethod: .post, enviroment: .CodeConfirm)
+        codeConfirm.sendRequest(request: codeConfirm, type: ResponseBody<String,errorHandler>.self, successHandler: codeConfirmListner.successHandler, failHandler: codeConfirmListner.failHandler, asyncHandler: codeConfirmListner.asyncHandler, endHandler: codeConfirmListner.endHandler)
+    }
+    
+    func SignUp() {
+        let signUpRequest = Request(requestBodyObject: self.account, requestMethod: .post, enviroment: .SignUp)
+        signUpRequest.sendRequest(request: signUpRequest, type: ResponseBody<String,errorHandler>.self, successHandler: signUpListner.successHandler, failHandler: signUpListner.failHandler, asyncHandler: signUpListner.asyncHandler,endHandler: signUpListner.endHandler)
     }
 }

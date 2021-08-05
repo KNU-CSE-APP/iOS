@@ -23,8 +23,23 @@ protocol BaseApiRequest {
 }
 
 extension BaseApiRequest{
+    func getAddress(domain:String)->String{
+//        let ip = "218.233.221.188"
+//        let port = "5002"
+//
+        let ip = "3.34.14.12"
+        let port = ""
+        
+        if port == ""{
+            return  "http://\(ip)/\(domain)"
+        }else{
+            return "http://\(ip):\(port)/\(domain)"
+        }
+    }
+    
     public func request() -> URLRequest {
         let url: URL! = URL(string: baseUrl)
+        print(baseUrl)
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         switch requestMethod {
@@ -48,18 +63,21 @@ extension BaseApiRequest{
             request.httpMethod = "GET"
             break
         }
-        
         return request
     }
     
     var baseUrl: String {
         switch enviroment {
         case .SignIn:
-            return "http://218.233.221.188:5002/SignIn"
+            return getAddress(domain: "user/signIn")
         case .SignUp:
-            return "http://218.233.221.188:5002/SignUp"
-        default:
-            return "http://api.myjson.com/"
+            return getAddress(domain: "user/signUp")
+        case .CodeRequest(let email):
+            return "\(getAddress(domain: "user/verify"))/\(email)"
+        case .CodeConfirm:
+            return getAddress(domain: "user/verify")
+        case .none:
+            return ""
         }
     }
 }
@@ -72,6 +90,8 @@ enum RequestHttpMethod{
 enum Environment{
     case SignIn
     case SignUp
+    case CodeRequest(String)
+    case CodeConfirm
 }
 
 

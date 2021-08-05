@@ -7,6 +7,7 @@
 import Alamofire
 
 struct Request: BaseApiRequest {
+    
     var requestBodyObject: BaseObject?
     var requestMethod: RequestHttpMethod? = RequestHttpMethod.post
     var enviroment: Environment?
@@ -15,7 +16,7 @@ struct Request: BaseApiRequest {
         self.requestBodyObject = bodyObject
     }
     
-    func sendRequest<T:Codable>( request:BaseApiRequest, type :T.Type,successHandler:@escaping(T)->(),failHandler:@escaping(Error)->(),asyncHandler:@escaping()->()){
+    func sendRequest<T:Codable>( request:BaseApiRequest, type :T.Type,successHandler:@escaping(T)->(),failHandler:@escaping(Error)->(),asyncHandler:@escaping()->(),endHandler:@escaping()->()){
         
         asyncHandler()
         AF.request(request.request()).responseDecodable { (response:AFDataResponse<T>) in
@@ -27,7 +28,7 @@ struct Request: BaseApiRequest {
                    failHandler(error)
                    print("fail")
             }
-
+        endHandler()
         }
     }
 }

@@ -9,28 +9,27 @@ import Alamofire
 import Foundation
 import UIKit
 
-class SignInViewModel {
-    typealias Listener = (SignInModel) -> Void
-    var listener: Listener?
+class SignInViewModel{
+    var signInListener: BaseAction<signInHandler> = BaseAction()
+    
     var account: SignInModel = SignInModel(email: "", password: "")
     
-    init(listener : Listener?){
-        self.listener = listener
+    init(){
+        
     }
     
-    func bind(listener: Listener?) {
-        self.listener = listener
-    }
-    
-    public func SignInRequest(successHandler: @escaping (ResponseBody<signInHandler,errorHandler>) -> (), failHandler: @escaping (Error) -> (),asyncHandler:@escaping()->()) {
+    public func SignInRequest() {
         let request = Request(requestBodyObject: self.account, requestMethod: .post, enviroment: .SignIn)
-        request.sendRequest(request: request, type: ResponseBody<signInHandler,errorHandler>.self, successHandler: successHandler, failHandler: failHandler, asyncHandler: asyncHandler)
+        request.sendRequest(request: request, type: ResponseBody<signInHandler,errorHandler>.self, successHandler: self.signInListener.successHandler, failHandler: self.signInListener.failHandler, asyncHandler: self.signInListener.asyncHandler, endHandler: self.signInListener.endHandler)
     }
     
     func SignInCheck()-> Bool{
         return account.Check()
     }
     
+}
+
+extension SignInViewModel{
     func storeUserAccount(){
         guard StorageManager.shared.readUser() != nil else {
             StorageManager.shared.createUser(User(email: account.email, password: account.password))
@@ -65,9 +64,11 @@ class SignInViewModel {
         guard let user = StorageManager.shared.readUser() else {
             return false
         }
-        
         if user.password == ""{ return false }
-        else { return true }
+        else {
+            self.account.email = user.email
+            self.account.password = user.password
+            return true
+        }
     }
 }
-

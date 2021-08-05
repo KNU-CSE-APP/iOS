@@ -57,4 +57,35 @@ class Account : BaseObject{
     enum CodingKeys: CodingKey {
        case email, password, permissionCode, username, nickname, studentId, gender, major
      }
+    
+    func getEmailRequest()->Verification{
+        return Verification(email: self.email, code: self.permissionCode)
+    }
 }
+
+class Verification:BaseObject{
+    var email:String
+    var code:String
+    
+    init(email:String, code:String){
+        self.email = email
+        self.code = code
+        super.init()
+    }
+    
+    required init(from decoder: Decoder) throws {
+        fatalError("init(from:) has not been implemented")
+    }
+    
+    override func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(email, forKey: .email)
+        try container.encode(code, forKey: .code)
+        try super.encode(to: encoder)
+    }
+    
+    enum CodingKeys: CodingKey {
+       case email, code
+     }
+}
+

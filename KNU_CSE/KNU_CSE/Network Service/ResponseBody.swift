@@ -9,7 +9,7 @@ import Foundation
 
 struct ResponseBody<T:Codable,V:Codable>:Codable{
     var success:Bool
-    var response:T
+    var response:T?
     var error:V?
 }
 
@@ -22,3 +22,4 @@ struct errorHandler:Codable{
     var message:String
     var status:Int
 }
+

@@ -13,23 +13,23 @@ class ViewController: UIViewController {
     
     var indicator : IndicatorView!
     
-    var signInViewModel : SignInViewModel = SignInViewModel(listener: nil)
+    var signInViewModel : SignInViewModel = SignInViewModel()
     
     var accountUI : UIView! {
         didSet{
-            accountUI.layer.borderWidth = 1
-            accountUI.layer.borderColor = Color.mainColor.cgColor
+            self.accountUI.layer.borderWidth = 1
+            self.accountUI.layer.borderColor = Color.mainColor.cgColor
         }
     }
     
     var emailTextField: BindingTextField! {
         didSet {
-            emailTextField.delegate = self
-            emailTextField.prefixDraw(text: "이메일", on: .left)
-            emailTextField.setUpText(text: "@knu.ac.kr", on: .right, color: .black)
-            emailTextField.backgroundColor = .white
-            emailTextField.bind { [weak self] email in
-                self?.signInViewModel.account.email = email
+            self.emailTextField.delegate = self
+            self.emailTextField.prefixDraw(text: "이메일", on: .left)
+            self.emailTextField.setUpText(text: "@knu.ac.kr", on: .right, color: .black)
+            self.emailTextField.backgroundColor = .white
+            self.emailTextField.bind { [weak self] email in
+                self?.signInViewModel.account.email = email + "@knu.ac.kr"
             }
             
         }
@@ -37,13 +37,13 @@ class ViewController: UIViewController {
     
     var pwTextField: BindingTextField! {
         didSet {
-            pwTextField.delegate = self
-            pwTextField.isSecureTextEntry = true
-            pwTextField.backgroundColor = .white
-            pwTextField.setupUpperBorder()
-            pwTextField.prefixDraw(text: "비밀번호", on: .left)
-            pwTextField.setUpImage(imageName: "eye.fill", on: .right, color: UIColor.darkGray,width: 30,height: 25)
-            pwTextField.bind { [weak self] pw in
+            self.pwTextField.delegate = self
+            self.pwTextField.isSecureTextEntry = true
+            self.pwTextField.backgroundColor = .white
+            self.pwTextField.setupUpperBorder()
+            self.pwTextField.prefixDraw(text: "비밀번호", on: .left)
+            self.pwTextField.setUpImage(imageName: "eye.fill", on: .right, color: UIColor.darkGray,width: 30,height: 25)
+            self.pwTextField.bind { [weak self] pw in
                 self?.signInViewModel.account.password = pw
             }
         }
@@ -51,27 +51,17 @@ class ViewController: UIViewController {
     
     var signInBtn : UIButton! {
         didSet{
-            signInBtn.backgroundColor = Color.subColor
-            signInBtn.setTitle("로그인", for: .normal)
-            signInBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
-            signInBtn.addAction{
-                if self.signInViewModel.SignInCheck(){
-                    self.signInViewModel.SignInRequest(successHandler: { response in
-                        if response.success {
-                            self.saveKeyChain()
-                            self.pushTabView()
-                        }
-                        self.indicator.stopIndicator()
-                    }, failHandler: { Error in
-                        print(Error)
-                        let alert = Alert(title: "로그인 실패", message: "네트워크 상태를 확인하세요", viewController: self)
-                        alert.popUpDefaultAlert(action: nil)
-                        self.indicator.stopIndicator()
-                    }, asyncHandler: {
-                        self.indicator.startIndicator()
-                    })
+            self.signInBtn.backgroundColor = Color.subColor
+            self.signInBtn.setTitle("로그인", for: .normal)
+            self.signInBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
+            self.signInBtn.addAction{ [weak self] in
+                guard let check = self?.signInViewModel.SignInCheck() else{
+                    return
+                }
+                if check{
+                    self?.signInViewModel.SignInRequest()
                 }else {
-                    let alert = Alert(title: "로그인 실패", message: "아이디와 비밀번호를 입력하세요.", viewController: self)
+                    let alert = Alert(title: "로그인 실패", message: "아이디와 비밀번호를 입력하세요.", viewController: self!)
                     alert.popUpDefaultAlert(action: nil)
                 }
             }
@@ -80,11 +70,11 @@ class ViewController: UIViewController {
     
     var findPwBtn:UIButton!{
         didSet{
-            findPwBtn.backgroundColor = .clear
-            findPwBtn.setTitle("비밀번호 찾기", for: .normal)
-            findPwBtn.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-            findPwBtn.setTitleColor(.white.withAlphaComponent(0.5), for: .highlighted)
-            findPwBtn.addAction{ [weak self] in
+            self.findPwBtn.backgroundColor = .clear
+            self.findPwBtn.setTitle("비밀번호 찾기", for: .normal)
+            self.findPwBtn.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+            self.findPwBtn.setTitleColor(.white.withAlphaComponent(0.5), for: .highlighted)
+            self.findPwBtn.addAction{ [weak self] in
                 self?.pushView(identifier: "FindPwView", typeOfVC: FindPwView.self)
             }
         }
@@ -92,11 +82,11 @@ class ViewController: UIViewController {
     
     var signUpBtn : UIButton! {
         didSet{
-            signUpBtn.backgroundColor = .clear
-            signUpBtn.setTitle("회원가입", for: .normal)
-            signUpBtn.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-            signUpBtn.setTitleColor(.white.withAlphaComponent(0.5), for: .highlighted)
-            signUpBtn.addAction{ [weak self] in
+            self.signUpBtn.backgroundColor = .clear
+            self.signUpBtn.setTitle("회원가입", for: .normal)
+            self.signUpBtn.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+            self.signUpBtn.setTitleColor(.white.withAlphaComponent(0.5), for: .highlighted)
+            self.signUpBtn.addAction{ [weak self] in
                 self?.pushView(identifier: "SignUpView", typeOfVC: SignUpView.self)
             }
         }
@@ -104,10 +94,10 @@ class ViewController: UIViewController {
     
     var autoSignInBox : CheckBox!{
         didSet{
-            let checkbox : M13Checkbox = autoSignInBox.checkBox
-            autoSignInBox.setColor(tintColor: .white, textColor: .white)
-            autoSignInBox.setChecked(checkState: UserDefaults.standard.bool(forKey: "checkState"))
-            autoSignInBox.bind {
+            let checkbox : M13Checkbox = self.autoSignInBox.checkBox
+            self.autoSignInBox.setColor(tintColor: .white, textColor: .white)
+            self.autoSignInBox.setChecked(checkState: UserDefaults.standard.bool(forKey: "checkState"))
+            self.autoSignInBox.bind {
                 switch checkbox.checkState {
                     case .checked:
                         UserDefaults.standard.setValue(true, forKey: "checkState")
@@ -124,13 +114,14 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        initUI()
-        addView()
-        setupConstraints()
+        self.initUI()
+        self.addView()
+        self.setupConstraints()
+        self.setSignInAction()
+        self.checkKeyChain()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.checkKeyChain()
         self.setNavigationView()
         self.navigationController?.navigationBar.isHidden = true
     }
@@ -154,8 +145,8 @@ class ViewController: UIViewController {
     }
     
     func addView(){
-        accountUI.addSubview(emailTextField)
-        accountUI.addSubview(pwTextField)
+        self.accountUI.addSubview(self.emailTextField)
+        self.accountUI.addSubview(self.pwTextField)
         _ = [self.accountUI, self.pwTextField, self.signInBtn, self.findPwBtn, self.signUpBtn, self.autoSignInBox].map{
             self.view.addSubview($0)
         }
@@ -169,7 +160,7 @@ class ViewController: UIViewController {
         let right_margin:CGFloat = -30
         let btn_height:CGFloat = height * 0.8
             
-        accountUI.snp.makeConstraints{ make in
+        self.accountUI.snp.makeConstraints{ make in
             make.left.equalTo(left_margin)
             make.right.equalTo(right_margin)
             make.top.equalTo(self.view).offset(title_height)
@@ -177,7 +168,7 @@ class ViewController: UIViewController {
         }
         // MARK: - Email
 
-        emailTextField.snp.makeConstraints{ make in
+        self.emailTextField.snp.makeConstraints{ make in
             make.width.equalToSuperview().multipliedBy(1)
             make.left.equalToSuperview().offset(0)
             make.right.equalTo(0)
@@ -186,49 +177,45 @@ class ViewController: UIViewController {
         }
         
         // MARK: - 비밀번호
-        pwTextField.snp.makeConstraints{ make in
+        self.pwTextField.snp.makeConstraints{ make in
             make.left.equalToSuperview().offset(left_margin)
             make.right.equalToSuperview().offset(right_margin)
-            make.top.equalTo(emailTextField.snp.bottom).offset(0)
+            make.top.equalTo(self.emailTextField.snp.bottom).offset(0)
             make.height.equalTo(height).multipliedBy(2)
         }
         
         // MARK: - 로그인 버튼
-        signInBtn.snp.makeConstraints{ make in
+        self.signInBtn.snp.makeConstraints{ make in
             make.left.equalTo(left_margin)
             make.right.equalTo(right_margin)
-            make.top.equalTo(pwTextField.snp.bottom).offset(top_padding)
+            make.top.equalTo(self.pwTextField.snp.bottom).offset(top_padding)
             make.height.equalTo(height)
         }
         
         // MARK: - 자동로그인 버튼
-        autoSignInBox.snp.makeConstraints{ make in
-            make.width.equalTo(signUpBtn.snp.width).multipliedBy(0.25)
+        self.autoSignInBox.snp.makeConstraints{ make in
+            make.width.equalTo(self.signUpBtn.snp.width).multipliedBy(0.25)
             make.height.equalTo(height)
-            make.top.equalTo(signInBtn.snp.bottom).offset(top_padding*0.5)
+            make.top.equalTo(self.signInBtn.snp.bottom).offset(top_padding*0.5)
             make.trailing.equalTo(right_margin)
         }
         
         // MARK: - 비밀번호찾기 버튼
-        findPwBtn.snp.makeConstraints{ make in
+        self.findPwBtn.snp.makeConstraints{ make in
             make.left.equalTo(left_margin)
             make.right.equalTo(right_margin)
-            make.top.equalTo(autoSignInBox.snp.bottom).offset(top_padding)
+            make.top.equalTo(self.autoSignInBox.snp.bottom).offset(top_padding)
             make.height.equalTo(btn_height)
         }
         
         // MARK: - 회원가입 버튼
-        signUpBtn.snp.makeConstraints{ make in
+        self.signUpBtn.snp.makeConstraints{ make in
             make.left.equalTo(left_margin)
             make.right.equalTo(right_margin)
-            make.top.equalTo(findPwBtn.snp.bottom).offset(top_padding*0.5)
+            make.top.equalTo(self.findPwBtn.snp.bottom).offset(top_padding*0.5)
             make.height.equalTo(btn_height)
         }
-        
-       
     }
-    
-    
 }
 
 extension ViewController{
@@ -250,7 +237,7 @@ extension ViewController{
     }
     
     func saveKeyChain(){
-        if autoSignInBox.checkBox.checkState == .checked{
+        if self.autoSignInBox.checkBox.checkState == .checked{
             self.signInViewModel.storeUserAccount()
         }else{
             self.signInViewModel.storeUserEmail()
@@ -259,19 +246,7 @@ extension ViewController{
     
     func checkKeyChain(){
         if self.signInViewModel.checkUserAccount(){
-            self.signInViewModel.SignInRequest(successHandler: { response in
-                if response.success {
-                    self.pushTabView()
-                }
-                self.indicator.stopIndicator()
-            }, failHandler: { Error in
-                print(Error)
-                let alert = Alert(title: "로그인 실패", message: "네트워크 상태를 확인하세요", viewController: self)
-                alert.popUpDefaultAlert(action: nil)
-                self.indicator.stopIndicator()
-            }, asyncHandler: {
-                self.indicator.startIndicator()
-            })
+            self.signInViewModel.SignInRequest()
         }
     }
 }
@@ -287,5 +262,25 @@ extension ViewController: UITextFieldDelegate{
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+}
+
+extension ViewController{
+    func setSignInAction(){
+        self.signInViewModel.signInListener.binding(successHandler: { response in
+            if response.success {
+                self.pushTabView()
+                self.saveKeyChain()
+            } else{
+                Alert(title: "로그인 실패", message: "\((response.error?.message)!)", viewController: self).popUpDefaultAlert(action: nil)
+            }
+        }, failHandler: { Error in
+            let alert = Alert(title: "로그인 실패", message: "네트워크 상태를 확인하세요", viewController: self)
+            alert.popUpDefaultAlert(action: nil)
+        }, asyncHandler: {
+            self.indicator.startIndicator()
+        }, endHandler: {
+            self.indicator.stopIndicator()
+        })
     }
 }

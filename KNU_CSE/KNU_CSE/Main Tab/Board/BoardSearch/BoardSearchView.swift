@@ -9,6 +9,8 @@ import UIKit
 
 class BoardSearchView:UIViewController, ViewProtocol{
     
+    let categoryTitle:[String] = ["잡담하기", "정보", "팀원 구하기", "수업", "팀원 구하기", "팀원 구하기", "팀원 구하기", "팀원 구하기", "팀원 구하기"]
+    
     var searchController:UISearchController!{
         didSet{
             self.searchController.isActive = true
@@ -25,6 +27,22 @@ class BoardSearchView:UIViewController, ViewProtocol{
             textField.backgroundColor = .white
             navigationItem.setHidesBackButton(true, animated: false)
             navigationItem.titleView = searchBar
+        }
+    }
+    
+    var categoryTable:UICollectionView!{
+        didSet{
+            let flowLayout = UICollectionViewFlowLayout()
+            flowLayout.minimumLineSpacing = .zero
+            flowLayout.minimumInteritemSpacing = 16
+            flowLayout.scrollDirection = .horizontal
+            flowLayout.sectionInset = .init(top: 5, left: 5, bottom: 5, right: 5)
+            
+            self.categoryTable.setCollectionViewLayout(flowLayout, animated: false)
+            self.categoryTable.delegate = self
+            self.categoryTable.dataSource = self
+            self.categoryTable.backgroundColor = .white
+            self.categoryTable.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.identifier)
         }
     }
     
@@ -50,15 +68,25 @@ class BoardSearchView:UIViewController, ViewProtocol{
     
     func initUI() {
         self.searchController = UISearchController(searchResultsController: nil)
+        self.categoryTable = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewFlowLayout())
         self.BoardVC = storyboard?.instantiateViewController(withIdentifier: "FreeBoardView") as? FreeBoardView
     }
     
     func addView() {
-        
+        self.view.addSubview(self.categoryTable)
     }
     
     func setUpConstraints() {
+        let left_margin = 20
+        let right_margin = -20
+        let category_height = 55
         
+        self.categoryTable.snp.makeConstraints{ make in
+            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(5)
+            make.left.equalTo(self.view.safeAreaLayoutGuide).offset(left_margin)
+            make.right.equalTo(self.view.safeAreaLayoutGuide).offset(right_margin)
+            make.height.equalTo(category_height)
+        }
     }
 }
 
@@ -75,6 +103,8 @@ extension BoardSearchView{
             make.right.equalTo(self.view.safeAreaLayoutGuide)
             make.bottom.equalTo(self.view.safeAreaLayoutGuide)
         }
+        
+        self.categoryTable.isHidden = true
     }
     
     //if press cancel button then pop
@@ -88,9 +118,11 @@ extension BoardSearchView{
     
     //if keyboard show up then remove BoardVC
     @objc func removeBoardView(){
-        BoardVC.willMove(toParent: nil)
-        BoardVC.view.removeFromSuperview()
-        BoardVC.removeFromParent()
+        self.BoardVC.willMove(toParent: nil)
+        self.BoardVC.view.removeFromSuperview()
+        self.BoardVC.removeFromParent()
+        
+        self.categoryTable.isHidden = false
     }
     
     func setTextfiledBecomeFirstResponder(){
@@ -112,3 +144,27 @@ extension BoardSearchView:UISearchBarDelegate{
 }
 
 
+extension BoardSearchView:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.categoryTitle.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCell.identifier, for: indexPath) as? CategoryCell else{
+            return UICollectionViewCell()
+        }
+        cell.setTitle(title: self.categoryTitle[indexPath.row])
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+           return CategoryCell.fittingSize(name: categoryTitle[indexPath.row])
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == categoryTable {
+            print(categoryTitle[indexPath.row])
+        }
+    }
+}

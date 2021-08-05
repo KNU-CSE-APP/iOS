@@ -50,6 +50,9 @@
 		681D382626ADC61D000D9FE8 /* BoardWriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D382526ADC61D000D9FE8 /* BoardWriteView.swift */; };
 		68C7629126B96EFA00792498 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C7629026B96EFA00792498 /* CategoryCell.swift */; };
 		68C7629326B99F7F00792498 /* ResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C7629226B99F7F00792498 /* ResponseBody.swift */; };
+		68C7629626BC0CAE00792498 /* BaseViewModelChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C7629526BC0CAE00792498 /* BaseViewModelChange.swift */; };
+		68C7629826BC0CEB00792498 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C7629726BC0CEB00792498 /* URL.swift */; };
+		68C7629A26BC403700792498 /* BaseAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C7629926BC403700792498 /* BaseAction.swift */; };
 		68F1A5B826A0088B007B4B86 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5B726A0088B007B4B86 /* AppDelegate.swift */; };
 		68F1A5BA26A0088B007B4B86 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5B926A0088B007B4B86 /* SceneDelegate.swift */; };
 		68F1A5BC26A0088B007B4B86 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5BB26A0088B007B4B86 /* SignInView.swift */; };
@@ -59,7 +62,6 @@
 		68F1A5CF26A0088D007B4B86 /* KNU_CSETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5CE26A0088D007B4B86 /* KNU_CSETests.swift */; };
 		68F1A5DA26A0088D007B4B86 /* KNU_CSEUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5D926A0088D007B4B86 /* KNU_CSEUITests.swift */; };
 		68F1A5EC26A008FF007B4B86 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5E826A008FF007B4B86 /* Request.swift */; };
-		68F1A5ED26A008FF007B4B86 /* GetEventListApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5E926A008FF007B4B86 /* GetEventListApiRequest.swift */; };
 		68F1A5EE26A008FF007B4B86 /* BaseObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5EA26A008FF007B4B86 /* BaseObject.swift */; };
 		68F1A5EF26A008FF007B4B86 /* BaseApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5EB26A008FF007B4B86 /* BaseApiRequest.swift */; };
 		68F1A5F626A0090B007B4B86 /* SignUpModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5F126A0090B007B4B86 /* SignUpModel.swift */; };
@@ -161,6 +163,9 @@
 		681D382526ADC61D000D9FE8 /* BoardWriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardWriteView.swift; sourceTree = "<group>"; };
 		68C7629026B96EFA00792498 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		68C7629226B99F7F00792498 /* ResponseBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseBody.swift; sourceTree = "<group>"; };
+		68C7629526BC0CAE00792498 /* BaseViewModelChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModelChange.swift; sourceTree = "<group>"; };
+		68C7629726BC0CEB00792498 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
+		68C7629926BC403700792498 /* BaseAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAction.swift; sourceTree = "<group>"; };
 		68F1A5B426A0088B007B4B86 /* KNU_CSE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KNU_CSE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68F1A5B726A0088B007B4B86 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		68F1A5B926A0088B007B4B86 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -176,7 +181,6 @@
 		68F1A5D926A0088D007B4B86 /* KNU_CSEUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNU_CSEUITests.swift; sourceTree = "<group>"; };
 		68F1A5DB26A0088D007B4B86 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		68F1A5E826A008FF007B4B86 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
-		68F1A5E926A008FF007B4B86 /* GetEventListApiRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetEventListApiRequest.swift; sourceTree = "<group>"; };
 		68F1A5EA26A008FF007B4B86 /* BaseObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseObject.swift; sourceTree = "<group>"; };
 		68F1A5EB26A008FF007B4B86 /* BaseApiRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseApiRequest.swift; sourceTree = "<group>"; };
 		68F1A5F126A0090B007B4B86 /* SignUpModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpModel.swift; sourceTree = "<group>"; };
@@ -395,6 +399,17 @@
 			path = BoardWrite;
 			sourceTree = "<group>";
 		};
+		68C7629426BC0CA200792498 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				68F1A5EB26A008FF007B4B86 /* BaseApiRequest.swift */,
+				68F1A5EA26A008FF007B4B86 /* BaseObject.swift */,
+				68C7629526BC0CAE00792498 /* BaseViewModelChange.swift */,
+				68C7629926BC403700792498 /* BaseAction.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
 		68D5448F26A40E220072C2A4 /* KNU Notice  */ = {
 			isa = PBXGroup;
 			children = (
@@ -466,11 +481,10 @@
 		68F1A5E726A008FF007B4B86 /* Network Service */ = {
 			isa = PBXGroup;
 			children = (
+				68C7629426BC0CA200792498 /* Base */,
 				68F1A5E826A008FF007B4B86 /* Request.swift */,
-				68F1A5E926A008FF007B4B86 /* GetEventListApiRequest.swift */,
-				68F1A5EA26A008FF007B4B86 /* BaseObject.swift */,
-				68F1A5EB26A008FF007B4B86 /* BaseApiRequest.swift */,
 				68C7629226B99F7F00792498 /* ResponseBody.swift */,
+				68C7629726BC0CEB00792498 /* URL.swift */,
 			);
 			path = "Network Service";
 			sourceTree = "<group>";
@@ -911,7 +925,6 @@
 				681D37BF26A451B5000D9FE8 /* ClassRoomModel.swift in Sources */,
 				68F861E926B427BE00934BD2 /* PhotoView.swift in Sources */,
 				68F1A5B826A0088B007B4B86 /* AppDelegate.swift in Sources */,
-				68F1A5ED26A008FF007B4B86 /* GetEventListApiRequest.swift in Sources */,
 				68F1A61426A32356007B4B86 /* StorageManager.swift in Sources */,
 				68F1A60C26A307AB007B4B86 /* StringSet.swift in Sources */,
 				681D382326ADC5D4000D9FE8 /* BoardSearchView.swift in Sources */,
@@ -943,6 +956,7 @@
 				68F861E326B2EE8A00934BD2 /* FindPwView.swift in Sources */,
 				68F1A61226A3120D007B4B86 /* TabView.swift in Sources */,
 				68F1A5BA26A0088B007B4B86 /* SceneDelegate.swift in Sources */,
+				68C7629A26BC403700792498 /* BaseAction.swift in Sources */,
 				681D380F26A9FC51000D9FE8 /* CommentCell.swift in Sources */,
 				68F1A5F626A0090B007B4B86 /* SignUpModel.swift in Sources */,
 				681D381E26ADAC4F000D9FE8 /* ReplyView.swift in Sources */,
@@ -958,6 +972,7 @@
 				681D37B526A419F3000D9FE8 /* MyPageView.swift in Sources */,
 				68F861D326B1B36400934BD2 /* WrittenBoardListView.swift in Sources */,
 				681D380926A9C5BE000D9FE8 /* BoardDetailModel.swift in Sources */,
+				68C7629826BC0CEB00792498 /* URL.swift in Sources */,
 				681D37DB26A4AAAC000D9FE8 /* ReservationViewModel.swift in Sources */,
 				68F1A60026A07FE7007B4B86 /* CheckBox.swift in Sources */,
 				68F861E626B2FB4A00934BD2 /* FindPwViewModel+Model.swift in Sources */,
@@ -967,6 +982,7 @@
 				681D37B926A42782000D9FE8 /* ClassRoomView.swift in Sources */,
 				681D37F926A73F71000D9FE8 /* BoardTitleCollectionCell.swift in Sources */,
 				68F861DF26B2D31D00934BD2 /* ProfileTableCell.swift in Sources */,
+				68C7629626BC0CAE00792498 /* BaseViewModelChange.swift in Sources */,
 				68F1A5FE26A07147007B4B86 /* SignUpUILabel.swift in Sources */,
 				68C7629126B96EFA00792498 /* CategoryCell.swift in Sources */,
 				681D37DD26A5BF2D000D9FE8 /* ClassSeatCell.swift in Sources */,

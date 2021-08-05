@@ -17,6 +17,13 @@ class SignInModel : BaseObject{
         super.init()
     }
     
+    override func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(email, forKey: .email)
+        try container.encode(password, forKey: .password)
+        try super.encode(to: encoder)
+    }
+    
     required init(from decoder: Decoder) throws {
         fatalError("init(from:) has not been implemented")
     }
@@ -28,5 +35,9 @@ class SignInModel : BaseObject{
             return false
         }
     }
+    
+    enum CodingKeys: CodingKey {
+       case email, password
+     }
 }
 

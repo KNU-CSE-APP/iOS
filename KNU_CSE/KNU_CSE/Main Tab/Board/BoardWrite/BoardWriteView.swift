@@ -10,8 +10,6 @@ import BTNavigationDropdownMenu
 
 class BoardWriteView:UIViewController, ViewProtocol{
     
-    let categoryTitle:[String] = ["잡담하기", "정보", "팀원 구하기", "수업", "팀원 구하기", "팀원 구하기", "팀원 구하기", "팀원 구하기", "팀원 구하기"]
-    
     var scrollView:UIScrollView!{
         didSet{
             scrollView.alwaysBounceVertical = true
@@ -41,22 +39,6 @@ class BoardWriteView:UIViewController, ViewProtocol{
     var categoryLabel:UILabel!{
         didSet{
             self.categoryLabel.text = "추천 카테고리"
-        }
-    }
-    
-    var categoryTable:UICollectionView!{
-        didSet{
-            let flowLayout = UICollectionViewFlowLayout()
-            flowLayout.minimumLineSpacing = .zero
-            flowLayout.minimumInteritemSpacing = 16
-            flowLayout.scrollDirection = .horizontal
-            flowLayout.sectionInset = .init(top: 5, left: 5, bottom: 5, right: 5)
-            
-            self.categoryTable.setCollectionViewLayout(flowLayout, animated: false)
-            self.categoryTable.delegate = self
-            self.categoryTable.dataSource = self
-            self.categoryTable.backgroundColor = .white
-            self.categoryTable.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.identifier)
         }
     }
     
@@ -136,7 +118,7 @@ class BoardWriteView:UIViewController, ViewProtocol{
         self.borderLine = UIView()
         
         self.categoryLabel = UILabel()
-        self.categoryTable = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewFlowLayout())
+      
         
         self.contentField = UITextView()
         self.contentPlaceHolder = UILabel()
@@ -146,7 +128,7 @@ class BoardWriteView:UIViewController, ViewProtocol{
     
     func addView() {
         self.view.addSubview(scrollView)
-        _ = [self.titleField, self.borderLine, self.contentField, self.contentPlaceHolder, self.categoryLabel, self.categoryTable].map{
+        _ = [self.titleField, self.borderLine, self.contentField, self.contentPlaceHolder, self.categoryLabel].map{
             self.scrollView.addSubview($0)
         }
     }
@@ -178,15 +160,8 @@ class BoardWriteView:UIViewController, ViewProtocol{
             make.height.equalTo(0.3)
         }
         
-        self.categoryTable.snp.makeConstraints{ make in
-            make.top.equalTo(self.borderLine.snp.bottom).offset(5)
-            make.left.equalTo(self.view.safeAreaLayoutGuide).offset(left_margin)
-            make.right.equalTo(self.view.safeAreaLayoutGuide).offset(right_margin)
-            make.height.equalTo(category_height)
-        }
-        
         self.contentField.snp.makeConstraints{ make in
-            make.top.equalTo(self.categoryTable.snp.bottom).offset(10)
+            make.top.equalTo(self.borderLine.snp.bottom).offset(10)
             make.left.equalTo(self.view.safeAreaLayoutGuide).offset(left_margin)
             make.right.equalTo(self.view.safeAreaLayoutGuide).offset(right_margin)
             make.bottom.equalToSuperview()
@@ -262,27 +237,3 @@ extension BoardWriteView:UITextFieldDelegate{
     }
 }
 
-extension BoardWriteView:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout{
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.categoryTitle.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCell.identifier, for: indexPath) as? CategoryCell else{
-            return UICollectionViewCell()
-        }
-        cell.setTitle(title: self.categoryTitle[indexPath.row])
-        
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-           return CategoryCell.fittingSize(name: categoryTitle[indexPath.row])
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if collectionView == categoryTable {
-            print(categoryTitle[indexPath.row])
-        }
-    }
-}
