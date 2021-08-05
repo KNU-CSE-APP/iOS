@@ -320,7 +320,7 @@ class SignUpView: UIViewController,ViewProtocol{
         }
         
         self.emailTextField.snp.makeConstraints{ make in
-            make.width.equalTo(self.pwTextField).multipliedBy(0.7)
+            make.width.equalTo(self.pwTextField.snp.width).multipliedBy(0.7)
             make.leading.equalTo(left_margin)
             
             make.top.equalTo(emailTitle.snp.bottom).offset(title_To_textField_margin)
@@ -336,7 +336,7 @@ class SignUpView: UIViewController,ViewProtocol{
 
         // MARK: - Email code
         self.emailCodeTextField.snp.makeConstraints{ make in
-            make.width.equalTo(pwTitle).multipliedBy(0.7)
+            make.width.equalTo(self.pwTextField.snp.width).multipliedBy(0.7)
             make.leading.equalTo(left_margin)
             make.top.equalTo(self.emailTextField.snp.bottom).offset(top_padding)
             make.height.equalTo(height)

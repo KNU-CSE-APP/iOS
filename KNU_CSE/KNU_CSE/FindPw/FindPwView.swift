@@ -16,10 +16,10 @@ class FindPwView:UIViewController,ViewProtocol{
     let containerView = UIView()
     var emailTextField: BindingTextField! {
         didSet {
-            emailTextField.draw()
-            emailTextField.setUpText(text: "@knu.ac.kr", on: .right, color: .black)
-            emailTextField.delegate = self
-            emailTextField.bind { [weak self] email in
+            self.emailTextField.draw()
+            self.emailTextField.setUpText(text: "@knu.ac.kr", on: .right, color: .black)
+            self.emailTextField.delegate = self
+            self.emailTextField.bind { [weak self] email in
                 self?.findPwViewModel.account.email = email
             }
         }
@@ -27,12 +27,12 @@ class FindPwView:UIViewController,ViewProtocol{
     
     var sendCodeBtn : UIButton! {
         didSet{
-            sendCodeBtn.backgroundColor = Color.mainColor
-            sendCodeBtn.setTitle("인증번호 전송", for: .normal)
-            sendCodeBtn.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .light)
-            sendCodeBtn.tintColor = .white
-            sendCodeBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
-            sendCodeBtn.addAction{
+            self.sendCodeBtn.backgroundColor = Color.mainColor
+            self.sendCodeBtn.setTitle("인증번호 전송", for: .normal)
+            self.sendCodeBtn.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .light)
+            self.sendCodeBtn.tintColor = .white
+            self.sendCodeBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
+            self.sendCodeBtn.addAction{
                 let alert = Alert(title: "인증번호 전송", message: "인증번호가 해당 이메일로 전송되었습니다.", viewController: self)
                 alert.popUpDefaultAlert(action: nil)
             }
@@ -41,11 +41,11 @@ class FindPwView:UIViewController,ViewProtocol{
     
     var emailCodeTextField: BindingTextField! {
         didSet {
-            emailCodeTextField.draw()
-            emailCodeTextField.delegate = self
-            emailCodeTextField.keyboardType = .numberPad
-            emailCodeTextField.placeholder = "인증번호를 입력하세요."
-            emailCodeTextField.bind { [weak self] code in
+            self.emailCodeTextField.draw()
+            self.emailCodeTextField.delegate = self
+            self.emailCodeTextField.keyboardType = .numberPad
+            self.emailCodeTextField.placeholder = "인증번호를 입력하세요."
+            self.emailCodeTextField.bind { [weak self] code in
                 self?.findPwViewModel.emailCode = code
             }
         }
@@ -53,12 +53,12 @@ class FindPwView:UIViewController,ViewProtocol{
     
     var confirmCodeBtn : UIButton! {
         didSet{
-            confirmCodeBtn.backgroundColor = Color.mainColor
-            confirmCodeBtn.setTitle("인증확인", for: .normal)
-            confirmCodeBtn.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .light)
-            confirmCodeBtn.tintColor = .white
-            confirmCodeBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
-            confirmCodeBtn.addAction{ [weak self] in
+            self.confirmCodeBtn.backgroundColor = Color.mainColor
+            self.confirmCodeBtn.setTitle("인증확인", for: .normal)
+            self.confirmCodeBtn.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .light)
+            self.confirmCodeBtn.tintColor = .white
+            self.confirmCodeBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
+            self.confirmCodeBtn.addAction{ [weak self] in
                 let alert = Alert(title: "인증 성공", message: "이메일 인증을 완료했습니다.", viewController: self!)
                 alert.popUpDefaultAlert(action: nil)
                 self?.showPwField()
@@ -68,13 +68,13 @@ class FindPwView:UIViewController,ViewProtocol{
     
     var pwTextField: BindingTextField! {
         didSet {
-            pwTextField.isHidden = true
-            pwTextField.isSecureTextEntry = true
-            pwTextField.delegate = self
-            pwTextField.textContentType = .password
-            pwTextField.draw()
-            pwTextField.setUpImage(imageName: "eye.fill", on: .right, color: UIColor.darkGray, width:40, height: 40)
-            pwTextField.bind { [weak self] pw in
+            self.pwTextField.isHidden = true
+            self.pwTextField.isSecureTextEntry = true
+            self.pwTextField.delegate = self
+            self.pwTextField.textContentType = .password
+            self.pwTextField.draw()
+            self.pwTextField.setUpImage(imageName: "eye.fill", on: .right, color: UIColor.darkGray, width:40, height: 40)
+            self.pwTextField.bind { [weak self] pw in
                 self?.findPwViewModel.account.password = pw
                 self?.checkChangeValue()
             }
@@ -83,13 +83,13 @@ class FindPwView:UIViewController,ViewProtocol{
     
     var pw2TextField: BindingTextField! {
         didSet {
-            pw2TextField.isHidden = true
-            pw2TextField.isSecureTextEntry = true
-            pw2TextField.delegate = self
-            pw2TextField.textContentType = .password
-            pw2TextField.draw()
-            pw2TextField.setUpImage(imageName: "eye.fill", on: .right, color: UIColor.darkGray, width:40, height: 40)
-            pw2TextField.bind { [weak self] pw2 in
+            self.pw2TextField.isHidden = true
+            self.pw2TextField.isSecureTextEntry = true
+            self.pw2TextField.delegate = self
+            self.pw2TextField.textContentType = .password
+            self.pw2TextField.draw()
+            self.pw2TextField.setUpImage(imageName: "eye.fill", on: .right, color: UIColor.darkGray, width:40, height: 40)
+            self.pw2TextField.bind { [weak self] pw2 in
                 self?.findPwViewModel.account.password2 = pw2
                 self?.checkChangeValue()
             }
@@ -98,20 +98,28 @@ class FindPwView:UIViewController,ViewProtocol{
     
     var registerBtn : UIButton! {
         didSet{
-            registerBtn.isHidden = true
-            registerBtn.backgroundColor = UIColor.lightGray
-            registerBtn.setTitle("비밀번호 변경", for: .normal)
-            registerBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
-            registerBtn.layer.cornerRadius = 5
+            self.registerBtn.isHidden = true
+            self.registerBtn.backgroundColor = UIColor.lightGray
+            self.registerBtn.setTitle("비밀번호 변경", for: .normal)
+            self.registerBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
+            self.registerBtn.layer.cornerRadius = 5
         }
     }
     
     var emailTitle : SignUpUILabel!
+    
     var pwTitle : SignUpUILabel!{
         didSet{
-            pwTitle.isHidden = true
+            self.pwTitle.isHidden = true
         }
     }
+    
+    var pwCautionTitle : SignUpUILabel!{
+        didSet{
+            self.pwCautionTitle.isHidden = true
+        }
+    }
+    
     var pw2Title : SignUpUILabel!{
         didSet{
             pw2Title.isHidden = true
@@ -134,6 +142,7 @@ class FindPwView:UIViewController,ViewProtocol{
     func initUI(){
         self.emailTitle = SignUpUILabel(text: "이메일")
         self.pwTitle = SignUpUILabel(text: "비밀번호")
+        self.pwCautionTitle = SignUpUILabel(text: "영어,숫자를 조합한 8~20자",alignment: .right, color: UIColor.lightGray)
         self.pw2Title = SignUpUILabel(text: "비밀번호 재확인")
         
         self.emailTextField = BindingTextField()
@@ -145,12 +154,12 @@ class FindPwView:UIViewController,ViewProtocol{
         self.confirmCodeBtn = UIButton()
         self.registerBtn = UIButton()
         
-        indicator = IndicatorView(viewController: self)
+        self.indicator = IndicatorView(viewController: self)
     }
     
     func addView(){
         self.view.addSubview(containerView)
-        _ =  [emailTextField,emailCodeTextField,sendCodeBtn,emailCodeTextField,confirmCodeBtn,pwTextField,pw2TextField,emailTitle,pwTitle,pw2Title,registerBtn].map{
+        _ =  [self.emailTextField,self.emailCodeTextField,self.sendCodeBtn,self.emailCodeTextField,self.confirmCodeBtn,self.pwTextField,self.pw2TextField,self.emailTitle,self.pwTitle,self.pwCautionTitle,self.pw2Title,self.registerBtn].map{
             self.containerView.addSubview($0)
         }
     }
@@ -178,46 +187,53 @@ class FindPwView:UIViewController,ViewProtocol{
         }
         
         self.emailTextField.snp.makeConstraints{ make in
-            make.width.equalTo(pwTitle).multipliedBy(0.7)
+            make.width.equalTo(self.pwTextField.snp.width).multipliedBy(0.7)
             make.leading.equalTo(left_margin)
-            make.top.equalTo(emailTitle.snp.bottom).offset(title_To_textField_margin)
+            make.top.equalTo(self.emailTitle.snp.bottom).offset(title_To_textField_margin)
             make.height.equalTo(height)
         }
         
         self.sendCodeBtn.snp.makeConstraints{ make in
-            make.leading.equalTo(emailTextField.snp.trailing).offset(10)
+            make.leading.equalTo(self.emailTextField.snp.trailing).offset(10)
             make.trailing.equalTo(right_margin)
-            make.top.equalTo(emailTitle.snp.bottom).offset(title_To_textField_margin)
+            make.top.equalTo(self.emailTitle.snp.bottom).offset(title_To_textField_margin)
             make.height.equalTo(height)
         }
 
         // MARK: - Email code
         self.emailCodeTextField.snp.makeConstraints{ make in
-            make.width.equalTo(pwTitle).multipliedBy(0.7)
+            make.width.equalTo(self.pwTextField.snp.width).multipliedBy(0.7)
             make.leading.equalTo(left_margin)
-            make.top.equalTo(emailTextField.snp.bottom).offset(top_padding)
+            make.top.equalTo(self.emailTextField.snp.bottom).offset(top_padding)
             make.height.equalTo(height)
         }
 
         self.confirmCodeBtn.snp.makeConstraints{ make in
-            make.leading.equalTo(emailCodeTextField.snp.trailing).offset(10)
+            make.leading.equalTo(self.emailCodeTextField.snp.trailing).offset(10)
             make.trailing.equalTo(right_margin)
-            make.top.equalTo(emailTextField.snp.bottom).offset(top_padding)
+            make.top.equalTo(self.emailTextField.snp.bottom).offset(top_padding)
             make.height.equalTo(height)
         }
 
         // MARK: - 비밀번호
         self.pwTitle.snp.makeConstraints{ make in
             make.left.equalTo(left_margin)
+            make.width.equalTo(100)
+            make.top.equalTo(self.emailCodeTextField.snp.bottom).offset(top_padding)
+            make.height.equalTo(title_height)
+        }
+        
+        self.pwCautionTitle.snp.makeConstraints{ make in
+            make.left.equalTo(self.pwTitle.snp.right)
             make.right.equalTo(right_margin)
-            make.top.equalTo(emailCodeTextField.snp.bottom).offset(top_padding+10)
+            make.top.equalTo(self.emailCodeTextField.snp.bottom).offset(top_padding)
             make.height.equalTo(title_height)
         }
 
         self.pwTextField.snp.makeConstraints{ make in
             make.left.equalTo(left_margin)
             make.right.equalTo(right_margin)
-            make.top.equalTo(pwTitle.snp.bottom).offset(title_To_textField_margin)
+            make.top.equalTo(self.pwTitle.snp.bottom).offset(title_To_textField_margin)
             make.height.equalTo(height)
         }
 
@@ -225,14 +241,14 @@ class FindPwView:UIViewController,ViewProtocol{
         self.pw2Title.snp.makeConstraints{ make in
             make.left.equalTo(left_margin)
             make.right.equalTo(right_margin)
-            make.top.equalTo(pwTextField.snp.bottom).offset(top_padding)
+            make.top.equalTo(self.pwTextField.snp.bottom).offset(top_padding)
             make.height.equalTo(title_height)
         }
 
         self.pw2TextField.snp.makeConstraints{ make in
             make.left.equalTo(left_margin)
             make.right.equalTo(right_margin)
-            make.top.equalTo(pw2Title.snp.bottom).offset(title_To_textField_margin)
+            make.top.equalTo(self.pw2Title.snp.bottom).offset(title_To_textField_margin)
             make.height.equalTo(height)
         }
 
@@ -240,7 +256,7 @@ class FindPwView:UIViewController,ViewProtocol{
         self.registerBtn.snp.makeConstraints{ make in
             make.left.equalTo(left_margin)
             make.right.equalTo(right_margin)
-            make.top.equalTo(pw2TextField.snp.bottom).offset(top_padding*2)
+            make.top.equalTo(self.pw2TextField.snp.bottom).offset(top_padding*2)
             make.height.equalTo(height)
         }
     }
@@ -269,15 +285,15 @@ extension FindPwView: UITextFieldDelegate{
     }
     
     func addBtnAction(){
-        registerBtn.backgroundColor = Color.mainColor
-        registerBtn.addAction{
+        self.registerBtn.backgroundColor = Color.mainColor
+        self.registerBtn.addAction{
           
         }
     }
     
     func removeBtnAction(){
-        registerBtn.backgroundColor = UIColor.lightGray
-        registerBtn.removeTarget(nil, action: nil, for: .allEvents)
+        self.registerBtn.backgroundColor = UIColor.lightGray
+        self.registerBtn.removeTarget(nil, action: nil, for: .allEvents)
     }
 }
 
@@ -290,6 +306,7 @@ extension FindPwView{
         
         self.pwTitle.isHidden = false
         self.pwTextField.isHidden = false
+        self.pwCautionTitle.isHidden = false
         self.pw2Title.isHidden = false
         self.pw2TextField.isHidden = false
         self.registerBtn.isHidden = false
