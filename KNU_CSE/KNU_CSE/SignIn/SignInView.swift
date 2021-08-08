@@ -9,114 +9,116 @@ import UIKit
 import SnapKit
 import M13Checkbox
 
-class ViewController: UIViewController {
-    
-    var indicator : IndicatorView!
+class ViewController: UIViewController, ViewProtocol{
     
     var signInViewModel : SignInViewModel = SignInViewModel()
     
-    var accountUI : UIView! {
-        didSet{
-            self.accountUI.layer.borderWidth = 1
-            self.accountUI.layer.borderColor = Color.mainColor.cgColor
-        }
-    }
+    lazy var accountUI:UIView = {
+        let accountUI = UIView()
+        accountUI.layer.borderWidth = 1
+        accountUI.layer.borderColor = Color.mainColor.cgColor
+        return accountUI
+    }()
     
-    var emailTextField: BindingTextField! {
-        didSet {
-            self.emailTextField.delegate = self
-            self.emailTextField.prefixDraw(text: "이메일", on: .left)
-            self.emailTextField.setUpText(text: "@knu.ac.kr", on: .right, color: .black)
-            self.emailTextField.backgroundColor = .white
-            self.emailTextField.bind { [weak self] email in
-                self?.signInViewModel.account.email = email + "@knu.ac.kr"
+    lazy var emailTextField:BindingTextField = {
+        let emailTextField = BindingTextField()
+        emailTextField.delegate = self
+        emailTextField.prefixDraw(text: "이메일", on: .left)
+        emailTextField.setUpText(text: "@knu.ac.kr", on: .right, color: .black)
+        emailTextField.backgroundColor = .white
+        emailTextField.bind { [weak self] email in
+            self?.signInViewModel.account.email = email + "@knu.ac.kr"
+        }
+        return emailTextField
+    }()
+    
+    lazy var pwTextField:BindingTextField = {
+        var pwTextField = BindingTextField()
+        pwTextField.delegate = self
+        pwTextField.isSecureTextEntry = true
+        pwTextField.backgroundColor = .white
+        pwTextField.setupUpperBorder()
+        pwTextField.prefixDraw(text: "비밀번호", on: .left)
+        pwTextField.setUpImage(imageName: "eye.fill", on: .right, color: UIColor.darkGray,width: 30,height: 25)
+        pwTextField.bind { [weak self] pw in
+            self?.signInViewModel.account.password = pw
+        }
+        return pwTextField
+    }()
+    
+    lazy var signInBtn:UIButton = {
+        let signInBtn = UIButton()
+        signInBtn.backgroundColor = Color.subColor
+        signInBtn.setTitle("로그인", for: .normal)
+        signInBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
+        signInBtn.addAction{ [weak self] in
+            guard let check = self?.signInViewModel.SignInCheck() else{
+                return
             }
-            
-        }
-    }
-    
-    var pwTextField: BindingTextField! {
-        didSet {
-            self.pwTextField.delegate = self
-            self.pwTextField.isSecureTextEntry = true
-            self.pwTextField.backgroundColor = .white
-            self.pwTextField.setupUpperBorder()
-            self.pwTextField.prefixDraw(text: "비밀번호", on: .left)
-            self.pwTextField.setUpImage(imageName: "eye.fill", on: .right, color: UIColor.darkGray,width: 30,height: 25)
-            self.pwTextField.bind { [weak self] pw in
-                self?.signInViewModel.account.password = pw
-            }
-        }
-    }
-    
-    var signInBtn : UIButton! {
-        didSet{
-            self.signInBtn.backgroundColor = Color.subColor
-            self.signInBtn.setTitle("로그인", for: .normal)
-            self.signInBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
-            self.signInBtn.addAction{ [weak self] in
-                guard let check = self?.signInViewModel.SignInCheck() else{
-                    return
-                }
-                if check{
-                    self?.signInViewModel.SignInRequest()
-                }else {
-                    let alert = Alert(title: "로그인 실패", message: "아이디와 비밀번호를 입력하세요.", viewController: self!)
-                    alert.popUpDefaultAlert(action: nil)
-                }
+            if check{
+                self?.signInViewModel.SignInRequest()
+            }else {
+                let alert = Alert(title: "로그인 실패", message: "아이디와 비밀번호를 입력하세요.", viewController: self!)
+                alert.popUpDefaultAlert(action: nil)
             }
         }
-    }
+        return signInBtn
+    }()
     
-    var findPwBtn:UIButton!{
-        didSet{
-            self.findPwBtn.backgroundColor = .clear
-            self.findPwBtn.setTitle("비밀번호 찾기", for: .normal)
-            self.findPwBtn.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-            self.findPwBtn.setTitleColor(.white.withAlphaComponent(0.5), for: .highlighted)
-            self.findPwBtn.addAction{ [weak self] in
-                self?.pushView(identifier: "FindPwView", typeOfVC: FindPwView.self)
+    lazy var findPwBtn:UIButton = {
+        let findPwBtn = UIButton()
+        findPwBtn.backgroundColor = .clear
+        findPwBtn.setTitle("비밀번호 찾기", for: .normal)
+        findPwBtn.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        findPwBtn.setTitleColor(.white.withAlphaComponent(0.5), for: .highlighted)
+        findPwBtn.addAction{ [weak self] in
+            self?.pushView(identifier: "FindPwView", typeOfVC: FindPwView.self)
+        }
+        return findPwBtn
+    }()
+    
+    lazy var signUpBtn:UIButton = {
+        let signUpBtn = UIButton()
+        signUpBtn.backgroundColor = .clear
+        signUpBtn.setTitle("회원가입", for: .normal)
+        signUpBtn.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        signUpBtn.setTitleColor(.white.withAlphaComponent(0.5), for: .highlighted)
+        signUpBtn.addAction{ [weak self] in
+            self?.pushView(identifier: "SignUpView", typeOfVC: SignUpView.self)
+        }
+        return signUpBtn
+    }()
+    
+    lazy var autoSignInBox:CheckBox = {
+        autoSignInBox = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "자동로그인")
+        let checkbox : M13Checkbox = autoSignInBox.checkBox
+        autoSignInBox.setColor(tintColor: .white, textColor: .white)
+        autoSignInBox.setChecked(checkState: UserDefaults.standard.bool(forKey: "checkState"))
+        autoSignInBox.bind {
+            switch checkbox.checkState {
+                case .checked:
+                    UserDefaults.standard.setValue(true, forKey: "checkState")
+                    break
+                case .unchecked:
+                    UserDefaults.standard.setValue(false, forKey: "checkState")
+                    break
+                case .mixed:
+                    break
             }
         }
-    }
+        return autoSignInBox
+    }()
     
-    var signUpBtn : UIButton! {
-        didSet{
-            self.signUpBtn.backgroundColor = .clear
-            self.signUpBtn.setTitle("회원가입", for: .normal)
-            self.signUpBtn.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-            self.signUpBtn.setTitleColor(.white.withAlphaComponent(0.5), for: .highlighted)
-            self.signUpBtn.addAction{ [weak self] in
-                self?.pushView(identifier: "SignUpView", typeOfVC: SignUpView.self)
-            }
-        }
-    }
-    
-    var autoSignInBox : CheckBox!{
-        didSet{
-            let checkbox : M13Checkbox = self.autoSignInBox.checkBox
-            self.autoSignInBox.setColor(tintColor: .white, textColor: .white)
-            self.autoSignInBox.setChecked(checkState: UserDefaults.standard.bool(forKey: "checkState"))
-            self.autoSignInBox.bind {
-                switch checkbox.checkState {
-                    case .checked:
-                        UserDefaults.standard.setValue(true, forKey: "checkState")
-                        break
-                    case .unchecked:
-                        UserDefaults.standard.setValue(false, forKey: "checkState")
-                        break
-                    case .mixed:
-                        break
-                }
-            }
-        }
-    }
+    lazy var indicator:IndicatorView = {
+        let indicator = IndicatorView(viewController: self)
+        return indicator
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.initUI()
         self.addView()
-        self.setupConstraints()
+        self.setUpConstraints()
         self.setSignInAction()
         self.checkKeyChain()
     }
@@ -132,16 +134,6 @@ class ViewController: UIViewController {
     
     func initUI(){
         self.view.backgroundColor = Color.mainColor
-
-        self.accountUI = UIView()
-        self.emailTextField = BindingTextField()
-        self.pwTextField = BindingTextField()
-        self.signInBtn = UIButton()
-        self.findPwBtn = UIButton()
-        self.signUpBtn = UIButton()
-        self.autoSignInBox = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "자동로그인")
-        
-        self.indicator = IndicatorView(viewController: self)
     }
     
     func addView(){
@@ -152,7 +144,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func setupConstraints(){
+    func setUpConstraints(){
         let title_height:CGFloat = 200
         let height:CGFloat = 40
         let top_padding:CGFloat = 20

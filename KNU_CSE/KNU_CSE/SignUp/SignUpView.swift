@@ -11,240 +11,238 @@ import M13Checkbox
 
 class SignUpView: UIViewController,ViewProtocol{
     
-    var indicator : IndicatorView!
-    
     var signUpViewModel : SignUpViewModel = SignUpViewModel()
     
     let containerView = UIView()
     
-    var emailTextField: BindingTextField! {
-        didSet {
-            self.emailTextField.draw()
-            self.emailTextField.setUpText(text: "@knu.ac.kr", on: .right, color: .black)
-            self.emailTextField.delegate = self
-            self.emailTextField.bind { [weak self] email in
-                self?.signUpViewModel.account.email = email + "@knu.ac.kr"
-                self?.checkChangeValue()
-            }
+    lazy var emailTextField:BindingTextField = {
+        let emailTextField = BindingTextField()
+        emailTextField.draw()
+        emailTextField.setUpText(text: "@knu.ac.kr", on: .right, color: .black)
+        emailTextField.delegate = self
+        emailTextField.bind { [weak self] email in
+            self?.signUpViewModel.account.email = email + "@knu.ac.kr"
+            self?.checkChangeValue()
         }
-    }
+        return emailTextField
+    }()
     
-    var requestCodeBtn : UIButton! {
-        didSet{
-            self.requestCodeBtn.backgroundColor = Color.mainColor
-            self.requestCodeBtn.setTitle("인증번호 전송", for: .normal)
-            self.requestCodeBtn.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .light)
-            self.requestCodeBtn.tintColor = .white
-            self.requestCodeBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
-            self.BindingRequestCodeBtn()
-            self.requestCodeBtn.addAction{ [weak self] in
-                self?.signUpViewModel.CodeRequest()
-            }
+    lazy var requestCodeBtn:UIButton = {
+        let requestCodeBtn = UIButton()
+        requestCodeBtn.backgroundColor = Color.mainColor
+        requestCodeBtn.setTitle("인증번호 전송", for: .normal)
+        requestCodeBtn.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .light)
+        requestCodeBtn.tintColor = .white
+        requestCodeBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
+        self.BindingRequestCodeBtn()
+        requestCodeBtn.addAction{ [weak self] in
+        self?.signUpViewModel.CodeRequest()
         }
-    }
+        return requestCodeBtn
+    }()
     
-    var emailCodeTextField: BindingTextField! {
-        didSet {
-            self.emailCodeTextField.draw()
-            self.emailCodeTextField.delegate = self
-            self.emailCodeTextField.keyboardType = .numberPad
-            self.emailCodeTextField.placeholder = "인증번호를 입력하세요."
-            self.emailCodeTextField.bind { [weak self] permissionCode in
-                self?.signUpViewModel.account.permissionCode = permissionCode
-                self?.checkChangeValue()
-            }
+    lazy var emailCodeTextField:BindingTextField = {
+        let emailCodeTextField = BindingTextField()
+        emailCodeTextField.draw()
+        emailCodeTextField.delegate = self
+        emailCodeTextField.keyboardType = .numberPad
+        emailCodeTextField.placeholder = "인증번호를 입력하세요."
+        emailCodeTextField.bind { [weak self] permissionCode in
+            self?.signUpViewModel.account.permissionCode = permissionCode
+            self?.checkChangeValue()
         }
-    }
+        return emailCodeTextField
+    }()
     
-    var confirmCodeBtn : UIButton! {
-        didSet{
-            self.confirmCodeBtn.backgroundColor = Color.mainColor
-            self.confirmCodeBtn.setTitle("인증확인", for: .normal)
-            self.confirmCodeBtn.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .light)
-            self.confirmCodeBtn.tintColor = .white
-            self.confirmCodeBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
-            self.BindingConfirmCodeBtn()
-            self.confirmCodeBtn.addAction{ [weak self] in
-                self?.signUpViewModel.CodeConfirm()
-            }
+    lazy var confirmCodeBtn:UIButton = {
+        let confirmCodeBtn = UIButton()
+        confirmCodeBtn.backgroundColor = Color.mainColor
+        confirmCodeBtn.setTitle("인증확인", for: .normal)
+        confirmCodeBtn.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .light)
+        confirmCodeBtn.tintColor = .white
+        confirmCodeBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
+        self.BindingConfirmCodeBtn()
+        confirmCodeBtn.addAction{ [weak self] in
+            self?.signUpViewModel.CodeConfirm()
         }
-    }
+        return confirmCodeBtn
+    }()
     
-    var pwTextField: BindingTextField! {
-        didSet {
-            self.pwTextField.isSecureTextEntry = true
-            self.pwTextField.delegate = self
-            self.pwTextField.textContentType = .password
-            self.pwTextField.draw()
-            self.pwTextField.setUpImage(imageName: "eye.fill", on: .right, color: UIColor.darkGray, width:40, height: 40)
-            self.pwTextField.bind { [weak self] pw in
-                self?.signUpViewModel.account.password = pw
-                self?.checkChangeValue()
-            }
+    lazy var pwTextField:BindingTextField = {
+        let pwTextField = BindingTextField()
+        pwTextField.isSecureTextEntry = true
+        pwTextField.delegate = self
+        pwTextField.textContentType = .password
+        pwTextField.draw()
+        pwTextField.setUpImage(imageName: "eye.fill", on: .right, color: UIColor.darkGray, width:40, height: 40)
+        pwTextField.bind { [weak self] pw in
+            self?.signUpViewModel.account.password = pw
+            self?.checkChangeValue()
         }
-    }
+        return pwTextField
+    }()
     
-    var pw2TextField: BindingTextField! {
-        didSet {
-            self.pw2TextField.isSecureTextEntry = true
-            self.pw2TextField.delegate = self
-            self.pw2TextField.textContentType = .password
-            self.pw2TextField.draw()
-            self.pw2TextField.setUpImage(imageName: "eye.fill", on: .right, color: UIColor.darkGray, width:40, height: 40)
+    lazy var pw2TextField:BindingTextField = {
+        let pw2TextField = BindingTextField()
+        pw2TextField.isSecureTextEntry = true
+        pw2TextField.delegate = self
+        pw2TextField.textContentType = .password
+        pw2TextField.draw()
+        pw2TextField.setUpImage(imageName: "eye.fill", on: .right, color: UIColor.darkGray, width:40, height: 40)
+        return pw2TextField
+    }()
+    
+    lazy var userNameTextField:BindingTextField = {
+        let userNameTextField = BindingTextField()
+        userNameTextField.draw()
+        userNameTextField.delegate = self
+        userNameTextField.bind { [weak self] userName in
+            self?.signUpViewModel.account.username = userName
+            self?.checkChangeValue()
         }
-    }
+        self.addKeyBoardAnimaion(textField: userNameTextField)
+        return userNameTextField
+    }()
     
-    var userNameTextField: BindingTextField! {
-        didSet {
-            self.userNameTextField.draw()
-            self.userNameTextField.delegate = self
-            self.userNameTextField.bind { [weak self] userName in
-                self?.signUpViewModel.account.username = userName
-                self?.checkChangeValue()
-            }
-            self.addKeyBoardAnimaion(textField: userNameTextField)
+    lazy var nickNameTextField:BindingTextField = {
+        let nickNameTextField = BindingTextField()
+        nickNameTextField.draw()
+        nickNameTextField.delegate = self
+        nickNameTextField.bind { [weak self] nickName in
+            self?.signUpViewModel.account.nickname = nickName
+            self?.checkChangeValue()
         }
-    }
+        self.addKeyBoardAnimaion(textField: nickNameTextField)
+        return nickNameTextField
+    }()
     
-    var nickNameTextField: BindingTextField! {
-        didSet {
-            self.nickNameTextField.draw()
-            self.nickNameTextField.delegate = self
-            self.nickNameTextField.bind { [weak self] nickName in
-                self?.signUpViewModel.account.nickname = nickName
-                self?.checkChangeValue()
-            }
-            self.addKeyBoardAnimaion(textField: nickNameTextField)
+    lazy var stuidTextField:BindingTextField = {
+        let stuidTextField = BindingTextField()
+        stuidTextField.keyboardType = .numberPad
+        stuidTextField.delegate = self
+        stuidTextField.draw()
+        stuidTextField.bind { [weak self] studentId in
+            self?.signUpViewModel.account.studentId = studentId
+            self?.checkChangeValue()
         }
-    }
+        self.addKeyBoardAnimaion(textField: stuidTextField)
+        return stuidTextField
+    }()
     
-    var stuidTextField: BindingTextField! {
-        didSet {
-            self.stuidTextField.keyboardType = .numberPad
-            self.stuidTextField.delegate = self
-            self.stuidTextField.draw()
-            self.stuidTextField.bind { [weak self] studentId in
-                self?.signUpViewModel.account.studentId = studentId
-                self?.checkChangeValue()
-            }
-            self.addKeyBoardAnimaion(textField: stuidTextField)
-        }
-    }
-    
-    var majorCom : CheckBox!{
-        didSet{
-            let checkbox : M13Checkbox = majorCom.checkBox
-            self.majorCom.bind {
-                switch checkbox.checkState {
-                    case .checked:
-                        if self.majorGlob.checkBox.checkState == .checked{
-                            self.majorGlob.checkBox.checkState = .unchecked
-                        }
-                        self.signUpViewModel.account.major = "ADVANCED"
-                        break
-                    case .unchecked:
-                        self.signUpViewModel.account.major = ""
-                        break
-                    case .mixed:
-                        break
-                }
-                self.checkChangeValue()
-            }
-        }
-    }
-    
-    var majorGlob : CheckBox!{
-        didSet{
-            let checkbox : M13Checkbox = majorGlob.checkBox
-            self.majorGlob.bind {
-                switch checkbox.checkState {
-                    case .checked:
-                        if self.majorCom.checkBox.checkState == .checked{
-                            self.majorCom.checkBox.checkState = .unchecked
-                        }
-                        self.signUpViewModel.account.major = "GLOBAL"
-                        break
-                    case .unchecked:
-                        self.signUpViewModel.account.major = ""
-                        break
-                    case .mixed:
-                        break
-                }
-                self.checkChangeValue()
-            }
-        }
-    }
-    
-    var genderMale : CheckBox!{
-        didSet{
-            let checkbox : M13Checkbox = genderMale.checkBox
-            self.genderMale.bind {
-                switch checkbox.checkState {
-                    case .checked:
-                        if self.genderFemale.checkBox.checkState == .checked{
-                            self.genderFemale.checkBox.checkState = .unchecked
-                        }
-                        self.signUpViewModel.account.gender = "MALE"
-                        break
-                    case .unchecked:
-                        self.signUpViewModel.account.gender = ""
-                        break
-                    case .mixed:
-                        break
-                }
-                self.checkChangeValue()
-            }
-        }
-    }
-    
-    var genderFemale : CheckBox!{
-        didSet{
-            let checkbox : M13Checkbox = genderFemale.checkBox
-            self.genderFemale.bind {
-                switch checkbox.checkState {
-                    case .checked:
-                        if self.genderMale.checkBox.checkState == .checked{
-                            self.genderMale.checkBox.checkState = .unchecked
-                        }
-                        self.signUpViewModel.account.gender = "FEMALE"
-                        break
-                    case .unchecked:
-                        self.signUpViewModel.account.gender = ""
-                        break
-                    case .mixed:
-                        break
-                }
-                self.checkChangeValue()
-            }
-        }
-    }
-    
-    var registerBtn : UIButton! {
-        didSet{
-            self.registerBtn.backgroundColor = UIColor.lightGray
-            self.registerBtn.setTitle("회원가입", for: .normal)
-            self.registerBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
-            self.registerBtn.layer.cornerRadius = 5
-            self.BindingSignUp()
-            self.registerBtn.addAction{ [weak self] in
-                guard let check = self?.signUpViewModel.SignUpCheck() else{
-                    return
-                }
-                if check{
-                    if self?.signUpViewModel.account.password != self?.pw2TextField.text{
-                        let alert = Alert(title: "회원가입 실패", message: "비밀번호가 일치하지 않습니다.", viewController: self!)
-                        alert.popUpDefaultAlert(action: nil)
+    lazy var majorCom:CheckBox = {
+        let majorCom = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "심컴")
+        let checkbox : M13Checkbox = majorCom.checkBox
+        majorCom.bind { [weak self] in
+            switch checkbox.checkState {
+                case .checked:
+                    if self?.majorGlob.checkBox.checkState == .checked{
+                        self?.majorGlob.checkBox.checkState = .unchecked
                     }
-                    else{
-                        self?.signUpViewModel.SignUp()
+                    self?.signUpViewModel.account.major = "ADVANCED"
+                    break
+                case .unchecked:
+                    self?.signUpViewModel.account.major = ""
+                    break
+                case .mixed:
+                    break
+            }
+            self?.checkChangeValue()
+        }
+        return majorCom
+    }()
+    
+    lazy var majorGlob:CheckBox = {
+        let majorGlob = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "글솦")
+        let checkbox : M13Checkbox = majorGlob.checkBox
+        majorGlob.bind { [weak self] in
+            switch checkbox.checkState {
+                case .checked:
+                    if self?.majorCom.checkBox.checkState == .checked{
+                        self?.majorCom.checkBox.checkState = .unchecked
                     }
-                }else{
-                    let alert = Alert(title: "회원가입 실패", message: "모든 정보를 입력하지 않았습니다.", viewController: self!)
+                    self?.signUpViewModel.account.major = "GLOBAL"
+                    break
+                case .unchecked:
+                    self?.signUpViewModel.account.major = ""
+                    break
+                case .mixed:
+                    break
+            }
+            self?.checkChangeValue()
+        }
+        return majorGlob
+    }()
+    
+    lazy var genderMale:CheckBox = {
+        let genderMale = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "남")
+        let checkbox : M13Checkbox = genderMale.checkBox
+        self.genderMale.bind { [weak self] in
+            switch checkbox.checkState {
+                case .checked:
+                    if self?.genderFemale.checkBox.checkState == .checked{
+                        self?.genderFemale.checkBox.checkState = .unchecked
+                    }
+                    self?.signUpViewModel.account.gender = "MALE"
+                    break
+                case .unchecked:
+                    self?.signUpViewModel.account.gender = ""
+                    break
+                case .mixed:
+                    break
+            }
+            self?.checkChangeValue()
+        }
+        return genderMale
+    }()
+    
+    lazy var genderFemale:CheckBox = {
+        let genderFemale = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "여")
+        let checkbox : M13Checkbox = genderFemale.checkBox
+        self.genderFemale.bind { [weak self] in
+            switch checkbox.checkState {
+                case .checked:
+                    if self?.genderMale.checkBox.checkState == .checked{
+                        self?.genderMale.checkBox.checkState = .unchecked
+                    }
+                    self?.signUpViewModel.account.gender = "FEMALE"
+                    break
+                case .unchecked:
+                    self?.signUpViewModel.account.gender = ""
+                    break
+                case .mixed:
+                    break
+            }
+            self?.checkChangeValue()
+        }
+        return genderFemale
+    }()
+    
+    lazy var registerBtn:UIButton = {
+        let registerBtn = UIButton()
+        registerBtn.backgroundColor = UIColor.lightGray
+        registerBtn.setTitle("회원가입", for: .normal)
+        registerBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
+        registerBtn.layer.cornerRadius = 5
+        self.BindingSignUp()
+        registerBtn.addAction{ [weak self] in
+            guard let check = self?.signUpViewModel.SignUpCheck() else{
+                return
+            }
+            if check{
+                if self?.signUpViewModel.account.password != self?.pw2TextField.text{
+                    let alert = Alert(title: "회원가입 실패", message: "비밀번호가 일치하지 않습니다.", viewController: self!)
                     alert.popUpDefaultAlert(action: nil)
                 }
+                else{
+                    self?.signUpViewModel.SignUp()
+                }
+            }else{
+                let alert = Alert(title: "회원가입 실패", message: "모든 정보를 입력하지 않았습니다.", viewController: self!)
+                alert.popUpDefaultAlert(action: nil)
             }
         }
-    }
+        return registerBtn
+    }()
     
     let emailTitle : SignUpUILabel = SignUpUILabel(text: "이메일")
     let pwCautionTitle : SignUpUILabel = SignUpUILabel(text: "영어,숫자를 조합한 8~20자",alignment: .right, color: UIColor.lightGray)
@@ -255,6 +253,11 @@ class SignUpView: UIViewController,ViewProtocol{
     let stuidTitle : SignUpUILabel = SignUpUILabel(text: "학번")
     let majorTitle : SignUpUILabel = SignUpUILabel(text: "전공")
     let genderTitle : SignUpUILabel = SignUpUILabel(text: "성별")
+    
+    lazy var indicator : IndicatorView = {
+        let indicator = IndicatorView(viewController: self)
+        return indicator
+    }()
     
     override func viewWillAppear(_ animated: Bool) {
         self.setNavigationTitle(title:"회원가입")
@@ -269,29 +272,11 @@ class SignUpView: UIViewController,ViewProtocol{
     }
     
     func initUI(){
-        self.emailTextField = BindingTextField()
-        self.emailCodeTextField = BindingTextField()
-        self.pwTextField = BindingTextField()
-        self.pw2TextField = BindingTextField()
-        self.userNameTextField = BindingTextField()
-        self.nickNameTextField = BindingTextField()
-        self.stuidTextField = BindingTextField()
         
-        self.majorCom = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "심컴")
-        self.majorGlob = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "글솦")
-        self.genderMale = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "남")
-        self.genderFemale = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "여")
-        
-        self.requestCodeBtn = UIButton()
-        self.confirmCodeBtn = UIButton()
-        self.registerBtn = UIButton()
-        
-        self.indicator = IndicatorView(viewController: self)
     }
     
     func addView(){
         self.view.addSubview(containerView)
-        
         _ =  [self.emailTextField,self.emailCodeTextField,self.requestCodeBtn,self.emailCodeTextField,self.confirmCodeBtn,self.pwTextField,self.pw2TextField,self.userNameTextField,self.nickNameTextField,self.stuidTextField,self.emailTitle,self.pwTitle,self.pwCautionTitle,self.pw2Title,self.userNameTitle,self.nickNameTitle,self.stuidTitle,self.majorTitle,self.majorCom,self.majorGlob,self.genderTitle,self.genderMale,self.genderFemale,self.registerBtn].map{
             self.containerView.addSubview($0)
         }
