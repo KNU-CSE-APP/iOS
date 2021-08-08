@@ -11,7 +11,6 @@ import UIKit
 
 class SignInViewModel{
     var signInListener: BaseAction<signInHandler, errorHandler> = BaseAction()
-    
     var account: SignInModel = SignInModel(email: "", password: "")
     
     init(){
@@ -26,7 +25,6 @@ class SignInViewModel{
     func SignInCheck()-> Bool{
         return account.Check()
     }
-    
 }
 
 extension SignInViewModel{

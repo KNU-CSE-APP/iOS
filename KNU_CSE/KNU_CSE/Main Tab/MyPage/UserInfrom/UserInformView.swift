@@ -221,3 +221,19 @@ extension UserInformView{
         self.profileBtn.setImage(image.withTintColor(.lightGray.withAlphaComponent(0.4)), for: .normal)
     }
 }
+
+extension UserInformView{
+    func getUserInform(){
+        self.userInformationViewModel.getInformlistener.binding(successHandler: { response in
+            if response.success {
+                self.userInformationViewModel.model = response.response as! Profile
+            }
+        }, failHandler: { Error in
+            
+        }, asyncHandler: {
+            
+        }, endHandler: {
+            
+        })
+    }
+}

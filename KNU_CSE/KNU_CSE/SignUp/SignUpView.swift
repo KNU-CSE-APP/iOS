@@ -16,7 +16,7 @@ class SignUpView: UIViewController,ViewProtocol{
     let containerView = UIView()
     
     lazy var emailTextField:BindingTextField = {
-        let emailTextField = BindingTextField()
+        var emailTextField = BindingTextField()
         emailTextField.draw()
         emailTextField.setUpText(text: "@knu.ac.kr", on: .right, color: .black)
         emailTextField.delegate = self
@@ -28,7 +28,7 @@ class SignUpView: UIViewController,ViewProtocol{
     }()
     
     lazy var requestCodeBtn:UIButton = {
-        let requestCodeBtn = UIButton()
+        var requestCodeBtn = UIButton()
         requestCodeBtn.backgroundColor = Color.mainColor
         requestCodeBtn.setTitle("인증번호 전송", for: .normal)
         requestCodeBtn.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .light)
@@ -42,7 +42,7 @@ class SignUpView: UIViewController,ViewProtocol{
     }()
     
     lazy var emailCodeTextField:BindingTextField = {
-        let emailCodeTextField = BindingTextField()
+        var emailCodeTextField = BindingTextField()
         emailCodeTextField.draw()
         emailCodeTextField.delegate = self
         emailCodeTextField.keyboardType = .numberPad
@@ -55,7 +55,7 @@ class SignUpView: UIViewController,ViewProtocol{
     }()
     
     lazy var confirmCodeBtn:UIButton = {
-        let confirmCodeBtn = UIButton()
+        var confirmCodeBtn = UIButton()
         confirmCodeBtn.backgroundColor = Color.mainColor
         confirmCodeBtn.setTitle("인증확인", for: .normal)
         confirmCodeBtn.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .light)
@@ -69,7 +69,7 @@ class SignUpView: UIViewController,ViewProtocol{
     }()
     
     lazy var pwTextField:BindingTextField = {
-        let pwTextField = BindingTextField()
+        var pwTextField = BindingTextField()
         pwTextField.isSecureTextEntry = true
         pwTextField.delegate = self
         pwTextField.textContentType = .password
@@ -83,7 +83,7 @@ class SignUpView: UIViewController,ViewProtocol{
     }()
     
     lazy var pw2TextField:BindingTextField = {
-        let pw2TextField = BindingTextField()
+        var pw2TextField = BindingTextField()
         pw2TextField.isSecureTextEntry = true
         pw2TextField.delegate = self
         pw2TextField.textContentType = .password
@@ -93,7 +93,7 @@ class SignUpView: UIViewController,ViewProtocol{
     }()
     
     lazy var userNameTextField:BindingTextField = {
-        let userNameTextField = BindingTextField()
+        var userNameTextField = BindingTextField()
         userNameTextField.draw()
         userNameTextField.delegate = self
         userNameTextField.bind { [weak self] userName in
@@ -105,7 +105,7 @@ class SignUpView: UIViewController,ViewProtocol{
     }()
     
     lazy var nickNameTextField:BindingTextField = {
-        let nickNameTextField = BindingTextField()
+        var nickNameTextField = BindingTextField()
         nickNameTextField.draw()
         nickNameTextField.delegate = self
         nickNameTextField.bind { [weak self] nickName in
@@ -117,7 +117,7 @@ class SignUpView: UIViewController,ViewProtocol{
     }()
     
     lazy var stuidTextField:BindingTextField = {
-        let stuidTextField = BindingTextField()
+        var stuidTextField = BindingTextField()
         stuidTextField.keyboardType = .numberPad
         stuidTextField.delegate = self
         stuidTextField.draw()
@@ -130,7 +130,7 @@ class SignUpView: UIViewController,ViewProtocol{
     }()
     
     lazy var majorCom:CheckBox = {
-        let majorCom = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "심컴")
+        var majorCom = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "심컴")
         let checkbox : M13Checkbox = majorCom.checkBox
         majorCom.bind { [weak self] in
             switch checkbox.checkState {
@@ -152,7 +152,7 @@ class SignUpView: UIViewController,ViewProtocol{
     }()
     
     lazy var majorGlob:CheckBox = {
-        let majorGlob = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "글솦")
+        var majorGlob = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "글솦")
         let checkbox : M13Checkbox = majorGlob.checkBox
         majorGlob.bind { [weak self] in
             switch checkbox.checkState {
@@ -174,9 +174,9 @@ class SignUpView: UIViewController,ViewProtocol{
     }()
     
     lazy var genderMale:CheckBox = {
-        let genderMale = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "남")
+        var genderMale = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "남")
         let checkbox : M13Checkbox = genderMale.checkBox
-        self.genderMale.bind { [weak self] in
+        genderMale.bind { [weak self] in
             switch checkbox.checkState {
                 case .checked:
                     if self?.genderFemale.checkBox.checkState == .checked{
@@ -196,9 +196,9 @@ class SignUpView: UIViewController,ViewProtocol{
     }()
     
     lazy var genderFemale:CheckBox = {
-        let genderFemale = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "여")
+        var genderFemale = CheckBox(width: self.view.frame.height * 0.1, height: self.view.frame.height * 0.05, text : "여")
         let checkbox : M13Checkbox = genderFemale.checkBox
-        self.genderFemale.bind { [weak self] in
+        genderFemale.bind { [weak self] in
             switch checkbox.checkState {
                 case .checked:
                     if self?.genderMale.checkBox.checkState == .checked{
@@ -218,7 +218,7 @@ class SignUpView: UIViewController,ViewProtocol{
     }()
     
     lazy var registerBtn:UIButton = {
-        let registerBtn = UIButton()
+        var registerBtn = UIButton()
         registerBtn.backgroundColor = UIColor.lightGray
         registerBtn.setTitle("회원가입", for: .normal)
         registerBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
@@ -255,7 +255,7 @@ class SignUpView: UIViewController,ViewProtocol{
     let genderTitle : SignUpUILabel = SignUpUILabel(text: "성별")
     
     lazy var indicator : IndicatorView = {
-        let indicator = IndicatorView(viewController: self)
+        var indicator = IndicatorView(viewController: self)
         return indicator
     }()
     

@@ -8,30 +8,48 @@
 import Foundation
 
 struct UserInformViewModel{
-    let profile:Profile = Profile(image: "https://file.mk.co.kr/meet/neds/2021/04/image_readtop_2021_330747_16177500644599916.jpg", Username: "노준석", Nickname: "IYNONE", Student_ID: "2016117285")
+    var model:Profile = Profile(email: "", imagePath: "", nickname: "", userId: -1)
+    var getInformlistener: BaseAction<Profile, errorHandler> = BaseAction()
     var imageData:Data!
     
     init(){
         
     }
     
+    func getUserInform(){
+        let request = Request(requestBodyObject: self.model, requestMethod: .get, enviroment: .getInform)
+        request.sendRequest(request: request, responseType: Profile.self, errorType: errorHandler.self, action:self.getInformlistener)
+    }
 }
 
 class Profile:BaseObject{
-    let image:String
-    let Username:String
-    let Nickname:String
-    let Student_ID:String
+    var email:String
+    var imagePath:String
+    var nickname:String
+    var userId:Int
     
-    init(image:String, Username:String, Nickname:String, Student_ID:String) {
-        self.image = image
-        self.Username = Username
-        self.Nickname = Nickname
-        self.Student_ID = Student_ID
+    init(email:String, imagePath:String, nickname:String, userId:Int){
+        self.email = email
+        self.imagePath = imagePath
+        self.nickname = nickname
+        self.userId = userId
         super.init()
     }
     
     required init(from decoder: Decoder) throws {
         fatalError("init(from:) has not been implemented")
     }
+    
+    override func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(email, forKey: .email)
+        try container.encode(imagePath, forKey: .imagePath)
+        try container.encode(nickname, forKey: .nickname)
+        try container.encode(userId, forKey: .userId)
+        try super.encode(to: encoder)
+    }
+    
+    enum CodingKeys: CodingKey {
+       case email, imagePath, nickname, userId
+     }
 }

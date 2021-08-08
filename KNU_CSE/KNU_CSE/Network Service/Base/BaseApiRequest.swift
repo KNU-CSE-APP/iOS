@@ -72,10 +72,14 @@ extension BaseApiRequest{
             return getAddress(domain: "user/signIn")
         case .SignUp:
             return getAddress(domain: "user/signUp")
+        case .getInform:
+            return getAddress(domain: "user/getUserEmailNickName")
         case .CodeRequest(let email):
             return "\(getAddress(domain: "user/verify"))/\(email)"
         case .CodeConfirm:
             return getAddress(domain: "user/verify")
+        case .BoardWrite:
+            return getAddress(domain: "board/write")
         case .none:
             return ""
         }
@@ -92,6 +96,8 @@ enum Environment{
     case SignUp
     case CodeRequest(String)
     case CodeConfirm
+    case BoardWrite
+    case getInform
 }
 
 

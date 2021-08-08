@@ -10,74 +10,81 @@ import BTNavigationDropdownMenu
 
 class BoardWriteView:UIViewController, ViewProtocol{
     
-    var scrollView:UIScrollView!{
-        didSet{
-            scrollView.alwaysBounceVertical = true
-        }
-    }
+    var boardWriteViewModel:BoardWriteViewModel = BoardWriteViewModel()
+    
+    lazy var scrollView:UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.alwaysBounceVertical = true
+        return scrollView
+    }()
     
     var textFieldHeight:CGFloat!
-    var titleField:UITextField!{
-        didSet{
-            self.titleField.placeholder = "제목을 입력하세요."
-            self.titleField.delegate = self
-            self.titleField.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-            self.titleField.addTarget(self, action: #selector(setRightItemColor), for: .editingChanged)
-            if let font = self.titleField.font {
-                self.textFieldHeight = font.lineHeight + 20
-            }
+    lazy var titleField:BindingTextField = {
+        var titleField = BindingTextField()
+        titleField.placeholder = "제목을 입력하세요."
+        titleField.delegate = self
+        titleField.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        titleField.addTarget(self, action: #selector(setRightItemColor), for: .editingChanged)
+        if let font = titleField.font {
+            self.textFieldHeight = font.lineHeight + 20
         }
-    }
+        titleField.bind{ [weak self] title in
+            self?.boardWriteViewModel.model.title = title
+        }
+        return titleField
+    }()
     
-    var borderLine:UIView!{
-        didSet{
-            self.borderLine.layer.borderWidth = 0.3
-            self.borderLine.layer.borderColor = UIColor.lightGray.cgColor
-        }
-    }
+    lazy var borderLine:UIView = {
+        var borderLine = UIView()
+        borderLine.layer.borderWidth = 0.3
+        borderLine.layer.borderColor = UIColor.lightGray.cgColor
+        return borderLine
+    }()
     
-    var categoryLabel:UILabel!{
-        didSet{
-            self.categoryLabel.text = "추천 카테고리"
-        }
-    }
+    lazy var categoryLabel:UILabel = {
+        var categoryLabel = UILabel()
+        categoryLabel.text = "추천 카테고리"
+        return categoryLabel
+    }()
     
-    var contentField:UITextView!{
-        didSet{
-            self.contentField.delegate = self
-            self.contentField.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-            self.contentField.isScrollEnabled = false
-        }
-    }
+    lazy var contentField:UITextView = {
+        var contentField = UITextView()
+        contentField.delegate = self
+        contentField.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        contentField.isScrollEnabled = false
+        return contentField
+    }()
     
     let placeHolderText = "내용을 입력하세요."
-    var contentPlaceHolder:UILabel!{
-        didSet{
-            self.contentPlaceHolder.text = self.placeHolderText
-            self.contentPlaceHolder.font = self.contentField.font
-            self.contentPlaceHolder.textColor = UIColor.lightGray.withAlphaComponent(0.75)
-            self.contentPlaceHolder.isHidden = !self.contentField.text.isEmpty
-        }
-    }
+    lazy var contentPlaceHolder:UILabel = {
+        var contentPlaceHolder = UILabel()
+        contentPlaceHolder.text = self.placeHolderText
+        contentPlaceHolder.font = self.contentField.font
+        contentPlaceHolder.textColor = UIColor.lightGray.withAlphaComponent(0.75)
+        contentPlaceHolder.isHidden = !self.contentField.text.isEmpty
+        return contentPlaceHolder
+    }()
     
     var contentCheck:Bool = false
-    var rightItemButton:UIBarButtonItem!{
-        didSet{
-            self.rightItemButton.title = "작성"
-            self.rightItemButton.style = .plain
-            self.rightItemButton.tintColor = .white.withAlphaComponent(0.7)
-            self.rightItemButton.target = self
-            self.rightItemButton.action = #selector(addTapped)
-            self.navigationItem.rightBarButtonItem = self.rightItemButton
-        }
-    }
+    lazy var rightItemButton:UIBarButtonItem = {
+        let rightItemButton = UIBarButtonItem()
+        rightItemButton.title = "작성"
+        rightItemButton.style = .plain
+        rightItemButton.tintColor = .white.withAlphaComponent(0.7)
+        rightItemButton.target = self
+        rightItemButton.action = #selector(addTapped)
+        self.BindingBoardWrite()
+        return rightItemButton
+    }()
     
-    let menu:[String] = ["잡담하기", "정보구하기", "팀원 구하기"]
+    let menu:[String] = ["자유게시판", "질의응답"]
+    let menuDict:[String:String] = ["자유게시판":"FREE", "질의응답":"QNA"]
+    
+    var categoryIndex = -1
     var navigatiopDropDown:BTNavigationDropdownMenu!{
         didSet{
             self.navigatiopDropDown.menuTitleColor = .white
-            
-            //cell detail setting
+                //cell detail setting
             self.navigatiopDropDown.cellHeight = 40
             self.navigatiopDropDown.cellBackgroundColor = Color.mainColor
             self.navigatiopDropDown.cellSelectionColor = Color.mainColor.withAlphaComponent(0.5)
@@ -85,19 +92,27 @@ class BoardWriteView:UIViewController, ViewProtocol{
             self.navigatiopDropDown.cellTextLabelColor = UIColor.white
             self.navigatiopDropDown.cellTextLabelAlignment = .center
             self.navigatiopDropDown.cellSeparatorColor = .white
-            
             self.navigatiopDropDown.animationDuration = 0.5
             
             //if dropdown show then setup backgroundcolor
             self.navigatiopDropDown.maskBackgroundOpacity = 0.1
             self.navigatiopDropDown.maskBackgroundColor = .black
-            
-            self.navigationItem.titleView = self.navigatiopDropDown
             self.navigatiopDropDown.didSelectItemAtIndexHandler = {[weak self] (indexPath: Int) -> () in
-                    print("Did select item at index: \(indexPath)")
+                if let selfVC = self {
+                    selfVC.categoryIndex = indexPath
+                    selfVC.setRightItemColor()
+                    selfVC.boardWriteViewModel.model.category = selfVC.menuDict[selfVC.menu[indexPath]]!
+                }
             }
+            self.navigationItem.titleView = self.navigatiopDropDown
+            self.navigationItem.rightBarButtonItem = rightItemButton
         }
     }
+    
+    lazy var indicator:IndicatorView = {
+        let indicator = IndicatorView(viewController: self)
+        return indicator
+    }()
     
     override func viewWillAppear(_ animated: Bool) {
         self.setNavigationTitle(title: "게시물 작성")
@@ -113,17 +128,8 @@ class BoardWriteView:UIViewController, ViewProtocol{
     
     
     func initUI() {
-        self.scrollView = UIScrollView()
-        self.titleField = UITextField()
-        self.borderLine = UIView()
-        
-        self.categoryLabel = UILabel()
-      
-        
-        self.contentField = UITextView()
-        self.contentPlaceHolder = UILabel()
-        self.rightItemButton = UIBarButtonItem()
         self.navigatiopDropDown = BTNavigationDropdownMenu(title: "카테고리를 설정해주세요.", items: self.menu)
+        
     }
     
     func addView() {
@@ -137,7 +143,6 @@ class BoardWriteView:UIViewController, ViewProtocol{
         let left_margin = 20
         let right_margin = -20
         let padding = 5
-        let category_height = 55
         
         self.scrollView.snp.makeConstraints{ make in
             make.top.equalTo(self.view.safeAreaLayoutGuide)
@@ -171,11 +176,9 @@ class BoardWriteView:UIViewController, ViewProtocol{
             make.top.equalTo(self.contentField.snp.top)
             make.left.equalToSuperview().offset(left_margin+padding)
             make.right.equalToSuperview().offset(right_margin)
-            make.height.equalTo(contentField.snp.height)
+            make.height.equalTo(self.contentField.snp.height)
         }
     }
-    
-    
 }
 
 extension BoardWriteView{
@@ -203,7 +206,8 @@ extension BoardWriteView{
     
     @objc func addTapped(){
         if contentCheck{
-            print("ok")
+            print(self.boardWriteViewModel.model.category, self.boardWriteViewModel.model.content, self.boardWriteViewModel.model.title)
+            self.boardWriteViewModel.BoardWriteRequest()
         }
     }
 }
@@ -212,6 +216,9 @@ extension BoardWriteView:UITextViewDelegate{
     func textViewDidChange(_ textView: UITextView) {
         self.contentPlaceHolder.isHidden = !textView.text.isEmpty
         self.setRightItemColor()
+        if textView == self.contentField{
+            self.boardWriteViewModel.model.content = textView.text
+        }
     }
     
     @objc func popView(){
@@ -227,13 +234,31 @@ extension BoardWriteView:UITextFieldDelegate{
     }
     
     @objc func setRightItemColor(){
-        if titleField.text != "" && contentField.text != ""{
+        if self.titleField.text != "" && self.contentField.text != "" && self.categoryIndex != -1{
             self.contentCheck = true
             rightItemButton.tintColor = .white
         }else{
             self.contentCheck = false
             rightItemButton.tintColor = .white.withAlphaComponent(0.7)
         }
+    }
+}
+
+extension BoardWriteView{
+    func BindingBoardWrite(){
+        self.boardWriteViewModel.Listener.binding(successHandler: { response in
+            if response.success{
+                self.navigationController?.popViewController(animated: true)
+            }else{
+                Alert(title: "작성 실패", message: "게시물 작성에 실패했습니다.", viewController: self).popUpDefaultAlert(action: nil)
+            }
+        }, failHandler: {_ in
+            Alert(title: "작성 실패", message: "네트워크 상태를 확인하세요.", viewController: self).popUpDefaultAlert(action: nil)
+        }, asyncHandler: {
+            self.indicator.startIndicator()
+        }, endHandler: {
+            self.indicator.stopIndicator()
+        })
     }
 }
 

@@ -54,6 +54,8 @@
 		68C7629826BC0CEB00792498 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C7629726BC0CEB00792498 /* URL.swift */; };
 		68C7629A26BC403700792498 /* BaseAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C7629926BC403700792498 /* BaseAction.swift */; };
 		68C7629C26BC5A7000792498 /* EditPwViewModel+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C7629B26BC5A7000792498 /* EditPwViewModel+Model.swift */; };
+		68C7629E26C029C200792498 /* BoardWriteViewModel+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C7629D26C029C100792498 /* BoardWriteViewModel+Model.swift */; };
+		68C762A226C03EF100792498 /* BoardSearchViewModel+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C762A126C03EF100792498 /* BoardSearchViewModel+Model.swift */; };
 		68F1A5B826A0088B007B4B86 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5B726A0088B007B4B86 /* AppDelegate.swift */; };
 		68F1A5BA26A0088B007B4B86 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5B926A0088B007B4B86 /* SceneDelegate.swift */; };
 		68F1A5BC26A0088B007B4B86 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5BB26A0088B007B4B86 /* SignInView.swift */; };
@@ -168,6 +170,8 @@
 		68C7629726BC0CEB00792498 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		68C7629926BC403700792498 /* BaseAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAction.swift; sourceTree = "<group>"; };
 		68C7629B26BC5A7000792498 /* EditPwViewModel+Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditPwViewModel+Model.swift"; sourceTree = "<group>"; };
+		68C7629D26C029C100792498 /* BoardWriteViewModel+Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BoardWriteViewModel+Model.swift"; sourceTree = "<group>"; };
+		68C762A126C03EF100792498 /* BoardSearchViewModel+Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BoardSearchViewModel+Model.swift"; sourceTree = "<group>"; };
 		68F1A5B426A0088B007B4B86 /* KNU_CSE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KNU_CSE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68F1A5B726A0088B007B4B86 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		68F1A5B926A0088B007B4B86 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -389,6 +393,7 @@
 			isa = PBXGroup;
 			children = (
 				681D382226ADC5D4000D9FE8 /* BoardSearchView.swift */,
+				68C762A126C03EF100792498 /* BoardSearchViewModel+Model.swift */,
 			);
 			path = BoardSearch;
 			sourceTree = "<group>";
@@ -397,6 +402,7 @@
 			isa = PBXGroup;
 			children = (
 				681D382526ADC61D000D9FE8 /* BoardWriteView.swift */,
+				68C7629D26C029C100792498 /* BoardWriteViewModel+Model.swift */,
 			);
 			path = BoardWrite;
 			sourceTree = "<group>";
@@ -949,7 +955,9 @@
 				681D37E126A5E7B2000D9FE8 /* UIControl+extension.swift in Sources */,
 				68F1A5EF26A008FF007B4B86 /* BaseApiRequest.swift in Sources */,
 				681D382626ADC61D000D9FE8 /* BoardWriteView.swift in Sources */,
+				68C762A226C03EF100792498 /* BoardSearchViewModel+Model.swift in Sources */,
 				68F861D726B1C0E500934BD2 /* PaddingLabel.swift in Sources */,
+				68C7629E26C029C200792498 /* BoardWriteViewModel+Model.swift in Sources */,
 				681D37B726A42748000D9FE8 /* NoticeView.swift in Sources */,
 				68F861EB26B471D600934BD2 /* UserInformViewModel+Model.swift in Sources */,
 				68C7629326B99F7F00792498 /* ResponseBody.swift in Sources */,
