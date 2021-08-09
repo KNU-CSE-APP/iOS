@@ -9,20 +9,25 @@ import UIKit
 
 class UserInformView:UIViewController, ViewProtocol{
     
-    var userInformationViewModel:UserInformViewModel = UserInformViewModel()
     let profile_width_hegiht:CGFloat = 150
     let image_width_height:CGFloat = 150 * 0.2
-    let titleList:[String] = ["이름", "학번", "닉네임"]
+    let titleList:[String] = ["이메일", "이름", "학번", "닉네임"]
+    
+    var userInformationViewModel:UserInformViewModel = UserInformViewModel()
     
     var profileBtn:UIButton!{
         didSet{
             do{
-                let url = URL(string: userInformationViewModel.profile.image)
-                let data =  try Data(contentsOf: url!)
-                let image = UIImage(data: data)?.resized(toWidth: profile_width_hegiht)
+                if let url = URL(string: userInformationViewModel.model.imagePath){
+                    let data =  try Data(contentsOf: url)
+                    let image = UIImage(data: data)?.resized(toWidth: profile_width_hegiht)
+                    profileBtn.setImage(image, for: .normal)
+                }else {
+                    let image = UIImage(systemName: "person.circle.fill")!.resized(toWidth: profile_width_hegiht)!
+                    self.profileBtn.setImage(image.withTintColor(.lightGray.withAlphaComponent(0.4)), for: .normal)
+                }
                 
                 profileBtn.clipsToBounds = true
-                profileBtn.setImage(image, for: .normal)
                 profileBtn.layer.borderWidth = 1
                 profileBtn.layer.borderColor = UIColor.lightGray.cgColor
                 profileBtn.layer.cornerRadius = profile_width_hegiht * 0.5
@@ -74,23 +79,19 @@ class UserInformView:UIViewController, ViewProtocol{
             confirmBtn.isEnabled = false
             confirmBtn.addAction {
                 self.navigationController?.popViewController(animated: true)
-                
-                
             }
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.BindingGetUserInform()
+        self.userInformationViewModel.getUserInform()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.setNavigationTitle(title: "회원정보")
         self.hideBackTitle()
-    }
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.initUI()
-        self.addView()
-        self.setUpConstraints()
     }
     
     func initUI() {
@@ -149,17 +150,20 @@ extension UserInformView:UITableViewDataSource{
         
         cell.selectionStyle = .none
         
-        
+        let profile:Profile! = self.userInformationViewModel.model
         switch indexPath.row {
         case 0:
-            cell.setTitle(title: titleList[indexPath.row], content: "노준석")
+            cell.setTitle(title: self.titleList[indexPath.row], content: profile.email)
         case 1:
-            cell.setTitle(title: titleList[indexPath.row], content: "2016117285")
+            cell.setTitle(title: self.titleList[indexPath.row], content: profile.username)
         case 2:
-            cell.setTitle(title: titleList[indexPath.row], content: "IYNONE")
+            cell.setTitle(title: self.titleList[indexPath.row], content: profile.studentId)
+        case 3:
+            cell.setTitle(title: self.titleList[indexPath.row], content: profile.nickname)
             cell.setEditable()
+            cell.setUpEditCellConstraints()
             cell.setListener { [weak self] origin_text, last_text in
-                if origin_text != last_text{
+                if origin_text != last_text && last_text != ""{
                     self?.addBtnAction()
                 }else{
                     self?.removeBtnAction()
@@ -171,10 +175,6 @@ extension UserInformView:UITableViewDataSource{
         
         return cell
     }
-    
-}
-
-extension UserInformView:UITextFieldDelegate{
     
 }
 
@@ -207,9 +207,9 @@ extension UserInformView{
         VC.setListener{ [weak self] image, url in
             do{
                 self?.profileBtn.setImage(image.resized(toWidth: (self?.profile_width_hegiht)!), for: .normal)
-                if self?.userInformationViewModel.profile.image != url{
+                if self?.userInformationViewModel.model.imagePath != url{
                     self?.addBtnAction()
-                    self?.userInformationViewModel.imageData = image.jpegData(compressionQuality: 0.5)
+                    self?.userInformationViewModel.model.imageData = image.jpegData(compressionQuality: 0.5)
                 }
             }
         }
@@ -223,17 +223,23 @@ extension UserInformView{
 }
 
 extension UserInformView{
-    func getUserInform(){
+    func BindingGetUserInform(){
         self.userInformationViewModel.getInformlistener.binding(successHandler: { response in
             if response.success {
-                self.userInformationViewModel.model = response.response as! Profile
+                if let profile = response.response {
+                    self.userInformationViewModel.model = profile
+                }
             }
         }, failHandler: { Error in
-            
+            Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self).popUpDefaultAlert(action: nil)
         }, asyncHandler: {
             
         }, endHandler: {
-            
+            if self.userInformationViewModel.model != nil{
+                self.initUI()
+                self.addView()
+                self.setUpConstraints()
+            }
         })
     }
 }
