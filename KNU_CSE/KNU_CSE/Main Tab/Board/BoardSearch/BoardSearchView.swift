@@ -46,7 +46,7 @@ class BoardSearchView:UIViewController, ViewProtocol{
         }
     }
     
-    var BoardVC : FreeBoardView!
+    var BoardVC : BoardView!
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationItem.title = "게시물 검색"
@@ -69,7 +69,7 @@ class BoardSearchView:UIViewController, ViewProtocol{
     func initUI() {
         self.searchController = UISearchController(searchResultsController: nil)
         self.categoryTable = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewFlowLayout())
-        self.BoardVC = storyboard?.instantiateViewController(withIdentifier: "FreeBoardView") as? FreeBoardView
+        self.BoardVC = storyboard?.instantiateViewController(withIdentifier: "FreeBoardView") as? BoardView
     }
     
     func addView() {

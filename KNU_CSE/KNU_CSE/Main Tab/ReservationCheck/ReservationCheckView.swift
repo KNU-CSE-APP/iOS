@@ -108,7 +108,7 @@ class ReservationCheckView: UIViewController, ViewProtocol{
     }
     
     func popView(){
-        guard let viewControllers = self.navigationController?.viewControllers as? [UIViewController] else {
+        guard let viewControllers = self.navigationController?.viewControllers else {
             return
         }
         self.navigationController?.popToViewController(viewControllers[viewControllers.count-3], animated: true)

@@ -65,7 +65,7 @@ class ProfileTableCell : UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.initUI()
         self.addView()
-        self.setUpConstraints()
+        self.setUpNormalCellConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -84,8 +84,7 @@ class ProfileTableCell : UITableViewCell {
         self.contentView.addSubview(editBtn)
     }
     
-    func setUpConstraints(){
-        let btn_width = 60
+    func setUpNormalCellConstraints(){
         self.titleLabel.snp.makeConstraints{ make in
             make.top.bottom.equalToSuperview()
             make.left.equalToSuperview()
@@ -94,7 +93,25 @@ class ProfileTableCell : UITableViewCell {
         self.contentLabel.snp.makeConstraints{ make in
             make.top.bottom.equalToSuperview()
             make.left.equalTo(titleLabel.snp.right)
-            make.right.equalTo(self.editBtn.snp.left)
+            make.right.equalToSuperview()
+        }
+    }
+    
+    func setUpEditCellConstraints(){
+        let btn_width = 60
+        self.titleLabel.snp.removeConstraints()
+        self.contentLabel.snp.removeConstraints()
+        
+        self.titleLabel.snp.makeConstraints{ make in
+            make.top.bottom.equalToSuperview()
+            make.left.equalToSuperview()
+            make.width.equalToSuperview().multipliedBy(0.4)
+        }
+        
+        self.contentLabel.snp.makeConstraints{ make in
+            make.top.bottom.equalToSuperview()
+            make.left.equalTo(titleLabel.snp.right)
+            make.right.equalTo(self.editBtn.snp.left).offset(-5)
         }
         
         self.editBtn.snp.makeConstraints{ make in
@@ -102,6 +119,7 @@ class ProfileTableCell : UITableViewCell {
             make.bottom.equalToSuperview().offset(-10)
             make.width.equalTo(btn_width)
             make.right.equalToSuperview().offset(-15)
+    
         }
     }
 }

@@ -14,22 +14,26 @@ class Board:BaseObject{
     var title : String
     var content : String
     var author : String
-    var date : String
-    var numberOfcomment:Int
+    var time : String
+    var commentCnt:Int
     
-    init(image:String, boardId:Int, category:String, title:String, content:String, author:String, date:String, numberOfcomment:Int) {
+    init(image:String, boardId:Int, category:String, title:String, content:String, author:String, time:String, commentCnt:Int) {
         self.image = image
         self.boardId = boardId
         self.category = category
         self.title = title
         self.content = content
         self.author = author
-        self.date = date
-        self.numberOfcomment = numberOfcomment
+        self.time = time
+        self.commentCnt = commentCnt
         super.init()
     }
     
     required init(from decoder: Decoder) throws {
         fatalError("init(from:) has not been implemented")
     }
+}
+
+struct boardRequest:Codable{
+    var category:String
 }

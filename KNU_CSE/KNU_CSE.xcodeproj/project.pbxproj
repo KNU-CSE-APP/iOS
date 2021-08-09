@@ -10,13 +10,12 @@
 		681D37B526A419F3000D9FE8 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37B426A419F3000D9FE8 /* MyPageView.swift */; };
 		681D37B726A42748000D9FE8 /* NoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37B626A42748000D9FE8 /* NoticeView.swift */; };
 		681D37B926A42782000D9FE8 /* ClassRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37B826A42782000D9FE8 /* ClassRoomView.swift */; };
-		681D37BB26A4279F000D9FE8 /* FreeBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37BA26A4279F000D9FE8 /* FreeBoardView.swift */; };
 		681D37BD26A4519B000D9FE8 /* ClassRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37BC26A4519B000D9FE8 /* ClassRoomViewModel.swift */; };
 		681D37BF26A451B5000D9FE8 /* ClassRoomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37BE26A451B5000D9FE8 /* ClassRoomModel.swift */; };
 		681D37C426A45442000D9FE8 /* ClassRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37C326A45442000D9FE8 /* ClassRoomCell.swift */; };
 		681D37CA26A467CA000D9FE8 /* ReservationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37C926A467CA000D9FE8 /* ReservationView.swift */; };
-		681D37CF26A48A4B000D9FE8 /* FreeBoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37CE26A48A4B000D9FE8 /* FreeBoardViewModel.swift */; };
-		681D37D126A48A55000D9FE8 /* FreeBoardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37D026A48A55000D9FE8 /* FreeBoardModel.swift */; };
+		681D37CF26A48A4B000D9FE8 /* BoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37CE26A48A4B000D9FE8 /* BoardViewModel.swift */; };
+		681D37D126A48A55000D9FE8 /* BoardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37D026A48A55000D9FE8 /* BoardModel.swift */; };
 		681D37D326A48A64000D9FE8 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37D226A48A64000D9FE8 /* MyPageViewModel.swift */; };
 		681D37D526A48A6F000D9FE8 /* MyPageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37D426A48A6F000D9FE8 /* MyPageModel.swift */; };
 		681D37D726A48B37000D9FE8 /* FreeBoardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37D626A48B37000D9FE8 /* FreeBoardCell.swift */; };
@@ -126,13 +125,12 @@
 		681D37B426A419F3000D9FE8 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		681D37B626A42748000D9FE8 /* NoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeView.swift; sourceTree = "<group>"; };
 		681D37B826A42782000D9FE8 /* ClassRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomView.swift; sourceTree = "<group>"; };
-		681D37BA26A4279F000D9FE8 /* FreeBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeBoardView.swift; sourceTree = "<group>"; };
 		681D37BC26A4519B000D9FE8 /* ClassRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomViewModel.swift; sourceTree = "<group>"; };
 		681D37BE26A451B5000D9FE8 /* ClassRoomModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomModel.swift; sourceTree = "<group>"; };
 		681D37C326A45442000D9FE8 /* ClassRoomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomCell.swift; sourceTree = "<group>"; };
 		681D37C926A467CA000D9FE8 /* ReservationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationView.swift; sourceTree = "<group>"; };
-		681D37CE26A48A4B000D9FE8 /* FreeBoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeBoardViewModel.swift; sourceTree = "<group>"; };
-		681D37D026A48A55000D9FE8 /* FreeBoardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeBoardModel.swift; sourceTree = "<group>"; };
+		681D37CE26A48A4B000D9FE8 /* BoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewModel.swift; sourceTree = "<group>"; };
+		681D37D026A48A55000D9FE8 /* BoardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardModel.swift; sourceTree = "<group>"; };
 		681D37D226A48A64000D9FE8 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		681D37D426A48A6F000D9FE8 /* MyPageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageModel.swift; sourceTree = "<group>"; };
 		681D37D626A48B37000D9FE8 /* FreeBoardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeBoardCell.swift; sourceTree = "<group>"; };
@@ -267,11 +265,10 @@
 		681D37B126A41372000D9FE8 /* Board */ = {
 			isa = PBXGroup;
 			children = (
-				681D37F626A73D3E000D9FE8 /* BoardView.swift */,
+				681D37F526A73CC8000D9FE8 /* Board */,
 				681D382426ADC60D000D9FE8 /* BoardWrite */,
 				681D382126ADC5A0000D9FE8 /* BoardSearch */,
 				681D381C26ADAC3A000D9FE8 /* Reply */,
-				681D37F526A73CC8000D9FE8 /* FreeBoard */,
 				681D37FB26A99406000D9FE8 /* BoardDetail */,
 				681D37FA26A8BB92000D9FE8 /* NoticeBoard */,
 			);
@@ -353,14 +350,14 @@
 			path = ReservationCheck;
 			sourceTree = "<group>";
 		};
-		681D37F526A73CC8000D9FE8 /* FreeBoard */ = {
+		681D37F526A73CC8000D9FE8 /* Board */ = {
 			isa = PBXGroup;
 			children = (
-				681D37BA26A4279F000D9FE8 /* FreeBoardView.swift */,
-				681D37CE26A48A4B000D9FE8 /* FreeBoardViewModel.swift */,
-				681D37D026A48A55000D9FE8 /* FreeBoardModel.swift */,
+				681D37F626A73D3E000D9FE8 /* BoardView.swift */,
+				681D37CE26A48A4B000D9FE8 /* BoardViewModel.swift */,
+				681D37D026A48A55000D9FE8 /* BoardModel.swift */,
 			);
-			path = FreeBoard;
+			path = Board;
 			sourceTree = "<group>";
 		};
 		681D37FA26A8BB92000D9FE8 /* NoticeBoard */ = {
@@ -929,7 +926,7 @@
 				68F1A5BC26A0088B007B4B86 /* SignInView.swift in Sources */,
 				681D37BD26A4519B000D9FE8 /* ClassRoomViewModel.swift in Sources */,
 				68F861C526B1A6CF00934BD2 /* MyPageViewCell.swift in Sources */,
-				681D37D126A48A55000D9FE8 /* FreeBoardModel.swift in Sources */,
+				681D37D126A48A55000D9FE8 /* BoardModel.swift in Sources */,
 				681D37EA26A6C6A8000D9FE8 /* ReservationCheckView.swift in Sources */,
 				681D37BF26A451B5000D9FE8 /* ClassRoomModel.swift in Sources */,
 				68F861E926B427BE00934BD2 /* PhotoView.swift in Sources */,
@@ -941,7 +938,6 @@
 				68F1A60F26A30D07007B4B86 /* Alert.swift in Sources */,
 				68F861E126B2EA0C00934BD2 /* UIViewController+extension.swift in Sources */,
 				68F861CD26B1B2A200934BD2 /* UserInformView.swift in Sources */,
-				681D37BB26A4279F000D9FE8 /* FreeBoardView.swift in Sources */,
 				681D380D26A9CDA1000D9FE8 /* DataDelegate.swift in Sources */,
 				681D37D526A48A6F000D9FE8 /* MyPageModel.swift in Sources */,
 				681D37CA26A467CA000D9FE8 /* ReservationView.swift in Sources */,
@@ -998,7 +994,7 @@
 				68F1A5FE26A07147007B4B86 /* SignUpUILabel.swift in Sources */,
 				68C7629126B96EFA00792498 /* CategoryCell.swift in Sources */,
 				681D37DD26A5BF2D000D9FE8 /* ClassSeatCell.swift in Sources */,
-				681D37CF26A48A4B000D9FE8 /* FreeBoardViewModel.swift in Sources */,
+				681D37CF26A48A4B000D9FE8 /* BoardViewModel.swift in Sources */,
 				681D37F226A70FE2000D9FE8 /* ReservationCheckDelegate.swift in Sources */,
 				681D37D726A48B37000D9FE8 /* FreeBoardCell.swift in Sources */,
 				681D381526AC52EA000D9FE8 /* KeyboardAnimation.swift in Sources */,

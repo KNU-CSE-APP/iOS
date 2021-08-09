@@ -9,6 +9,8 @@ import UIKit
 
 class BoardView:UIViewController, ViewProtocol{
     
+    var boardViewModel : BoardViewModel = BoardViewModel()
+    
     let title_left_Margin:CGFloat = 10
     
     var cellWidth:CGFloat!
@@ -56,10 +58,19 @@ class BoardView:UIViewController, ViewProtocol{
             writeBoardhBtn.action = #selector(pushBoardWriteView)
         }
     }
-    
-    var pageView:UIView!
-    var freeBoardVC : FreeBoardView!
-    var noticeBoardVC : FreeBoardView!
+
+    var cellRowHeight : CGFloat!
+    var boardDelegate:BoardDataDelegate?
+    var freeboardTableView :UITableView!{
+        didSet{
+            freeboardTableView.register(FreeBoardCell.self, forCellReuseIdentifier: FreeBoardCell.identifier)
+            freeboardTableView.dataSource = self
+            freeboardTableView.delegate = self
+            freeboardTableView.rowHeight = cellRowHeight * 0.12
+            freeboardTableView.tableFooterView = UIView(frame: .zero)
+            freeboardTableView.separatorInset.left = 0
+        }
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         self.reloadNavigationItems(selectedTabIndex:self.selectedTabIndex)
@@ -76,15 +87,15 @@ class BoardView:UIViewController, ViewProtocol{
         self.highlightView = UIView()
         self.searchBtn = UIBarButtonItem()
         self.writeBoardhBtn = UIBarButtonItem()
-        self.pageView = UIView()
-        self.freeBoardVC = self.storyboard?.instantiateViewController(withIdentifier: "FreeBoardView") as? FreeBoardView
-        self.noticeBoardVC = self.storyboard?.instantiateViewController(withIdentifier: "FreeBoardView") as? FreeBoardView
+        self.cellRowHeight = self.view.frame.height
+        self.freeboardTableView = UITableView()
     }
     
     func addView() {
         self.view.addSubview(tabCollectionView)
         self.view.addSubview(highlightView)
-        self.view.addSubview(pageView)
+//        self.view.addSubview(pageView)
+        self.view.addSubview(freeboardTableView)
     }
     
     func setUpConstraints() {
@@ -98,13 +109,12 @@ class BoardView:UIViewController, ViewProtocol{
             make.height.equalTo(collectionViewHeihgt)
         }
         
-        self.pageView.snp.makeConstraints{ make in
+        self.freeboardTableView.snp.makeConstraints{ make in
             make.top.equalTo(self.highlightView.snp.bottom).offset(5)
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.bottom.equalTo(self.view.safeAreaLayoutGuide)
         }
-        
     }
     
     func selectCell(){
@@ -134,11 +144,11 @@ extension BoardView:UICollectionViewDataSource, UICollectionViewDelegate{
             self.reloadNavigationItems(selectedTabIndex: indexPath.row)
             self.upDateHighlightView(indexPath: indexPath)
             if indexPath.row == 0{
-                self.addFreeBoardVC()
-                self.removeNoticeBoardVC()
+//                self.addFreeBoardVC()
+//                self.removeNoticeBoardVC()
             }else{
-                self.removeFreeBoardVC()
-                self.addNoticeBoardVC()
+//                self.removeFreeBoardVC()
+//                self.addNoticeBoardVC()
             }
         }
     }
@@ -168,36 +178,6 @@ extension BoardView{
         }, completion: nil)
     }
     
-    func addFreeBoardVC(){
-        self.addChild(freeBoardVC)
-        pageView.addSubview(freeBoardVC.view)
-        freeBoardVC.view.snp.makeConstraints{ make in
-            make.left.right.top.bottom.equalToSuperview()
-        }
-        freeBoardVC.didMove(toParent: self)
-    }
-    
-    func removeFreeBoardVC(){
-        freeBoardVC.willMove(toParent: nil)
-        freeBoardVC.view.removeFromSuperview()
-        freeBoardVC.removeFromParent()
-    }
-    
-    func addNoticeBoardVC(){
-        self.addChild(noticeBoardVC)
-        pageView.addSubview(noticeBoardVC.view)
-        noticeBoardVC.view.snp.makeConstraints{ make in
-            make.left.right.top.bottom.equalToSuperview()
-        }
-        noticeBoardVC.didMove(toParent: self)
-    }
-    
-    func removeNoticeBoardVC(){
-        noticeBoardVC.willMove(toParent: nil)
-        noticeBoardVC.view.removeFromSuperview()
-        noticeBoardVC.removeFromParent()
-    }
-    
     func reloadNavigationItems(selectedTabIndex:Int){
         self.selectedTabIndex = selectedTabIndex
         switch selectedTabIndex {
@@ -211,6 +191,42 @@ extension BoardView{
             break
         default:
             break
+        }
+    }
+}
+
+
+extension BoardView : UITableViewDataSource{
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return boardViewModel.boards.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: FreeBoardCell.identifier, for: indexPath) as! FreeBoardCell
+        let board = boardViewModel.boards[indexPath.row]
+        cell.selectionStyle = .none
+        cell.board = board
+        cell.height = cellRowHeight * 0.115
+        return cell
+    }
+
+}
+
+extension BoardView:UITableViewDelegate{
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)// remove selection style
+        self.pushDetaiView(board: boardViewModel.boards[indexPath.row])
+    }
+}
+
+extension BoardView{
+    func pushDetaiView(board:Board){
+        let pushVC = (self.storyboard?.instantiateViewController(withIdentifier: "BoardDetailView")) as? BoardDetailView
+        if !(self.navigationController!.viewControllers.contains(pushVC!)){
+            self.boardDelegate = pushVC
+            self.boardDelegate?.sendBoard(board: board)
+            self.navigationController?.pushViewController(pushVC!, animated: true)
         }
     }
 }

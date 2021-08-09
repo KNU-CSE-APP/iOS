@@ -59,6 +59,18 @@ extension BaseApiRequest{
                 }
             }
             break
+        case .put:
+            request.method = .put
+            if(requestBodyObject != nil){
+                let jsonEncoder = JSONEncoder()
+                do {
+                    if let data = try? jsonEncoder.encode(requestBodyObject.self){
+                        let jsonString = String(decoding: data, as: UTF8.self)
+                        request.httpBody = data
+                        print(jsonString)
+                    }
+                }
+            }
         default:
             request.httpMethod = "GET"
             break
@@ -73,7 +85,9 @@ extension BaseApiRequest{
         case .SignUp:
             return getAddress(domain: "user/signUp")
         case .getInform:
-            return getAddress(domain: "user/getUserEmailNickName")
+            return getAddress(domain: "user/getUserEmailNickname")
+        case .changePassword:
+            return getAddress(domain: "user/changePassword")
         case .CodeRequest(let email):
             return "\(getAddress(domain: "user/verify"))/\(email)"
         case .CodeConfirm:
@@ -89,15 +103,17 @@ extension BaseApiRequest{
 enum RequestHttpMethod{
     case get
     case post
+    case put
 }
 
 enum Environment{
     case SignIn
     case SignUp
+    case getInform
+    case changePassword
     case CodeRequest(String)
     case CodeConfirm
     case BoardWrite
-    case getInform
 }
 
 

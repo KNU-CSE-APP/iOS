@@ -77,10 +77,10 @@ class FreeBoardCell : UITableViewCell {
     var board : Board!{
         didSet{
             self.setAuthorText(title: board.author)
-            self.setDateText(title: board.date)
+            self.setDateText(title: board.time)
             self.setTitleText(title: board.title)
             self.setContentText(title: board.content)
-            self.setCommentText(title: String(board.numberOfcomment))
+            self.setCommentText(title: String(board.commentCnt))
             self.setCategoryText(title: board.category)
         }
     }

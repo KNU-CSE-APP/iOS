@@ -35,7 +35,7 @@ class WrittenBaordListView:UIViewController, ViewProtocol{
 extension WrittenBaordListView{
     
     func addBoardView(){
-        guard let BoardVC = storyboard?.instantiateViewController(withIdentifier: "FreeBoardView") as? FreeBoardView else{
+        guard let BoardVC = storyboard?.instantiateViewController(withIdentifier: "BoardView") as? BoardView else{
             return
         }
         self.addChild(BoardVC)

@@ -58,7 +58,7 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     
     var dateLabel:UILabel!{
         didSet{
-            self.dateLabel.text = boardDetailViewModel.board.date
+            self.dateLabel.text = boardDetailViewModel.board.time
             self.dateLabel.textAlignment = .right
             self.dateLabel.textColor = UIColor.black
             self.dateLabel.font = UIFont.systemFont(ofSize: 14, weight: .ultraLight)
@@ -107,7 +107,7 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     
     var commentLabel:UILabel!{
         didSet{
-            self.commentLabel.text = String(boardDetailViewModel.board.numberOfcomment)
+            self.commentLabel.text = String(boardDetailViewModel.board.commentCnt)
             self.commentLabel.textAlignment = .left
             self.commentLabel.textColor = UIColor.black
             self.commentLabel.font = UIFont.systemFont(ofSize: 16, weight: .ultraLight)
