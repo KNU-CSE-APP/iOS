@@ -8,32 +8,29 @@
 import Foundation
 
 class EditPwViewModel {
-    typealias Listener = (EditPwModel) -> Void
-    var listener: Listener?
-    var account: EditPwModel = EditPwModel(email: "", changePassword: "", changePassword2: "", currentPassword:"")
-    var emailCode:String!
+    var editPwListener: BaseAction<String, errorHandler> = BaseAction()
+    var model: EditPwModel = EditPwModel(changePassword: "", changePassword2: "", currentPassword:"")
     
-    init(listener : Listener?){
-        self.listener = listener
+    init(){
+        
     }
     
-    func bind(listener: Listener?) {
-        self.listener = listener
+    func PwCheck()-> Bool{
+        return model.Check()
     }
     
-    func SignUpCheck()-> Bool{
-        return account.Check()
+    public func EditPw(){
+        let request = Request(requestBodyObject: self.model, requestMethod: .put, enviroment: .changePassword)
+        request.sendRequest(request: request, responseType: String.self, errorType: errorHandler.self, action:self.editPwListener)
     }
 }
 
 class EditPwModel: BaseObject{
-    var email:String
     var changePassword:String
     var changePassword2:String
     var currentPassword:String
     
-    init(email : String, changePassword : String, changePassword2 : String, currentPassword : String){
-        self.email = email
+    init(changePassword : String, changePassword2 : String, currentPassword : String){
         self.changePassword = changePassword
         self.changePassword2 = changePassword2
         self.currentPassword = currentPassword
@@ -51,4 +48,15 @@ class EditPwModel: BaseObject{
             return false
         }
     }
+    
+    override func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(changePassword, forKey: .changePassword)
+        try container.encode(currentPassword, forKey: .currentPassword)
+        try super.encode(to: encoder)
+    }
+    
+    enum CodingKeys: CodingKey {
+       case changePassword, currentPassword
+     }
 }

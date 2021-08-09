@@ -12,10 +12,9 @@ class EditPwView:UIViewController,ViewProtocol{
     
     var indicator : IndicatorView!
     
-    var editPwViewModel : EditPwViewModel = EditPwViewModel(listener: nil)
+    var editPwViewModel : EditPwViewModel = EditPwViewModel()
     
     let containerView = UIView()
-    
     var pwTextField: BindingTextField! {
         didSet {
             self.pwTextField.isSecureTextEntry = true
@@ -24,7 +23,7 @@ class EditPwView:UIViewController,ViewProtocol{
             self.pwTextField.draw()
             self.pwTextField.setUpImage(imageName: "eye.fill", on: .right, color: UIColor.darkGray, width:40, height: 40)
             self.pwTextField.bind { [weak self] changePassword in
-                self?.editPwViewModel.account.changePassword = changePassword
+                self?.editPwViewModel.model.changePassword = changePassword
                 self?.checkChangeValue()
             }
         }
@@ -38,7 +37,7 @@ class EditPwView:UIViewController,ViewProtocol{
             self.pw2TextField.draw()
             self.pw2TextField.setUpImage(imageName: "eye.fill", on: .right, color: UIColor.darkGray, width:40, height: 40)
             self.pw2TextField.bind { [weak self] changePassword2 in
-                self?.editPwViewModel.account.changePassword2 = changePassword2
+                self?.editPwViewModel.model.changePassword2 = changePassword2
                 self?.checkChangeValue()
             }
         }
@@ -52,7 +51,7 @@ class EditPwView:UIViewController,ViewProtocol{
             self.currentPwTextField.draw()
             self.currentPwTextField.setUpImage(imageName: "eye.fill", on: .right, color: UIColor.darkGray, width:40, height: 40)
             self.currentPwTextField.bind { [weak self] currentPassword in
-                self?.editPwViewModel.account.currentPassword = currentPassword
+                self?.editPwViewModel.model.currentPassword = currentPassword
                 self?.checkChangeValue()
             }
         }
@@ -79,6 +78,8 @@ class EditPwView:UIViewController,ViewProtocol{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.BindingEditPw()
+        
         self.initUI()
         self.addView()
         self.setUpConstraints()
@@ -88,7 +89,6 @@ class EditPwView:UIViewController,ViewProtocol{
         self.pwTextField = BindingTextField()
         self.pw2TextField = BindingTextField()
         self.currentPwTextField = BindingTextField()
-        
         self.registerBtn = UIButton()
         self.indicator = IndicatorView(viewController: self)
     }
@@ -191,7 +191,7 @@ extension EditPwView: UITextFieldDelegate{
     }
     
     func checkChangeValue(){
-        if self.editPwViewModel.SignUpCheck(){
+        if self.editPwViewModel.PwCheck(){
             self.addBtnAction()
         }else{
             self.removeBtnAction()
@@ -201,12 +201,33 @@ extension EditPwView: UITextFieldDelegate{
     func addBtnAction(){
         registerBtn.backgroundColor = Color.mainColor
         registerBtn.addAction{
-          
+            self.editPwViewModel.EditPw()
         }
     }
     
     func removeBtnAction(){
         registerBtn.backgroundColor = UIColor.lightGray
         registerBtn.removeTarget(nil, action: nil, for: .allEvents)
+    }
+}
+
+extension EditPwView{
+    func BindingEditPw(){
+        self.editPwViewModel.editPwListener.binding(successHandler: { response in
+            if response.success{
+                Alert(title: "비밀번호 변경 성공", message: "비밀번호 변경에 성공했습니다.\n새로운 비밀번호로 로그인해주세요.", viewController: self).popUpDefaultAlert(action:{ action in
+                    self.popTwiceView()
+                    self.logOut()
+                })
+            }else{
+                Alert(title: "비밀번호 변경 실패", message: response.error!.message, viewController: self).popUpDefaultAlert(action:nil)
+            }
+        }, failHandler: { Error in
+            Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self).popUpDefaultAlert(action: nil)
+        }, asyncHandler: {
+            
+        }, endHandler: {
+            
+        })
     }
 }
