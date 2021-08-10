@@ -7,7 +7,7 @@
 
 import UIKit
 
-class UserInformView:UIViewController, ViewProtocol{
+class UserInformView:BaseUIViewController, ViewProtocol{
     
     let profile_width_hegiht:CGFloat = 150
     let image_width_height:CGFloat = 150 * 0.2
@@ -77,8 +77,10 @@ class UserInformView:UIViewController, ViewProtocol{
             confirmBtn.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .regular)
             confirmBtn.backgroundColor = .lightGray
             confirmBtn.isEnabled = false
+            self.BindingSetUserInform()
             confirmBtn.addAction {
-                self.navigationController?.popViewController(animated: true)
+//                self.navigationController?.popViewController(animated: true)
+                self.userInformationViewModel.setUserInform()
             }
         }
     }
@@ -163,6 +165,7 @@ extension UserInformView:UITableViewDataSource{
             cell.setEditable()
             cell.setUpEditCellConstraints()
             cell.setListener { [weak self] origin_text, last_text in
+                self?.userInformationViewModel.model.editedNickname = last_text
                 if origin_text != last_text && last_text != ""{
                     self?.addBtnAction()
                 }else{
@@ -195,6 +198,11 @@ extension UserInformView{
             self?.presentPhotoView()
         }, remove_text: "프로필 이미지 삭제", removeAction:{ [weak self] action in
             self?.setOriginProfile()
+            if self?.userInformationViewModel.model.imagePath != nil{
+                self?.addBtnAction()
+            }
+            let image = UIImage(systemName: "person.circle.fill")!.resized(toWidth: self!.profile_width_hegiht)!.withTintColor(.lightGray.withAlphaComponent(0.4))
+            self?.userInformationViewModel.model.imageData = image.jpegData(compressionQuality: 1)
         }
     , cancel_text: "취소")
     }
@@ -233,13 +241,31 @@ extension UserInformView{
         }, failHandler: { Error in
             Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self).popUpDefaultAlert(action: nil)
         }, asyncHandler: {
-            
+            self.indicator.viewController = self
+            self.indicator.startIndicator()
         }, endHandler: {
             if self.userInformationViewModel.model != nil{
                 self.initUI()
                 self.addView()
                 self.setUpConstraints()
             }
+            self.indicator.stopIndicator()
+        })
+    }
+    
+    func BindingSetUserInform(){
+        self.userInformationViewModel.setInformlistener.binding(successHandler: {result in
+            if result.success{
+                print(result.response)
+            }else{
+                print(result.error)
+            }
+        }, failHandler: { Error in
+            print(Error)
+        }, asyncHandler: {
+            
+        }, endHandler: {
+            
         })
     }
 }

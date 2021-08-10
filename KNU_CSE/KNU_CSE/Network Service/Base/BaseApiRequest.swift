@@ -18,6 +18,7 @@ import Alamofire
 protocol BaseApiRequest {
     var requestMethod: RequestHttpMethod?{ get }
     var requestBodyObject: BaseObject?{ get }
+    var requestMultipart:MultipartFormData!{ get }
     func request() -> URLRequest
     var enviroment: Environment? { get }
 }
@@ -86,6 +87,8 @@ extension BaseApiRequest{
             return getAddress(domain: "user/signUp")
         case .getInform:
             return getAddress(domain: "user/getUserEmailNickname")
+        case .setInform:
+            return getAddress(domain: "user/image/nickname")
         case .changePassword:
             return getAddress(domain: "user/changePassword")
         case .CodeRequest(let email):
@@ -110,6 +113,7 @@ enum Environment{
     case SignIn
     case SignUp
     case getInform
+    case setInform
     case changePassword
     case CodeRequest(String)
     case CodeConfirm

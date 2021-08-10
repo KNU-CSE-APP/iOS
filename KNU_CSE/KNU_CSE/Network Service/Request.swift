@@ -9,6 +9,7 @@ import Alamofire
 struct Request: BaseApiRequest {
     
     var requestBodyObject: BaseObject?
+    var requestMultipart: MultipartFormData!
     var requestMethod: RequestHttpMethod? = RequestHttpMethod.post
     var enviroment: Environment?
     
@@ -29,5 +30,20 @@ struct Request: BaseApiRequest {
             }
             action.endHandler()
         }
+    }
+    
+    func sendMutiPartRequest<T:Codable,V:Codable>(request:BaseApiRequest, responseType :T.Type,errorType:V.Type, action:BaseAction<T,V>){
+        action.asyncHandler()
+        AF.upload(multipartFormData: requestMultipart, with: request.request()).responseDecodable{ (response:AFDataResponse<ResponseBody<T,V>>) in
+                switch response.result{
+                case .success(let responseEventList):
+                    action.successHandler(responseEventList)
+                    print("success")
+                  case .failure(let error):
+                    action.failHandler(error)
+                    print("fail")
+                }
+                action.endHandler()
+            }
     }
 }

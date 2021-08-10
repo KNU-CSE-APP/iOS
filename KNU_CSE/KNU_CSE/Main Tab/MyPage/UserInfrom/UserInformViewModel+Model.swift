@@ -6,10 +6,12 @@
 //
 
 import Foundation
+import Alamofire
 
 struct UserInformViewModel{
     var model:Profile!
     var getInformlistener: BaseAction<Profile, errorHandler> = BaseAction()
+    var setInformlistener: BaseAction<String, errorHandler> = BaseAction()
     
     init(){
         
@@ -21,14 +23,15 @@ struct UserInformViewModel{
     }
     
     func setUserInform(){
-        let request = Request(requestBodyObject: self.model, requestMethod: .put, enviroment: .getInform)
-        request.sendRequest(request: request, responseType: Profile.self, errorType: errorHandler.self, action:self.getInformlistener)
+        let request = Request(requestMultipart: model.getMultipart(), requestMethod: .put, enviroment:.setInform)
+        request.sendMutiPartRequest(request: request, responseType: String.self, errorType: errorHandler.self, action: self.setInformlistener)
     }
 }
 
 class Profile:BaseObject{
     var email:String!
     var imagePath:String!
+    var editedNickname:String!
     var nickname:String!
     var userId:Int!
     var username:String!
@@ -45,23 +48,39 @@ class Profile:BaseObject{
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        imagePath = (try? container.decode(String.self, forKey: .imagePath)) ?? ""
-        email = (try? container.decode(String.self, forKey: .email)) ?? ""
-        username = (try? container.decode(String.self, forKey: .username)) ?? ""
-        nickname = (try? container.decode(String.self, forKey: .nickname)) ?? ""
-        studentId = (try? container.decode(String.self, forKey: .studentId)) ?? ""
+        self.imagePath = (try? container.decode(String.self, forKey: .imagePath)) ?? ""
+        self.email = (try? container.decode(String.self, forKey: .email)) ?? ""
+        self.username = (try? container.decode(String.self, forKey: .username)) ?? ""
+        self.nickname = (try? container.decode(String.self, forKey: .nickname)) ?? ""
+        self.editedNickname = nickname
+        self.studentId = (try? container.decode(String.self, forKey: .studentId)) ?? ""
         super.init()
     }
     
     override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(nickname, forKey: .name)
-        try container.encode(imageData, forKey: .file)
+        try container.encode(nickname, forKey: .nickname)
+        try container.encode(imageData, forKey: .image)
         try super.encode(to: encoder)
     }
     
     enum CodingKeys: CodingKey {
         case email, imagePath, nickname, userId, username, studentId
-        case name,file
+        case name,image
      }
+    
+    func getMultipart()->MultipartFormData{
+        let multipartFormData = MultipartFormData()
+        
+        if editedNickname != nickname{
+            multipartFormData.append(Data(editedNickname.utf8), withName: "nickName")
+        }
+        
+        if let image = imageData{
+            multipartFormData.append(image, withName: "image", fileName: "\(String(describing: nickname))_profile", mimeType: "image/jpeg")
+        }else{
+            multipartFormData.append(Data("".utf8), withName: "image")
+        }
+        return multipartFormData
+    }
 }
