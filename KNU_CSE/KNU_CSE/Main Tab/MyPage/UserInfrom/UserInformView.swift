@@ -256,12 +256,18 @@ extension UserInformView{
     func BindingSetUserInform(){
         self.userInformationViewModel.setInformlistener.binding(successHandler: {result in
             if result.success{
-                print(result.response)
+                Alert(title: "성공", message: "회원정보가 변경되었습니다.", viewController: self).popUpDefaultAlert(action: { action in
+                    self.navigationController?.popViewController(animated: true)
+                })
             }else{
-                print(result.error)
+                if let error = result.error?.message {
+                    Alert(title: "실패", message: error, viewController: self).popUpDefaultAlert(action: { action in
+                        self.navigationController?.popViewController(animated: true)
+                    })
+                }
             }
         }, failHandler: { Error in
-            print(Error)
+            Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self).popUpDefaultAlert(action: nil)
         }, asyncHandler: {
             
         }, endHandler: {
