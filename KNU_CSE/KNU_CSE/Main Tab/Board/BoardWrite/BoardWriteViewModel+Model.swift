@@ -8,12 +8,13 @@
 import Foundation
 
 struct boardWriteHandler:Codable{
-    var author:String
     var boardId:Int
     var category:String
-    var content:String
-    var dateTime:String
     var title:String
+    var content:String
+    var author:String
+    var time:String
+    var commentCnt:Int
 }
 
 struct BoardWriteViewModel{

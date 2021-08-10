@@ -46,7 +46,11 @@ class BoardSearchView:UIViewController, ViewProtocol{
         }
     }
     
-    var BoardVC : BoardView!
+    var BoardVC : BoardView!{
+        didSet{
+            self.BoardVC.parentType = .Search
+        }
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationItem.title = "게시물 검색"
@@ -69,7 +73,9 @@ class BoardSearchView:UIViewController, ViewProtocol{
     func initUI() {
         self.searchController = UISearchController(searchResultsController: nil)
         self.categoryTable = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewFlowLayout())
-        self.BoardVC = storyboard?.instantiateViewController(withIdentifier: "FreeBoardView") as? BoardView
+        
+        self.BoardVC = storyboard?.instantiateViewController(withIdentifier: "BoardView") as? BoardView
+        
     }
     
     func addView() {
@@ -93,11 +99,11 @@ class BoardSearchView:UIViewController, ViewProtocol{
 extension BoardSearchView{
 
     func addBoardView(){
-        self.addChild(BoardVC)
-        self.view.addSubview(BoardVC.view)
-        BoardVC.didMove(toParent: self)
-        BoardVC.view.backgroundColor = .yellow
-        BoardVC.view.snp.makeConstraints{ make in
+        self.addChild(self.BoardVC)
+        self.view.addSubview(self.BoardVC.view)
+        self.BoardVC.didMove(toParent: self)
+        self.BoardVC.view.backgroundColor = .yellow
+        self.BoardVC.view.snp.makeConstraints{ make in
             make.top.equalTo(self.view.safeAreaLayoutGuide)
             make.left.equalTo(self.view.safeAreaLayoutGuide)
             make.right.equalTo(self.view.safeAreaLayoutGuide)

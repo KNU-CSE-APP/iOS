@@ -433,9 +433,13 @@ extension BoardDetailView{
     func initImage(){
         do {
             print(self.boardDetailViewModel.board.image)
-            let url = URL(string: self.boardDetailViewModel.board.image)
-            let data =  try Data(contentsOf: url!)
-            self.image = UIImage(data: data)
+            if let url = URL(string: self.boardDetailViewModel.board.image){
+                let data =  try Data(contentsOf: url)
+                self.image = UIImage(data: data)
+            }else{
+                self.image = UIImage(systemName: "person.crop.square.fill")?.resized(toWidth: 100)?.withTintColor(.lightGray)
+            }
+            
         } catch  {
             self.image = UIImage(systemName: "person.crop.square.fill")?.resized(toWidth: 100)?.withTintColor(.lightGray)
         }

@@ -249,10 +249,8 @@ extension BoardWriteView{
         self.boardWriteViewModel.Listener.binding(successHandler: { response in
             if response.success{
                 self.navigationController?.popViewController(animated: true)
-            }else{
-                Alert(title: "작성 실패", message: "게시물 작성에 실패했습니다.", viewController: self).popUpDefaultAlert(action: nil)
             }
-        }, failHandler: {_ in
+        }, failHandler: { Error in
             Alert(title: "작성 실패", message: "네트워크 상태를 확인하세요.", viewController: self).popUpDefaultAlert(action: nil)
         }, asyncHandler: {
             self.indicator.startIndicator()

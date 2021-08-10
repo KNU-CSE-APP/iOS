@@ -2,204 +2,83 @@
 //  BoardView.swift
 //  KNU_CSE
 //
-//  Created by junseok on 2021/07/21.
+//  Created by junseok on 2021/07/18.
 //
 
+import Foundation
 import UIKit
 
-class BoardView:UIViewController, ViewProtocol{
+enum ParentType{
+    case BoardTap
+    case Search
+    case Write
+}
+
+class BoardView : UIViewController{
+    
+    var parentType:ParentType!
     
     var boardViewModel : BoardViewModel = BoardViewModel()
-    
-    let title_left_Margin:CGFloat = 10
-    
-    var cellWidth:CGFloat!
-    var collectionViewHeihgt:CGFloat!{
-        didSet{
-            let layout = tabCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
-            layout.itemSize = CGSize(width: cellWidth, height: collectionViewHeihgt!)
-        }
-    }
-    
-    var tabCollectionView : UICollectionView!{
-        didSet{
-            tabCollectionView.backgroundColor = .white
-            tabCollectionView.dataSource = self
-            tabCollectionView.delegate = self
-            tabCollectionView.register(BoardTitleCell.self, forCellWithReuseIdentifier: BoardTitleCell.identifier)
-        }
-    }
-    
-    var highlightView:UIView!{
-        didSet{
-            highlightView.backgroundColor = Color.mainColor
-        }
-    }
-    
-    var searchBtn:UIBarButtonItem!{
-        didSet{
-            searchBtn.style = .plain
-            searchBtn.tintColor = .white
-            searchBtn.target = self
-            let image = UIImage(systemName: "magnifyingglass")
-            searchBtn.image = image
-            searchBtn.action = #selector(pushBoardSearchView)
-        }
-    }
-
-    var selectedTabIndex:Int = 0
-    var writeBoardhBtn:UIBarButtonItem!{
-        didSet{
-            writeBoardhBtn.style = .plain
-            writeBoardhBtn.tintColor = .white
-            writeBoardhBtn.target = self
-            let image = UIImage(systemName: "pencil")
-            writeBoardhBtn.image = image
-            writeBoardhBtn.action = #selector(pushBoardWriteView)
-        }
-    }
-
     var cellRowHeight : CGFloat!
     var boardDelegate:BoardDataDelegate?
-    var freeboardTableView :UITableView!{
+    
+    var boardTableView :UITableView!{
         didSet{
-            freeboardTableView.register(FreeBoardCell.self, forCellReuseIdentifier: FreeBoardCell.identifier)
-            freeboardTableView.dataSource = self
-            freeboardTableView.delegate = self
-            freeboardTableView.rowHeight = cellRowHeight * 0.12
-            freeboardTableView.tableFooterView = UIView(frame: .zero)
-            freeboardTableView.separatorInset.left = 0
+            boardTableView.register(FreeBoardCell.self, forCellReuseIdentifier: FreeBoardCell.identifier)
+            boardTableView.dataSource = self
+            boardTableView.delegate = self
+            boardTableView.rowHeight = cellRowHeight * 0.12
+            boardTableView.tableFooterView = UIView(frame: .zero)
+            boardTableView.separatorInset.left = 0
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        self.reloadNavigationItems(selectedTabIndex:self.selectedTabIndex)
-    }
     override func viewDidLoad() {
+        super.viewDidLoad()
+        self.actionBinding()
+        
         self.initUI()
         self.addView()
-        self.setUpConstraints()
-        self.selectCell()
+        self.setupConstraints()
     }
     
-    func initUI() {
-        self.tabCollectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewFlowLayout())
-        self.highlightView = UIView()
-        self.searchBtn = UIBarButtonItem()
-        self.writeBoardhBtn = UIBarButtonItem()
+    func initUI(){
         self.cellRowHeight = self.view.frame.height
-        self.freeboardTableView = UITableView()
+        self.boardTableView = UITableView()
     }
     
-    func addView() {
-        self.view.addSubview(tabCollectionView)
-        self.view.addSubview(highlightView)
-//        self.view.addSubview(pageView)
-        self.view.addSubview(freeboardTableView)
+    func addView(){
+        self.view.addSubview(boardTableView)
     }
     
-    func setUpConstraints() {
-        cellWidth = self.view.frame.width * 0.2
-        collectionViewHeihgt = self.view.frame.height * 0.05
-        
-        self.tabCollectionView.snp.makeConstraints{ make in
-            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(5)
-            make.left.equalToSuperview().offset(title_left_Margin)
-            make.right.equalToSuperview()
-            make.height.equalTo(collectionViewHeihgt)
-        }
-        
-        self.freeboardTableView.snp.makeConstraints{ make in
-            make.top.equalTo(self.highlightView.snp.bottom).offset(5)
+    func setupConstraints(){
+        boardTableView.snp.makeConstraints{ make in
             make.left.equalToSuperview()
             make.right.equalToSuperview()
+            make.top.equalTo(self.view.safeAreaLayoutGuide)
             make.bottom.equalTo(self.view.safeAreaLayoutGuide)
         }
     }
-    
-    func selectCell(){
-        let firstIndexPath = IndexPath(item: 0, section: 0)
-        collectionView(tabCollectionView, didSelectItemAt: firstIndexPath)
-        tabCollectionView.selectItem(at: firstIndexPath, animated: false, scrollPosition: .right)
-    }
 }
-
-extension BoardView:UICollectionViewDataSource, UICollectionViewDelegate{
-
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 2
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let titleList:[String] = ["자유게시판", "학생회 공지"]
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BoardTitleCell.identifier, for: indexPath) as? BoardTitleCell else{
-            return UICollectionViewCell()
-        }
-        cell.setTitle(title: titleList[indexPath.row])
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if collectionView == tabCollectionView {
-            self.reloadNavigationItems(selectedTabIndex: indexPath.row)
-            self.upDateHighlightView(indexPath: indexPath)
-            if indexPath.row == 0{
-//                self.addFreeBoardVC()
-//                self.removeNoticeBoardVC()
-            }else{
-//                self.removeFreeBoardVC()
-//                self.addNoticeBoardVC()
-            }
-        }
-    }
-}
-
-extension BoardView{
-    
-    @objc func pushBoardWriteView(){
-        let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "BoardWriteView") as? BoardWriteView
-        self.navigationController?.pushViewController(pushVC!, animated: true)
-    }
-    
-    @objc func pushBoardSearchView(){
-        let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "BoardSearchView") as? BoardSearchView
-        self.navigationController?.pushViewController(pushVC!, animated: true)
-    }
-    
-    func upDateHighlightView(indexPath:IndexPath){
-        let leading = cellWidth * CGFloat(indexPath.row) + (CGFloat(indexPath.row) * 24) + title_left_Margin
-        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseOut, animations: {
-            self.highlightView.snp.updateConstraints{ make in
-                make.top.equalTo(self.tabCollectionView.snp.bottom).offset(0)
-                make.leading.equalTo(leading)
-                make.width.equalTo(self.cellWidth)
-                make.height.equalTo(self.collectionViewHeihgt*0.1)
-            }
-        }, completion: nil)
-    }
-    
-    func reloadNavigationItems(selectedTabIndex:Int){
-        self.selectedTabIndex = selectedTabIndex
-        switch selectedTabIndex {
-        case 0:
-            let parent = self.parent as? TabView
-            parent?.setNavigationItemWithSearchWrite()
-            break
-        case 1:
-            let parent = self.parent as? TabView
-            parent?.setNavigationItemWithSearch()
-            break
-        default:
-            break
-        }
-    }
-}
-
 
 extension BoardView : UITableViewDataSource{
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return boardViewModel.boards.count
+        if boardViewModel.boards.count == 0{
+            switch parentType {
+            case .BoardTap:
+                    self.setTablViewBackgroundView(text: "게시글이 없습니다")
+                case .Search:
+                    self.setTablViewBackgroundView(text: "검색 결과가 없습니다")
+                case .Write:
+                    self.setTablViewBackgroundView(text: "작성한 게시글이 없습니다")
+                case .none:
+                    break
+            }
+            return 0
+        }else{
+            return boardViewModel.boards.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -209,6 +88,16 @@ extension BoardView : UITableViewDataSource{
         cell.board = board
         cell.height = cellRowHeight * 0.115
         return cell
+    }
+    
+    func setTablViewBackgroundView(text:String){
+        let emptyLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
+        emptyLabel.text = text
+        emptyLabel.textColor = .lightGray
+        emptyLabel.font = UIFont.systemFont(ofSize: 23, weight: .light)
+        emptyLabel.textAlignment = NSTextAlignment.center
+        self.boardTableView.backgroundView = emptyLabel
+        self.boardTableView.separatorStyle = .none
     }
 
 }
@@ -228,5 +117,38 @@ extension BoardView{
             self.boardDelegate?.sendBoard(board: board)
             self.navigationController?.pushViewController(pushVC!, animated: true)
         }
+    }
+}
+
+extension BoardView{
+    
+    func actionBinding(){
+        switch parentType {
+            case .BoardTap:
+                self.BindingGetBoard()
+            case .Search:
+                break
+            case .Write:
+                break
+            case .none:
+                break
+        }
+    }
+    
+    func BindingGetBoard(){
+        self.boardViewModel.boardListener.binding(successHandler: { result in
+            if result.success{
+                if let boards = result.response{
+                    self.boardViewModel.boards = boards
+                }
+            }
+        }, failHandler: { Error in
+            Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self).popUpDefaultAlert(action: nil)
+        }
+        , asyncHandler: {
+        }
+        , endHandler: {
+            self.boardTableView.reloadData()
+        })
     }
 }

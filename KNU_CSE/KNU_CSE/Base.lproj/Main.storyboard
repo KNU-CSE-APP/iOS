@@ -96,7 +96,7 @@
         <!--자유게시판-->
         <scene sceneID="IvD-pA-hAs">
             <objects>
-                <viewController storyboardIdentifier="BoardView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="P8g-YX-9qv" customClass="BoardView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="BoardTabView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="P8g-YX-9qv" customClass="BoardTabView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="DB5-w5-5vK">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -216,10 +216,10 @@
             </objects>
             <point key="canvasLocation" x="2995.6521739130435" y="975"/>
         </scene>
-        <!--Free Board View-->
+        <!--Board View-->
         <scene sceneID="tV1-3H-m5j">
             <objects>
-                <viewController storyboardIdentifier="FreeBoardView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="8IG-b1-uhk" customClass="FreeBoardView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="BoardView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="8IG-b1-uhk" customClass="BoardView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5a6-Z3-uOr">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -17,6 +17,7 @@ class Board:BaseObject{
     var time : String
     var commentCnt:Int
     
+    let categoryDict:[String:String] = ["FREE":"자유게시판", "QNA":"질의응답"]
     init(image:String, boardId:Int, category:String, title:String, content:String, author:String, time:String, commentCnt:Int) {
         self.image = image
         self.boardId = boardId
@@ -30,10 +31,22 @@ class Board:BaseObject{
     }
     
     required init(from decoder: Decoder) throws {
-        fatalError("init(from:) has not been implemented")
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+//        self.image = (try? container.decode(String.self, forKey: .image)) ?? ""
+        self.image = ""
+        self.boardId = (try? container.decode(Int.self, forKey: .boardId)) ?? 0
+        self.category = (try? container.decode(String.self, forKey: .category)) ?? ""
+        self.title = (try? container.decode(String.self, forKey: .title)) ?? ""
+        self.content = (try? container.decode(String.self, forKey: .content)) ?? ""
+        self.author = (try? container.decode(String.self, forKey: .author)) ?? ""
+        self.time = (try? container.decode(String.self, forKey: .time)) ?? ""
+        self.commentCnt = (try? container.decode(Int.self, forKey: .commentCnt)) ?? 0
+        super.init()
+        
+        self.category = categoryDict[category]!
     }
-}
-
-struct boardRequest:Codable{
-    var category:String
+    
+    enum CodingKeys: CodingKey {
+       case image, boardId, category, title, content, author, time, commentCnt
+     }
 }
