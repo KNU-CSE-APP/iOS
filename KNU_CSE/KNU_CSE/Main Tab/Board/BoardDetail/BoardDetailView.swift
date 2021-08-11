@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
+class BoardDetailView:BaseUIViewController, ViewProtocol, BoardDataDelegate{
     
     var selectedView:CommentCell? = nil
     
@@ -23,9 +23,10 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     
     var scrollView:UIScrollView!{
         didSet{
-            scrollView.alwaysBounceVertical = true
+            self.scrollView.alwaysBounceVertical = true
             let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
-            scrollView.addGestureRecognizer(tap)
+            self.scrollView.addGestureRecognizer(tap)
+            self.scrollView.showsVerticalScrollIndicator = true
         }
     }
     
@@ -48,7 +49,7 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     
     var authorLabel:UILabel!{
         didSet{
-            self.authorLabel.text = boardDetailViewModel.board.author
+            self.authorLabel.text = boardDetailViewModel.board.value.author
             self.authorLabel.textAlignment = .left
             self.authorLabel.textColor = UIColor.black
             self.authorLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
@@ -58,7 +59,7 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     
     var dateLabel:UILabel!{
         didSet{
-            self.dateLabel.text = boardDetailViewModel.board.time
+            self.dateLabel.text = boardDetailViewModel.board.value.time
             self.dateLabel.textAlignment = .right
             self.dateLabel.textColor = UIColor.black
             self.dateLabel.font = UIFont.systemFont(ofSize: 14, weight: .ultraLight)
@@ -68,7 +69,7 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     
     var titleLabel:UILabel!{
         didSet{
-            self.titleLabel.text = boardDetailViewModel.board.title
+            self.titleLabel.text = boardDetailViewModel.board.value.title
             self.titleLabel.textAlignment = .left
             self.titleLabel.textColor = UIColor.black
             self.titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
@@ -79,18 +80,17 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     
     var contentLabel:UILabel!{
         didSet{
-            self.contentLabel.text = boardDetailViewModel.board.content
+            self.contentLabel.text = boardDetailViewModel.board.value.content
             self.contentLabel.textAlignment = .left
             self.contentLabel.textColor = UIColor.black
             self.contentLabel.font = UIFont.systemFont(ofSize: 16, weight: .thin)
             self.contentLabel.numberOfLines = 0
-            self.contentLabel.sizeToFit()
         }
     }
     
     var categoryLabel:UILabel!{
         didSet{
-            self.categoryLabel.text = "#\(boardDetailViewModel.board.category)"
+            self.categoryLabel.text = "#\(boardDetailViewModel.board.value.category)"
             self.categoryLabel.textAlignment = .center
             self.categoryLabel.textColor = UIColor.lightGray
             self.categoryLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
@@ -107,18 +107,19 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     
     var commentLabel:UILabel!{
         didSet{
-            self.commentLabel.text = String(boardDetailViewModel.board.commentCnt)
+            self.commentLabel.text = String(boardDetailViewModel.board.value.commentCnt)
             self.commentLabel.textAlignment = .left
             self.commentLabel.textColor = UIColor.black
-            self.commentLabel.font = UIFont.systemFont(ofSize: 16, weight: .ultraLight)
+            self.commentLabel.font = UIFont.systemFont(ofSize: 14, weight: .ultraLight)
+            self.commentLabel.sizeToFit()
         }
     }
     
     var stackView:UIStackView!{
         didSet{
-            stackView.axis = .vertical
-            stackView.distribution = .fill
-            addToStackView()
+            self.stackView.axis = .vertical
+            self.stackView.distribution = .fill
+            self.addToStackView()
         }
     }
     
@@ -130,53 +131,49 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
     
     var borderLine:UIView!{
         didSet{
-            borderLine.layer.borderWidth = 0.3
-            borderLine.layer.borderColor = UIColor.lightGray.cgColor
+            self.borderLine.layer.borderWidth = 0.3
+            self.borderLine.layer.borderColor = UIColor.lightGray.cgColor
         }
     }
     
     var textField:UITextView!{
         didSet{
-            textField.delegate = self
-            textField.backgroundColor = UIColor.gray.withAlphaComponent(0.1)
-            textField.layer.cornerRadius = 10
-            textField.font = UIFont.systemFont(ofSize: 18, weight: .regular)
-            textField.textColor = UIColor.black
+            self.textField.delegate = self
+            self.textField.backgroundColor = UIColor.gray.withAlphaComponent(0.1)
+            self.textField.layer.cornerRadius = 10
+            self.textField.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+            self.textField.textColor = UIColor.black
             let top_padding:CGFloat = textViewPadding * 2
             let bottom_padding:CGFloat = textViewPadding * 2
             if let font = textField.font {
                 self.textViewHeight = font.lineHeight + top_padding + bottom_padding + textViewPadding + textViewPadding
                 self.imageWidth = textViewHeight-(textViewPadding*3)
             }
-            textField.isScrollEnabled = false
-            textField.textContainerInset = UIEdgeInsets(top: top_padding, left: 10, bottom: bottom_padding, right: imageWidth)
+            self.textField.isScrollEnabled = false
+            self.textField.textContainerInset = UIEdgeInsets(top: top_padding, left: 10, bottom: bottom_padding, right: imageWidth)
         }
     }
 
     var placeholderLabel : UILabel!{
         didSet{
-            placeholderLabel.text = commentPlaceHolder
-            placeholderLabel.font = textField.font
-            placeholderLabel.textColor = UIColor.lightGray
-            placeholderLabel.isHidden = !textField.text.isEmpty
+            self.placeholderLabel.text = commentPlaceHolder
+            self.placeholderLabel.font = textField.font
+            self.placeholderLabel.textColor = UIColor.lightGray
+            self.placeholderLabel.isHidden = !textField.text.isEmpty
         }
     }
     
     var textFieldBtn:UIButton!{
         didSet{
             let image = UIImage(systemName: "paperplane.circle.fill")?.resized(toWidth: imageWidth)
-            textFieldBtn.setImage(image?.withTintColor(Color.mainColor), for: .normal)
-            textFieldBtn.tintColor = Color.mainColor
-            textFieldBtn.setTitleColor(Color.mainColor.withAlphaComponent(0.5), for: .highlighted)
-            textFieldBtn.addAction {
-                self.boardDetailViewModel.sendComment()
+            self.textFieldBtn.setImage(image?.withTintColor(Color.mainColor), for: .normal)
+            self.textFieldBtn.tintColor = Color.mainColor
+            self.textFieldBtn.setTitleColor(Color.mainColor.withAlphaComponent(0.5), for: .highlighted)
+            self.textFieldBtn.addAction {
+                self.boardDetailViewModel.writeCommentRequest()
             }
-            textFieldBtn.isHidden = true
+            self.textFieldBtn.isHidden = true
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        
     }
     
     override func viewDidLoad() {
@@ -187,6 +184,16 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
         self.setUpConstraints()
         self.setKeyBoardAction()
         self.textViewBinding()
+
+        self.BindingBoard()
+        self.BindingGetBoard()
+        self.BindingGetComment()
+        self.BindingWriteComment()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.boardDetailViewModel.getBoardRequest()
+        self.boardDetailViewModel.getCommentRequest()
     }
     
     func initUI(){
@@ -275,7 +282,7 @@ class BoardDetailView:UIViewController, ViewProtocol, BoardDataDelegate{
             make.top.equalTo(self.contentLabel.snp.bottom).offset(0)
             make.right.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
             make.height.equalTo(height*0.1)
-            make.width.equalTo(height*0.1)
+            //make.width.equalTo(height*0.1)
         }
         
         self.commentImage.snp.makeConstraints{ make in
@@ -339,31 +346,35 @@ extension BoardDetailView{
     
     /// BoardView로 부터의 Delegation을 전달받음
     func sendBoard(board: Board) {
-        self.boardDetailViewModel.board = board
+        self.boardDetailViewModel.board.value = board
     }
     
     /// StackView에 CommentCell, ReplyCell 추가
     func addToStackView(){
-        for i in 0..<self.boardDetailViewModel.comments.count{
-            let comment = self.boardDetailViewModel.comments[i]
-            let commentView = CommentCell(comment: comment)
-            commentView.replyBtn.addAction {
-                self.pushView(comment)
-            }
-            stackView.addArrangedSubview(commentView)
-            for j in 0..<comment.replyList.count{
-                let reply = comment.replyList[j]
-                let replyView = ReplyCell(reply: reply)
-                stackView.addArrangedSubview(replyView)
+        DispatchQueue.main.async {
+            for i in 0..<self.boardDetailViewModel.comments.count{
+                let comment = self.boardDetailViewModel.comments[i]
+                let commentView = CommentCell(comment: comment)
+                commentView.replyBtn.addAction {
+                    self.pushView(self.boardDetailViewModel.board.value, comment)
+                }
+                self.stackView.addArrangedSubview(commentView)
+                if let replyList = comment.replyList{
+                    for j in 0..<replyList.count{
+                        let reply = comment.replyList[j]
+                        let replyView = ReplyCell(reply: reply)
+                        self.stackView.addArrangedSubview(replyView)
+                    }
+                }
             }
         }
     }
     
-    func pushView(_ comment:Comment){
+    func pushView(_ board:Board, _ comment:Comment){
         let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "ReplyView") as? ReplyView
         self.navigationController?.pushViewController(pushVC!, animated: true)
         self.delegate = pushVC
-        self.delegate?.sendComment(comment: comment)
+        self.delegate?.sendComment(board:board, comment: comment)
     }
     
     func setKeyBoardAction(){
@@ -392,8 +403,7 @@ extension BoardDetailView{
 extension BoardDetailView:UITextViewDelegate{
     
     func textViewDidChange(_ textView: UITextView) {
-        self.adjustTextViewHeight(textView: textView)
-        self.placeholderLabel.isHidden = !textView.text.isEmpty
+        self.setPlaceHolder(textView)
         self.boardDetailViewModel.listener!(textView.text)
         self.hideSendBtn(text:textView.text)
     }
@@ -427,13 +437,18 @@ extension BoardDetailView:UITextViewDelegate{
             self.textFieldBtn.isHidden = false
         }
     }
+    
+    func setPlaceHolder(_ textView: UITextView){
+        self.adjustTextViewHeight(textView: textView)
+        self.placeholderLabel.isHidden = !textView.text.isEmpty
+    }
 }
 
 extension BoardDetailView{
     func initImage(){
         do {
-            print(self.boardDetailViewModel.board.image)
-            if let url = URL(string: self.boardDetailViewModel.board.image){
+            print(self.boardDetailViewModel.board.value.image)
+            if let url = URL(string: self.boardDetailViewModel.board.value.image){
                 let data =  try Data(contentsOf: url)
                 self.image = UIImage(data: data)
             }else{
@@ -443,5 +458,87 @@ extension BoardDetailView{
         } catch  {
             self.image = UIImage(systemName: "person.crop.square.fill")?.resized(toWidth: 100)?.withTintColor(.lightGray)
         }
+    }
+    
+    func completedWriteComment(){
+        self.textField.text = ""
+        self.setPlaceHolder(self.textField)
+        self.textField.resignFirstResponder()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)){
+            self.scrollView.scrollToBottom()
+        }
+    }
+}
+
+extension BoardDetailView{
+    func BindingBoard(){
+        self.boardDetailViewModel.board.bind{ board in
+            self.titleLabel.text = board.title
+            self.contentLabel.text = board.content
+            self.commentLabel.text = "\(board.commentCnt)"
+        }
+    }
+    
+    func BindingGetBoard(){
+        self.boardDetailViewModel.getBoardListener.binding(successHandler: { result in
+            if result.success, let board = result.response{
+                self.boardDetailViewModel.board.value = board
+            }
+        }, failHandler: { Error in
+            Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self).popUpDefaultAlert(action: nil)
+        }, asyncHandler: {
+            
+        }, endHandler: {
+            
+        })
+    }
+    
+    func BindingGetComment(){
+        self.boardDetailViewModel.getCommentListener.binding(successHandler: { result in
+            if result.success{
+                if let comments = result.response{
+                    self.boardDetailViewModel.comments = comments
+                }else{
+                    if let error = result.error?.message {
+                        Alert(title: "실패", message: error, viewController: self).popUpDefaultAlert(action: { action in
+                            self.navigationController?.popViewController(animated: true)
+                        })
+                    }
+                }
+            }
+        }, failHandler: { Error in
+            Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self).popUpDefaultAlert(action: nil)
+        }
+        , asyncHandler: {
+            
+        }, endHandler: {
+            self.stackView.removeAllArrangedView()
+            self.addToStackView()
+        })
+    }
+    
+    func BindingWriteComment(){
+        self.boardDetailViewModel.writeCommentListener.binding(successHandler: { result in
+            if result.success{
+                
+            }else{
+                if let error = result.error?.message {
+                    Alert(title: "실패", message: error, viewController: self).popUpDefaultAlert(action: { action in
+                        self.navigationController?.popViewController(animated: true)
+                    })
+                }
+            }
+        }, failHandler: { Error in
+            Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self).popUpDefaultAlert(action: nil)
+        }, asyncHandler: {
+            self.indicator.viewController = self
+            self.indicator.startIndicator()
+        }, endHandler: {
+            self.boardDetailViewModel.getBoardRequest()
+            self.boardDetailViewModel.getCommentRequest()
+            self.indicator.stopIndicator()
+            self.completedWriteComment()
+        })
     }
 }

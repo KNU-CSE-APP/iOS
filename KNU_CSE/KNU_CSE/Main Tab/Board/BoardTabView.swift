@@ -70,9 +70,6 @@ class BoardTabView:UIViewController, ViewProtocol{
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        self.reloadNavigationItems(selectedTabIndex:self.selectedTabIndex)
-    }
     override func viewDidLoad() {
         super.viewDidLoad()
  
@@ -81,6 +78,10 @@ class BoardTabView:UIViewController, ViewProtocol{
         self.addBoardVC()
         self.setUpConstraints()
         self.selectCell()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.reloadNavigationItems(selectedTabIndex:self.selectedTabIndex)
     }
     
     func initUI() {

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ReplyView:UIViewController, ViewProtocol, CommentDataDelegate{
+class ReplyView:BaseUIViewController, ViewProtocol, CommentDataDelegate{
 
     var selectedView:CommentCell? = nil
     
@@ -83,7 +83,7 @@ class ReplyView:UIViewController, ViewProtocol, CommentDataDelegate{
             textFieldBtn.tintColor = Color.mainColor
             textFieldBtn.setTitleColor(Color.mainColor.withAlphaComponent(0.5), for: .highlighted)
             textFieldBtn.addAction {
-                self.replyViewModel.sendReply()
+                self.replyViewModel.writeReplyRequest()
             }
             textFieldBtn.isHidden = true
         }
@@ -100,6 +100,8 @@ class ReplyView:UIViewController, ViewProtocol, CommentDataDelegate{
         self.setUpConstraints()
         self.setKeyBoardAction()
         self.textViewBinding()
+        
+        self.BindingWriteReply()
     }
     
     func initUI(){
@@ -128,8 +130,6 @@ class ReplyView:UIViewController, ViewProtocol, CommentDataDelegate{
     }
     
     func setUpConstraints(){
-        let height = self.view.frame.height * 0.2
-        
         self.scrollView.snp.makeConstraints{ make in
             make.top.equalTo(self.view.safeAreaLayoutGuide)
             make.left.equalTo(self.view.safeAreaLayoutGuide)
@@ -191,7 +191,8 @@ class ReplyView:UIViewController, ViewProtocol, CommentDataDelegate{
 extension ReplyView{
     
     /// BoardDetailView로 부터의 Delegation을 전달받음
-    func sendComment(comment: Comment) {
+    func sendComment(board:Board, comment: Comment) {
+        self.replyViewModel.board = board
         self.replyViewModel.comment = comment
     }
     
@@ -207,10 +208,12 @@ extension ReplyView{
             
         }
         stackView.addArrangedSubview(commentView)
-        for j in 0..<comment.replyList.count{
-            let reply = comment.replyList[j]
-            let replyView = ReplyCell(reply: reply)
-            stackView.addArrangedSubview(replyView)
+        if let replyList = comment.replyList {
+            for j in 0..<replyList.count{
+                let reply = comment.replyList[j]
+                let replyView = ReplyCell(reply: reply)
+                stackView.addArrangedSubview(replyView)
+            }
         }
     }
     
@@ -274,5 +277,24 @@ extension ReplyView:UITextViewDelegate{
         }else{
             self.textFieldBtn.isHidden = false
         }
+    }
+}
+
+extension ReplyView{
+    func BindingWriteReply(){
+        self.replyViewModel.writeReplyListener.binding(successHandler: { result in
+            if result.success{
+                
+            }
+        }, failHandler: { Error in
+            Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self).popUpDefaultAlert(action: nil)
+        }
+        , asyncHandler: {
+            self.indicator.viewController = self
+            self.indicator.startIndicator()
+        }
+        , endHandler: {
+            self.indicator.stopIndicator()
+        })
     }
 }

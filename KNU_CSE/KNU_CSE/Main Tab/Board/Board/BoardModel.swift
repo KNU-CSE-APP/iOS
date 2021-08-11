@@ -18,6 +18,7 @@ class Board:BaseObject{
     var commentCnt:Int
     
     let categoryDict:[String:String] = ["FREE":"자유게시판", "QNA":"질의응답"]
+    
     init(image:String, boardId:Int, category:String, title:String, content:String, author:String, time:String, commentCnt:Int) {
         self.image = image
         self.boardId = boardId

@@ -17,7 +17,7 @@ struct BoardViewModel{
     }
 
     func getBoards(){
-        let request = Request(requestBodyObject: nil, requestMethod: .get, enviroment: .getBoard(self.category))
+        let request = Request(requestBodyObject: nil, requestMethod: .get, enviroment: .getBoardCategory(self.category))
         request.sendRequest(request: request, responseType: [Board].self, errorType: errorHandler.self, action:self.boardListener)
     }
 }

@@ -57,7 +57,7 @@ class ReplyCell : UIView {
     
     var dateLabel:UILabel!{
         didSet{
-            dateLabel.text = reply.date
+            dateLabel.text = reply.time
             dateLabel.font = UIFont.systemFont(ofSize: 12, weight: .ultraLight)
             dateLabel.textAlignment = .left
         }
@@ -81,9 +81,12 @@ class ReplyCell : UIView {
     
     func setImage(){
         do {
-            let url = URL(string: self.reply.image)
-            let data =  try Data(contentsOf: url!)
-            self.image = UIImage(data: data)
+            if let loadedImage = self.reply.image, let url = URL(string: loadedImage){
+                let data =  try Data(contentsOf: url)
+                self.image = UIImage(data: data)
+            }else{
+                self.image = UIImage(systemName: "person.crop.square.fill")?.resized(toWidth: 100)?.withTintColor(.lightGray)
+            }
         } catch  {
             self.image = UIImage(systemName: "person.crop.square.fill")?.resized(toWidth: 100)?.withTintColor(.lightGray)
         }

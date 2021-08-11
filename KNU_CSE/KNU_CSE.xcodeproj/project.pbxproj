@@ -56,6 +56,9 @@
 		68C7629E26C029C200792498 /* BoardWriteViewModel+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C7629D26C029C100792498 /* BoardWriteViewModel+Model.swift */; };
 		68C762A226C03EF100792498 /* BoardSearchViewModel+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C762A126C03EF100792498 /* BoardSearchViewModel+Model.swift */; };
 		68C762A426C2CD9600792498 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C762A326C2CD9600792498 /* BoardView.swift */; };
+		68C762A626C40FEC00792498 /* Extension+StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C762A526C40FEC00792498 /* Extension+StackView.swift */; };
+		68C762A826C4115D00792498 /* Extension+ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C762A726C4115D00792498 /* Extension+ScrollView.swift */; };
+		68C762AB26C4224100792498 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C762AA26C4224100792498 /* Observable.swift */; };
 		68F1A5B826A0088B007B4B86 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5B726A0088B007B4B86 /* AppDelegate.swift */; };
 		68F1A5BA26A0088B007B4B86 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5B926A0088B007B4B86 /* SceneDelegate.swift */; };
 		68F1A5BC26A0088B007B4B86 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5BB26A0088B007B4B86 /* SignInView.swift */; };
@@ -172,6 +175,9 @@
 		68C7629D26C029C100792498 /* BoardWriteViewModel+Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BoardWriteViewModel+Model.swift"; sourceTree = "<group>"; };
 		68C762A126C03EF100792498 /* BoardSearchViewModel+Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BoardSearchViewModel+Model.swift"; sourceTree = "<group>"; };
 		68C762A326C2CD9600792498 /* BoardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
+		68C762A526C40FEC00792498 /* Extension+StackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+StackView.swift"; sourceTree = "<group>"; };
+		68C762A726C4115D00792498 /* Extension+ScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+ScrollView.swift"; sourceTree = "<group>"; };
+		68C762AA26C4224100792498 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		68F1A5B426A0088B007B4B86 /* KNU_CSE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KNU_CSE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68F1A5B726A0088B007B4B86 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		68F1A5B926A0088B007B4B86 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -269,10 +275,10 @@
 			children = (
 				681D37F626A73D3E000D9FE8 /* BoardTabView.swift */,
 				681D37F526A73CC8000D9FE8 /* Board */,
+				681D37FB26A99406000D9FE8 /* BoardDetail */,
 				681D382426ADC60D000D9FE8 /* BoardWrite */,
 				681D382126ADC5A0000D9FE8 /* BoardSearch */,
 				681D381C26ADAC3A000D9FE8 /* Reply */,
-				681D37FB26A99406000D9FE8 /* BoardDetail */,
 				681D37FA26A8BB92000D9FE8 /* NoticeBoard */,
 			);
 			path = Board;
@@ -418,6 +424,14 @@
 			path = Base;
 			sourceTree = "<group>";
 		};
+		68C762A926C4222F00792498 /* Observable */ = {
+			isa = PBXGroup;
+			children = (
+				68C762AA26C4224100792498 /* Observable.swift */,
+			);
+			path = Observable;
+			sourceTree = "<group>";
+		};
 		68D5448F26A40E220072C2A4 /* KNU Notice  */ = {
 			isa = PBXGroup;
 			children = (
@@ -510,6 +524,7 @@
 		68F1A5F426A0090B007B4B86 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				68C762A926C4222F00792498 /* Observable */,
 				681D37CB26A47FC7000D9FE8 /* Delegate */,
 				681D37C226A4542F000D9FE8 /* Cell */,
 				68F1A61526A344E2007B4B86 /* KeyChain */,
@@ -559,6 +574,8 @@
 				681D381626AC8D06000D9FE8 /* UIImage.swift */,
 				68F861D626B1C0E500934BD2 /* PaddingLabel.swift */,
 				68F861E026B2EA0C00934BD2 /* UIViewController+extension.swift */,
+				68C762A526C40FEC00792498 /* Extension+StackView.swift */,
+				68C762A726C4115D00792498 /* Extension+ScrollView.swift */,
 			);
 			path = ExtensionUI;
 			sourceTree = "<group>";
@@ -986,12 +1003,14 @@
 				68C7629826BC0CEB00792498 /* URL.swift in Sources */,
 				681D37DB26A4AAAC000D9FE8 /* ReservationViewModel.swift in Sources */,
 				68F1A60026A07FE7007B4B86 /* CheckBox.swift in Sources */,
+				68C762A826C4115D00792498 /* Extension+ScrollView.swift in Sources */,
 				68F861E626B2FB4A00934BD2 /* FindPwViewModel+Model.swift in Sources */,
 				68F1A5EC26A008FF007B4B86 /* Request.swift in Sources */,
 				681D37F426A737AE000D9FE8 /* SignInNavigationView.swift in Sources */,
 				68F1A5EE26A008FF007B4B86 /* BaseObject.swift in Sources */,
 				681D37B926A42782000D9FE8 /* ClassRoomView.swift in Sources */,
 				681D37F926A73F71000D9FE8 /* BoardTitleCollectionCell.swift in Sources */,
+				68C762A626C40FEC00792498 /* Extension+StackView.swift in Sources */,
 				68F861DF26B2D31D00934BD2 /* ProfileTableCell.swift in Sources */,
 				68C7629626BC0CAE00792498 /* BaseViewModelChange.swift in Sources */,
 				68F1A5FE26A07147007B4B86 /* SignUpUILabel.swift in Sources */,
@@ -1005,6 +1024,7 @@
 				681D37F726A73D3E000D9FE8 /* BoardTabView.swift in Sources */,
 				681D37EE26A70493000D9FE8 /* ReservationCheckViewModel.swift in Sources */,
 				68C762A426C2CD9600792498 /* BoardView.swift in Sources */,
+				68C762AB26C4224100792498 /* Observable.swift in Sources */,
 				681D381726AC8D06000D9FE8 /* UIImage.swift in Sources */,
 				681D37D326A48A64000D9FE8 /* MyPageViewModel.swift in Sources */,
 				681D380B26A9C642000D9FE8 /* BoardDetailViewModel.swift in Sources */,

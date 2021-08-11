@@ -97,8 +97,16 @@ extension BaseApiRequest{
             return getAddress(domain: "user/verify")
         case .BoardWrite:
             return getAddress(domain: "board/write")
-        case .getBoard(let category):
+        case .getBoardCategory(let category):
             return getAddress(domain: "board/findCategory?category=\(category)")
+        case .getBoard(let boardId):
+            return getAddress(domain: "board/\(boardId)")
+        case .writeComment:
+            return getAddress(domain: "comment/write")
+        case .writeReply:
+            return getAddress(domain: "comment/reply/write")
+        case .findContentsByBoardId(let boardId):
+            return getAddress(domain: "comment/findContentsByBoardId?boardId=\(boardId)")
         case .none:
             return ""
         }
@@ -120,7 +128,11 @@ enum Environment{
     case CodeRequest(String)
     case CodeConfirm
     case BoardWrite
-    case getBoard(String)
+    case getBoardCategory(String)
+    case getBoard(Int)
+    case writeComment
+    case writeReply
+    case findContentsByBoardId(Int)
 }
 
 

@@ -22,7 +22,10 @@ class WrittenBaordListView:UIViewController, ViewProtocol{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.initUI()
+        self.addView()
         self.addBoardView()
+        self.setUpConstraints()
     }
     
     func initUI() {
@@ -53,3 +56,5 @@ extension WrittenBaordListView{
         }
     }
 }
+
+ 

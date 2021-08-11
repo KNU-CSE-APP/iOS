@@ -63,6 +63,7 @@ class FreeBoardCell : UITableViewCell {
             commentLabel.textAlignment = .left
             commentLabel.textColor = UIColor.black
             commentLabel.font = UIFont.systemFont(ofSize: 13, weight: .ultraLight)
+            commentLabel.sizeToFit()
         }
     }
     
@@ -153,7 +154,7 @@ class FreeBoardCell : UITableViewCell {
             make.top.equalTo(self.contentLabel.snp.bottom).offset(3)
             make.right.equalToSuperview().offset(-20)
             make.height.equalTo(height*0.15)
-            make.width.equalTo(height*0.15)
+            //make.width.equalTo(height*0.15)
         }
         
         self.commentImage.snp.makeConstraints{ make in
