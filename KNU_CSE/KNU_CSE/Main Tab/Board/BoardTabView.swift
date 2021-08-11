@@ -9,6 +9,9 @@ import UIKit
 
 class BoardTabView:UIViewController, ViewProtocol{
     
+    // MARK: - 2번째 부터의 viewWillApper를 위해 사용
+    var isSecondLoaded:Bool = false
+    
     let titleList:[String] = ["자유게시판", "질의응답", "학생회 공지"]
     
     let title_left_Margin:CGFloat = 10
@@ -72,7 +75,6 @@ class BoardTabView:UIViewController, ViewProtocol{
     
     override func viewDidLoad() {
         super.viewDidLoad()
- 
         self.initUI()
         self.addView()
         self.addBoardVC()
@@ -81,7 +83,14 @@ class BoardTabView:UIViewController, ViewProtocol{
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         self.reloadNavigationItems(selectedTabIndex:self.selectedTabIndex)
+        
+        if isSecondLoaded{
+            self.BoardVC.boardViewModel.getBoards()
+        }else{
+            isSecondLoaded = true
+        }
     }
     
     func initUI() {

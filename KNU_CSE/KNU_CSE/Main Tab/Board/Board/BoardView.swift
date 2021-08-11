@@ -42,6 +42,10 @@ class BoardView : UIViewController{
         self.setupConstraints()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
     func initUI(){
         self.cellRowHeight = self.view.frame.height
         self.boardTableView = UITableView()
@@ -67,7 +71,7 @@ extension BoardView : UITableViewDataSource{
         if boardViewModel.boards.count == 0{
             switch parentType {
             case .BoardTap:
-                    self.setTablViewBackgroundView(text: "게시글이 없습니다")
+                    self.setTablViewBackgroundView(text: "")
                 case .Search:
                     self.setTablViewBackgroundView(text: "검색 결과가 없습니다")
                 case .Write:

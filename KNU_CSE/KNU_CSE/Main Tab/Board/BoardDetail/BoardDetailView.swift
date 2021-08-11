@@ -15,6 +15,8 @@ class BoardDetailView:BaseUIViewController, ViewProtocol, BoardDataDelegate{
     var delegate:CommentDataDelegate?
     
     let commentPlaceHolder = "댓글을 입력해주세요."
+    var stackViewSize: Int = 0
+    
     let titleHeight:CGFloat = 30
     var imageSize:CGFloat!
     var textViewHeight:CGFloat!
@@ -119,7 +121,6 @@ class BoardDetailView:BaseUIViewController, ViewProtocol, BoardDataDelegate{
         didSet{
             self.stackView.axis = .vertical
             self.stackView.distribution = .fill
-            self.addToStackView()
         }
     }
     
@@ -192,6 +193,7 @@ class BoardDetailView:BaseUIViewController, ViewProtocol, BoardDataDelegate{
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         self.boardDetailViewModel.getBoardRequest()
         self.boardDetailViewModel.getCommentRequest()
     }
@@ -350,24 +352,73 @@ extension BoardDetailView{
     }
     
     /// StackView에 CommentCell, ReplyCell 추가
-    func addToStackView(){
+    func InitToStackView(){
+        for i in 0..<self.boardDetailViewModel.comments.count{
+            let comment = self.boardDetailViewModel.comments[i]
+            self.addToStackView(comment)
+        }
+    }
+    
+    func addToStackView(_ comment:Comment){
         DispatchQueue.main.async {
-            for i in 0..<self.boardDetailViewModel.comments.count{
-                let comment = self.boardDetailViewModel.comments[i]
-                let commentView = CommentCell(comment: comment)
-                commentView.replyBtn.addAction {
-                    self.pushView(self.boardDetailViewModel.board.value, comment)
+            let commentView = CommentCell(comment: comment)
+            commentView.replyBtn.addAction {
+                self.pushView(self.boardDetailViewModel.board.value, comment)
+            }
+            self.stackView.addArrangedSubview(commentView)
+            if let replyList = comment.replyList{
+                for j in 0..<replyList.count{
+                    let reply = comment.replyList[j]
+                    let replyView = ReplyCell(reply: reply)
+                    self.stackView.addArrangedSubview(replyView)
                 }
-                self.stackView.addArrangedSubview(commentView)
-                if let replyList = comment.replyList{
-                    for j in 0..<replyList.count{
-                        let reply = comment.replyList[j]
+            }
+        }
+    }
+    
+    func updateToStackView(oldComments:[Comment], lateComments:[Comment]){
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(0)) {
+            
+            var targetIndex = 0
+            print(oldComments.count, lateComments.count)
+            for i in 0..<oldComments.count{
+                targetIndex += 1
+                if let old_reply = oldComments[i].replyList, let late_reply = lateComments[i].replyList {
+                    let old_reply_cnt = old_reply.count
+                    let late_reply_cnt = late_reply.count
+                    
+                    targetIndex += old_reply_cnt
+                    print(old_reply_cnt, late_reply_cnt, targetIndex)
+                    if old_reply_cnt < late_reply_cnt{
+                        for j in old_reply_cnt..<late_reply_cnt{
+                            print(j)
+                            let reply = lateComments[i].replyList[j]
+                            let replyView = ReplyCell(reply: reply)
+                            
+                            
+                            self.stackView.insertArrangedSubview(replyView, at: targetIndex)
+                            targetIndex += 1
+                        }
+                    }
+                }else if let late_reply = lateComments[i].replyList{
+                    let late_reply_cnt = late_reply.count
+                    for j in 0..<late_reply_cnt{
+                        print(j)
+                        let reply = lateComments[i].replyList[j]
                         let replyView = ReplyCell(reply: reply)
-                        self.stackView.addArrangedSubview(replyView)
+                        self.stackView.insertArrangedSubview(replyView, at: targetIndex)
+                        targetIndex += 1
                     }
                 }
             }
         }
+        
+        for i in oldComments.count..<lateComments.count{
+            let comment = lateComments[i]
+            addToStackView(comment)
+        }
+        
     }
     
     func pushView(_ board:Board, _ comment:Comment){
@@ -498,6 +549,7 @@ extension BoardDetailView{
         self.boardDetailViewModel.getCommentListener.binding(successHandler: { result in
             if result.success{
                 if let comments = result.response{
+                    self.boardDetailViewModel.oldcomments = self.boardDetailViewModel.comments
                     self.boardDetailViewModel.comments = comments
                 }else{
                     if let error = result.error?.message {
@@ -513,15 +565,16 @@ extension BoardDetailView{
         , asyncHandler: {
             
         }, endHandler: {
-            self.stackView.removeAllArrangedView()
-            self.addToStackView()
+            //self.stackView.removeAllArrangedView()
+            self.updateToStackView(oldComments: self.boardDetailViewModel.oldcomments, lateComments: self.boardDetailViewModel.comments)
+            //self.InitToStackView()
         })
     }
     
     func BindingWriteComment(){
         self.boardDetailViewModel.writeCommentListener.binding(successHandler: { result in
-            if result.success{
-                
+            if result.success, let comment = result.response{
+                self.addToStackView(comment)
             }else{
                 if let error = result.error?.message {
                     Alert(title: "실패", message: error, viewController: self).popUpDefaultAlert(action: { action in
@@ -536,7 +589,7 @@ extension BoardDetailView{
             self.indicator.startIndicator()
         }, endHandler: {
             self.boardDetailViewModel.getBoardRequest()
-            self.boardDetailViewModel.getCommentRequest()
+            //self.boardDetailViewModel.getCommentRequest()
             self.indicator.stopIndicator()
             self.completedWriteComment()
         })

@@ -52,6 +52,7 @@ class TabView : UITabBarController{
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         //push했기때문에 backbutton 없애기
         self.navigationItem.setHidesBackButton(true, animated: true);
     }

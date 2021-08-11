@@ -14,6 +14,7 @@ struct BoardDetailViewModel{
     
     var board:Observable<Board> = Observable(Board(image: "", boardId: 0, category: "", title: "", content: "", author: "", time: "", commentCnt: 0))
     
+    var oldcomments:[Comment]!
     var comments:[Comment] = []
     var comment:CommentTextModel = CommentTextModel()
     var listener:((String)->Void)?
