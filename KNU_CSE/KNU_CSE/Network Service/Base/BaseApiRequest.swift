@@ -99,6 +99,8 @@ extension BaseApiRequest{
             return getAddress(domain: "board/write")
         case .getBoardCategory(let category):
             return getAddress(domain: "board/findCategory?category=\(category)")
+        case .getBoardPaging(let category, let page, let size):
+            return getAddress(domain: "board/list?category=\(category)&page=\(page)&size=\(size)")
         case .getBoard(let boardId):
             return getAddress(domain: "board/\(boardId)")
         case .writeComment:
@@ -129,6 +131,7 @@ enum Environment{
     case CodeConfirm
     case BoardWrite
     case getBoardCategory(String)
+    case getBoardPaging(String,Int,Int)
     case getBoard(Int)
     case writeComment
     case writeReply
