@@ -47,4 +47,11 @@ extension UIViewController{
             print("삭제싪패")
         }
     }
+    
+    func popTwiceView(){
+        guard let viewControllers = self.navigationController?.viewControllers else {
+            return
+        }
+        self.navigationController?.popToViewController(viewControllers[viewControllers.count-3], animated: true)
+    }
 }

@@ -10,13 +10,12 @@
 		681D37B526A419F3000D9FE8 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37B426A419F3000D9FE8 /* MyPageView.swift */; };
 		681D37B726A42748000D9FE8 /* NoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37B626A42748000D9FE8 /* NoticeView.swift */; };
 		681D37B926A42782000D9FE8 /* ClassRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37B826A42782000D9FE8 /* ClassRoomView.swift */; };
-		681D37BB26A4279F000D9FE8 /* FreeBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37BA26A4279F000D9FE8 /* FreeBoardView.swift */; };
 		681D37BD26A4519B000D9FE8 /* ClassRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37BC26A4519B000D9FE8 /* ClassRoomViewModel.swift */; };
 		681D37BF26A451B5000D9FE8 /* ClassRoomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37BE26A451B5000D9FE8 /* ClassRoomModel.swift */; };
 		681D37C426A45442000D9FE8 /* ClassRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37C326A45442000D9FE8 /* ClassRoomCell.swift */; };
 		681D37CA26A467CA000D9FE8 /* ReservationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37C926A467CA000D9FE8 /* ReservationView.swift */; };
-		681D37CF26A48A4B000D9FE8 /* FreeBoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37CE26A48A4B000D9FE8 /* FreeBoardViewModel.swift */; };
-		681D37D126A48A55000D9FE8 /* FreeBoardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37D026A48A55000D9FE8 /* FreeBoardModel.swift */; };
+		681D37CF26A48A4B000D9FE8 /* BoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37CE26A48A4B000D9FE8 /* BoardViewModel.swift */; };
+		681D37D126A48A55000D9FE8 /* BoardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37D026A48A55000D9FE8 /* BoardModel.swift */; };
 		681D37D326A48A64000D9FE8 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37D226A48A64000D9FE8 /* MyPageViewModel.swift */; };
 		681D37D526A48A6F000D9FE8 /* MyPageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37D426A48A6F000D9FE8 /* MyPageModel.swift */; };
 		681D37D726A48B37000D9FE8 /* FreeBoardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37D626A48B37000D9FE8 /* FreeBoardCell.swift */; };
@@ -34,7 +33,7 @@
 		681D37F026A707F1000D9FE8 /* ReservationCheckModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37EF26A707F1000D9FE8 /* ReservationCheckModel.swift */; };
 		681D37F226A70FE2000D9FE8 /* ReservationCheckDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37F126A70FE2000D9FE8 /* ReservationCheckDelegate.swift */; };
 		681D37F426A737AE000D9FE8 /* SignInNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37F326A737AE000D9FE8 /* SignInNavigationView.swift */; };
-		681D37F726A73D3E000D9FE8 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37F626A73D3E000D9FE8 /* BoardView.swift */; };
+		681D37F726A73D3E000D9FE8 /* BoardTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37F626A73D3E000D9FE8 /* BoardTabView.swift */; };
 		681D37F926A73F71000D9FE8 /* BoardTitleCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37F826A73F70000D9FE8 /* BoardTitleCollectionCell.swift */; };
 		681D37FD26A99454000D9FE8 /* BoardDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37FC26A99454000D9FE8 /* BoardDetailView.swift */; };
 		681D380926A9C5BE000D9FE8 /* BoardDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D380826A9C5BE000D9FE8 /* BoardDetailModel.swift */; };
@@ -48,7 +47,19 @@
 		681D382026ADAE85000D9FE8 /* ReplyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D381F26ADAE85000D9FE8 /* ReplyViewModel.swift */; };
 		681D382326ADC5D4000D9FE8 /* BoardSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D382226ADC5D4000D9FE8 /* BoardSearchView.swift */; };
 		681D382626ADC61D000D9FE8 /* BoardWriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D382526ADC61D000D9FE8 /* BoardWriteView.swift */; };
+		686889C626C55F6800486985 /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686889C526C55F6800486985 /* CommentView.swift */; };
 		68C7629126B96EFA00792498 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C7629026B96EFA00792498 /* CategoryCell.swift */; };
+		68C7629326B99F7F00792498 /* ResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C7629226B99F7F00792498 /* ResponseBody.swift */; };
+		68C7629626BC0CAE00792498 /* BaseViewModelChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C7629526BC0CAE00792498 /* BaseViewModelChange.swift */; };
+		68C7629826BC0CEB00792498 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C7629726BC0CEB00792498 /* URL.swift */; };
+		68C7629A26BC403700792498 /* BaseAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C7629926BC403700792498 /* BaseAction.swift */; };
+		68C7629C26BC5A7000792498 /* EditPwViewModel+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C7629B26BC5A7000792498 /* EditPwViewModel+Model.swift */; };
+		68C7629E26C029C200792498 /* BoardWriteViewModel+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C7629D26C029C100792498 /* BoardWriteViewModel+Model.swift */; };
+		68C762A226C03EF100792498 /* BoardSearchViewModel+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C762A126C03EF100792498 /* BoardSearchViewModel+Model.swift */; };
+		68C762A426C2CD9600792498 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C762A326C2CD9600792498 /* BoardView.swift */; };
+		68C762A626C40FEC00792498 /* Extension+StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C762A526C40FEC00792498 /* Extension+StackView.swift */; };
+		68C762A826C4115D00792498 /* Extension+ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C762A726C4115D00792498 /* Extension+ScrollView.swift */; };
+		68C762AB26C4224100792498 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C762AA26C4224100792498 /* Observable.swift */; };
 		68F1A5B826A0088B007B4B86 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5B726A0088B007B4B86 /* AppDelegate.swift */; };
 		68F1A5BA26A0088B007B4B86 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5B926A0088B007B4B86 /* SceneDelegate.swift */; };
 		68F1A5BC26A0088B007B4B86 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5BB26A0088B007B4B86 /* SignInView.swift */; };
@@ -58,7 +69,6 @@
 		68F1A5CF26A0088D007B4B86 /* KNU_CSETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5CE26A0088D007B4B86 /* KNU_CSETests.swift */; };
 		68F1A5DA26A0088D007B4B86 /* KNU_CSEUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5D926A0088D007B4B86 /* KNU_CSEUITests.swift */; };
 		68F1A5EC26A008FF007B4B86 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5E826A008FF007B4B86 /* Request.swift */; };
-		68F1A5ED26A008FF007B4B86 /* GetEventListApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5E926A008FF007B4B86 /* GetEventListApiRequest.swift */; };
 		68F1A5EE26A008FF007B4B86 /* BaseObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5EA26A008FF007B4B86 /* BaseObject.swift */; };
 		68F1A5EF26A008FF007B4B86 /* BaseApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5EB26A008FF007B4B86 /* BaseApiRequest.swift */; };
 		68F1A5F626A0090B007B4B86 /* SignUpModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F1A5F126A0090B007B4B86 /* SignUpModel.swift */; };
@@ -120,13 +130,12 @@
 		681D37B426A419F3000D9FE8 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		681D37B626A42748000D9FE8 /* NoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeView.swift; sourceTree = "<group>"; };
 		681D37B826A42782000D9FE8 /* ClassRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomView.swift; sourceTree = "<group>"; };
-		681D37BA26A4279F000D9FE8 /* FreeBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeBoardView.swift; sourceTree = "<group>"; };
 		681D37BC26A4519B000D9FE8 /* ClassRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomViewModel.swift; sourceTree = "<group>"; };
 		681D37BE26A451B5000D9FE8 /* ClassRoomModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomModel.swift; sourceTree = "<group>"; };
 		681D37C326A45442000D9FE8 /* ClassRoomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomCell.swift; sourceTree = "<group>"; };
 		681D37C926A467CA000D9FE8 /* ReservationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationView.swift; sourceTree = "<group>"; };
-		681D37CE26A48A4B000D9FE8 /* FreeBoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeBoardViewModel.swift; sourceTree = "<group>"; };
-		681D37D026A48A55000D9FE8 /* FreeBoardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeBoardModel.swift; sourceTree = "<group>"; };
+		681D37CE26A48A4B000D9FE8 /* BoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewModel.swift; sourceTree = "<group>"; };
+		681D37D026A48A55000D9FE8 /* BoardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardModel.swift; sourceTree = "<group>"; };
 		681D37D226A48A64000D9FE8 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		681D37D426A48A6F000D9FE8 /* MyPageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageModel.swift; sourceTree = "<group>"; };
 		681D37D626A48B37000D9FE8 /* FreeBoardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeBoardCell.swift; sourceTree = "<group>"; };
@@ -144,7 +153,7 @@
 		681D37EF26A707F1000D9FE8 /* ReservationCheckModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationCheckModel.swift; sourceTree = "<group>"; };
 		681D37F126A70FE2000D9FE8 /* ReservationCheckDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationCheckDelegate.swift; sourceTree = "<group>"; };
 		681D37F326A737AE000D9FE8 /* SignInNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInNavigationView.swift; sourceTree = "<group>"; };
-		681D37F626A73D3E000D9FE8 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
+		681D37F626A73D3E000D9FE8 /* BoardTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardTabView.swift; sourceTree = "<group>"; };
 		681D37F826A73F70000D9FE8 /* BoardTitleCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardTitleCollectionCell.swift; sourceTree = "<group>"; };
 		681D37FC26A99454000D9FE8 /* BoardDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDetailView.swift; sourceTree = "<group>"; };
 		681D380826A9C5BE000D9FE8 /* BoardDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDetailModel.swift; sourceTree = "<group>"; };
@@ -158,7 +167,19 @@
 		681D381F26ADAE85000D9FE8 /* ReplyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyViewModel.swift; sourceTree = "<group>"; };
 		681D382226ADC5D4000D9FE8 /* BoardSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardSearchView.swift; sourceTree = "<group>"; };
 		681D382526ADC61D000D9FE8 /* BoardWriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardWriteView.swift; sourceTree = "<group>"; };
+		686889C526C55F6800486985 /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
 		68C7629026B96EFA00792498 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
+		68C7629226B99F7F00792498 /* ResponseBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseBody.swift; sourceTree = "<group>"; };
+		68C7629526BC0CAE00792498 /* BaseViewModelChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModelChange.swift; sourceTree = "<group>"; };
+		68C7629726BC0CEB00792498 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
+		68C7629926BC403700792498 /* BaseAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAction.swift; sourceTree = "<group>"; };
+		68C7629B26BC5A7000792498 /* EditPwViewModel+Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditPwViewModel+Model.swift"; sourceTree = "<group>"; };
+		68C7629D26C029C100792498 /* BoardWriteViewModel+Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BoardWriteViewModel+Model.swift"; sourceTree = "<group>"; };
+		68C762A126C03EF100792498 /* BoardSearchViewModel+Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BoardSearchViewModel+Model.swift"; sourceTree = "<group>"; };
+		68C762A326C2CD9600792498 /* BoardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
+		68C762A526C40FEC00792498 /* Extension+StackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+StackView.swift"; sourceTree = "<group>"; };
+		68C762A726C4115D00792498 /* Extension+ScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+ScrollView.swift"; sourceTree = "<group>"; };
+		68C762AA26C4224100792498 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		68F1A5B426A0088B007B4B86 /* KNU_CSE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KNU_CSE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68F1A5B726A0088B007B4B86 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		68F1A5B926A0088B007B4B86 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -174,7 +195,6 @@
 		68F1A5D926A0088D007B4B86 /* KNU_CSEUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNU_CSEUITests.swift; sourceTree = "<group>"; };
 		68F1A5DB26A0088D007B4B86 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		68F1A5E826A008FF007B4B86 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
-		68F1A5E926A008FF007B4B86 /* GetEventListApiRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetEventListApiRequest.swift; sourceTree = "<group>"; };
 		68F1A5EA26A008FF007B4B86 /* BaseObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseObject.swift; sourceTree = "<group>"; };
 		68F1A5EB26A008FF007B4B86 /* BaseApiRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseApiRequest.swift; sourceTree = "<group>"; };
 		68F1A5F126A0090B007B4B86 /* SignUpModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpModel.swift; sourceTree = "<group>"; };
@@ -255,12 +275,12 @@
 		681D37B126A41372000D9FE8 /* Board */ = {
 			isa = PBXGroup;
 			children = (
-				681D37F626A73D3E000D9FE8 /* BoardView.swift */,
+				681D37F626A73D3E000D9FE8 /* BoardTabView.swift */,
+				681D37F526A73CC8000D9FE8 /* Board */,
+				681D37FB26A99406000D9FE8 /* BoardDetail */,
 				681D382426ADC60D000D9FE8 /* BoardWrite */,
 				681D382126ADC5A0000D9FE8 /* BoardSearch */,
 				681D381C26ADAC3A000D9FE8 /* Reply */,
-				681D37F526A73CC8000D9FE8 /* FreeBoard */,
-				681D37FB26A99406000D9FE8 /* BoardDetail */,
 				681D37FA26A8BB92000D9FE8 /* NoticeBoard */,
 			);
 			path = Board;
@@ -341,14 +361,14 @@
 			path = ReservationCheck;
 			sourceTree = "<group>";
 		};
-		681D37F526A73CC8000D9FE8 /* FreeBoard */ = {
+		681D37F526A73CC8000D9FE8 /* Board */ = {
 			isa = PBXGroup;
 			children = (
-				681D37BA26A4279F000D9FE8 /* FreeBoardView.swift */,
-				681D37CE26A48A4B000D9FE8 /* FreeBoardViewModel.swift */,
-				681D37D026A48A55000D9FE8 /* FreeBoardModel.swift */,
+				68C762A326C2CD9600792498 /* BoardView.swift */,
+				681D37CE26A48A4B000D9FE8 /* BoardViewModel.swift */,
+				681D37D026A48A55000D9FE8 /* BoardModel.swift */,
 			);
-			path = FreeBoard;
+			path = Board;
 			sourceTree = "<group>";
 		};
 		681D37FA26A8BB92000D9FE8 /* NoticeBoard */ = {
@@ -381,6 +401,7 @@
 			isa = PBXGroup;
 			children = (
 				681D382226ADC5D4000D9FE8 /* BoardSearchView.swift */,
+				68C762A126C03EF100792498 /* BoardSearchViewModel+Model.swift */,
 			);
 			path = BoardSearch;
 			sourceTree = "<group>";
@@ -389,8 +410,47 @@
 			isa = PBXGroup;
 			children = (
 				681D382526ADC61D000D9FE8 /* BoardWriteView.swift */,
+				68C7629D26C029C100792498 /* BoardWriteViewModel+Model.swift */,
 			);
 			path = BoardWrite;
+			sourceTree = "<group>";
+		};
+		686889C326C5524400486985 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				68F1A5FA26A01028007B4B86 /* SignIn */,
+				68F1A5F026A0090B007B4B86 /* SignUp */,
+				68F861E426B2EE9100934BD2 /* FindPw */,
+				68F1A61026A31169007B4B86 /* Main */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		686889C426C55F4900486985 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				686889C526C55F6800486985 /* CommentView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		68C7629426BC0CA200792498 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				68F1A5EB26A008FF007B4B86 /* BaseApiRequest.swift */,
+				68F1A5EA26A008FF007B4B86 /* BaseObject.swift */,
+				68C7629526BC0CAE00792498 /* BaseViewModelChange.swift */,
+				68C7629926BC403700792498 /* BaseAction.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		68C762A926C4222F00792498 /* Observable */ = {
+			isa = PBXGroup;
+			children = (
+				68C762AA26C4224100792498 /* Observable.swift */,
+			);
+			path = Observable;
 			sourceTree = "<group>";
 		};
 		68D5448F26A40E220072C2A4 /* KNU Notice  */ = {
@@ -428,11 +488,8 @@
 			children = (
 				68F1A5F426A0090B007B4B86 /* Custom */,
 				68F1A60126A0A72D007B4B86 /* Color */,
-				68F1A5FA26A01028007B4B86 /* SignIn */,
-				68F1A5F026A0090B007B4B86 /* SignUp */,
-				68F861E426B2EE9100934BD2 /* FindPw */,
-				68F1A61026A31169007B4B86 /* Main Tab */,
-				68F1A5E726A008FF007B4B86 /* Web Service */,
+				686889C326C5524400486985 /* View */,
+				68F1A5E726A008FF007B4B86 /* Network Service */,
 				68F1A5B726A0088B007B4B86 /* AppDelegate.swift */,
 				68F1A5B926A0088B007B4B86 /* SceneDelegate.swift */,
 				68F1A5BD26A0088B007B4B86 /* Main.storyboard */,
@@ -461,15 +518,15 @@
 			path = KNU_CSEUITests;
 			sourceTree = "<group>";
 		};
-		68F1A5E726A008FF007B4B86 /* Web Service */ = {
+		68F1A5E726A008FF007B4B86 /* Network Service */ = {
 			isa = PBXGroup;
 			children = (
+				68C7629426BC0CA200792498 /* Base */,
 				68F1A5E826A008FF007B4B86 /* Request.swift */,
-				68F1A5E926A008FF007B4B86 /* GetEventListApiRequest.swift */,
-				68F1A5EA26A008FF007B4B86 /* BaseObject.swift */,
-				68F1A5EB26A008FF007B4B86 /* BaseApiRequest.swift */,
+				68C7629226B99F7F00792498 /* ResponseBody.swift */,
+				68C7629726BC0CEB00792498 /* URL.swift */,
 			);
-			path = "Web Service";
+			path = "Network Service";
 			sourceTree = "<group>";
 		};
 		68F1A5F026A0090B007B4B86 /* SignUp */ = {
@@ -485,6 +542,8 @@
 		68F1A5F426A0090B007B4B86 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				686889C426C55F4900486985 /* View */,
+				68C762A926C4222F00792498 /* Observable */,
 				681D37CB26A47FC7000D9FE8 /* Delegate */,
 				681D37C226A4542F000D9FE8 /* Cell */,
 				68F1A61526A344E2007B4B86 /* KeyChain */,
@@ -534,6 +593,8 @@
 				681D381626AC8D06000D9FE8 /* UIImage.swift */,
 				68F861D626B1C0E500934BD2 /* PaddingLabel.swift */,
 				68F861E026B2EA0C00934BD2 /* UIViewController+extension.swift */,
+				68C762A526C40FEC00792498 /* Extension+StackView.swift */,
+				68C762A726C4115D00792498 /* Extension+ScrollView.swift */,
 			);
 			path = ExtensionUI;
 			sourceTree = "<group>";
@@ -554,7 +615,7 @@
 			path = Alert;
 			sourceTree = "<group>";
 		};
-		68F1A61026A31169007B4B86 /* Main Tab */ = {
+		68F1A61026A31169007B4B86 /* Main */ = {
 			isa = PBXGroup;
 			children = (
 				68D5448F26A40E220072C2A4 /* KNU Notice  */,
@@ -564,7 +625,7 @@
 				681D37B326A413AD000D9FE8 /* MyPage */,
 				68F1A61126A3120D007B4B86 /* TabView.swift */,
 			);
-			path = "Main Tab";
+			path = Main;
 			sourceTree = "<group>";
 		};
 		68F1A61526A344E2007B4B86 /* KeyChain */ = {
@@ -589,6 +650,7 @@
 			isa = PBXGroup;
 			children = (
 				68F861CE26B1B34E00934BD2 /* EditPwView.swift */,
+				68C7629B26BC5A7000792498 /* EditPwViewModel+Model.swift */,
 			);
 			path = EditPw;
 			sourceTree = "<group>";
@@ -903,12 +965,11 @@
 				68F1A5BC26A0088B007B4B86 /* SignInView.swift in Sources */,
 				681D37BD26A4519B000D9FE8 /* ClassRoomViewModel.swift in Sources */,
 				68F861C526B1A6CF00934BD2 /* MyPageViewCell.swift in Sources */,
-				681D37D126A48A55000D9FE8 /* FreeBoardModel.swift in Sources */,
+				681D37D126A48A55000D9FE8 /* BoardModel.swift in Sources */,
 				681D37EA26A6C6A8000D9FE8 /* ReservationCheckView.swift in Sources */,
 				681D37BF26A451B5000D9FE8 /* ClassRoomModel.swift in Sources */,
 				68F861E926B427BE00934BD2 /* PhotoView.swift in Sources */,
 				68F1A5B826A0088B007B4B86 /* AppDelegate.swift in Sources */,
-				68F1A5ED26A008FF007B4B86 /* GetEventListApiRequest.swift in Sources */,
 				68F1A61426A32356007B4B86 /* StorageManager.swift in Sources */,
 				68F1A60C26A307AB007B4B86 /* StringSet.swift in Sources */,
 				681D382326ADC5D4000D9FE8 /* BoardSearchView.swift in Sources */,
@@ -916,7 +977,6 @@
 				68F1A60F26A30D07007B4B86 /* Alert.swift in Sources */,
 				68F861E126B2EA0C00934BD2 /* UIViewController+extension.swift in Sources */,
 				68F861CD26B1B2A200934BD2 /* UserInformView.swift in Sources */,
-				681D37BB26A4279F000D9FE8 /* FreeBoardView.swift in Sources */,
 				681D380D26A9CDA1000D9FE8 /* DataDelegate.swift in Sources */,
 				681D37D526A48A6F000D9FE8 /* MyPageModel.swift in Sources */,
 				681D37CA26A467CA000D9FE8 /* ReservationView.swift in Sources */,
@@ -930,15 +990,20 @@
 				681D37E126A5E7B2000D9FE8 /* UIControl+extension.swift in Sources */,
 				68F1A5EF26A008FF007B4B86 /* BaseApiRequest.swift in Sources */,
 				681D382626ADC61D000D9FE8 /* BoardWriteView.swift in Sources */,
+				68C762A226C03EF100792498 /* BoardSearchViewModel+Model.swift in Sources */,
 				68F861D726B1C0E500934BD2 /* PaddingLabel.swift in Sources */,
+				68C7629E26C029C200792498 /* BoardWriteViewModel+Model.swift in Sources */,
 				681D37B726A42748000D9FE8 /* NoticeView.swift in Sources */,
 				68F861EB26B471D600934BD2 /* UserInformViewModel+Model.swift in Sources */,
+				68C7629326B99F7F00792498 /* ResponseBody.swift in Sources */,
 				681D37E526A6AD36000D9FE8 /* ViewProtocol.swift in Sources */,
 				681D37C426A45442000D9FE8 /* ClassRoomCell.swift in Sources */,
 				681D382026ADAE85000D9FE8 /* ReplyViewModel.swift in Sources */,
 				68F861E326B2EE8A00934BD2 /* FindPwView.swift in Sources */,
 				68F1A61226A3120D007B4B86 /* TabView.swift in Sources */,
 				68F1A5BA26A0088B007B4B86 /* SceneDelegate.swift in Sources */,
+				68C7629A26BC403700792498 /* BaseAction.swift in Sources */,
+				686889C626C55F6800486985 /* CommentView.swift in Sources */,
 				681D380F26A9FC51000D9FE8 /* CommentCell.swift in Sources */,
 				68F1A5F626A0090B007B4B86 /* SignUpModel.swift in Sources */,
 				681D381E26ADAC4F000D9FE8 /* ReplyView.swift in Sources */,
@@ -953,26 +1018,33 @@
 				681D381126AAA908000D9FE8 /* ReplyCell.swift in Sources */,
 				681D37B526A419F3000D9FE8 /* MyPageView.swift in Sources */,
 				68F861D326B1B36400934BD2 /* WrittenBoardListView.swift in Sources */,
+				68C7629C26BC5A7000792498 /* EditPwViewModel+Model.swift in Sources */,
 				681D380926A9C5BE000D9FE8 /* BoardDetailModel.swift in Sources */,
+				68C7629826BC0CEB00792498 /* URL.swift in Sources */,
 				681D37DB26A4AAAC000D9FE8 /* ReservationViewModel.swift in Sources */,
 				68F1A60026A07FE7007B4B86 /* CheckBox.swift in Sources */,
+				68C762A826C4115D00792498 /* Extension+ScrollView.swift in Sources */,
 				68F861E626B2FB4A00934BD2 /* FindPwViewModel+Model.swift in Sources */,
 				68F1A5EC26A008FF007B4B86 /* Request.swift in Sources */,
 				681D37F426A737AE000D9FE8 /* SignInNavigationView.swift in Sources */,
 				68F1A5EE26A008FF007B4B86 /* BaseObject.swift in Sources */,
 				681D37B926A42782000D9FE8 /* ClassRoomView.swift in Sources */,
 				681D37F926A73F71000D9FE8 /* BoardTitleCollectionCell.swift in Sources */,
+				68C762A626C40FEC00792498 /* Extension+StackView.swift in Sources */,
 				68F861DF26B2D31D00934BD2 /* ProfileTableCell.swift in Sources */,
+				68C7629626BC0CAE00792498 /* BaseViewModelChange.swift in Sources */,
 				68F1A5FE26A07147007B4B86 /* SignUpUILabel.swift in Sources */,
 				68C7629126B96EFA00792498 /* CategoryCell.swift in Sources */,
 				681D37DD26A5BF2D000D9FE8 /* ClassSeatCell.swift in Sources */,
-				681D37CF26A48A4B000D9FE8 /* FreeBoardViewModel.swift in Sources */,
+				681D37CF26A48A4B000D9FE8 /* BoardViewModel.swift in Sources */,
 				681D37F226A70FE2000D9FE8 /* ReservationCheckDelegate.swift in Sources */,
 				681D37D726A48B37000D9FE8 /* FreeBoardCell.swift in Sources */,
 				681D381526AC52EA000D9FE8 /* KeyboardAnimation.swift in Sources */,
 				68F861D126B1B35B00934BD2 /* ReservationHistView.swift in Sources */,
-				681D37F726A73D3E000D9FE8 /* BoardView.swift in Sources */,
+				681D37F726A73D3E000D9FE8 /* BoardTabView.swift in Sources */,
 				681D37EE26A70493000D9FE8 /* ReservationCheckViewModel.swift in Sources */,
+				68C762A426C2CD9600792498 /* BoardView.swift in Sources */,
+				68C762AB26C4224100792498 /* Observable.swift in Sources */,
 				681D381726AC8D06000D9FE8 /* UIImage.swift in Sources */,
 				681D37D326A48A64000D9FE8 /* MyPageViewModel.swift in Sources */,
 				681D380B26A9C642000D9FE8 /* BoardDetailViewModel.swift in Sources */,

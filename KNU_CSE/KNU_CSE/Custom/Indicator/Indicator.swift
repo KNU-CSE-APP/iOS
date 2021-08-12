@@ -15,7 +15,7 @@ struct IndicatorView{
                                             color: .black,
                                             padding: 0)
     let loadingView = UIView()
-    let viewController : UIViewController
+    var viewController : UIViewController
     
     init(viewController : UIViewController){
         self.viewController = viewController
@@ -45,5 +45,11 @@ struct IndicatorView{
             self.loadingView.removeFromSuperview()
         }
     }
-    
+}
+
+class BaseUIViewController:UIViewController{
+    lazy var indicator:IndicatorView = {
+        let indicator = IndicatorView(viewController: self)
+        return indicator
+    }()
 }

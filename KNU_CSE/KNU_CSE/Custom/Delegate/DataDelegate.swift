@@ -12,5 +12,9 @@ protocol BoardDataDelegate{
 }
 
 protocol CommentDataDelegate {
-    func sendComment(comment:Comment)
+    func sendComment(board:Board, comment:Comment)
+}
+
+protocol ReplyDataDelegate{
+    func sendReply(replys:[Comment])
 }

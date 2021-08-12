@@ -15,8 +15,13 @@ class CheckBox : UIView{
     var height : CGFloat
     var text : String
     
-    var checkBox : M13Checkbox
-    var label : UILabel
+    lazy var checkBox:M13Checkbox = {
+        return M13Checkbox()
+    }()
+    
+    lazy var label:UILabel = {
+        return UILabel()
+    }()
     
     var action : () -> Void = { }
     
@@ -25,8 +30,6 @@ class CheckBox : UIView{
         self.height = height
         self.text = text
         
-        checkBox = M13Checkbox()
-        label = UILabel()
         super.init(frame: CGRect())
         
         setUpView()
