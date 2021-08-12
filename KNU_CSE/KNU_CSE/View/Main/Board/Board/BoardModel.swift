@@ -51,3 +51,4 @@ class Board:BaseObject{
        case image, boardId, category, title, content, author, time, commentCnt
      }
 }
+

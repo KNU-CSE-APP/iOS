@@ -30,6 +30,7 @@ class BoardView : UIViewController{
             boardTableView.rowHeight = cellRowHeight * 0.12
             boardTableView.tableFooterView = UIView(frame: .zero)
             boardTableView.separatorInset.left = 0
+            boardTableView.showsVerticalScrollIndicator = true
         }
     }
     
@@ -111,6 +112,23 @@ extension BoardView:UITableViewDelegate{
         tableView.deselectRow(at: indexPath, animated: true)// remove selection style
         self.pushDetaiView(board: boardViewModel.boards[indexPath.row])
     }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let height = scrollView.frame.height
+        let requested = self.boardViewModel.requested
+        let isLastPage = self.boardViewModel.isLastPage
+        
+        //print(offsetY, contentHeight, height, contentHeight-height)
+        if offsetY * 1.3 > (contentHeight - height) && !requested && !isLastPage{
+            self.boardViewModel.getBoardsByPaging()
+            self.boardViewModel.requested = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                self.boardViewModel.requested = false
+            }
+        }
+    }
 }
 
 extension BoardView{
@@ -125,11 +143,10 @@ extension BoardView{
 }
 
 extension BoardView{
-    
     func actionBinding(){
         switch parentType {
             case .BoardTap:
-                self.BindingGetBoard()
+                self.BindingGetBoardWithPaging()
             case .Search:
                 break
             case .Write:
@@ -137,10 +154,19 @@ extension BoardView{
             case .none:
                 break
         }
+        
+        self.BindingCategory()
+    }
+    
+    //카테고리가 바뀌면 page를 0으로 설정
+    func BindingCategory(){
+        self.boardViewModel.category.bind{ _ in
+            self.boardViewModel.page = 0
+        }
     }
     
     func BindingGetBoard(){
-        self.boardViewModel.boardListener.binding(successHandler: { result in
+        self.boardViewModel.BoardsByCategoryAction.binding(successHandler: { result in
             if result.success{
                 if let boards = result.response{
                     self.boardViewModel.boards = boards
@@ -152,6 +178,33 @@ extension BoardView{
         , asyncHandler: {
         }
         , endHandler: {
+            self.boardTableView.reloadData()
+        })
+    }
+    
+    func BindingGetBoardWithPaging(){
+        self.boardViewModel.BoardsByPagingAction.binding(successHandler: { result in
+            if result.success, let response = result.response{
+                if let boards = response.content{
+                    if response.first{
+                        self.boardViewModel.boards = boards
+                    }else{
+                        for board in boards{
+                            self.boardViewModel.boards.append(board)
+                        }
+                    }
+                    if !response.last{
+                        self.boardViewModel.page += 1
+                    }
+                }
+                self.boardViewModel.isLastPage = response.last
+            }
+            
+        }, failHandler: { Error in
+            Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self).popUpDefaultAlert(action: nil)
+        }, asyncHandler: {
+    
+        }, endHandler: {
             self.boardTableView.reloadData()
         })
     }

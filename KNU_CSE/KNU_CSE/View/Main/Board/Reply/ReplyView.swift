@@ -9,8 +9,6 @@ import UIKit
 
 class ReplyView:BaseUIViewController, ViewProtocol{
 
-    //var selectedView:CommentCell? = nil
-    
     var delegate:ReplyDataDelegate?
     
     var replyViewModel = ReplyViewModel()
@@ -25,6 +23,7 @@ class ReplyView:BaseUIViewController, ViewProtocol{
             scrollView.alwaysBounceVertical = true
             let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
             scrollView.addGestureRecognizer(tap)
+            scrollView.showsVerticalScrollIndicator = true
         }
     }
     

@@ -87,7 +87,7 @@ class BoardTabView:UIViewController, ViewProtocol{
         self.reloadNavigationItems(selectedTabIndex:self.selectedTabIndex)
         
         if isSecondLoaded{
-            self.BoardVC.boardViewModel.getBoards()
+            self.BoardVC.boardViewModel.getBoardsByPaging()
         }else{
             isSecondLoaded = true
         }
@@ -165,11 +165,11 @@ extension BoardTabView:UICollectionViewDataSource, UICollectionViewDelegate{
             self.reloadNavigationItems(selectedTabIndex: indexPath.row)
             self.upDateHighlightView(indexPath: indexPath)
             if indexPath.row == 0{
-                self.BoardVC.boardViewModel.category = "FREE"
-                self.BoardVC.boardViewModel.getBoards()
+                self.BoardVC.boardViewModel.category.value = "FREE"
+                self.BoardVC.boardViewModel.getBoardsByPaging()
             }else if indexPath.row == 1{
-                self.BoardVC.boardViewModel.category = "QNA"
-                self.BoardVC.boardViewModel.getBoards()
+                self.BoardVC.boardViewModel.category.value = "QNA"
+                self.BoardVC.boardViewModel.getBoardsByPaging()
             }else{
                 
             }
