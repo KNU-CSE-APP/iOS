@@ -12,7 +12,7 @@ import SnapKit
 struct IndicatorView{
     let indicator = NVActivityIndicatorView(frame: CGRect(),
                                             type: .ballSpinFadeLoader,
-                                            color: .black,
+                                            color: .black.withAlphaComponent(0.6),
                                             padding: 0)
     let loadingView = UIView()
     var viewController : UIViewController
@@ -30,8 +30,8 @@ struct IndicatorView{
                 make.top.left.right.bottom.equalTo(self.viewController.view).offset(0)
             }
             self.indicator.snp.makeConstraints{ make in
-                make.width.equalToSuperview().multipliedBy(0.15)
-                make.height.equalToSuperview().multipliedBy(0.15)
+                make.width.equalToSuperview().multipliedBy(0.1)
+                make.height.equalToSuperview().multipliedBy(0.1)
                 make.center.equalTo(self.viewController.view)
             }
             self.indicator.startAnimating()
