@@ -14,7 +14,7 @@ class Comment:BaseObject{
     var author:String!
     var content:String!
     var time:String!
-    var replyList:[Reply]!
+    var replyList:[Comment]!
     
     var image:String!
     
@@ -36,7 +36,7 @@ class Comment:BaseObject{
         self.content = (try? container.decode(String.self, forKey: .content)) ?? ""
         self.time = (try? container.decode(String.self, forKey: .time)) ?? ""
         self.image = (try? container.decode(String.self, forKey: .image)) ?? ""
-        self.replyList = (try? container.decode([Reply].self, forKey: .replyList))
+        self.replyList = (try? container.decode([Comment].self, forKey: .replyList)) ?? []
         super.init()
     }
     
@@ -44,26 +44,6 @@ class Comment:BaseObject{
         case boardId, commentId, parentId, author, content, time, image, replyList
      }
     
-}
-
-struct Reply:Codable{
-    var boardId:Int!
-    var commentId:Int
-    var parentId:Int!
-    var author:String!
-    var content:String!
-    var time:String!
-    var replyList:[Reply]!
-    
-    var image:String!
-    
-    init(image:String, commentId:Int, content:String, time:String, author:String) {
-        self.image = image
-        self.commentId = commentId
-        self.content = content
-        self.time = time
-        self.author = author
-    }
 }
 
 class CommentTextModel:BaseObject{

@@ -7,9 +7,11 @@
 
 import UIKit
 
-class ReplyView:BaseUIViewController, ViewProtocol, CommentDataDelegate{
+class ReplyView:BaseUIViewController, ViewProtocol{
 
-    var selectedView:CommentCell? = nil
+    //var selectedView:CommentCell? = nil
+    
+    var delegate:ReplyDataDelegate?
     
     var replyViewModel = ReplyViewModel()
     
@@ -28,11 +30,11 @@ class ReplyView:BaseUIViewController, ViewProtocol, CommentDataDelegate{
     
     var boardContentView:UIView = UIView()
     
-    var stackView:UIStackView!{
+    var stackView:CommentView!{
         didSet{
             stackView.axis = .vertical
             stackView.distribution = .fill
-            addToStackView()
+            stackView.InitToStackView(comments: [self.replyViewModel.comment.value], board: self.replyViewModel.board)
         }
     }
     
@@ -89,11 +91,6 @@ class ReplyView:BaseUIViewController, ViewProtocol, CommentDataDelegate{
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        self.setNavigationTitle(title: "답글달기")
-        self.hideBackTitle()
-    }
-    
     override func viewDidLoad() {
         self.initUI()
         self.addView()
@@ -104,10 +101,22 @@ class ReplyView:BaseUIViewController, ViewProtocol, CommentDataDelegate{
         self.BindingWriteReply()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.setNavigationTitle(title: "답글달기")
+        self.hideBackTitle()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        print("will disapper")
+        self.sendReplyToParent(replys: self.replyViewModel.replys)
+    }
+    
     func initUI(){
         scrollView = UIScrollView()
         
-        stackView = UIStackView()
+        stackView = CommentView(storyboard: nil, navigationVC: nil, isHiddenReplyBtn: true)
         
         textFieldView = UIView()
         borderLine = UIView()
@@ -188,35 +197,25 @@ class ReplyView:BaseUIViewController, ViewProtocol, CommentDataDelegate{
 }
 
 
-extension ReplyView{
+extension ReplyView:CommentDataDelegate{
     
     /// BoardDetailView로 부터의 Delegation을 전달받음
     func sendComment(board:Board, comment: Comment) {
         self.replyViewModel.board = board
-        self.replyViewModel.comment = comment
+        self.replyViewModel.comment.value = comment
     }
     
-    /// StackView에 CommentCell, ReplyCell 추가
-    func addToStackView(){
-        guard let comment = self.replyViewModel.comment else {
-            return
-        }
-        
-        let commentView = CommentCell(comment: comment)
-        commentView.replyBtn.isHidden = true
-        commentView.replyBtn.addAction {
-            
-        }
-        stackView.addArrangedSubview(commentView)
-        if let replyList = comment.replyList {
-            for j in 0..<replyList.count{
-                let reply = comment.replyList[j]
-                let replyView = ReplyCell(reply: reply)
-                stackView.addArrangedSubview(replyView)
+    func sendReplyToParent(replys:[Comment]){
+        if let index = self.navigationController?.children.count{
+            if self.navigationController?.children != nil{
+                self.delegate = self.navigationController?.children[index-1] as? BoardDetailView
+                self.delegate?.sendReply(replys: replys)
             }
         }
     }
-    
+}
+
+extension ReplyView{
     func setKeyBoardAction(){
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil);
 
@@ -267,7 +266,7 @@ extension ReplyView:UITextViewDelegate{
     
     func textViewBinding(){
         replyViewModel.bind{ text in
-            self.replyViewModel.reply.content = text
+            self.replyViewModel.replyBody.content = text
         }
     }
     
@@ -278,13 +277,32 @@ extension ReplyView:UITextViewDelegate{
             self.textFieldBtn.isHidden = false
         }
     }
+    
+    func setPlaceHolder(_ textView: UITextView){
+        self.adjustTextViewHeight(textView: textView)
+        self.placeholderLabel.isHidden = !textView.text.isEmpty
+    }
+    
+    func completedWriteComment(){
+        self.textField.text = ""
+        self.setPlaceHolder(self.textField)
+        self.textField.resignFirstResponder()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)){
+            self.scrollView.scrollToBottom()
+        }
+    }
 }
 
 extension ReplyView{
     func BindingWriteReply(){
         self.replyViewModel.writeReplyListener.binding(successHandler: { result in
             if result.success{
-                
+                if let reply = result.response{
+                    self.replyViewModel.comment.value.replyList.append(reply)
+                    self.replyViewModel.replys.append(reply)
+                    self.stackView.addReplyToStackView(reply)
+                }
             }
         }, failHandler: { Error in
             Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self).popUpDefaultAlert(action: nil)
@@ -295,6 +313,7 @@ extension ReplyView{
         }
         , endHandler: {
             self.indicator.stopIndicator()
+            self.completedWriteComment()
         })
     }
 }

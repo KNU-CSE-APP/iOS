@@ -63,9 +63,9 @@ class ReplyCell : UIView {
         }
     }
     
-    var reply:Reply
+    var reply:Comment
     
-    init(reply:Reply) {
+    init(reply:Comment) {
         self.reply = reply
         super.init(frame: CGRect())
         self.setImage()

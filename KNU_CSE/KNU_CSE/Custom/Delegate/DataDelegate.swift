@@ -14,3 +14,7 @@ protocol BoardDataDelegate{
 protocol CommentDataDelegate {
     func sendComment(board:Board, comment:Comment)
 }
+
+protocol ReplyDataDelegate{
+    func sendReply(replys:[Comment])
+}
