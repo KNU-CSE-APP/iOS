@@ -11,6 +11,7 @@ struct BoardDetailViewModel{
     var getBoardListener:BaseAction<Board, errorHandler> = BaseAction()
     var getCommentListener:BaseAction<[Comment], errorHandler> = BaseAction()
     var writeCommentListener:BaseAction<Comment, errorHandler> = BaseAction()
+    var deleteCommentListener:BaseAction<String, errorHandler> = BaseAction()
     
     var board:Observable<Board> = Observable(Board(image: "", boardId: 0, category: "", title: "", content: "", author: "", time: "", commentCnt: 0))
     
@@ -42,5 +43,10 @@ extension BoardDetailViewModel{
         self.comment.boardId = self.board.value.boardId
         let request = Request(requestBodyObject: self.comment, requestMethod: .post, enviroment: .writeComment)
         request.sendRequest(request: request, responseType: Comment.self, errorType: errorHandler.self, action:self.writeCommentListener)
+    }
+    
+    public func deleteCommentRequest(commentId:Int){
+        let request = Request(requestBodyObject: nil, requestMethod: .delete, enviroment: .deleteComment(commentId))
+        request.sendRequest(request: request, responseType: String.self, errorType: errorHandler.self, action:self.deleteCommentListener)
     }
 }

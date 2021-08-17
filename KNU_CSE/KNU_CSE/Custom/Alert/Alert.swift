@@ -65,5 +65,18 @@ struct ActionSheet{
         self.viewController.present(self.actionSheet, animated: true, completion: nil)
     }
     
+    mutating func popUpDeleteActionSheet(remove_text:String, removeAction:@escaping((UIAlertAction) -> Void), cancel_text:String){
+        
+        self.removeAction = removeAction
+        
+        let removeBtn = UIAlertAction(title: remove_text, style: .default, handler: self.removeAction)
+        
+        let cancelBtn = UIAlertAction(title: cancel_text, style: .cancel, handler: nil)
+        
+        self.actionSheet.addAction(removeBtn)
+        self.actionSheet.addAction(cancelBtn)
+        
+        self.viewController.present(self.actionSheet, animated: true, completion: nil)
+    }
     
 }

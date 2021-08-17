@@ -44,6 +44,12 @@ class CommentCell : UIView {
             authorLabel.sizeToFit()
         }
     }
+
+    var settingBtn:UIButton!{
+        didSet{
+            self.settingBtn.setImage(UIImage.init(systemName: "ellipsis")?.rotate(radians: .pi/2)?.withTintColor(UIColor.lightGray), for: .normal)
+        }
+    }
     
     var contentLabel:UILabel!{
         didSet{
@@ -106,18 +112,20 @@ class CommentCell : UIView {
         self.borderLine = UIView()
         self.authorLabel = UILabel()
         self.authorImageView = UIImageView()
+        self.settingBtn = UIButton()
         self.contentLabel = UILabel()
         self.dateLabel = UILabel()
         self.replyBtn = UIButton()
     }
     
     func addView(){
-        self.addSubview(borderLine)
-        self.addSubview(authorImageView)
-        self.addSubview(authorLabel)
-        self.addSubview(contentLabel)
-        self.addSubview(dateLabel)
-        self.addSubview(replyBtn)
+        self.addSubview(self.borderLine)
+        self.addSubview(self.authorImageView)
+        self.addSubview(self.authorLabel)
+        self.addSubview(self.settingBtn)
+        self.addSubview(self.contentLabel)
+        self.addSubview(self.dateLabel)
+        self.addSubview(self.replyBtn)
     }
     
     func setUpConstraints(){
@@ -143,6 +151,11 @@ class CommentCell : UIView {
         self.authorLabel.snp.makeConstraints{ make in
             make.centerY.equalTo(self.authorImageView)
             make.left.equalTo(authorImageView.snp.right).offset(5)
+        }
+        
+        self.settingBtn.snp.makeConstraints{ make in
+            make.centerY.equalTo(self.authorLabel)
+            make.width.height.equalTo(self.authorLabel.snp.height).dividedBy(0.8)
             make.right.equalToSuperview().offset(right_margin)
         }
         

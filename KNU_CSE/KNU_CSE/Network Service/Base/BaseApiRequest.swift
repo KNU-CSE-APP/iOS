@@ -46,7 +46,6 @@ extension BaseApiRequest{
         switch requestMethod {
         case .get:
             request.method = .get
-            break
         case .post:
             request.method = .post
             if(requestBodyObject != nil){
@@ -59,7 +58,6 @@ extension BaseApiRequest{
                     }
                 }
             }
-            break
         case .put:
             request.method = .put
             if(requestBodyObject != nil){
@@ -72,6 +70,8 @@ extension BaseApiRequest{
                     }
                 }
             }
+        case .delete:
+            request.method = .delete
         default:
             request.httpMethod = "GET"
             break
@@ -89,6 +89,8 @@ extension BaseApiRequest{
             return getAddress(domain: "user/getUserEmailNickname")
         case .setInform:
             return getAddress(domain: "user/image/nickname")
+        case .resetImage:
+            return getAddress(domain: "user/profileimage")
         case .changePassword:
             return getAddress(domain: "user/changePassword")
         case .CodeRequest(let email):
@@ -105,6 +107,10 @@ extension BaseApiRequest{
             return getAddress(domain: "board/\(boardId)")
         case .writeComment:
             return getAddress(domain: "comment/write")
+        case .getComment(let commentId):
+            return getAddress(domain: "comment/\(commentId)")
+        case .deleteComment(let commentId):
+            return getAddress(domain: "comment/\(commentId)")
         case .writeReply:
             return getAddress(domain: "comment/reply/write")
         case .findContentsByBoardId(let boardId):
@@ -119,6 +125,7 @@ enum RequestHttpMethod{
     case get
     case post
     case put
+    case delete
 }
 
 enum Environment{
@@ -126,6 +133,7 @@ enum Environment{
     case SignUp
     case getInform
     case setInform
+    case resetImage
     case changePassword
     case CodeRequest(String)
     case CodeConfirm
@@ -134,6 +142,8 @@ enum Environment{
     case getBoardPaging(String,Int,Int)
     case getBoard(Int)
     case writeComment
+    case getComment(Int)
+    case deleteComment(Int)
     case writeReply
     case findContentsByBoardId(Int)
 }

@@ -33,7 +33,7 @@ class ReplyView:BaseUIViewController, ViewProtocol{
         didSet{
             stackView.axis = .vertical
             stackView.distribution = .fill
-            stackView.InitToStackView(comments: [self.replyViewModel.comment.value], board: self.replyViewModel.board)
+            stackView.InitToStackView(comments: [self.replyViewModel.comment.value!], board: self.replyViewModel.board)
         }
     }
     
@@ -98,6 +98,8 @@ class ReplyView:BaseUIViewController, ViewProtocol{
         self.textViewBinding()
         
         self.BindingWriteReply()
+        self.BindingGetComment()
+        self.BindingDeleteComment()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -108,14 +110,13 @@ class ReplyView:BaseUIViewController, ViewProtocol{
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        print("will disapper")
-        self.sendReplyToParent(replys: self.replyViewModel.replys)
+        self.sendReplyToParent(replys: self.replyViewModel.newReplys.value)
     }
     
     func initUI(){
         scrollView = UIScrollView()
         
-        stackView = CommentView(storyboard: nil, navigationVC: nil, isHiddenReplyBtn: true)
+        stackView = CommentView(storyboard: nil, navigationVC: nil, currentVC: self, isHiddenReplyBtn: true)
         
         textFieldView = UIView()
         borderLine = UIView()
@@ -208,7 +209,7 @@ extension ReplyView:CommentDataDelegate{
         if let index = self.navigationController?.children.count{
             if self.navigationController?.children != nil{
                 self.delegate = self.navigationController?.children[index-1] as? BoardDetailView
-                self.delegate?.sendReply(replys: replys)
+                self.delegate?.sendReply(replys: replys, removedCommentId:self.replyViewModel.removedCommentId)
             }
         }
     }
@@ -296,13 +297,7 @@ extension ReplyView:UITextViewDelegate{
 extension ReplyView{
     func BindingWriteReply(){
         self.replyViewModel.writeReplyListener.binding(successHandler: { result in
-            if result.success{
-                if let reply = result.response{
-                    self.replyViewModel.comment.value.replyList.append(reply)
-                    self.replyViewModel.replys.append(reply)
-                    self.stackView.addReplyToStackView(reply)
-                }
-            }
+            
         }, failHandler: { Error in
             Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self).popUpDefaultAlert(action: nil)
         }
@@ -311,8 +306,69 @@ extension ReplyView{
             self.indicator.startIndicator()
         }
         , endHandler: {
+            self.replyViewModel.getCommentRequest()
             self.indicator.stopIndicator()
             self.completedWriteComment()
         })
+    }
+    
+    func BindingGetComment(){
+        self.replyViewModel.getCommentListener.binding(successHandler: { [weak self]
+            result in
+            if result.success{
+                if let comment = result.response{//답글을 삭제한경우
+                    self?.replyViewModel.comment.value = comment
+                    self?.stackView.removeAllToStackView()
+                    self?.stackView.InitToStackView(comments: [comment], board: (self?.replyViewModel.board!)!)
+                }else{
+                    
+                }
+                
+            }else{//댓글을 삭제한경우
+                self?.replyViewModel.comment.value = nil
+            }
+        }, failHandler: { Error in
+            Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self).popUpDefaultAlert(action: nil)
+        }, asyncHandler: {
+            
+        }, endHandler: {
+            
+        })
+    }
+    
+    func BindingDeleteComment(){
+        self.replyViewModel.deleteCommentListener.binding(successHandler: { [weak self] result in
+            if result.success{
+                Alert(title: "성공", message: result.response!, viewController: self!).popUpDefaultAlert{ [weak self] action in
+                    if self?.replyViewModel.comment.value == nil{
+                        self?.navigationController?.popViewController(animated: true)
+                    }
+                }
+            }else if !result.success, let message = result.error?.message{
+                Alert(title: "실패", message: message, viewController: self!).popUpDefaultAlert(action: nil)
+            }
+            
+        }, failHandler: {[weak self] Error in
+            if self != nil{
+                Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self!).popUpDefaultAlert(action: nil)
+            }
+        }, asyncHandler: {
+            
+        }, endHandler: {[weak self] in
+            self?.replyViewModel.getCommentRequest()
+        })
+        
+        self.stackView.setDeleteAction{ commentId in
+            Alert(title: "삭제", message: "댓글을 삭제하겠습니까?", viewController: self).popUpNormalAlert(){ [weak self] action in
+                self?.replyViewModel.deleteCommentRequest(commentId: commentId)
+                self?.replyViewModel.removedCommentId = commentId
+            }
+        }
+    }
+}
+
+extension ReplyView{
+    func addReplys(replys:[Comment]){
+        
     }
 }
