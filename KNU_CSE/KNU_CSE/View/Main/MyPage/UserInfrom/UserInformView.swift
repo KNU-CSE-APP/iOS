@@ -88,6 +88,7 @@ class UserInformView:BaseUIViewController, ViewProtocol{
     override func viewDidLoad() {
         super.viewDidLoad()
         self.BindingGetUserInform()
+        self.BindingResetImage()
         self.userInformationViewModel.getUserInform()
     }
     
@@ -197,12 +198,7 @@ extension UserInformView{
         actionSheet.popUpActionSheet(edit_text: "프로필 이미지 변경", editAction: { [weak self] action in
             self?.presentPhotoView()
         }, remove_text: "프로필 이미지 삭제", removeAction:{ [weak self] action in
-            self?.setOriginProfile()
-            if self?.userInformationViewModel.model.imagePath != nil{
-                self?.addBtnAction()
-            }
-            let image = UIImage(systemName: "person.circle.fill")!.resized(toWidth: self!.profile_width_hegiht)!.withTintColor(.lightGray.withAlphaComponent(0.4))
-            self?.userInformationViewModel.model.imageData = image.jpegData(compressionQuality: 1)
+            self?.userInformationViewModel.resetImage()
         }
     , cancel_text: "취소")
     }
@@ -257,7 +253,7 @@ extension UserInformView{
         self.userInformationViewModel.setInformlistener.binding(successHandler: {result in
             if result.success{
                 Alert(title: "성공", message: "회원정보가 변경되었습니다.", viewController: self).popUpDefaultAlert(action: { action in
-                    self.navigationController?.popViewController(animated: true)
+//                    self.navigationController?.popViewController(animated: true)
                 })
             }else{
                 if let error = result.error?.message {
@@ -266,6 +262,33 @@ extension UserInformView{
                     })
                 }
             }
+        }, failHandler: { Error in
+            print(Error)
+            Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self).popUpDefaultAlert(action: nil)
+        }, asyncHandler: {
+            
+        }, endHandler: {
+            
+        })
+    }
+    
+    func BindingResetImage(){
+        self.userInformationViewModel.resetImagelistener.binding(successHandler: { [weak self] result in
+            if result.success{
+                self?.setOriginProfile()
+//                if self?.userInformationViewModel.model.imagePath != nil{
+//                    self?.addBtnAction()
+//                }
+//                let image = UIImage(systemName: "person.circle.fill")!.resized(toWidth: self!.profile_width_hegiht)!.withTintColor(.lightGray.withAlphaComponent(0.4))
+//                self?.userInformationViewModel.model.imageData = image.jpegData(compressionQuality: 1)
+            }else{
+                if let error = result.error?.message {
+                    Alert(title: "실패", message: error, viewController: self!).popUpDefaultAlert(action: { action in
+                    self?.navigationController?.popViewController(animated: true)
+                })
+                }
+            }
+            
         }, failHandler: { Error in
             Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self).popUpDefaultAlert(action: nil)
         }, asyncHandler: {

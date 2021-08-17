@@ -11,7 +11,8 @@ import Alamofire
 struct UserInformViewModel{
     var model:Profile!
     var getInformlistener: BaseAction<Profile, errorHandler> = BaseAction()
-    var setInformlistener: BaseAction<String, errorHandler> = BaseAction()
+    var setInformlistener: BaseAction<ProfileResponse, errorHandler> = BaseAction()
+    var resetImagelistener: BaseAction<String, errorHandler> = BaseAction()
     
     init(){
         
@@ -24,7 +25,12 @@ struct UserInformViewModel{
     
     func setUserInform(){
         let request = Request(requestMultipart: model.getMultipart(), requestMethod: .put, enviroment:.setInform)
-        request.sendMutiPartRequest(request: request, responseType: String.self, errorType: errorHandler.self, action: self.setInformlistener)
+        request.sendMutiPartRequest(request: request, responseType: ProfileResponse.self, errorType: errorHandler.self, action: self.setInformlistener)
+    }
+    
+    func resetImage(){
+        let request = Request(requestBodyObject: nil, requestMethod: .delete, enviroment: .resetImage)
+        request.sendRequest(request: request, responseType: String.self, errorType: errorHandler.self, action:self.resetImagelistener)
     }
 }
 
@@ -85,3 +91,7 @@ class Profile:BaseObject{
     }
 }
     
+struct ProfileResponse: Codable{
+    var newNickName: String?
+    var newProFileImg: String?
+}
