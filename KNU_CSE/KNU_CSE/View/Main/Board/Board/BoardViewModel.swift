@@ -30,6 +30,11 @@ extension BoardViewModel{
         request.sendRequest(request: request, responseType: [Board].self, errorType: errorHandler.self, action:self.getBoardAction)
     }
     
+    mutating func getBoardsByFirstPage(){
+        self.page = 0
+        self.getBoardsByPaging()
+    }
+    
     mutating func getBoardsByPaging(){
         let request = Request(requestBodyObject: nil, requestMethod: .get, enviroment: .getBoardPaging(self.category.value, self.page, self.size))
         request.sendRequest(request: request, responseType: BoardsWithPaging.self, errorType: errorHandler.self, action:self.BoardsByPagingAction)
