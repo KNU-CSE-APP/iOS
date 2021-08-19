@@ -56,7 +56,6 @@
 		68C7629A26BC403700792498 /* BaseAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C7629926BC403700792498 /* BaseAction.swift */; };
 		68C7629C26BC5A7000792498 /* EditPwViewModel+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C7629B26BC5A7000792498 /* EditPwViewModel+Model.swift */; };
 		68C7629E26C029C200792498 /* BoardWriteViewModel+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C7629D26C029C100792498 /* BoardWriteViewModel+Model.swift */; };
-		68C762A226C03EF100792498 /* BoardSearchViewModel+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C762A126C03EF100792498 /* BoardSearchViewModel+Model.swift */; };
 		68C762A426C2CD9600792498 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C762A326C2CD9600792498 /* BoardView.swift */; };
 		68C762A626C40FEC00792498 /* Extension+StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C762A526C40FEC00792498 /* Extension+StackView.swift */; };
 		68C762A826C4115D00792498 /* Extension+ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C762A726C4115D00792498 /* Extension+ScrollView.swift */; };
@@ -177,7 +176,6 @@
 		68C7629926BC403700792498 /* BaseAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAction.swift; sourceTree = "<group>"; };
 		68C7629B26BC5A7000792498 /* EditPwViewModel+Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditPwViewModel+Model.swift"; sourceTree = "<group>"; };
 		68C7629D26C029C100792498 /* BoardWriteViewModel+Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BoardWriteViewModel+Model.swift"; sourceTree = "<group>"; };
-		68C762A126C03EF100792498 /* BoardSearchViewModel+Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BoardSearchViewModel+Model.swift"; sourceTree = "<group>"; };
 		68C762A326C2CD9600792498 /* BoardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		68C762A526C40FEC00792498 /* Extension+StackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+StackView.swift"; sourceTree = "<group>"; };
 		68C762A726C4115D00792498 /* Extension+ScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+ScrollView.swift"; sourceTree = "<group>"; };
@@ -404,7 +402,6 @@
 			isa = PBXGroup;
 			children = (
 				681D382226ADC5D4000D9FE8 /* BoardSearchView.swift */,
-				68C762A126C03EF100792498 /* BoardSearchViewModel+Model.swift */,
 			);
 			path = BoardSearch;
 			sourceTree = "<group>";
@@ -994,7 +991,6 @@
 				681D37E126A5E7B2000D9FE8 /* UIControl+extension.swift in Sources */,
 				68F1A5EF26A008FF007B4B86 /* BaseApiRequest.swift in Sources */,
 				681D382626ADC61D000D9FE8 /* BoardWriteView.swift in Sources */,
-				68C762A226C03EF100792498 /* BoardSearchViewModel+Model.swift in Sources */,
 				68F861D726B1C0E500934BD2 /* PaddingLabel.swift in Sources */,
 				68C7629E26C029C200792498 /* BoardWriteViewModel+Model.swift in Sources */,
 				681D37B726A42748000D9FE8 /* NoticeView.swift in Sources */,

@@ -14,9 +14,14 @@ enum ParentType{
     case Write
 }
 
-class BoardView : UIViewController{
-    
-    var parentType:ParentType!
+class BoardView : BaseUIViewController, ViewProtocol{
+
+    var parentType:ParentType!{
+        didSet{
+            self.actionBinding()
+        }
+    }
+    var dataLoaded:Bool = false
     
     var boardViewModel : BoardViewModel = BoardViewModel()
     var cellRowHeight : CGFloat!
@@ -24,23 +29,21 @@ class BoardView : UIViewController{
     
     var boardTableView :UITableView!{
         didSet{
-            boardTableView.register(FreeBoardCell.self, forCellReuseIdentifier: FreeBoardCell.identifier)
-            boardTableView.dataSource = self
-            boardTableView.delegate = self
-            boardTableView.rowHeight = cellRowHeight * 0.12
-            boardTableView.tableFooterView = UIView(frame: .zero)
-            boardTableView.separatorInset.left = 0
-            boardTableView.showsVerticalScrollIndicator = true
+            self.boardTableView.register(FreeBoardCell.self, forCellReuseIdentifier: FreeBoardCell.identifier)
+            self.boardTableView.dataSource = self
+            self.boardTableView.delegate = self
+            self.boardTableView.rowHeight = cellRowHeight * 0.12
+            self.boardTableView.tableFooterView = UIView(frame: .zero)
+            self.boardTableView.separatorInset.left = 0
+            self.boardTableView.showsVerticalScrollIndicator = true
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.actionBinding()
-        
         self.initUI()
         self.addView()
-        self.setupConstraints()
+        self.setUpConstraints()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,11 +56,11 @@ class BoardView : UIViewController{
     }
     
     func addView(){
-        self.view.addSubview(boardTableView)
+        self.view.addSubview(self.boardTableView)
     }
     
-    func setupConstraints(){
-        boardTableView.snp.makeConstraints{ make in
+    func setUpConstraints(){
+        self.boardTableView.snp.makeConstraints{ make in
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.top.equalTo(self.view.safeAreaLayoutGuide)
@@ -69,8 +72,8 @@ class BoardView : UIViewController{
 extension BoardView : UITableViewDataSource{
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if boardViewModel.boards.count == 0{
-            switch parentType {
+        if self.boardViewModel.boards.count == 0 && self.dataLoaded{
+            switch self.parentType {
             case .BoardTap:
                     self.setTablViewBackgroundView(text: "")
                 case .Search:
@@ -82,16 +85,17 @@ extension BoardView : UITableViewDataSource{
             }
             return 0
         }else{
+            self.deleteTablViewBackgroundView()
             return boardViewModel.boards.count
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FreeBoardCell.identifier, for: indexPath) as! FreeBoardCell
-        let board = boardViewModel.boards[indexPath.row]
+        let board = self.boardViewModel.boards[indexPath.row]
         cell.selectionStyle = .none
         cell.board = board
-        cell.height = cellRowHeight * 0.115
+        cell.height = self.cellRowHeight * 0.115
         return cell
     }
     
@@ -104,28 +108,33 @@ extension BoardView : UITableViewDataSource{
         self.boardTableView.backgroundView = emptyLabel
         self.boardTableView.separatorStyle = .none
     }
-
+    
+    func deleteTablViewBackgroundView(){
+        self.boardTableView.backgroundView = UIView()
+    }
 }
 
 extension BoardView:UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)// remove selection style
-        self.pushDetaiView(board: boardViewModel.boards[indexPath.row])
+        self.pushDetaiView(board: self.boardViewModel.boards[indexPath.row])
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let offsetY = scrollView.contentOffset.y
-        let contentHeight = scrollView.contentSize.height
-        let height = scrollView.frame.height
-        let requested = self.boardViewModel.requested
-        let isLastPage = self.boardViewModel.isLastPage
-        
-        //print(offsetY, contentHeight, height, contentHeight-height)
-        if offsetY * 1.3 > (contentHeight - height) && !requested && !isLastPage{
-            self.boardViewModel.getBoardsByPaging()
-            self.boardViewModel.requested = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                self.boardViewModel.requested = false
+        if self.parentType == .BoardTap{
+            let offsetY = scrollView.contentOffset.y
+            let contentHeight = scrollView.contentSize.height
+            let height = scrollView.frame.height
+            let requested = self.boardViewModel.requested
+            let isLastPage = self.boardViewModel.isLastPage
+            
+            //print(offsetY, contentHeight, height, contentHeight-height)
+            if offsetY * 1.3 > (contentHeight - height) && !requested && !isLastPage{
+                self.boardViewModel.getBoardsByPaging()
+                self.boardViewModel.requested = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                    self.boardViewModel.requested = false
+                }
             }
         }
     }
@@ -148,13 +157,12 @@ extension BoardView{
             case .BoardTap:
                 self.BindingGetBoardWithPaging()
             case .Search:
-                break
+                self.BindingGetBoard()
             case .Write:
-                break
+                self.BindingGetBoard()
             case .none:
                 break
         }
-        
         self.BindingCategory()
     }
     
@@ -166,18 +174,19 @@ extension BoardView{
     }
     
     func BindingGetBoard(){
-        self.boardViewModel.BoardsByCategoryAction.binding(successHandler: { result in
-            if result.success{
-                if let boards = result.response{
-                    self.boardViewModel.boards = boards
-                }
+        self.boardViewModel.getBoardAction.binding(successHandler: { result in
+            if result.success, let boards = result.response{
+                self.boardViewModel.boards = boards
             }
         }, failHandler: { Error in
             Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self).popUpDefaultAlert(action: nil)
         }
         , asyncHandler: {
+            self.indicator.startIndicator()
         }
         , endHandler: {
+            self.dataLoaded = true
+            self.indicator.stopIndicator()
             self.boardTableView.reloadData()
         })
     }
@@ -199,12 +208,12 @@ extension BoardView{
                 }
                 self.boardViewModel.isLastPage = response.last
             }
-            
         }, failHandler: { Error in
             Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self).popUpDefaultAlert(action: nil)
         }, asyncHandler: {
     
         }, endHandler: {
+            self.dataLoaded = true
             self.boardTableView.reloadData()
         })
     }

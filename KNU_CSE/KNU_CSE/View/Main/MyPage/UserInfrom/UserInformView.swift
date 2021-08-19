@@ -252,9 +252,8 @@ extension UserInformView{
     func BindingSetUserInform(){
         self.userInformationViewModel.setInformlistener.binding(successHandler: {result in
             if result.success{
-                Alert(title: "성공", message: "회원정보가 변경되었습니다.", viewController: self).popUpDefaultAlert(action: { action in
-//                    self.navigationController?.popViewController(animated: true)
-                })
+                self.removeBtnAction()
+                Alert(title: "성공", message: "회원정보가 변경되었습니다.", viewController: self).popUpDefaultAlert(action:nil)
             }else{
                 if let error = result.error?.message {
                     Alert(title: "실패", message: error, viewController: self).popUpDefaultAlert(action: { action in
@@ -276,11 +275,6 @@ extension UserInformView{
         self.userInformationViewModel.resetImagelistener.binding(successHandler: { [weak self] result in
             if result.success{
                 self?.setOriginProfile()
-//                if self?.userInformationViewModel.model.imagePath != nil{
-//                    self?.addBtnAction()
-//                }
-//                let image = UIImage(systemName: "person.circle.fill")!.resized(toWidth: self!.profile_width_hegiht)!.withTintColor(.lightGray.withAlphaComponent(0.4))
-//                self?.userInformationViewModel.model.imageData = image.jpegData(compressionQuality: 1)
             }else{
                 if let error = result.error?.message {
                     Alert(title: "실패", message: error, viewController: self!).popUpDefaultAlert(action: { action in

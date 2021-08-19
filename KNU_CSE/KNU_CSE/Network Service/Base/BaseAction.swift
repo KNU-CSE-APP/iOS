@@ -8,10 +8,10 @@
 import Foundation
 
 struct BaseAction<T:Codable, V:Codable>{
-    var successHandler:((ResponseBody<T,V>) -> ())!
-    var failHandler:((Error) -> ())!
-    var asyncHandler:(()->())!
-    var endHandler:(()->())!
+    var successHandler:((ResponseBody<T,V>) -> ())?
+    var failHandler:((Error) -> ())?
+    var asyncHandler:(()->())?
+    var endHandler:(()->())?
     
     init(){
         self.successHandler = nil

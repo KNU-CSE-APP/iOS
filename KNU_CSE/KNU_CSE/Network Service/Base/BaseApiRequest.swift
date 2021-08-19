@@ -39,7 +39,8 @@ extension BaseApiRequest{
     }
     
     public func request() -> URLRequest {
-        let url: URL! = URL(string: baseUrl)
+        let encoding = baseUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let url: URL! = URL(string: encoding!)
         print(baseUrl)
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -99,12 +100,20 @@ extension BaseApiRequest{
             return getAddress(domain: "user/verify")
         case .BoardWrite:
             return getAddress(domain: "board/write")
-        case .getBoardCategory(let category):
-            return getAddress(domain: "board/findCategory?category=\(category)")
         case .getBoardPaging(let category, let page, let size):
             return getAddress(domain: "board/list?category=\(category)&page=\(page)&size=\(size)")
         case .getBoard(let boardId):
             return getAddress(domain: "board/\(boardId)")
+        case .getBoardWithTitle(let title):
+            return getAddress(domain: "board/findTitle?title=\(title)")
+        case .getBoardWithContent(let content):
+            return getAddress(domain: "board/findContent?content=\(content)")
+        case .getBoardWithAuthor(let author):
+            return getAddress(domain: "board/findAuthor?author=\(author)")
+        case .getBoardWithCategory(let category):
+            return getAddress(domain: "board/findCategory?category=\(category)")
+        case .getBoardMyBoard:
+            return getAddress(domain: "board/findMyBoards")
         case .writeComment:
             return getAddress(domain: "comment/write")
         case .getComment(let commentId):
@@ -138,9 +147,13 @@ enum Environment{
     case CodeRequest(String)
     case CodeConfirm
     case BoardWrite
-    case getBoardCategory(String)
     case getBoardPaging(String,Int,Int)
     case getBoard(Int)
+    case getBoardWithTitle(String)
+    case getBoardWithContent(String)
+    case getBoardWithAuthor(String)
+    case getBoardWithCategory(String)
+    case getBoardMyBoard
     case writeComment
     case getComment(Int)
     case deleteComment(Int)
