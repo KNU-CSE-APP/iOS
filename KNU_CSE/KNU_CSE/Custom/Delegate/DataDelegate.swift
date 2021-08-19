@@ -16,5 +16,5 @@ protocol CommentDataDelegate {
 }
 
 protocol ReplyDataDelegate{
-    func sendReply(replys:[Comment])
+    func sendReply(replys:[Comment], removedCommentId:Int?)
 }

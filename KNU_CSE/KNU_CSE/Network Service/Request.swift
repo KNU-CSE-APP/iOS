@@ -18,32 +18,32 @@ struct Request: BaseApiRequest {
     }
     
     func sendRequest<T:Codable,V:Codable>( request:BaseApiRequest, responseType :T.Type,errorType:V.Type, action:BaseAction<T,V>){
-        action.asyncHandler()
+        action.asyncHandler?()
         AF.request(request.request()).responseDecodable { (response:AFDataResponse<ResponseBody<T,V>>) in
              switch response.result{
              case .success(let responseEventList):
-                action.successHandler(responseEventList)
+                action.successHandler?(responseEventList)
                    print("success")
                case .failure(let error):
-                action.failHandler(error)
+                action.failHandler?(error)
                    print("fail")
             }
-            action.endHandler()
+            action.endHandler?()
         }
     }
     
     func sendMutiPartRequest<T:Codable,V:Codable>(request:BaseApiRequest, responseType :T.Type,errorType:V.Type, action:BaseAction<T,V>){
-        action.asyncHandler()
+        action.asyncHandler?()
         AF.upload(multipartFormData: requestMultipart, with: request.request()).responseDecodable{ (response:AFDataResponse<ResponseBody<T,V>>) in
                 switch response.result{
                 case .success(let responseEventList):
-                    action.successHandler(responseEventList)
+                    action.successHandler?(responseEventList)
                     print("success")
                   case .failure(let error):
-                    action.failHandler(error)
+                    action.failHandler?(error)
                     print("fail")
                 }
-                action.endHandler()
+                action.endHandler?()
             }
     }
 }

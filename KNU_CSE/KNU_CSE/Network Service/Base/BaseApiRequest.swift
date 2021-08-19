@@ -39,14 +39,14 @@ extension BaseApiRequest{
     }
     
     public func request() -> URLRequest {
-        let url: URL! = URL(string: baseUrl)
+        let encoding = baseUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let url: URL! = URL(string: encoding!)
         print(baseUrl)
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         switch requestMethod {
         case .get:
             request.method = .get
-            break
         case .post:
             request.method = .post
             if(requestBodyObject != nil){
@@ -59,7 +59,6 @@ extension BaseApiRequest{
                     }
                 }
             }
-            break
         case .put:
             request.method = .put
             if(requestBodyObject != nil){
@@ -72,6 +71,8 @@ extension BaseApiRequest{
                     }
                 }
             }
+        case .delete:
+            request.method = .delete
         default:
             request.httpMethod = "GET"
             break
@@ -89,6 +90,8 @@ extension BaseApiRequest{
             return getAddress(domain: "user/getUserEmailNickname")
         case .setInform:
             return getAddress(domain: "user/image/nickname")
+        case .resetImage:
+            return getAddress(domain: "user/profileimage")
         case .changePassword:
             return getAddress(domain: "user/changePassword")
         case .CodeRequest(let email):
@@ -97,12 +100,26 @@ extension BaseApiRequest{
             return getAddress(domain: "user/verify")
         case .BoardWrite:
             return getAddress(domain: "board/write")
-        case .getBoardCategory(let category):
-            return getAddress(domain: "board/findCategory?category=\(category)")
+        case .getBoardPaging(let category, let page, let size):
+            return getAddress(domain: "board/list?category=\(category)&page=\(page)&size=\(size)")
         case .getBoard(let boardId):
             return getAddress(domain: "board/\(boardId)")
+        case .getBoardWithTitle(let title):
+            return getAddress(domain: "board/findTitle?title=\(title)")
+        case .getBoardWithContent(let content):
+            return getAddress(domain: "board/findContent?content=\(content)")
+        case .getBoardWithAuthor(let author):
+            return getAddress(domain: "board/findAuthor?author=\(author)")
+        case .getBoardWithCategory(let category):
+            return getAddress(domain: "board/findCategory?category=\(category)")
+        case .getBoardMyBoard:
+            return getAddress(domain: "board/findMyBoards")
         case .writeComment:
             return getAddress(domain: "comment/write")
+        case .getComment(let commentId):
+            return getAddress(domain: "comment/\(commentId)")
+        case .deleteComment(let commentId):
+            return getAddress(domain: "comment/\(commentId)")
         case .writeReply:
             return getAddress(domain: "comment/reply/write")
         case .findContentsByBoardId(let boardId):
@@ -117,6 +134,7 @@ enum RequestHttpMethod{
     case get
     case post
     case put
+    case delete
 }
 
 enum Environment{
@@ -124,13 +142,21 @@ enum Environment{
     case SignUp
     case getInform
     case setInform
+    case resetImage
     case changePassword
     case CodeRequest(String)
     case CodeConfirm
     case BoardWrite
-    case getBoardCategory(String)
+    case getBoardPaging(String,Int,Int)
     case getBoard(Int)
+    case getBoardWithTitle(String)
+    case getBoardWithContent(String)
+    case getBoardWithAuthor(String)
+    case getBoardWithCategory(String)
+    case getBoardMyBoard
     case writeComment
+    case getComment(Int)
+    case deleteComment(Int)
     case writeReply
     case findContentsByBoardId(Int)
 }

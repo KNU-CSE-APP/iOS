@@ -13,11 +13,16 @@ class CommentView: UIStackView {
     var delegate:CommentDataDelegate?
     var storyboard:UIStoryboard?
     var navigationVC:UINavigationController?
+    var currentVC:UIViewController
     var isHiddenReplyBtn:Bool
+    var resetAction:(()->Void)?
+    var deleteAction:((Int)->Void)?
+    var stackViews:[UIView]?
     
-    init(storyboard:UIStoryboard?, navigationVC:UINavigationController?, isHiddenReplyBtn:Bool){
+    init(storyboard:UIStoryboard?, navigationVC:UINavigationController?, currentVC:UIViewController, isHiddenReplyBtn:Bool){
         self.storyboard = storyboard
         self.navigationVC = navigationVC
+        self.currentVC = currentVC
         self.isHiddenReplyBtn = isHiddenReplyBtn
         super.init(frame: CGRect.zero)
     }
@@ -41,11 +46,21 @@ class CommentView: UIStackView {
             commentView.replyBtn.addAction {
                 self.pushView(board, comment)
             }
+            
+            commentView.settingBtn.addAction {
+                //self.deleteAction?(comment.commentId)
+                self.addActionSheet(commentId: comment.commentId)
+            }
+            
             self.addArrangedSubview(commentView)
             if let replyList = comment.replyList{
                 for j in 0..<replyList.count{
                     let reply = comment.replyList[j]
                     let replyView = ReplyCell(reply: reply)
+                    replyView.settingBtn.addAction {
+                        //self.deleteAction?(reply.commentId)
+                        self.addActionSheet(commentId: comment.commentId)
+                    }
                     self.addArrangedSubview(replyView)
                 }
             }
@@ -66,6 +81,7 @@ class CommentView: UIStackView {
         }
     }
     
+    //reply가 업데이트 될때 사용하는 함수
     func updateToStackView(Comments:[Comment], replys:[Comment], board:Board){
         var targetIndex = 0
         
@@ -86,16 +102,58 @@ class CommentView: UIStackView {
                     targetIndex += 1
                 }
                 break
+            }else{
+                if let replyList = comment.replyList{
+                    targetIndex += replyList.count
+                }
             }
         }
     }
+    
+    func updateReplyToStackView(newReplys:[Comment], oldReplys:[Comment]){
+        for newReply in newReplys{
+            var flag = true
+            for oldReply in oldReplys{
+                if newReply.commentId == oldReply.commentId{
+                    flag = false
+                }
+            }
+            if flag{
+                self.addReplyToStackView(newReply)
+            }
+        }
+    }
+    
+    func removeAllToStackView(){
+        for view in self.arrangedSubviews{
+            removeArrangedSubview(view)
+            view.removeFromSuperview()
+        }
+    }
+    
 }
 
 extension CommentView{
+    func addActionSheet(commentId:Int){
+        var actionSheet = ActionSheet(viewController: currentVC)
+        actionSheet.popUpDeleteActionSheet(remove_text: "댓글 삭제", removeAction:{ [weak self] action in
+            self?.deleteAction?(commentId)
+        }
+        , cancel_text: "취소")
+    }
+    
     func pushView(_ board:Board, _ comment:Comment){
         let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "ReplyView") as? ReplyView
         self.navigationVC?.pushViewController(pushVC!, animated: true)
         self.delegate = pushVC
         self.delegate?.sendComment(board:board, comment: comment)
+    }
+    
+    func setResetAction(action:@escaping ()->Void){
+        self.resetAction = action
+    }
+    
+    func setDeleteAction(action:@escaping (Int)->Void){
+        self.deleteAction = action
     }
 }

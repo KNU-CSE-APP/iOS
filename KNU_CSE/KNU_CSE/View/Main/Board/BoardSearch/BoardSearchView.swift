@@ -8,8 +8,9 @@
 import UIKit
 
 class BoardSearchView:UIViewController, ViewProtocol{
-    
-    let categoryTitle:[String] = ["잡담하기", "정보", "팀원 구하기", "수업", "팀원 구하기", "팀원 구하기", "팀원 구하기", "팀원 구하기", "팀원 구하기"]
+
+    let categoryTitle:[String] = ["제목", "내용", "작성자"]
+    var searchType:SearchType?
     
     var searchController:UISearchController!{
         didSet{
@@ -43,6 +44,10 @@ class BoardSearchView:UIViewController, ViewProtocol{
             self.categoryTable.dataSource = self
             self.categoryTable.backgroundColor = .white
             self.categoryTable.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.identifier)
+            
+            let firstIndexPath = IndexPath(item: 0, section: 0)
+            self.collectionView(categoryTable, didSelectItemAt: firstIndexPath)
+            categoryTable.selectItem(at: firstIndexPath, animated: false, scrollPosition: .right)
         }
     }
     
@@ -73,9 +78,7 @@ class BoardSearchView:UIViewController, ViewProtocol{
     func initUI() {
         self.searchController = UISearchController(searchResultsController: nil)
         self.categoryTable = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewFlowLayout())
-        
         self.BoardVC = storyboard?.instantiateViewController(withIdentifier: "BoardView") as? BoardView
-        
     }
     
     func addView() {
@@ -109,7 +112,6 @@ extension BoardSearchView{
             make.right.equalTo(self.view.safeAreaLayoutGuide)
             make.bottom.equalTo(self.view.safeAreaLayoutGuide)
         }
-        
         self.categoryTable.isHidden = true
     }
     
@@ -141,7 +143,10 @@ extension BoardSearchView{
 
 extension BoardSearchView:UISearchBarDelegate{
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        self.addBoardView()
+        if let text = searchBar.searchTextField.text, let searchType = self.searchType {
+            self.BoardVC.boardViewModel.getBoardBySearch(searchType: searchType, parameter: text)
+            self.addBoardView()
+        }
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
@@ -170,7 +175,13 @@ extension BoardSearchView:UICollectionViewDelegate,UICollectionViewDataSource,UI
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == categoryTable {
-            print(categoryTitle[indexPath.row])
+            if indexPath.row == 0 {
+                self.searchType = .title
+            } else if indexPath.row == 1 {
+                self.searchType = .content
+            } else if indexPath.row == 2 {
+                self.searchType = .author
+            }
         }
     }
 }

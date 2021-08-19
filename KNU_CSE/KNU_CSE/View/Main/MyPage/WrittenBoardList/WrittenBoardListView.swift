@@ -30,6 +30,8 @@ class WrittenBaordListView:UIViewController, ViewProtocol{
     
     func initUI() {
         self.BoardVC = self.storyboard?.instantiateViewController(withIdentifier: "BoardView") as? BoardView
+        self.BoardVC.parentType = .Write
+        self.BoardVC.boardViewModel.getBoardsByMyBoards()
     }
     
     func addView() {

@@ -190,6 +190,8 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
         self.BindingGetBoard()
         self.BindingGetComment()
         self.BindingWriteComment()
+        self.BindingDeleteComment()
+        self.BindingStackAction()
         
         self.boardDetailViewModel.getCommentRequest()
     }
@@ -211,7 +213,7 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
         self.commentImage = UIImageView()
         self.commentLabel = UILabel()
         
-        self.stackView = CommentView(storyboard: self.storyboard!, navigationVC: self.navigationController!, isHiddenReplyBtn: false)
+        self.stackView = CommentView(storyboard: self.storyboard!, navigationVC: self.navigationController!, currentVC: self, isHiddenReplyBtn: false)
         
         self.textFieldView = UIView()
         self.borderLine = UIView()
@@ -352,8 +354,12 @@ extension BoardDetailView:BoardDataDelegate, ReplyDataDelegate{
     
     /// ReplyView로 부터의 Delegation을 전달받음
     /// Reply에서 답글을 작성 후 BoardDetailView로 돌아왔을 때 view를 update
-    func sendReply(replys: [Comment]) {
-        self.stackView.updateToStackView(Comments: self.boardDetailViewModel.comments, replys: replys, board: self.boardDetailViewModel.board.value)
+    func sendReply(replys: [Comment], removedCommentId:Int?) {
+        if removedCommentId != nil{
+            self.stackView.resetAction?()
+        }else{
+            self.stackView.updateToStackView(Comments: self.boardDetailViewModel.comments, replys: replys, board: self.boardDetailViewModel.board.value)
+        }
     }
     
 }
@@ -525,5 +531,40 @@ extension BoardDetailView{
             self.indicator.stopIndicator()
             self.completedWriteComment()
         })
+    }
+    
+    func BindingDeleteComment(){
+        self.boardDetailViewModel.deleteCommentListener.binding(successHandler: { [weak self] result in
+            if result.success{
+                Alert(title: "성공", message: result.response!, viewController: self!).popUpDefaultAlert(action: nil)
+            }else if !result.success, let message = result.error?.message{
+                Alert(title: "실패", message: message, viewController: self!).popUpDefaultAlert(action: nil)
+            }
+            
+        }, failHandler: { Error in
+            Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self).popUpDefaultAlert(action: nil)
+        }, asyncHandler: {
+            
+        }, endHandler: {
+            self.stackView.resetAction?()
+        })
+    }
+    
+    func BindingStackAction(){
+        self.stackView.setDeleteAction{ commentId in
+            Alert(title: "삭제", message: "댓글을 삭제하겠습니까?", viewController: self).popUpNormalAlert(){ action in
+                self.boardDetailViewModel.deleteCommentRequest(commentId: commentId)
+            }
+        }
+        
+        //댓글이 삭제되거나, 답글달기 페이지에서 삭제됐을 경우 comment를 다시 불러옴
+        self.stackView.setResetAction { [weak self] in
+            self?.boardDetailViewModel.comments = []
+            self?.boardDetailViewModel.getCommentRequest()
+            self?.boardDetailViewModel.getBoardRequest()
+            
+            self?.stackView.removeAllToStackView()
+            self?.stackView.InitToStackView(comments: (self?.boardDetailViewModel.comments)!, board: (self?.boardDetailViewModel.board.value)!)
+        }
     }
 }

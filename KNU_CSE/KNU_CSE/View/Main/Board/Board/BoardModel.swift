@@ -44,10 +44,11 @@ class Board:BaseObject{
         self.commentCnt = (try? container.decode(Int.self, forKey: .commentCnt)) ?? 0
         super.init()
         
-        self.category = categoryDict[category]!
+        self.category = categoryDict[category] ?? categoryDict["FREE"]!
     }
     
     enum CodingKeys: CodingKey {
        case image, boardId, category, title, content, author, time, commentCnt
      }
 }
+
