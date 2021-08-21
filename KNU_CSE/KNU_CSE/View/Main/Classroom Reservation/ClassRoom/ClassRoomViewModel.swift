@@ -9,7 +9,7 @@ import Foundation
 
 struct ClassRoomViewModel{
     var classrooms : [ClassRoom] = []
-    
+   
     init(){
         self.setUpLecture()
     }

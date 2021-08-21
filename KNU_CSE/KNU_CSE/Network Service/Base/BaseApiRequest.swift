@@ -124,6 +124,10 @@ extension BaseApiRequest{
             return getAddress(domain: "comment/reply/write")
         case .findContentsByBoardId(let boardId):
             return getAddress(domain: "comment/findContentsByBoardId?boardId=\(boardId)")
+        case .searchSeat(let building, let roomNumber):
+            return getAddress(domain: "classRoom/searchSeats/\(building)/\(roomNumber)")
+        case .reservation:
+            return getAddress(domain: "reservation/reservation")
         case .none:
             return ""
         }
@@ -159,6 +163,8 @@ enum Environment{
     case deleteComment(Int)
     case writeReply
     case findContentsByBoardId(Int)
+    case searchSeat(String, Int)
+    case reservation
 }
 
 
