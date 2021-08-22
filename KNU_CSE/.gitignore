@@ -89,5 +89,9 @@ fastlane/test_output
 
 iOSInjectionProject/
 
-KNU_CSE/KNU_CSE/Network Service/Base/
-
+KNU_CSE/KNU_CSE/Network Service/Base/BaseApiRequest.swift
+Pods/
+Podfile
+Podfile.lock
+KNU_CSETests/
+KNU_CSEUITests/
