@@ -90,5 +90,5 @@ fastlane/test_output
 
 iOSInjectionProject/
 
-KNU_CSE/KNU_CSE/Network Service/Base/
+KNU_CSE/KNU_CSE/Network Service/Base/BaseApiRequest.swift
 
