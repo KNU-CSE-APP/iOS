@@ -90,4 +90,5 @@ fastlane/test_output
 
 iOSInjectionProject/
 
-KNU_CSE/KNU_CSE/Network Service/Base/
+Base/
+
