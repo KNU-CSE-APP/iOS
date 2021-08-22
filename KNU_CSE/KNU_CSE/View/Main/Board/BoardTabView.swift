@@ -66,10 +66,11 @@ class BoardTabView:UIViewController, ViewProtocol{
     var boardDelegate:BoardDataDelegate?
     
     var pageView:UIView!
+    
+    
     var BoardVC:BoardView!{
         didSet{
             self.BoardVC.parentType = .BoardTap
-            self.BoardVC.actionBinding()
         }
     }
     
@@ -87,7 +88,7 @@ class BoardTabView:UIViewController, ViewProtocol{
         self.reloadNavigationItems(selectedTabIndex:self.selectedTabIndex)
         
         if isSecondLoaded{
-            self.BoardVC.boardViewModel.getBoardsByPaging()
+            //self.BoardVC.boardViewModel.getBoardsByPaging()
         }else{
             isSecondLoaded = true
         }

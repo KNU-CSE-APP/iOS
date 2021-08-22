@@ -34,7 +34,6 @@ class SignUpView: UIViewController,ViewProtocol{
         requestCodeBtn.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .light)
         requestCodeBtn.tintColor = .white
         requestCodeBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
-        self.BindingRequestCodeBtn()
         requestCodeBtn.addAction{ [weak self] in
         self?.signUpViewModel.CodeRequest()
         }
@@ -61,7 +60,6 @@ class SignUpView: UIViewController,ViewProtocol{
         confirmCodeBtn.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .light)
         confirmCodeBtn.tintColor = .white
         confirmCodeBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
-        self.BindingConfirmCodeBtn()
         confirmCodeBtn.addAction{ [weak self] in
             self?.signUpViewModel.CodeConfirm()
         }
@@ -223,7 +221,6 @@ class SignUpView: UIViewController,ViewProtocol{
         registerBtn.setTitle("회원가입", for: .normal)
         registerBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
         registerBtn.layer.cornerRadius = 5
-        self.BindingSignUp()
         registerBtn.addAction{ [weak self] in
             guard let check = self?.signUpViewModel.SignUpCheck() else{
                 return
@@ -269,6 +266,8 @@ class SignUpView: UIViewController,ViewProtocol{
         self.initUI()
         self.addView()
         self.setUpConstraints()
+
+        self.Binding()
     }
     
     func initUI(){
@@ -533,6 +532,12 @@ extension SignUpView: UITextFieldDelegate{
 
 //About Action Binding
 extension SignUpView{
+    func Binding(){
+        self.BindingRequestCodeBtn()
+        self.BindingConfirmCodeBtn()
+        self.BindingSignUp()
+    }
+    
     func BindingRequestCodeBtn(){
         self.signUpViewModel.codeRequestListner.binding(successHandler: { response in
             if response.success{
@@ -550,9 +555,13 @@ extension SignUpView{
     
     func BindingConfirmCodeBtn(){
         self.signUpViewModel.codeConfirmListner.binding(successHandler: { response in
-            if response.success{
-                let alert = Alert(title: "인증 성공", message: "이메일 인증을 완료했습니다.", viewController: self)
-                alert.popUpDefaultAlert(action: nil)
+            if response.success, let permissionCode = response.response{
+                self.signUpViewModel.account.permissionCode = permissionCode
+                Alert(title: "인증 성공", message: "이메일 인증에 성공했습니다.", viewController: self).popUpDefaultAlert(action: nil)
+            }else{
+                if let message = response.error?.message{
+                    Alert(title: "인증 실패", message: message, viewController: self).popUpDefaultAlert(action: nil)
+                }
             }
         }, failHandler: { Error in
             print(Error)
@@ -571,8 +580,9 @@ extension SignUpView{
                     self.navigationController?.popViewController(animated: true)
                 })
             } else{
-                let alert = Alert(title: "회원가입실패", message: "\((response.error?.message)!)", viewController: self)
-                alert.popUpDefaultAlert(action: nil)
+                if let message = response.error?.message{
+                    Alert(title: "회원가입실패", message: "\((response.error?.message)!)", viewController: self).popUpDefaultAlert(action: nil)
+                }
             }
         }, failHandler: { Error in
             print("Fail(\(Error)")

@@ -20,6 +20,7 @@ struct boardWriteHandler:Codable{
 struct BoardWriteViewModel{
     var Listener: BaseAction<boardWriteHandler, errorHandler> = BaseAction()
     var model:BoardWriteModel = BoardWriteModel(category: "", content: "", title: "")
+    var shouldbeReload:Observable<Bool> = Observable(false)
     
     init() {
         

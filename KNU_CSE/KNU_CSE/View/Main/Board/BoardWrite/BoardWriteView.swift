@@ -248,6 +248,13 @@ extension BoardWriteView{
     func BindingBoardWrite(){
         self.boardWriteViewModel.Listener.binding(successHandler: { response in
             if response.success{
+                self.boardWriteViewModel.shouldbeReload.value = true
+                
+                //작성하고 pop하기 전에 reload한다. need to code refactoring
+                if let parentView = self.getTopViewController() as? TabView, let tabView = parentView.children[2] as? BoardTabView{
+                    tabView.BoardVC.boardViewModel.getBoardsByFirstPage()
+                }
+                
                 self.navigationController?.popViewController(animated: true)
             }
         }, failHandler: { Error in

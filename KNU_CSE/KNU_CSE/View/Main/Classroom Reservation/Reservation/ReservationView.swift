@@ -77,27 +77,30 @@ class ReservationView : UIViewController{
     }
     
     override func viewDidLoad() {
-        initUI()
-        addView()
-        setupConstraints()
+        self.initUI()
+        self.addView()
+        self.setupConstraints()
+        
+        self.Binding()
+        self.reservationViewModel.getClassSeats()
     }
     
     func initUI(){
-        usableView = UIView()
-        usableLabel = UILabel()
-        unusableView = UIView()
-        unusableLabel = UILabel()
-        seatPicBtn = UIButton()
-        seatCollectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewFlowLayout())
+        self.usableView = UIView()
+        self.usableLabel = UILabel()
+        self.unusableView = UIView()
+        self.unusableLabel = UILabel()
+        self.seatPicBtn = UIButton()
+        self.seatCollectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewFlowLayout())
     }
     
     func addView(){
-        self.view.addSubview(usableView)
-        self.view.addSubview(usableLabel)
-        self.view.addSubview(unusableView)
-        self.view.addSubview(unusableLabel)
-        self.view.addSubview(seatPicBtn)
-        self.view.addSubview(seatCollectionView)
+        self.view.addSubview(self.usableView)
+        self.view.addSubview(self.usableLabel)
+        self.view.addSubview(self.unusableView)
+        self.view.addSubview(self.unusableLabel)
+        self.view.addSubview(self.seatPicBtn)
+        self.view.addSubview(self.seatCollectionView)
     }
     
     func setupConstraints(){
@@ -108,43 +111,43 @@ class ReservationView : UIViewController{
         let btnWidth = self.view.frame.width * 0.25
         let btnHeight = btnWidth * 0.3
         
-        usableView.snp.makeConstraints{ make in
+        self.usableView.snp.makeConstraints{ make in
             make.top.equalTo(self.view.safeAreaLayoutGuide).offset(titleTopMargin)
             make.width.equalTo(titleViewWidth)
             make.height.equalTo(titleViewWidth)
             make.leading.equalTo(leftmargin)
         }
         
-        usableLabel.snp.makeConstraints{ make in
-            make.top.equalTo(usableView.snp.top)
+        self.usableLabel.snp.makeConstraints{ make in
+            make.top.equalTo(self.usableView.snp.top)
             make.width.equalTo(titleLabelWidth)
             make.height.equalTo(titleViewWidth)
-            make.leading.equalTo(usableView.snp.trailing).offset(5)
+            make.leading.equalTo(self.usableView.snp.trailing).offset(5)
         }
         
-        unusableView.snp.makeConstraints{ make in
-            make.top.equalTo(usableView.snp.top)
+        self.unusableView.snp.makeConstraints{ make in
+            make.top.equalTo(self.usableView.snp.top)
             make.width.equalTo(titleViewWidth)
             make.height.equalTo(titleViewWidth)
-            make.leading.equalTo(usableLabel.snp.trailing).offset(10)
+            make.leading.equalTo(self.usableLabel.snp.trailing).offset(10)
         }
         
-        unusableLabel.snp.makeConstraints{ make in
-            make.top.equalTo(usableView.snp.top)
+        self.unusableLabel.snp.makeConstraints{ make in
+            make.top.equalTo(self.usableView.snp.top)
             make.width.equalTo(titleLabelWidth)
             make.height.equalTo(titleViewWidth)
-            make.leading.equalTo(unusableView.snp.trailing).offset(5)
+            make.leading.equalTo(self.unusableView.snp.trailing).offset(5)
         }
         
-        seatPicBtn.snp.makeConstraints{ make in
-            make.top.equalTo(unusableLabel.snp.bottom).offset(10)
+        self.seatPicBtn.snp.makeConstraints{ make in
+            make.top.equalTo(self.unusableLabel.snp.bottom).offset(10)
             make.right.equalToSuperview().offset(-10)
             make.width.equalTo(btnWidth)
             make.height.equalTo(btnHeight)
         }
         
-        seatCollectionView.snp.makeConstraints{ make in
-            make.top.equalTo(seatPicBtn.snp.bottom).offset(titleTopMargin)
+        self.seatCollectionView.snp.makeConstraints{ make in
+            make.top.equalTo(self.seatPicBtn.snp.bottom).offset(titleTopMargin)
             make.left.right.equalTo(0)
             make.bottom.equalToSuperview()
         }
@@ -154,22 +157,23 @@ class ReservationView : UIViewController{
 extension ReservationView:UICollectionViewDataSource, UICollectionViewDelegate{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return reservationViewModel.classSeat.count
+        return self.reservationViewModel.classSeats.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ClassSeatCell.identifier, for: indexPath) as? ClassSeatCell else{
             return UICollectionViewCell()
         }
-        cell.classSeat = reservationViewModel.classSeat[indexPath.row]
+        cell.classSeat = self.reservationViewModel.classSeats[indexPath.row]
         cell.setBtnAction {[weak self] in
-            guard let classRoom = self?.reservationViewModel.classRoom, let classSeats = self?.reservationViewModel.classSeat else{
+            guard let classRoom = self?.reservationViewModel.classRoom, let classSeat = self?.reservationViewModel.classSeats[indexPath.row] else{
                 return
             }
             
-            let alert = Alert(title: "좌석 확인", message: "다음 좌석을 예약하시겠습니까?\n\(classRoom.building)-\(classRoom.roomNum)호 \(indexPath.row+1)번\n\n *반드시 착석 후 좌석을 예약해주세요.", viewController: self!)
+            let alert = Alert(title: "좌석 확인", message: "다음 좌석을 예약하시겠습니까?\n\(classRoom.building)-\(classRoom.roomNum)호 \(classSeat.seatNumber)번\n\n *반드시 착석 후 좌석을 예약해주세요.", viewController: self!)
             alert.popUpNormalAlert{ (action) in
-                self?.pushToReservationCheckView(classRoom: classRoom, classSeat: classSeats, index: indexPath.row)
+                self?.reservationViewModel.seatIndex = indexPath.row
+                self?.reservationViewModel.reservation()
             }
         }
         return cell
@@ -187,8 +191,49 @@ extension ReservationView:UICollectionViewDataSource, UICollectionViewDelegate{
 
 extension ReservationView:ClassDataDelegate{
     func sendData(data: ClassRoom) {
-        reservationViewModel.setClassRoom(classRoom: data)
-        setNavigationTitle(title: "\(data.building)-\(data.roomId)호")
+        self.reservationViewModel.setClassRoom(classRoom: data)
+        self.setNavigationTitle(title: "\(data.building)-\(data.roomId)호")
+    }
+}
+
+extension ReservationView{
+    
+    func Binding(){
+        self.BindingGetClassSeatsAction()
+        self.BindingReservation()
     }
     
+    func BindingGetClassSeatsAction(){
+        self.reservationViewModel.classSeatAction.binding(successHandler: { result in
+            if result.success, let classSeats = result.response{
+                self.reservationViewModel.classSeats = classSeats
+                self.seatCollectionView.reloadData()
+            }
+        }, failHandler: { Error in
+            Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self).popUpDefaultAlert(action: nil)
+        }, asyncHandler: {
+            
+        }, endHandler: {
+            
+        })
+    }
+    
+    func BindingReservation(){
+        self.reservationViewModel.reservationAction.binding(successHandler: { [weak self]result in
+            if result.success, let classRoom = self?.reservationViewModel.classRoom, let classSeats = self?.reservationViewModel.classSeats, let seatIndex = self?.reservationViewModel.seatIndex{
+                self?.pushToReservationCheckView(classRoom: classRoom, classSeat: classSeats, index: seatIndex)
+                
+            }else{
+                if let message = result.error?.message {
+                    Alert(title: "실패", message: message, viewController: self!).popUpDefaultAlert(action: nil)
+                }
+            }
+        }, failHandler: { Error in
+            
+        }, asyncHandler: {
+            
+        }, endHandler: {
+            
+        })
+    }
 }

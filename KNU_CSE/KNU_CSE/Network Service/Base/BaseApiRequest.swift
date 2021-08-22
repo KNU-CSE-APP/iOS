@@ -49,34 +49,26 @@ extension BaseApiRequest{
             request.method = .get
         case .post:
             request.method = .post
-            if(requestBodyObject != nil){
-                let jsonEncoder = JSONEncoder()
-                do {
-                    if let data = try? jsonEncoder.encode(requestBodyObject.self){
-                        let jsonString = String(decoding: data, as: UTF8.self)
-                        request.httpBody = data
-                        print(jsonString)
-                    }
-                }
-            }
         case .put:
             request.method = .put
-            if(requestBodyObject != nil){
-                let jsonEncoder = JSONEncoder()
-                do {
-                    if let data = try? jsonEncoder.encode(requestBodyObject.self){
-                        let jsonString = String(decoding: data, as: UTF8.self)
-                        request.httpBody = data
-                        print(jsonString)
-                    }
-                }
-            }
         case .delete:
             request.method = .delete
         default:
             request.httpMethod = "GET"
             break
         }
+        
+        if(requestBodyObject != nil){
+            let jsonEncoder = JSONEncoder()
+            do {
+                if let data = try? jsonEncoder.encode(requestBodyObject.self){
+                    let jsonString = String(decoding: data, as: UTF8.self)
+                    request.httpBody = data
+                    print(jsonString)
+                }
+            }
+        }
+        
         return request
     }
     
@@ -86,6 +78,14 @@ extension BaseApiRequest{
             return getAddress(domain: "user/signIn")
         case .SignUp:
             return getAddress(domain: "user/signUp")
+        case .deleteAccount:
+            return getAddress(domain: "user/deleteMember")
+        case .codeForPw(let email):
+            return getAddress(domain: "user/findPassword/\(email)")
+        case .codeConfirmForPw:
+            return getAddress(domain: "user/verifyPassword")
+        case .changePasswordForFindPw:
+            return getAddress(domain: "user/changeValidatedPassword")
         case .getInform:
             return getAddress(domain: "user/getUserEmailNickname")
         case .setInform:
@@ -94,9 +94,9 @@ extension BaseApiRequest{
             return getAddress(domain: "user/profileimage")
         case .changePassword:
             return getAddress(domain: "user/changePassword")
-        case .CodeRequest(let email):
-            return "\(getAddress(domain: "user/verify"))/\(email)"
-        case .CodeConfirm:
+        case .codeRequest(let email):
+            return (getAddress(domain: "user/verify/\(email)"))
+        case .codeConfirm:
             return getAddress(domain: "user/verify")
         case .BoardWrite:
             return getAddress(domain: "board/write")
@@ -124,6 +124,16 @@ extension BaseApiRequest{
             return getAddress(domain: "comment/reply/write")
         case .findContentsByBoardId(let boardId):
             return getAddress(domain: "comment/findContentsByBoardId?boardId=\(boardId)")
+        case .searchSeat(let building, let roomNumber):
+            return getAddress(domain: "classRoom/searchSeats/\(building)/\(roomNumber)")
+        case .reservation:
+            return getAddress(domain: "reservation/reservation")
+        case .reservationFind:
+            return getAddress(domain: "reservation/findReservation")
+        case .reservationDelete:
+            return getAddress(domain: "reservation/delete")
+        case .reservationExtension:
+            return getAddress(domain: "reservation/extension")
         case .none:
             return ""
         }
@@ -140,12 +150,16 @@ enum RequestHttpMethod{
 enum Environment{
     case SignIn
     case SignUp
+    case deleteAccount
+    case codeForPw(String)
+    case codeConfirmForPw
+    case changePasswordForFindPw
     case getInform
     case setInform
     case resetImage
     case changePassword
-    case CodeRequest(String)
-    case CodeConfirm
+    case codeRequest(String)
+    case codeConfirm
     case BoardWrite
     case getBoardPaging(String,Int,Int)
     case getBoard(Int)
@@ -159,6 +173,11 @@ enum Environment{
     case deleteComment(Int)
     case writeReply
     case findContentsByBoardId(Int)
+    case searchSeat(String, Int)
+    case reservation
+    case reservationFind
+    case reservationDelete
+    case reservationExtension
 }
 
 

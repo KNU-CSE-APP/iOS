@@ -8,32 +8,32 @@
 import Foundation
 
 struct ReservationViewModel{
-    var classSeat : [ClassSeat] = []
+    var classSeats : [ClassSeat] = []
+    var seatIndex : Int!
+        
     var classRoom : ClassRoom!
-    typealias classRoomType = Int
-    var classRoomNum : classRoomType!
+    
+    var classSeatAction:BaseAction<[ClassSeat], errorHandler> = BaseAction()
+    var reservationAction:BaseAction<String, errorHandler> = BaseAction()
     
     init(){
-        self.setClassSeat()
+
     }
     
     mutating func setClassRoom(classRoom:ClassRoom){
         self.classRoom = classRoom
     }
     
-    mutating func setClassSeat(){
-        self.classSeat.append(ClassSeat(seatId: 1 , seatNumber: 1, status: true))
-        self.classSeat.append(ClassSeat(seatId: 2 , seatNumber: 2, status: true))
-        self.classSeat.append(ClassSeat(seatId: 3 , seatNumber: 3, status: false))
-        self.classSeat.append(ClassSeat(seatId: 4 , seatNumber: 4, status: true))
-        self.classSeat.append(ClassSeat(seatId: 5 , seatNumber: 5, status: false))
-        self.classSeat.append(ClassSeat(seatId: 6 , seatNumber: 6, status: false))
-        self.classSeat.append(ClassSeat(seatId: 7 , seatNumber: 7, status: true))
-        self.classSeat.append(ClassSeat(seatId: 8 , seatNumber: 8, status: true))
-        self.classSeat.append(ClassSeat(seatId: 9 , seatNumber: 9, status: false))
-        self.classSeat.append(ClassSeat(seatId: 10 , seatNumber: 10, status: true))
-        self.classSeat.append(ClassSeat(seatId: 11, seatNumber: 11, status: false))
-        self.classSeat.append(ClassSeat(seatId: 12 , seatNumber: 12, status: true))
+    func getClassSeats(){
+        let request = Request(requestBodyObject: nil, requestMethod: .get, enviroment: .searchSeat(classRoom.building, classRoom.roomNum))
+        request.sendRequest(request: request, responseType: [ClassSeat].self, errorType: errorHandler.self, action:self.classSeatAction)
+    }
+    
+    func reservation(){
+        let body = ReservationBody(building: self.classRoom.building, roomNumber: self.classRoom.roomNum, seatNumber: self.classSeats[self.seatIndex].seatNumber)
+        
+        let request = Request(requestBodyObject: body, requestMethod: .post, enviroment: .reservation)
+        request.sendRequest(request: request, responseType: String.self, errorType: errorHandler.self, action:self.reservationAction)
     }
     
     mutating func showSeatPicture(){
@@ -41,3 +41,4 @@ struct ReservationViewModel{
     }
     
 }
+

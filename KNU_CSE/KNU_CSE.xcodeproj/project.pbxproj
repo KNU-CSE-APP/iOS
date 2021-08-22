@@ -49,6 +49,8 @@
 		681D382626ADC61D000D9FE8 /* BoardWriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D382526ADC61D000D9FE8 /* BoardWriteView.swift */; };
 		686889C626C55F6800486985 /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686889C526C55F6800486985 /* CommentView.swift */; };
 		686889C826C5977D00486985 /* BoardWithPaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686889C726C5977D00486985 /* BoardWithPaging.swift */; };
+		686889CB26D2A2A000486985 /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686889CA26D2A29F00486985 /* DeleteAccountView.swift */; };
+		686889CD26D2A2B400486985 /* DeleteAccountViewModel+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686889CC26D2A2B400486985 /* DeleteAccountViewModel+Model.swift */; };
 		68C7629126B96EFA00792498 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C7629026B96EFA00792498 /* CategoryCell.swift */; };
 		68C7629326B99F7F00792498 /* ResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C7629226B99F7F00792498 /* ResponseBody.swift */; };
 		68C7629626BC0CAE00792498 /* BaseViewModelChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C7629526BC0CAE00792498 /* BaseViewModelChange.swift */; };
@@ -169,6 +171,8 @@
 		681D382526ADC61D000D9FE8 /* BoardWriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardWriteView.swift; sourceTree = "<group>"; };
 		686889C526C55F6800486985 /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
 		686889C726C5977D00486985 /* BoardWithPaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardWithPaging.swift; sourceTree = "<group>"; };
+		686889CA26D2A29F00486985 /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
+		686889CC26D2A2B400486985 /* DeleteAccountViewModel+Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeleteAccountViewModel+Model.swift"; sourceTree = "<group>"; };
 		68C7629026B96EFA00792498 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		68C7629226B99F7F00792498 /* ResponseBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseBody.swift; sourceTree = "<group>"; };
 		68C7629526BC0CAE00792498 /* BaseViewModelChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModelChange.swift; sourceTree = "<group>"; };
@@ -291,6 +295,7 @@
 			children = (
 				68F861C626B1B18B00934BD2 /* UserInfrom */,
 				68F861C726B1B19D00934BD2 /* EditPw */,
+				686889C926D2A28200486985 /* DeleteAccount */,
 				68F861C826B1B1B800934BD2 /* ReservationList */,
 				68F861C926B1B1C100934BD2 /* WrittenBoardList */,
 				68F861CA26B1B1CA00934BD2 /* AppSetting */,
@@ -432,6 +437,15 @@
 				686889C526C55F6800486985 /* CommentView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		686889C926D2A28200486985 /* DeleteAccount */ = {
+			isa = PBXGroup;
+			children = (
+				686889CA26D2A29F00486985 /* DeleteAccountView.swift */,
+				686889CC26D2A2B400486985 /* DeleteAccountViewModel+Model.swift */,
+			);
+			path = DeleteAccount;
 			sourceTree = "<group>";
 		};
 		68C7629426BC0CA200792498 /* Base */ = {
@@ -997,6 +1011,7 @@
 				68F861EB26B471D600934BD2 /* UserInformViewModel+Model.swift in Sources */,
 				68C7629326B99F7F00792498 /* ResponseBody.swift in Sources */,
 				681D37E526A6AD36000D9FE8 /* ViewProtocol.swift in Sources */,
+				686889CB26D2A2A000486985 /* DeleteAccountView.swift in Sources */,
 				681D37C426A45442000D9FE8 /* ClassRoomCell.swift in Sources */,
 				681D382026ADAE85000D9FE8 /* ReplyViewModel.swift in Sources */,
 				68F861E326B2EE8A00934BD2 /* FindPwView.swift in Sources */,
@@ -1029,6 +1044,7 @@
 				681D37F426A737AE000D9FE8 /* SignInNavigationView.swift in Sources */,
 				68F1A5EE26A008FF007B4B86 /* BaseObject.swift in Sources */,
 				681D37B926A42782000D9FE8 /* ClassRoomView.swift in Sources */,
+				686889CD26D2A2B400486985 /* DeleteAccountViewModel+Model.swift in Sources */,
 				681D37F926A73F71000D9FE8 /* BoardTitleCollectionCell.swift in Sources */,
 				68C762A626C40FEC00792498 /* Extension+StackView.swift in Sources */,
 				68F861DF26B2D31D00934BD2 /* ProfileTableCell.swift in Sources */,
