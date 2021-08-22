@@ -26,12 +26,12 @@ struct SignUpViewModel{
 
 extension SignUpViewModel{
     func CodeRequest() {
-        let request = Request(requestBodyObject:nil, requestMethod: .get, enviroment: .CodeRequest(self.account.email))
+        let request = Request(requestBodyObject:nil, requestMethod: .get, enviroment: .codeRequest(self.account.email))
         request.sendRequest(request: request, responseType: String.self, errorType: errorHandler.self, action:self.codeRequestListner)
     }
     
     func CodeConfirm() {
-        let request = Request(requestBodyObject:account.getEmailRequest(), requestMethod: .post, enviroment: .CodeConfirm)
+        let request = Request(requestBodyObject:account.getEmailRequest(), requestMethod: .post, enviroment: .codeConfirm)
         request.sendRequest(request: request, responseType: String.self, errorType: errorHandler.self, action:self.codeConfirmListner)
     }
     

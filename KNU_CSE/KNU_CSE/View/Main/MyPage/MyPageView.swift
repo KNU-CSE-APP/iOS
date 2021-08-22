@@ -11,7 +11,7 @@ import SnapKit
 class MyPageView : UIViewController{
     
     let sectionHeader = ["계정관리", "강의실", "게시판", "앱 관리"]
-    let accountSection = ["회원정보", "비밀번호 변경"]
+    let accountSection = ["회원정보", "비밀번호 변경", "회원탈퇴"]
     let classRoomSection = ["예약내역"]
     let boardRoomSection = ["내가 쓴 글"]
     let appSettingSection = ["환경설정", "로그아웃"]
@@ -109,6 +109,8 @@ extension MyPageView:UITableViewDelegate{
                 pushView(identifier: "UserInformView", typeOfVC: UserInformView.self)
             }else if indexPath.row == 1{
                 pushView(identifier: "EditPwView", typeOfVC: EditPwView.self)
+            }else if indexPath.row == 2{
+                pushView(identifier: "DeleteAccountView", typeOfVC: DeleteAccountView.self)
             }
         case 1:
             if indexPath.row == 0 {

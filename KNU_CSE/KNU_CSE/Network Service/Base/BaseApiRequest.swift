@@ -49,34 +49,26 @@ extension BaseApiRequest{
             request.method = .get
         case .post:
             request.method = .post
-            if(requestBodyObject != nil){
-                let jsonEncoder = JSONEncoder()
-                do {
-                    if let data = try? jsonEncoder.encode(requestBodyObject.self){
-                        let jsonString = String(decoding: data, as: UTF8.self)
-                        request.httpBody = data
-                        print(jsonString)
-                    }
-                }
-            }
         case .put:
             request.method = .put
-            if(requestBodyObject != nil){
-                let jsonEncoder = JSONEncoder()
-                do {
-                    if let data = try? jsonEncoder.encode(requestBodyObject.self){
-                        let jsonString = String(decoding: data, as: UTF8.self)
-                        request.httpBody = data
-                        print(jsonString)
-                    }
-                }
-            }
         case .delete:
             request.method = .delete
         default:
             request.httpMethod = "GET"
             break
         }
+        
+        if(requestBodyObject != nil){
+            let jsonEncoder = JSONEncoder()
+            do {
+                if let data = try? jsonEncoder.encode(requestBodyObject.self){
+                    let jsonString = String(decoding: data, as: UTF8.self)
+                    request.httpBody = data
+                    print(jsonString)
+                }
+            }
+        }
+        
         return request
     }
     
@@ -86,6 +78,8 @@ extension BaseApiRequest{
             return getAddress(domain: "user/signIn")
         case .SignUp:
             return getAddress(domain: "user/signUp")
+        case .deleteAccount:
+            return getAddress(domain: "user/deleteMember")
         case .codeForPw(let email):
             return getAddress(domain: "user/findPassword/\(email)")
         case .codeConfirmForPw:
@@ -100,9 +94,9 @@ extension BaseApiRequest{
             return getAddress(domain: "user/profileimage")
         case .changePassword:
             return getAddress(domain: "user/changePassword")
-        case .CodeRequest(let email):
-            return "\(getAddress(domain: "user/verify"))/\(email)"
-        case .CodeConfirm:
+        case .codeRequest(let email):
+            return (getAddress(domain: "user/verify/\(email)"))
+        case .codeConfirm:
             return getAddress(domain: "user/verify")
         case .BoardWrite:
             return getAddress(domain: "board/write")
@@ -156,6 +150,7 @@ enum RequestHttpMethod{
 enum Environment{
     case SignIn
     case SignUp
+    case deleteAccount
     case codeForPw(String)
     case codeConfirmForPw
     case changePasswordForFindPw
@@ -163,8 +158,8 @@ enum Environment{
     case setInform
     case resetImage
     case changePassword
-    case CodeRequest(String)
-    case CodeConfirm
+    case codeRequest(String)
+    case codeConfirm
     case BoardWrite
     case getBoardPaging(String,Int,Int)
     case getBoard(Int)

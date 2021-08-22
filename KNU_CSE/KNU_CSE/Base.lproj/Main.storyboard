@@ -381,6 +381,21 @@
             </objects>
             <point key="canvasLocation" x="928" y="2546"/>
         </scene>
+        <!--Delete Account View-->
+        <scene sceneID="tW4-5L-Qft">
+            <objects>
+                <viewController storyboardIdentifier="DeleteAccountView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="QCX-va-Ikl" customClass="DeleteAccountView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="BEb-e2-KMj">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="sYJ-UB-EUo"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jbm-a7-bel" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3172" y="2546"/>
+        </scene>
     </scenes>
     <resources>
         <image name="arrow.up.bin.fill" catalog="system" width="128" height="93"/>
