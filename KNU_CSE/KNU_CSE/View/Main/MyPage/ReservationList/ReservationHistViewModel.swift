@@ -10,6 +10,8 @@ import Foundation
 struct ReservationHistViewModel{
     
     var reservationHistModel:ReservationHistModel!
+    var deleteAction: BaseAction<String, errorHandler> = BaseAction()
+    var extensionAction: BaseAction<Int, errorHandler> = BaseAction()
     
     init(){
         self.setReservation()
@@ -35,5 +37,17 @@ struct ReservationHistViewModel{
             return false
         }
         return true
+    }
+}
+
+extension ReservationHistViewModel{
+    func reservationDelete(){
+        let request = Request(requestBodyObject: nil, requestMethod: .post, enviroment: .reservationDelete)
+        request.sendRequest(request: request, responseType: String.self, errorType: errorHandler.self, action:self.deleteAction)
+    }
+    
+    func reservationExtend(){
+        let request = Request(requestBodyObject: nil, requestMethod: .post, enviroment: .reservationExtension)
+        request.sendRequest(request: request, responseType: Int.self, errorType: errorHandler.self, action:self.extensionAction)
     }
 }

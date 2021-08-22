@@ -86,6 +86,12 @@ extension BaseApiRequest{
             return getAddress(domain: "user/signIn")
         case .SignUp:
             return getAddress(domain: "user/signUp")
+        case .codeForPw(let email):
+            return getAddress(domain: "user/findPassword/\(email)")
+        case .codeConfirmForPw:
+            return getAddress(domain: "user/verifyPassword")
+        case .changePasswordForFindPw:
+            return getAddress(domain: "user/changeValidatedPassword")
         case .getInform:
             return getAddress(domain: "user/getUserEmailNickname")
         case .setInform:
@@ -128,6 +134,12 @@ extension BaseApiRequest{
             return getAddress(domain: "classRoom/searchSeats/\(building)/\(roomNumber)")
         case .reservation:
             return getAddress(domain: "reservation/reservation")
+        case .reservationFind:
+            return getAddress(domain: "reservation/findReservation")
+        case .reservationDelete:
+            return getAddress(domain: "reservation/delete")
+        case .reservationExtension:
+            return getAddress(domain: "reservation/extension")
         case .none:
             return ""
         }
@@ -144,6 +156,9 @@ enum RequestHttpMethod{
 enum Environment{
     case SignIn
     case SignUp
+    case codeForPw(String)
+    case codeConfirmForPw
+    case changePasswordForFindPw
     case getInform
     case setInform
     case resetImage
@@ -165,6 +180,9 @@ enum Environment{
     case findContentsByBoardId(Int)
     case searchSeat(String, Int)
     case reservation
+    case reservationFind
+    case reservationDelete
+    case reservationExtension
 }
 
 

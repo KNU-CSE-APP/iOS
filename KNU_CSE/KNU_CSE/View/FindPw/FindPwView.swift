@@ -32,9 +32,8 @@ class FindPwView:UIViewController,ViewProtocol{
             self.sendCodeBtn.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .light)
             self.sendCodeBtn.tintColor = .white
             self.sendCodeBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
-            self.sendCodeBtn.addAction{
-                let alert = Alert(title: "인증번호 전송", message: "인증번호가 해당 이메일로 전송되었습니다.", viewController: self)
-                alert.popUpDefaultAlert(action: nil)
+            self.sendCodeBtn.addAction{ [weak self] in
+                self?.findPwViewModel.requestCode()
             }
         }
     }
@@ -46,7 +45,7 @@ class FindPwView:UIViewController,ViewProtocol{
             self.emailCodeTextField.keyboardType = .numberPad
             self.emailCodeTextField.placeholder = "인증번호를 입력하세요."
             self.emailCodeTextField.bind { [weak self] code in
-                self?.findPwViewModel.emailCode = code
+                self?.findPwViewModel.account.code = code
             }
         }
     }
@@ -59,9 +58,7 @@ class FindPwView:UIViewController,ViewProtocol{
             self.confirmCodeBtn.tintColor = .white
             self.confirmCodeBtn.setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
             self.confirmCodeBtn.addAction{ [weak self] in
-                let alert = Alert(title: "인증 성공", message: "이메일 인증을 완료했습니다.", viewController: self!)
-                alert.popUpDefaultAlert(action: nil)
-                self?.showPwField()
+                self?.findPwViewModel.requestCodeConfirm()
             }
         }
     }
@@ -137,6 +134,8 @@ class FindPwView:UIViewController,ViewProtocol{
         self.initUI()
         self.addView()
         self.setUpConstraints()
+        
+        self.Binding()
     }
     
     func initUI(){
@@ -286,8 +285,8 @@ extension FindPwView: UITextFieldDelegate{
     
     func addBtnAction(){
         self.registerBtn.backgroundColor = Color.mainColor
-        self.registerBtn.addAction{
-          
+        self.registerBtn.addAction { [weak self] in
+            self?.findPwViewModel.modifyPw()
         }
     }
     
@@ -310,5 +309,75 @@ extension FindPwView{
         self.pw2Title.isHidden = false
         self.pw2TextField.isHidden = false
         self.registerBtn.isHidden = false
+    }
+}
+
+extension FindPwView{
+    func Binding(){
+        self.BindingForCode()
+        self.BindingForCodeConfirm()
+        self.BindingForModifyPw()
+    }
+    
+    func BindingForCode(){
+        self.findPwViewModel.emailCodeAction.binding(successHandler: {
+            [weak self] result in
+            if result.success{
+                
+            }else{
+                if let error = result.error?.message{
+                    Alert(title: "실패", message: error, viewController: self!).popUpDefaultAlert(action: nil)
+                }
+            }
+        }, failHandler: { [weak self] Error in
+            Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self!).popUpDefaultAlert(action: nil)
+        }, asyncHandler: { [weak self] in
+            let alert = Alert(title: "인증번호 전송", message: "인증번호가 해당 이메일로 전송되었습니다.\n전송된 메일이 스팸함에 있을 수 있습니다.", viewController: self!)
+            alert.popUpDefaultAlert(action: nil)
+        }, endHandler: {
+            
+        })
+    }
+    
+    func BindingForCodeConfirm(){
+        self.findPwViewModel.emailCodeConfirmAction.binding(successHandler: {
+            [weak self] result in
+            if result.success, let code = result.response{
+                self?.findPwViewModel.account.code = code
+                self?.showPwField()
+                Alert(title: "인증 성공", message: "이메일 인증에 성공했습니다.", viewController: self!).popUpDefaultAlert(action: nil)
+            }else{
+                if let error = result.error?.message{
+                    Alert(title: "실패", message: error, viewController: self!).popUpDefaultAlert(action: nil)
+                }
+            }
+        }, failHandler: { [weak self] Error in
+            Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self!).popUpDefaultAlert(action: nil)
+        }, asyncHandler: {
+            
+        }, endHandler: {
+            
+        })
+    }
+    
+    func BindingForModifyPw(){
+        self.findPwViewModel.modifyPwAction.binding(successHandler: {
+            [weak self] result in
+            if result.success{
+                Alert(title: "비밀번호 변경 성공", message: "비밀번호 변경이 완료됐습니다. 변경한 비밀번호로 로그인해주세요.", viewController: self!).popUpDefaultAlert{ [weak self] _ in
+                    self?.navigationController?.popViewController(animated: true)
+                }
+            }else{
+                if let error = result.error?.message{
+                    Alert(title: "실패", message: error, viewController: self!).popUpDefaultAlert(action: nil)
+                }
+            }
+        }, failHandler: { [weak self] Error in
+            Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self!).popUpDefaultAlert(action: nil)
+        }, asyncHandler: {
+            
+        }, endHandler: {
+            
+        })
     }
 }

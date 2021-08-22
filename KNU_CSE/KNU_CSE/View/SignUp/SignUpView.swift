@@ -551,7 +551,7 @@ extension SignUpView{
     func BindingConfirmCodeBtn(){
         self.signUpViewModel.codeConfirmListner.binding(successHandler: { response in
             if response.success{
-                let alert = Alert(title: "인증 성공", message: "이메일 인증을 완료했습니다.", viewController: self)
+                let alert = Alert(title: "인증 성공", message: "이메일 인증에 성공했습니다.", viewController: self)
                 alert.popUpDefaultAlert(action: nil)
             }
         }, failHandler: { Error in

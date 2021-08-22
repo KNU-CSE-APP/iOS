@@ -52,8 +52,11 @@ class ReservationHistView: UIViewController, ViewProtocol{
             cancelBtn.layer.borderColor = UIColor.lightGray.cgColor
             cancelBtn.backgroundColor = .white
             cancelBtn.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-            cancelBtn.addAction {
-                
+            cancelBtn.addAction { [weak self] in
+                let alert = Alert(title: "좌석 반납", message: "예약한 좌석을 반납하시겠습니까?", viewController: self!)
+                alert.popUpNormalAlert{ (action) in
+                    self?.reservationHistViewModel.reservationDelete()
+                }
             }
         }
     }
@@ -65,8 +68,11 @@ class ReservationHistView: UIViewController, ViewProtocol{
             reservExtendBtn.setTitleColor(.white, for: .normal)
             reservExtendBtn.backgroundColor = Color.mainColor
             reservExtendBtn.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-            reservExtendBtn.addAction {
-                
+            reservExtendBtn.addAction { [weak self] in
+                let alert = Alert(title: "좌석 반납", message: "예약한 좌석을 연장하시겠습니까?(6시간 연장)", viewController: self!)
+                alert.popUpNormalAlert{ (action) in
+                    self?.reservationHistViewModel.reservationExtend()
+                }
             }
         }
     }
@@ -83,6 +89,8 @@ class ReservationHistView: UIViewController, ViewProtocol{
         self.setUpConstraints()
         
         self.reservationHistViewModel = ReservationHistViewModel()
+        
+        self.Binding()
     }
     
     func initUI() {
@@ -147,8 +155,6 @@ class ReservationHistView: UIViewController, ViewProtocol{
             make.height.equalTo(btnHeight)
         }
     }
-    
-  
 }
 
 extension ReservationHistView : UITableViewDataSource{
@@ -178,5 +184,50 @@ extension ReservationHistView{
         }else{
             self.cautionLabel.text = "예약된 좌석 정보가 없습니다."
         }
+    }
+}
+
+extension ReservationHistView{
+    func Binding(){
+        self.BindingDeleteAction()
+        self.BindingExtensionAction()
+    }
+    
+    func BindingDeleteAction(){
+        self.reservationHistViewModel.deleteAction.binding(successHandler: { [weak self] result in
+            if result.success, let response = result.response{
+                Alert(title: "성공", message: response, viewController: self!).popUpDefaultAlert{ _ in
+                    self?.navigationController?.popViewController(animated: true)
+                }
+            }else{
+                if let message = result.error?.message {
+                    Alert(title: "실패", message: message, viewController: self!).popUpDefaultAlert(action: nil)
+                }
+            }
+        }, failHandler: { Error in
+            Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self).popUpDefaultAlert(action: nil)
+        }, asyncHandler: {
+            
+        }, endHandler: {
+            
+        })
+    }
+    
+    func BindingExtensionAction(){
+        self.reservationHistViewModel.extensionAction.binding(successHandler: { [weak self] result in
+            if result.success, let response = result.response{
+                Alert(title: "성공", message: "해당 좌석을 연장했습니다.", viewController: self!).popUpDefaultAlert(action: nil)
+            }else{
+                if let message = result.error?.message {
+                    Alert(title: "실패", message: message, viewController: self!).popUpDefaultAlert(action: nil)
+                }
+            }
+        }, failHandler: { Error in
+            Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self).popUpDefaultAlert(action: nil)
+        }, asyncHandler: {
+            
+        }, endHandler: {
+            
+        })
     }
 }
