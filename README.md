@@ -13,7 +13,7 @@
 
 - 학부 공지(WebKit 사용), 컴퓨터 학부 사이트 웹뷰로 볼 수 있음
 
-![https://user-images.githubusercontent.com/40800157/130425210-1bc31c58-33fa-4730-849a-0d04a4a81744.png](https://user-images.githubusercontent.com/40800157/130425210-1bc31c58-33fa-4730-849a-0d04a4a81744.png)
+![https://user-images.githubusercontent.com/40800157/130425210-1bc31c58-33fa-4730-849a-0d04a4a81744.png](https://user-images.githubusercontent.com/40800157/130425210-1bc31c58-33fa-4730-849a-0d04a4a81744.png){: width="100" height="100"}
 
 - 강의실 예약, 해당 배치도를 보고 원하는 번호에 좌석을 예약할 수 있음
 
