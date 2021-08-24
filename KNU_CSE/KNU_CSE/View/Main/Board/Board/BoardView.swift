@@ -36,6 +36,10 @@ class BoardView : BaseUIViewController, ViewProtocol{
             self.boardTableView.tableFooterView = UIView(frame: .zero)
             self.boardTableView.separatorInset.left = 0
             self.boardTableView.showsVerticalScrollIndicator = true
+            
+            let refresh = UIRefreshControl()
+            refresh.addTarget(self, action: #selector(self.refresh(refresh:)), for: .valueChanged)
+            self.boardTableView.refreshControl = refresh
         }
     }
     
@@ -92,6 +96,7 @@ extension BoardView : UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FreeBoardCell.identifier, for: indexPath) as! FreeBoardCell
+        
         let board = self.boardViewModel.boards[indexPath.row]
         cell.selectionStyle = .none
         cell.board = board
@@ -117,7 +122,7 @@ extension BoardView : UITableViewDataSource{
 extension BoardView:UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)// remove selection style
-        self.pushDetaiView(board: self.boardViewModel.boards[indexPath.row])
+        self.pushDetaiView(indexPath.row)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -141,13 +146,33 @@ extension BoardView:UITableViewDelegate{
 }
 
 extension BoardView{
-    func pushDetaiView(board:Board){
+    func pushDetaiView(_ index: Int){
         let pushVC = (self.storyboard?.instantiateViewController(withIdentifier: "BoardDetailView")) as? BoardDetailView
         if !(self.navigationController!.viewControllers.contains(pushVC!)){
+            pushVC?.boardDetailViewModel.board.secondBind{ [weak self] board in
+                self?.boardViewModel.boards[index] = board
+                self?.boardTableView.reloadData()
+            }
+            
             self.boardDelegate = pushVC
-            self.boardDelegate?.sendBoard(board: board)
+            self.boardDelegate?.sendBoard(board:self.boardViewModel.boards[index])
             self.navigationController?.pushViewController(pushVC!, animated: true)
         }
+    }
+    
+    @objc func refresh(refresh: UIRefreshControl){
+        switch parentType {
+            case .BoardTap:
+                self.boardViewModel.getBoardsByFirstPage()
+            case .Search:
+                break
+            case .Write:
+                break
+            case .none:
+                break
+        }
+        
+        refresh.endRefreshing()
     }
 }
 

@@ -17,7 +17,7 @@ class CommentView: UIStackView {
     var isHiddenReplyBtn:Bool
     var resetAction:(()->Void)?
     var deleteAction:((Int)->Void)?
-    var stackViews:[UIView]?
+    var stackViews:[UIView] = []
     
     init(storyboard:UIStoryboard?, navigationVC:UINavigationController?, currentVC:UIViewController, isHiddenReplyBtn:Bool){
         self.storyboard = storyboard
@@ -42,13 +42,14 @@ class CommentView: UIStackView {
     func addCommentToStackView(_ comment:Comment, _ board:Board){
         DispatchQueue.main.async {
             let commentView = CommentCell(comment: comment)
+            self.stackViews.append(commentView)
+            
             commentView.replyBtn.isHidden = self.isHiddenReplyBtn
             commentView.replyBtn.addAction {
                 self.pushView(board, comment)
             }
             
             commentView.settingBtn.addAction {
-                //self.deleteAction?(comment.commentId)
                 self.addActionSheet(commentId: comment.commentId)
             }
             
@@ -57,9 +58,9 @@ class CommentView: UIStackView {
                 for j in 0..<replyList.count{
                     let reply = comment.replyList[j]
                     let replyView = ReplyCell(reply: reply)
+                    self.stackViews.append(replyView)
                     replyView.settingBtn.addAction {
-                        //self.deleteAction?(reply.commentId)
-                        self.addActionSheet(commentId: comment.commentId)
+                        self.addActionSheet(commentId: reply.commentId)
                     }
                     self.addArrangedSubview(replyView)
                 }
@@ -77,51 +78,32 @@ class CommentView: UIStackView {
     func insertReplyToStackView(reply:Comment, index:Int){
         DispatchQueue.main.async {
             let replyView = ReplyCell(reply: reply)
+            self.stackViews.insert(replyView, at: index)
             self.insertArrangedSubview(replyView, at: index)
         }
     }
     
-    //reply가 업데이트 될때 사용하는 함수
-    func updateToStackView(Comments:[Comment], replys:[Comment], board:Board){
-        var targetIndex = 0
+    func updateReply(comments:[Comment], target:Comment){
+        var targetIndex = 1
         
-        guard replys.count > 0 else{
-            return
-        }
-        
-        for comment in Comments{
-            targetIndex += 1
-            if comment.commentId == replys[0].parentId{
-                if let replyList = comment.replyList{
-                    targetIndex += replyList.count
-                    targetIndex -= replys.count
+        for comment in comments{
+            if comment.commentId == target.commentId{
+                (0..<comment.replyList.count).forEach{ _ in
+                    self.removeArrangedSubview(stackViews[targetIndex])
+                    stackViews[targetIndex].removeFromSuperview()
+                    stackViews.remove(at: targetIndex)
                 }
                 
-                for reply in replys{
-                    insertReplyToStackView(reply: reply, index: targetIndex)
+                for reply in target.replyList{
+                    self.insertReplyToStackView(reply: reply, index: targetIndex)
                     targetIndex += 1
-                }
-                break
-            }else{
-                if let replyList = comment.replyList{
-                    targetIndex += replyList.count
+                    
                 }
             }
+            targetIndex += 1
+            targetIndex += comment.replyList.count
         }
-    }
-    
-    func updateReplyToStackView(newReplys:[Comment], oldReplys:[Comment]){
-        for newReply in newReplys{
-            var flag = true
-            for oldReply in oldReplys{
-                if newReply.commentId == oldReply.commentId{
-                    flag = false
-                }
-            }
-            if flag{
-                self.addReplyToStackView(newReply)
-            }
-        }
+        
     }
     
     func removeAllToStackView(){

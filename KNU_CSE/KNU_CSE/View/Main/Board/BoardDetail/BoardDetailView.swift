@@ -201,6 +201,11 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
         self.boardDetailViewModel.getBoardRequest()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        //self.updateReplyCnt()
+    }
+    
     func initUI(){
         self.scrollView = UIScrollView()
         
@@ -347,6 +352,7 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
 }
 
 extension BoardDetailView:BoardDataDelegate, ReplyDataDelegate{
+
     /// BoardView로 부터의 Delegation을 전달받음
     func sendBoard(board: Board) {
         self.boardDetailViewModel.board.value = board
@@ -354,11 +360,13 @@ extension BoardDetailView:BoardDataDelegate, ReplyDataDelegate{
     
     /// ReplyView로 부터의 Delegation을 전달받음
     /// Reply에서 답글을 작성 후 BoardDetailView로 돌아왔을 때 view를 update
-    func sendReply(replys: [Comment], removedCommentId:Int?) {
-        if removedCommentId != nil{
-            self.stackView.resetAction?()
+    func sendReply(comment: Comment?) {
+        if comment == nil{
+            self.boardDetailViewModel.getCommentRequest()
+            self.stackView.removeAllToStackView()
+            self.stackView.InitToStackView(comments: self.boardDetailViewModel.comments, board: self.boardDetailViewModel.board.value)
         }else{
-            self.stackView.updateToStackView(Comments: self.boardDetailViewModel.comments, replys: replys, board: self.boardDetailViewModel.board.value)
+            self.stackView.updateReply(comments: self.boardDetailViewModel.comments, target: comment!)
         }
     }
     
@@ -433,9 +441,11 @@ extension BoardDetailView:UITextViewDelegate{
     
     func completedWriteComment(){
         self.textField.text = ""
+        self.boardDetailViewModel.comment.content = nil
         self.setPlaceHolder(self.textField)
         self.textField.resignFirstResponder()
         
+        self.textViewDidChange(self.textField)
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)){
             self.scrollView.scrollToBottom()
         }

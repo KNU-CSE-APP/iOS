@@ -7,6 +7,7 @@
 
 import UIKit
 import BTNavigationDropdownMenu
+import PhotosUI
 
 class BoardWriteView:UIViewController, ViewProtocol{
     
@@ -15,6 +16,8 @@ class BoardWriteView:UIViewController, ViewProtocol{
     lazy var scrollView:UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.alwaysBounceVertical = true
+        scrollView.layer.borderWidth = 0.5
+        scrollView.layer.borderColor = UIColor.lightGray.cgColor
         return scrollView
     }()
     
@@ -109,6 +112,66 @@ class BoardWriteView:UIViewController, ViewProtocol{
         }
     }
     
+    lazy var photosView:UICollectionView = {
+        var photoView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
+        photoView.backgroundColor = .white
+        photoView.dataSource = self
+        photoView.delegate = self
+        photoView.register(ImageCell.self, forCellWithReuseIdentifier: ImageCell.identifier)
+        photoView.isHidden = true
+        photoView.contentInset = UIEdgeInsets.init(top: 5, left: 10, bottom: 5, right: 10)
+        photoView.isMultipleTouchEnabled = false
+        
+        let layout = photoView.collectionViewLayout as! UICollectionViewFlowLayout
+        
+        layout.itemSize = CGSize(width: 100, height: 100)
+        layout.minimumInteritemSpacing = 10
+        layout.minimumLineSpacing = 30
+        layout.scrollDirection = .horizontal
+        
+        return photoView
+    }()
+    
+    var images: [UIImage] = []
+    lazy var pickerView:PHPickerViewController = {
+        var configuration = PHPickerConfiguration()
+        configuration.filter = .any(of: [.images, .livePhotos])
+        configuration.selectionLimit = 10
+        
+        var pickerView = PHPickerViewController(configuration: configuration)
+        pickerView.delegate = self
+        return pickerView
+    }()
+    
+    lazy var photoBtn:UIButton = {
+        var photoBtn = UIButton()
+        photoBtn.setImage(UIImage.init(systemName: "photo.on.rectangle.angled"), for: .normal)
+        photoBtn.imageView?.tintColor = UIColor.lightGray
+        
+        photoBtn.addAction {
+            self.present(self.pickerView, animated: true, completion: nil)
+        }
+        
+        return photoBtn
+    }()
+    
+    lazy var photoLabel:UILabel! = {
+        var photoLabel = UILabel()
+        photoLabel.text = "0/10"
+        photoLabel.textColor = UIColor.lightGray
+        return photoLabel
+    }()
+    
+    lazy var resignBtn:UIButton! = {
+        var resignBtn = UIButton()
+        resignBtn.setImage(UIImage.init(systemName: "keyboard.chevron.compact.down"), for: .normal)
+        resignBtn.imageView?.tintColor = UIColor.lightGray
+        resignBtn.addAction {
+            self.contentField.resignFirstResponder()
+        }
+        return resignBtn
+    }()
+    
     lazy var indicator:IndicatorView = {
         let indicator = IndicatorView(viewController: self)
         return indicator
@@ -134,7 +197,11 @@ class BoardWriteView:UIViewController, ViewProtocol{
     
     func addView() {
         self.view.addSubview(scrollView)
-        _ = [self.titleField, self.borderLine, self.contentField, self.contentPlaceHolder, self.categoryLabel].map{
+        self.view.addSubview(self.photoBtn)
+        self.view.addSubview(self.photoLabel)
+        self.view.addSubview(self.resignBtn)
+        
+        _ = [self.titleField, self.borderLine, self.photosView, self.contentField, self.contentPlaceHolder, self.categoryLabel].map{
             self.scrollView.addSubview($0)
         }
     }
@@ -148,7 +215,7 @@ class BoardWriteView:UIViewController, ViewProtocol{
             make.top.equalTo(self.view.safeAreaLayoutGuide)
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide)
+            make.bottom.equalTo(self.photoBtn.snp.top)
         }
         
         self.titleField.snp.makeConstraints{ make in
@@ -165,11 +232,18 @@ class BoardWriteView:UIViewController, ViewProtocol{
             make.height.equalTo(0.3)
         }
         
-        self.contentField.snp.makeConstraints{ make in
+        self.photosView.snp.makeConstraints{ make in
             make.top.equalTo(self.borderLine.snp.bottom).offset(10)
             make.left.equalTo(self.view.safeAreaLayoutGuide).offset(left_margin)
             make.right.equalTo(self.view.safeAreaLayoutGuide).offset(right_margin)
-            make.bottom.equalToSuperview()
+            make.height.equalTo(0)
+        }
+        
+        self.contentField.snp.makeConstraints{ make in
+            make.top.equalTo(self.photosView.snp.bottom).offset(10)
+            make.left.equalTo(self.view.safeAreaLayoutGuide).offset(left_margin)
+            make.right.equalTo(self.view.safeAreaLayoutGuide).offset(right_margin)
+            make.bottom.equalTo(self.scrollView.snp.bottom).offset(-40)
         }
         
         self.contentPlaceHolder.snp.makeConstraints{ make in
@@ -177,6 +251,23 @@ class BoardWriteView:UIViewController, ViewProtocol{
             make.left.equalToSuperview().offset(left_margin+padding)
             make.right.equalToSuperview().offset(right_margin)
             make.height.equalTo(self.contentField.snp.height)
+        }
+        
+        self.photoBtn.snp.makeConstraints{ make in
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide)
+            make.height.equalTo(50)
+            make.width.equalTo(50)
+            make.left.equalTo(self.view.safeAreaLayoutGuide).offset(5)
+        }
+        
+        self.photoLabel.snp.makeConstraints{ make in
+            make.height.width.bottom.equalTo(self.photoBtn)
+            make.left.equalTo(self.photoBtn.snp.right).offset(5)
+        }
+        
+        self.resignBtn.snp.makeConstraints{ make in
+            make.height.width.bottom.equalTo(self.photoBtn)
+            make.right.equalTo(self.view.safeAreaLayoutGuide).offset(-5)
         }
     }
 }
@@ -190,15 +281,25 @@ extension BoardWriteView{
     
     @objc func keyboardWillShow(notification: NSNotification) {
         animateWithKeyboard(notification: notification) { (keyboardFrame) in
-            self.scrollView.snp.updateConstraints{ make in
-                make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-keyboardFrame.height+self.view.safeAreaInsets.bottom-20)
+//            self.scrollView.snp.updateConstraints{ make in
+//                make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-keyboardFrame.height+self.view.safeAreaInsets.bottom-20)
+//            }
+//
+            
+            self.photoBtn.snp.updateConstraints{ make in
+                make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-keyboardFrame.height+self.view.safeAreaInsets.bottom)
             }
+            
         }
     }
 
     @objc func keyboardWillHide(notification: NSNotification) {
         animateWithKeyboard(notification: notification) { (keyboardFrame) in
-            self.scrollView.snp.updateConstraints{ make in
+//            self.scrollView.snp.updateConstraints{ make in
+//                make.bottom.equalTo(self.view.safeAreaLayoutGuide)
+//            }
+
+            self.photoBtn.snp.updateConstraints{ make in
                 make.bottom.equalTo(self.view.safeAreaLayoutGuide)
             }
         }
@@ -267,3 +368,65 @@ extension BoardWriteView{
     }
 }
 
+
+extension BoardWriteView:PHPickerViewControllerDelegate{
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        picker.dismiss(animated: true)
+        
+        self.images = []
+        
+        for result in results{
+            let item = result.itemProvider
+            if item.canLoadObject(ofClass: UIImage.self){
+                item.loadObject(ofClass: UIImage.self){ (image, error) in
+                    if let image = image as? UIImage{
+                        DispatchQueue.main.async {
+                            self.images.append(image)
+                            self.photosView.isHidden = false
+                            self.photosView.reloadData()
+                        }
+                    }
+                }
+            }
+        }
+        
+        self.photosView.snp.updateConstraints{ make in
+            make.height.equalTo(100)
+        }
+    }
+}
+
+extension BoardWriteView:UICollectionViewDataSource, UICollectionViewDelegate{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.images.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.identifier, for: indexPath) as? ImageCell else{
+            return UICollectionViewCell()
+        }
+        
+        //cell.didMoveToSuperview()
+        cell.deleteBtn.addAction { [weak self] in
+            self?.images.remove(at: indexPath.row)
+            self?.photosView.reloadData()
+            print("button clicked \(indexPath.row)")
+        }
+        
+        cell.setImage(image: images[indexPath.row])
+        return cell
+    }
+    
+//    //여러번 선택되는거 방지
+//    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+//           guard let cell = collectionView.cellForItem(at: indexPath) as? ImageCell else {
+//               return true
+//           }
+//           if cell.isSelected {
+//               collectionView.deselectItem(at: indexPath, animated: true)
+//               return false
+//           } else {
+//               return true
+//           }
+//       }
+}

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6801764126D569AA00C1EC67 /* PHPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6801764026D569AA00C1EC67 /* PHPickerView.swift */; };
+		6801764326D56DC000C1EC67 /* PHPickerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6801764226D56DC000C1EC67 /* PHPickerProtocol.swift */; };
+		6801764526D56ED000C1EC67 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6801764426D56ED000C1EC67 /* ImageCell.swift */; };
 		681D37B526A419F3000D9FE8 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37B426A419F3000D9FE8 /* MyPageView.swift */; };
 		681D37B726A42748000D9FE8 /* NoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37B626A42748000D9FE8 /* NoticeView.swift */; };
 		681D37B926A42782000D9FE8 /* ClassRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37B826A42782000D9FE8 /* ClassRoomView.swift */; };
@@ -129,6 +132,9 @@
 		01E2502C70FDF0FB99351F22 /* Pods-KNU_CSETests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KNU_CSETests.release.xcconfig"; path = "Target Support Files/Pods-KNU_CSETests/Pods-KNU_CSETests.release.xcconfig"; sourceTree = "<group>"; };
 		0AEB9BE74D13DB6D6DE35FAE /* Pods_KNU_CSE.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KNU_CSE.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C3849D4B5E75A8D54F61D53 /* Pods_KNU_CSE_KNU_CSEUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KNU_CSE_KNU_CSEUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6801764026D569AA00C1EC67 /* PHPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHPickerView.swift; sourceTree = "<group>"; };
+		6801764226D56DC000C1EC67 /* PHPickerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHPickerProtocol.swift; sourceTree = "<group>"; };
+		6801764426D56ED000C1EC67 /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
 		681D37B426A419F3000D9FE8 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		681D37B626A42748000D9FE8 /* NoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeView.swift; sourceTree = "<group>"; };
 		681D37B826A42782000D9FE8 /* ClassRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomView.swift; sourceTree = "<group>"; };
@@ -267,6 +273,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6801763F26D5695800C1EC67 /* PHPicker */ = {
+			isa = PBXGroup;
+			children = (
+				6801764026D569AA00C1EC67 /* PHPickerView.swift */,
+				6801764226D56DC000C1EC67 /* PHPickerProtocol.swift */,
+			);
+			path = PHPicker;
+			sourceTree = "<group>";
+		};
 		681D37B026A412E6000D9FE8 /* Classroom Reservation */ = {
 			isa = PBXGroup;
 			children = (
@@ -319,6 +334,7 @@
 				68F861C426B1A6CF00934BD2 /* MyPageViewCell.swift */,
 				68F861DE26B2D31D00934BD2 /* ProfileTableCell.swift */,
 				68C7629026B96EFA00792498 /* CategoryCell.swift */,
+				6801764426D56ED000C1EC67 /* ImageCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -427,6 +443,7 @@
 				68F1A5F026A0090B007B4B86 /* SignUp */,
 				68F861E426B2EE9100934BD2 /* FindPw */,
 				68F1A61026A31169007B4B86 /* Main */,
+				6801763F26D5695800C1EC67 /* PHPicker */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1039,6 +1056,7 @@
 				681D37DB26A4AAAC000D9FE8 /* ReservationViewModel.swift in Sources */,
 				68F1A60026A07FE7007B4B86 /* CheckBox.swift in Sources */,
 				68C762A826C4115D00792498 /* Extension+ScrollView.swift in Sources */,
+				6801764126D569AA00C1EC67 /* PHPickerView.swift in Sources */,
 				68F861E626B2FB4A00934BD2 /* FindPwViewModel+Model.swift in Sources */,
 				68F1A5EC26A008FF007B4B86 /* Request.swift in Sources */,
 				681D37F426A737AE000D9FE8 /* SignInNavigationView.swift in Sources */,
@@ -1051,10 +1069,12 @@
 				68C7629626BC0CAE00792498 /* BaseViewModelChange.swift in Sources */,
 				68F1A5FE26A07147007B4B86 /* SignUpUILabel.swift in Sources */,
 				68C7629126B96EFA00792498 /* CategoryCell.swift in Sources */,
+				6801764526D56ED000C1EC67 /* ImageCell.swift in Sources */,
 				681D37DD26A5BF2D000D9FE8 /* ClassSeatCell.swift in Sources */,
 				681D37CF26A48A4B000D9FE8 /* BoardViewModel.swift in Sources */,
 				681D37F226A70FE2000D9FE8 /* ReservationCheckDelegate.swift in Sources */,
 				681D37D726A48B37000D9FE8 /* FreeBoardCell.swift in Sources */,
+				6801764326D56DC000C1EC67 /* PHPickerProtocol.swift in Sources */,
 				681D381526AC52EA000D9FE8 /* KeyboardAnimation.swift in Sources */,
 				68F861D126B1B35B00934BD2 /* ReservationHistView.swift in Sources */,
 				681D37F726A73D3E000D9FE8 /* BoardTabView.swift in Sources */,
