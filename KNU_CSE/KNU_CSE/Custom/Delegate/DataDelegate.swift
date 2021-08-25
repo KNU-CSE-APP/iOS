@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 protocol BoardDataDelegate{
     func sendBoard(board:Board)
@@ -17,4 +18,8 @@ protocol CommentDataDelegate {
 
 protocol ReplyDataDelegate{
     func sendReply(comment:Comment?)
+}
+
+protocol ImageDelegate{
+    func sendImages(images:[UIImage], index:Int)
 }

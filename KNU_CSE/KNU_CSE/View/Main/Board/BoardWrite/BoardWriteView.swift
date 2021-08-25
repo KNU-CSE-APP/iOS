@@ -112,6 +112,7 @@ class BoardWriteView:UIViewController, ViewProtocol{
         }
     }
     
+    var cellTapped: Bool = false
     lazy var photosView:UICollectionView = {
         var photoView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
         photoView.backgroundColor = .white
@@ -119,7 +120,7 @@ class BoardWriteView:UIViewController, ViewProtocol{
         photoView.delegate = self
         photoView.register(ImageCell.self, forCellWithReuseIdentifier: ImageCell.identifier)
         photoView.isHidden = true
-        photoView.contentInset = UIEdgeInsets.init(top: 5, left: 10, bottom: 5, right: 10)
+        photoView.contentInset = UIEdgeInsets.init(top: 5, left: 10, bottom: -5, right: -10)
         photoView.isMultipleTouchEnabled = false
         
         let layout = photoView.collectionViewLayout as! UICollectionViewFlowLayout
@@ -132,24 +133,21 @@ class BoardWriteView:UIViewController, ViewProtocol{
         return photoView
     }()
     
-    var images: [UIImage] = []
-    lazy var pickerView:PHPickerViewController = {
-        var configuration = PHPickerConfiguration()
-        configuration.filter = .any(of: [.images, .livePhotos])
-        configuration.selectionLimit = 10
-        
-        var pickerView = PHPickerViewController(configuration: configuration)
-        pickerView.delegate = self
-        return pickerView
-    }()
-    
+    var images: [UIImage] = []{
+        didSet{
+            self.photoLabel.text = "\(self.images.count)/10"
+        }
+    }
+    var imageURLs: [String] = []
+
     lazy var photoBtn:UIButton = {
         var photoBtn = UIButton()
         photoBtn.setImage(UIImage.init(systemName: "photo.on.rectangle.angled"), for: .normal)
         photoBtn.imageView?.tintColor = UIColor.lightGray
         
         photoBtn.addAction {
-            self.present(self.pickerView, animated: true, completion: nil)
+            //self.present(self.pickerView, animated: true, completion: nil)
+            self.presentPhotoView()
         }
         
         return photoBtn
@@ -164,6 +162,7 @@ class BoardWriteView:UIViewController, ViewProtocol{
     
     lazy var resignBtn:UIButton! = {
         var resignBtn = UIButton()
+        resignBtn.isHidden = true
         resignBtn.setImage(UIImage.init(systemName: "keyboard.chevron.compact.down"), for: .normal)
         resignBtn.imageView?.tintColor = UIColor.lightGray
         resignBtn.addAction {
@@ -281,11 +280,7 @@ extension BoardWriteView{
     
     @objc func keyboardWillShow(notification: NSNotification) {
         animateWithKeyboard(notification: notification) { (keyboardFrame) in
-//            self.scrollView.snp.updateConstraints{ make in
-//                make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-keyboardFrame.height+self.view.safeAreaInsets.bottom-20)
-//            }
-//
-            
+            self.resignBtn.isHidden = false
             self.photoBtn.snp.updateConstraints{ make in
                 make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-keyboardFrame.height+self.view.safeAreaInsets.bottom)
             }
@@ -295,10 +290,7 @@ extension BoardWriteView{
 
     @objc func keyboardWillHide(notification: NSNotification) {
         animateWithKeyboard(notification: notification) { (keyboardFrame) in
-//            self.scrollView.snp.updateConstraints{ make in
-//                make.bottom.equalTo(self.view.safeAreaLayoutGuide)
-//            }
-
+            self.resignBtn.isHidden = true
             self.photoBtn.snp.updateConstraints{ make in
                 make.bottom.equalTo(self.view.safeAreaLayoutGuide)
             }
@@ -368,34 +360,6 @@ extension BoardWriteView{
     }
 }
 
-
-extension BoardWriteView:PHPickerViewControllerDelegate{
-    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        picker.dismiss(animated: true)
-        
-        self.images = []
-        
-        for result in results{
-            let item = result.itemProvider
-            if item.canLoadObject(ofClass: UIImage.self){
-                item.loadObject(ofClass: UIImage.self){ (image, error) in
-                    if let image = image as? UIImage{
-                        DispatchQueue.main.async {
-                            self.images.append(image)
-                            self.photosView.isHidden = false
-                            self.photosView.reloadData()
-                        }
-                    }
-                }
-            }
-        }
-        
-        self.photosView.snp.updateConstraints{ make in
-            make.height.equalTo(100)
-        }
-    }
-}
-
 extension BoardWriteView:UICollectionViewDataSource, UICollectionViewDelegate{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.images.count
@@ -406,27 +370,74 @@ extension BoardWriteView:UICollectionViewDataSource, UICollectionViewDelegate{
             return UICollectionViewCell()
         }
         
-        //cell.didMoveToSuperview()
+        cell.imageURL = imageURLs[indexPath.row]
         cell.deleteBtn.addAction { [weak self] in
-            self?.images.remove(at: indexPath.row)
-            self?.photosView.reloadData()
-            print("button clicked \(indexPath.row)")
+            if (self?.cellTapped) == false{
+                for i in (0..<(self?.images.count)!){
+                    if cell.imageURL == self?.imageURLs[i]{
+                        self?.images.remove(at: i)
+                        self?.imageURLs.remove(at: i)
+                        break
+                    }
+                }
+                self?.photosView.reloadData()
+                self?.cellTapped = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+                    self?.cellTapped = false
+                }
+            }
         }
         
+        cell.imageView.addAction { [weak self] in
+            if self?.cellTapped == false{
+                if let VC = self?.storyboard?.instantiateViewController(withIdentifier: "DetailImageView") as? DetailImageView, let images = self?.images{
+                    VC.modalPresentationStyle = .fullScreen
+                    self?.present(VC, animated: true)
+                    
+                    let delegate: ImageDelegate = VC
+                    delegate.sendImages(images: images, index: indexPath.row)
+                }
+                
+                self?.cellTapped = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+                    self?.cellTapped = false
+                }
+            }
+        }
         cell.setImage(image: images[indexPath.row])
         return cell
     }
-    
-//    //여러번 선택되는거 방지
-//    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-//           guard let cell = collectionView.cellForItem(at: indexPath) as? ImageCell else {
-//               return true
-//           }
-//           if cell.isSelected {
-//               collectionView.deselectItem(at: indexPath, animated: true)
-//               return false
-//           } else {
-//               return true
-//           }
-//       }
+}
+
+extension BoardWriteView{
+    func presentPhotoView(){
+        guard let VC = storyboard?.instantiateViewController(withIdentifier: "PhotoView") as? PhotoView else{
+            return
+        }
+        VC.modalPresentationStyle = .overFullScreen
+        VC.isMutltiSelection = true
+        VC.setListener{ [weak self] image, url in
+            do{
+                DispatchQueue.main.async {
+                    self?.images.append(image)
+                    self?.imageURLs.append(url)
+                    self?.boardWriteViewModel.imageData.append(image.jpegData(compressionQuality: 0.5)!)
+                    self?.photosView.reloadData()
+                }
+            }
+        }
+        
+        VC.setInitListener { [weak self] in
+            self?.photosView.isHidden = false
+            self?.photosView.snp.updateConstraints{ make in
+                make.height.equalTo(100)
+            }
+            
+            self?.images = []
+            self?.imageURLs = []
+            self?.boardWriteViewModel.imageData = []
+        }
+        
+        self.navigationController?.present(VC, animated: true, completion: nil)
+    }
 }

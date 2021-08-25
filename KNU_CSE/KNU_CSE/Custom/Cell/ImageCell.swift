@@ -10,6 +10,12 @@ import UIKit
 class ImageCell : UICollectionViewCell {
     static let identifier = "ImageCell"
     
+    var image: UIImage!{
+        didSet{
+            self.imageView.setImage(image, for: .normal)
+        }
+    }
+    
     lazy var imageView: UIButton = {
         var imageView = UIButton()
         imageView.clipsToBounds = true
@@ -26,6 +32,8 @@ class ImageCell : UICollectionViewCell {
         
         return deleteBtn
     }()
+    
+    var imageURL: String = ""
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -67,6 +75,6 @@ class ImageCell : UICollectionViewCell {
 
 extension ImageCell{
     func setImage(image: UIImage) {
-        self.imageView.setImage(image, for: .normal)
+        self.image = image
     }
 }

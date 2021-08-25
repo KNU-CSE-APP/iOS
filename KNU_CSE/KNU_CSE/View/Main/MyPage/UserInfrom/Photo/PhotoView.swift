@@ -11,25 +11,36 @@ import YPImagePicker
 class PhotoView:UIViewController,ViewProtocol{
     
     var listener:((UIImage, String) -> Void)?
+    var initlistener: (()->Void)?
     
+    var isMutltiSelection: Bool = false
     var picker:YPImagePicker!{
         didSet{
             picker.didFinishPicking { [weak self] items, cancelled in
                 if cancelled {
 
                 }else{
-                    if let photo = items.singlePhoto, let action = self?.listener{
+                    self?.initlistener?()
+                    for item in items{
+                        switch item{
+                            case .photo(let p):
+                                if let action = self?.listener{
+                                    let photo = p
+                                    let imgName = "\(UUID().uuidString).jpg"
+                                    let documentDirectory = NSTemporaryDirectory()
+                                    let localPath = documentDirectory.appending(imgName)
 
-                        let imgName = "\(UUID().uuidString).jpg"
-                        let documentDirectory = NSTemporaryDirectory()
-                        let localPath = documentDirectory.appending(imgName)
-
-                        let image = photo.image
-                        let data = image.jpegData(compressionQuality: 0.5)! as NSData
-                        data.write(toFile: localPath, atomically: true)
-                        //let url = URL.init(fileURLWithPath: localPath)
-                        action(photo.image, localPath)
-                   }
+                                    let image = photo.image
+                                    let data = image.jpegData(compressionQuality: 0.5)! as NSData
+                                    data.write(toFile: localPath, atomically: true)
+                                    //let url = URL.init(fileURLWithPath: localPath)
+                                    action(photo.image, localPath)
+                               }
+                            default:
+                                break
+                        }
+                    }
+                    
                 }
                 self?.dismiss(animated: true, completion: nil)
             }
@@ -40,11 +51,16 @@ class PhotoView:UIViewController,ViewProtocol{
         didSet{
             config.screens = [.library]
             config.library.mediaType = .photo
-            config.wordings.libraryTitle = "사진"
+            config.wordings.libraryTitle = "앨범"
             config.wordings.albumsTitle = "앨범"
             config.wordings.filter = "필터"
             config.wordings.next = "확인"
             config.wordings.cancel = "취소"
+            config.wordings.done = "확인"
+            
+            if isMutltiSelection {
+                config.library.maxNumberOfItems = 10
+            }
         }
    }
     
@@ -79,5 +95,9 @@ class PhotoView:UIViewController,ViewProtocol{
 extension PhotoView{
     func setListener(listener:@escaping(UIImage, String)->Void){
         self.listener = listener
+    }
+    
+    func setInitListener(listener:@escaping()->Void){
+        self.initlistener = listener
     }
 }
