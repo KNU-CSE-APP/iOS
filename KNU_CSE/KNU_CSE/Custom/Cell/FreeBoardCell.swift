@@ -50,10 +50,26 @@ class FreeBoardCell : UITableViewCell {
         }
     }
     
+    var photoImage:UIImageView!{
+        didSet{
+            photoImage.image = UIImage(systemName: "photo")
+            photoImage.tintColor = .lightGray
+        }
+    }
+    
+    var photoLabel:UILabel!{
+        didSet{
+            photoLabel.textAlignment = .left
+            photoLabel.textColor = UIColor.black
+            photoLabel.font = UIFont.systemFont(ofSize: 13, weight: .ultraLight)
+            photoLabel.sizeToFit()
+            photoLabel.text = ""
+        }
+    }
+    
     var commentImage:UIImageView!{
         didSet{
-            let image = UIImage(systemName: "text.bubble.fill")
-            commentImage.image = image
+            commentImage.image = UIImage(systemName: "text.bubble.fill")
             commentImage.tintColor = .lightGray
         }
     }
@@ -83,6 +99,7 @@ class FreeBoardCell : UITableViewCell {
             self.setContentText(title: board.content)
             self.setCommentText(title: String(board.commentCnt))
             self.setCategoryText(title: board.category)
+            self.setImageLabel(count: self.board.images.count)
         }
     }
     
@@ -106,6 +123,8 @@ class FreeBoardCell : UITableViewCell {
         titleLabel = UILabel()
         contentLabel = UILabel()
         categoryLabel = UILabel()
+        photoImage = UIImageView()
+        photoLabel = UILabel()
         commentImage = UIImageView()
         commentLabel = UILabel()
     }
@@ -116,6 +135,8 @@ class FreeBoardCell : UITableViewCell {
         self.contentView.addSubview(titleLabel)
         self.contentView.addSubview(contentLabel)
         self.contentView.addSubview(categoryLabel)
+        self.contentView.addSubview(photoImage)
+        self.contentView.addSubview(photoLabel)
         self.contentView.addSubview(commentImage)
         self.contentView.addSubview(commentLabel)
     }
@@ -150,9 +171,16 @@ class FreeBoardCell : UITableViewCell {
             make.height.equalTo(height*0.25)
         }
         
-        self.commentLabel.snp.makeConstraints{ make in
+        self.photoImage.snp.makeConstraints{ make in
             make.top.equalTo(self.contentLabel.snp.bottom).offset(3)
-            make.right.equalToSuperview().offset(-20)
+            make.right.equalTo(photoLabel.snp.left).offset(-5)
+            make.height.equalTo(height*0.15)
+            make.width.equalTo(height*0.15)
+        }
+
+        self.photoLabel.snp.makeConstraints{ make in
+            make.top.equalTo(self.contentLabel.snp.bottom).offset(3)
+            make.right.equalTo(commentImage.snp.left).offset(-10)
             make.height.equalTo(height*0.15)
             //make.width.equalTo(height*0.15)
         }
@@ -164,6 +192,13 @@ class FreeBoardCell : UITableViewCell {
             make.width.equalTo(height*0.15)
         }
         
+        self.commentLabel.snp.makeConstraints{ make in
+            make.top.equalTo(self.contentLabel.snp.bottom).offset(3)
+            make.right.equalToSuperview().offset(-20)
+            make.height.equalTo(height*0.15)
+            //make.width.equalTo(height*0.15)
+        }
+    
         self.categoryLabel.snp.makeConstraints{ make in
             make.top.equalTo(self.contentLabel.snp.bottom).offset(3)
             make.left.equalToSuperview().offset(20)
@@ -197,6 +232,18 @@ extension FreeBoardCell{
     
     func setCategoryText(title : String){
         categoryLabel.text = "#\(title)"
+    }
+    
+    func setImageLabel(count: Int){
+        if count == 0 {
+            photoImage.isHidden = true
+            photoLabel.isHidden = true
+        }
+        else if count > 0{
+            photoLabel.text = "\(String(count))"
+            photoImage.isHidden = false
+            photoLabel.isHidden = false
+        }
     }
 }
 

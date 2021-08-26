@@ -97,10 +97,10 @@ extension BoardView : UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FreeBoardCell.identifier, for: indexPath) as! FreeBoardCell
         
-        let board = self.boardViewModel.boards[indexPath.row]
-        cell.selectionStyle = .none
-        cell.board = board
+        cell.board =  self.boardViewModel.boards[indexPath.row]
         cell.height = self.cellRowHeight * 0.115
+        cell.selectionStyle = .none
+        
         return cell
     }
     

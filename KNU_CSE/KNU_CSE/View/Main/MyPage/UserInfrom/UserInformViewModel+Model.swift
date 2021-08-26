@@ -83,7 +83,7 @@ class Profile:BaseObject{
         }
         
         if let image = imageData{
-            multipartFormData.append(image, withName: "image", fileName: "\(String(describing: nickname))_profile", mimeType: "image/jpeg")
+            multipartFormData.append(image, withName: "image", fileName: "\(String(describing: nickname))!_profile.jpg", mimeType: "image/jpeg")
         }else{
             multipartFormData.append(Data("".utf8), withName: "image")
         }

@@ -73,7 +73,7 @@ class BoardWriteView:UIViewController, ViewProtocol{
         let rightItemButton = UIBarButtonItem()
         rightItemButton.title = "작성"
         rightItemButton.style = .plain
-        rightItemButton.tintColor = .white.withAlphaComponent(0.7)
+        rightItemButton.tintColor = .white.withAlphaComponent(0.5)
         rightItemButton.target = self
         rightItemButton.action = #selector(addTapped)
         self.BindingBoardWrite()
@@ -329,34 +329,11 @@ extension BoardWriteView:UITextFieldDelegate{
     @objc func setRightItemColor(){
         if self.titleField.text != "" && self.contentField.text != "" && self.categoryIndex != -1{
             self.contentCheck = true
-            rightItemButton.tintColor = .white
+            self.rightItemButton.tintColor = .white
         }else{
             self.contentCheck = false
-            rightItemButton.tintColor = .white.withAlphaComponent(0.7)
+            self.rightItemButton.tintColor = .white.withAlphaComponent(0.5)
         }
-    }
-}
-
-extension BoardWriteView{
-    func BindingBoardWrite(){
-        self.boardWriteViewModel.Listener.binding(successHandler: { response in
-            if response.success{
-                self.boardWriteViewModel.shouldbeReload.value = true
-                
-                //작성하고 pop하기 전에 reload한다. need to code refactoring
-                if let parentView = self.getTopViewController() as? TabView, let tabView = parentView.children[2] as? BoardTabView{
-                    tabView.BoardVC.boardViewModel.getBoardsByFirstPage()
-                }
-                
-                self.navigationController?.popViewController(animated: true)
-            }
-        }, failHandler: { Error in
-            Alert(title: "작성 실패", message: "네트워크 상태를 확인하세요.", viewController: self).popUpDefaultAlert(action: nil)
-        }, asyncHandler: {
-            self.indicator.startIndicator()
-        }, endHandler: {
-            self.indicator.stopIndicator()
-        })
     }
 }
 
@@ -371,6 +348,7 @@ extension BoardWriteView:UICollectionViewDataSource, UICollectionViewDelegate{
         }
         
         cell.imageURL = imageURLs[indexPath.row]
+        cell.calledType = .boardWrite
         cell.deleteBtn.addAction { [weak self] in
             if (self?.cellTapped) == false{
                 for i in (0..<(self?.images.count)!){
@@ -421,7 +399,7 @@ extension BoardWriteView{
                 DispatchQueue.main.async {
                     self?.images.append(image)
                     self?.imageURLs.append(url)
-                    self?.boardWriteViewModel.imageData.append(image.jpegData(compressionQuality: 0.5)!)
+                    self?.boardWriteViewModel.imageData.append(image.jpegData(compressionQuality: 0.4)!)
                     self?.photosView.reloadData()
                 }
             }
@@ -441,3 +419,27 @@ extension BoardWriteView{
         self.navigationController?.present(VC, animated: true, completion: nil)
     }
 }
+
+extension BoardWriteView{
+    func BindingBoardWrite(){
+        self.boardWriteViewModel.Listener.binding(successHandler: { response in
+            if response.success{
+                self.boardWriteViewModel.shouldbeReload.value = true
+                
+                //작성하고 pop하기 전에 reload한다. need to code refactoring
+                if let parentView = self.getTopViewController() as? TabView, let tabView = parentView.children[2] as? BoardTabView{
+                    tabView.BoardVC.boardViewModel.getBoardsByFirstPage()
+                }
+                
+                self.navigationController?.popViewController(animated: true)
+            }
+        }, failHandler: { Error in
+            Alert(title: "작성 실패", message: "네트워크 상태를 확인하세요.", viewController: self).popUpDefaultAlert(action: nil)
+        }, asyncHandler: {
+            self.indicator.startIndicator()
+        }, endHandler: {
+            self.indicator.stopIndicator()
+        })
+    }
+}
+

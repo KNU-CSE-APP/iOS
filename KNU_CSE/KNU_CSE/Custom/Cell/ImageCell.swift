@@ -34,6 +34,11 @@ class ImageCell : UICollectionViewCell {
     }()
     
     var imageURL: String = ""
+    var calledType: CalledType!{
+        didSet{
+            self.setUpConstraints()
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -47,7 +52,7 @@ class ImageCell : UICollectionViewCell {
     func draw(){
         initUI()
         addView()
-        setUpConstraints()
+        
     }
     
     func initUI(){
@@ -56,10 +61,23 @@ class ImageCell : UICollectionViewCell {
     
     func addView(){
         self.contentView.addSubview(self.imageView)
-        self.contentView.addSubview(self.deleteBtn)
     }
     
     func setUpConstraints(){
+        switch calledType {
+        case .boardWrite:
+            self.constraintsOfBoardWrite()
+        case .boardDetail:
+            self.constraintsOfBoardDetail()
+        case .none:
+            break
+        }
+        
+    }
+    
+    func constraintsOfBoardWrite(){
+        self.contentView.addSubview(self.deleteBtn)
+        
         self.imageView.snp.makeConstraints{ make in
             make.width.height.equalTo(80)
         }
@@ -71,6 +89,17 @@ class ImageCell : UICollectionViewCell {
             make.width.height.equalTo(btnSize)
         }
     }
+    
+    func constraintsOfBoardDetail(){
+        self.imageView.snp.makeConstraints{ make in
+            make.width.height.equalTo(100)
+        }
+    }
+    
+    enum CalledType{
+        case boardWrite
+        case boardDetail
+    }
 }
 
 extension ImageCell{
@@ -78,3 +107,5 @@ extension ImageCell{
         self.image = image
     }
 }
+
+

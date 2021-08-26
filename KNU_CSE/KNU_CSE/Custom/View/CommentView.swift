@@ -7,6 +7,7 @@
 
 import UIKit
 import Foundation
+import SnapKit
 
 class CommentView: UIStackView {
     
@@ -19,6 +20,32 @@ class CommentView: UIStackView {
     var deleteAction:((Int)->Void)?
     var stackViews:[UIView] = []
     
+    var borderLine:UIView = {
+        var borderLine = UIView()
+        borderLine.layer.borderWidth = 0.5
+        borderLine.layer.borderColor = UIColor.lightGray.cgColor
+        
+        return borderLine
+    }()
+    
+    lazy var label : UILabel = {
+        var label = UILabel()
+        label.text = "작성된 댓글이 없습니다"
+        label.font = UIFont.systemFont(ofSize: 20, weight: .thin)
+        label.tintColor = .lightGray
+        label.textAlignment = .center
+        
+        self.addSubview(self.borderLine)
+        self.borderLine.snp.makeConstraints{ make in
+            make.top.equalToSuperview()
+            make.left.equalToSuperview().offset(10)
+            make.right.equalToSuperview().offset(-10)
+            make.height.equalTo(0.5)
+        }
+        
+        return label
+    }()
+    
     init(storyboard:UIStoryboard?, navigationVC:UINavigationController?, currentVC:UIViewController, isHiddenReplyBtn:Bool){
         self.storyboard = storyboard
         self.navigationVC = navigationVC
@@ -29,6 +56,19 @@ class CommentView: UIStackView {
     
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func addInitialView(){
+        self.addSubview(self.label)
+        self.label.snp.makeConstraints{ make in
+            make.left.right.equalToSuperview()
+            make.height.equalTo(200)
+        }
+    }
+    
+    func removeInitialView(){
+        self.label.removeFromSuperview()
+        self.label.snp.removeConstraints()
     }
     
     /// StackView에 CommentCell, ReplyCell 추가

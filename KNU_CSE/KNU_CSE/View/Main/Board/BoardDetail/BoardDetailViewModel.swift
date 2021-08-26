@@ -6,16 +6,17 @@
 //
 
 import Foundation
+import Alamofire
 
 struct BoardDetailViewModel{
     var getBoardListener:BaseAction<Board, errorHandler> = BaseAction()
     var getCommentListener:BaseAction<[Comment], errorHandler> = BaseAction()
     var writeCommentListener:BaseAction<Comment, errorHandler> = BaseAction()
     var deleteCommentListener:BaseAction<String, errorHandler> = BaseAction()
+        
+    var board:Observable<Board> = Observable(Board(boardId: 0, category: "", title: "", content: "", author: "", time: "", profileImg: "", commentCnt: 0, images: []))
     
-    var board:Observable<Board> = Observable(Board(image: "", boardId: 0, category: "", title: "", content: "", author: "", time: "", commentCnt: 0))
-    
-    var comments:[Comment] = []
+    var comments:Observable<[Comment]> = Observable([])
     var comment:CommentTextModel = CommentTextModel()
     var listener:((String)->Void)?
     
@@ -48,5 +49,18 @@ extension BoardDetailViewModel{
     public func deleteCommentRequest(commentId:Int){
         let request = Request(requestBodyObject: nil, requestMethod: .delete, enviroment: .deleteComment(commentId))
         request.sendRequest(request: request, responseType: String.self, errorType: errorHandler.self, action:self.deleteCommentListener)
+    }
+    
+    public func getImage(imageURL:String, successHandler: @escaping (Data)->()){
+        AF.request(imageURL, method: .get).responseData{ response in
+            switch response.result {
+            case .success(_):
+                if let data = response.data {
+                    successHandler(data)
+                }
+            case .failure(_):
+                break
+            }
+        }
     }
 }
