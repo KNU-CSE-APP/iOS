@@ -78,6 +78,19 @@ extension BoardDetailViewModel{
         }
     }
     
+    public func getImage(imageURL:String, index:Int, successHandler: @escaping (Data, Int)->()){
+        AF.request(imageURL, method: .get).responseData{ response in
+            switch response.result {
+            case .success(_):
+                if let data = response.data {
+                    successHandler(data, index)
+                }
+            case .failure(_):
+                break
+            }
+        }
+    }
+    
     public func deleteBoard(){
         self.comment.boardId = self.board.value.boardId
         let request = Request(requestBodyObject: nil, requestMethod: .delete, enviroment: .deleteBoard(board.value.boardId))

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class ImageCell : UICollectionViewCell {
     static let identifier = "ImageCell"
@@ -33,7 +34,15 @@ class ImageCell : UICollectionViewCell {
         return deleteBtn
     }()
     
-    var imageURL: String = ""
+    var imageURL: String = ""{
+        didSet{
+            self.getImage(imageURL: imageURL, index:0){ [self] data, index in
+                if let image = UIImage(data: data)?.resized(toWidth: 100) {
+                    self.setImage(image: image)
+                }
+            }
+        }
+    }
     var calledType: CalledType!{
         didSet{
             self.setUpConstraints()
@@ -52,7 +61,6 @@ class ImageCell : UICollectionViewCell {
     func draw(){
         initUI()
         addView()
-
     }
     
     func initUI(){
@@ -105,6 +113,19 @@ class ImageCell : UICollectionViewCell {
 extension ImageCell{
     func setImage(image: UIImage) {
         self.image = image
+    }
+    
+    public func getImage(imageURL:String, index:Int, successHandler: @escaping (Data, Int)->()){
+        AF.request(imageURL, method: .get).responseData{ response in
+            switch response.result {
+            case .success(_):
+                if let data = response.data {
+                    successHandler(data, index)
+                }
+            case .failure(_):
+                break
+            }
+        }
     }
 }
 

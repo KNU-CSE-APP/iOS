@@ -96,13 +96,13 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
     }
     
     var cellTapped: Bool = false
-    var uiImages: [UIImage] = []{
+    var uiImages: [UIImage]!{
         didSet{
-            self.photosView.reloadData()
+            //self.photoView.reloadData()
         }
     }
     
-    lazy var photosView:UICollectionView = {
+    lazy var photoView:UICollectionView = {
         var photoView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
         photoView.backgroundColor = .white
         photoView.dataSource = self
@@ -110,8 +110,8 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
         photoView.register(ImageCell.self, forCellWithReuseIdentifier: ImageCell.identifier)
         photoView.contentInset = UIEdgeInsets.init(top: 5, left: 5, bottom: -5, right: -5)
         photoView.isMultipleTouchEnabled = false
-        photoView.isHidden = true
         
+        photoView.isHidden = true
         
         let layout = photoView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.itemSize = CGSize(width: 100, height: 100)
@@ -236,11 +236,13 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
         
         self.Binding()
         self.boardDetailViewModel.getCommentRequest()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.boardDetailViewModel.getBoardRequest()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -273,7 +275,7 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
     func addView(){
         self.view.addSubview(scrollView)
         self.scrollView.addSubview(boardContentView)
-        _ = [authorLabel,authorImageView, dateLabel, titleLabel, contentLabel, photosView, categoryLabel, photoImage, photoLabel, commentImage, commentLabel, stackView].map { self.boardContentView.addSubview($0)}
+        _ = [authorLabel,authorImageView, dateLabel, titleLabel, contentLabel, photoView, categoryLabel, photoImage, photoLabel, commentImage, commentLabel, stackView].map { self.boardContentView.addSubview($0)}
         
         self.view.addSubview(textFieldView)
         _ = [borderLine,textField,textFieldBtn].map{
@@ -331,12 +333,12 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
             make.right.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
         }
         
-        self.photosView.snp.makeConstraints{ make in
+        self.photoView.snp.makeConstraints{ make in
             make.top.equalTo(self.contentLabel.snp.bottom).offset(30)
             make.left.equalTo(self.view.safeAreaLayoutGuide).offset(20)
             make.right.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
             if (self.boardDetailViewModel.board.value.images.count) > 0 {
-                self.photosView.isHidden = false
+                self.photoView.isHidden = false
                 make.height.equalTo(120)
             }else{
                 make.height.equalTo(0)
@@ -344,21 +346,21 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
         }
         
         self.photoImage.snp.makeConstraints{ make in
-            make.top.equalTo(self.photosView.snp.bottom).offset(10)
+            make.top.equalTo(self.photoView.snp.bottom).offset(10)
             make.right.equalTo(photoLabel.snp.left).offset(-5)
             make.height.equalTo(height*0.1)
             make.width.equalTo(height*0.1)
         }
 
         self.photoLabel.snp.makeConstraints{ make in
-            make.top.equalTo(self.photosView.snp.bottom).offset(10)
+            make.top.equalTo(self.photoView.snp.bottom).offset(10)
             make.right.equalTo(commentImage.snp.left).offset(-10)
             make.height.equalTo(height*0.1)
             //make.width.equalTo(height*0.15)
         }
         
         self.commentLabel.snp.makeConstraints{ make in
-            make.top.equalTo(self.photosView.snp.bottom).offset(10)
+            make.top.equalTo(self.photoView.snp.bottom).offset(10)
             make.right.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
             make.height.equalTo(height*0.1)
             //make.width.equalTo(height*0.1)
@@ -481,7 +483,7 @@ extension BoardDetailView:BoardDataDelegate, ReplyDataDelegate{
 
 extension BoardDetailView:UICollectionViewDataSource, UICollectionViewDelegate{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.uiImages.count
+        return self.boardDetailViewModel.board.value.images.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -490,10 +492,39 @@ extension BoardDetailView:UICollectionViewDataSource, UICollectionViewDelegate{
             return UICollectionViewCell()
         }
         let imageURL = self.boardDetailViewModel.board.value.images[indexPath.row]
-        //print(imageURL, indexPath.row)
+
         cell.imageURL = imageURL
-        cell.setImage(image: self.uiImages[indexPath.row])
         cell.calledType = .boardDetail
+    
+//        self.boardDetailViewModel.getImage(imageURL: imageURL, index:indexPath.row){ [self] data, index in
+//            if let image = UIImage(data: data)?.resized(toWidth: 100) {
+//                print("loaddid image \(index)")
+//                //let imageURLs = self.boardDetailViewModel.board.value.images
+//                self.uiImages[index] = image
+//                //cell.setImage(image: self.uiImages[index])
+//            }
+//        }
+//
+        cell.imageView.addAction { [weak self] in
+            print("touched \(indexPath.row)")
+            self?.cellTapped = false
+            if self?.cellTapped == false{
+                
+                if let VC = self?.storyboard?.instantiateViewController(withIdentifier: "DetailImageView") as? DetailImageView, let images = self?.uiImages{
+                    for i in 0..<images.count{
+                        if self?.boardDetailViewModel.board.value.images[i] == cell.imageURL{
+                            VC.modalPresentationStyle = .fullScreen
+                            self?.present(VC, animated: true)
+                            let delegate: ImageDelegate = VC
+                            delegate.sendImages(images: images, index: i)
+                            self?.cellTapped = true
+                            break
+                        }
+                    }
+                }
+            }
+        }
+        
         if indexPath.row == 0 {
             cell.backgroundColor = .green
         }else if indexPath.row == 1 {
@@ -501,27 +532,13 @@ extension BoardDetailView:UICollectionViewDataSource, UICollectionViewDelegate{
         }else{
             cell.backgroundColor = .yellow
         }
-
-        cell.imageView.addAction { [weak self] in
-            if self?.cellTapped == false{
-                print("touched \(indexPath.row)")
-                if let VC = self?.storyboard?.instantiateViewController(withIdentifier: "DetailImageView") as? DetailImageView, let images = self?.uiImages{
-                    VC.modalPresentationStyle = .fullScreen
-                    self?.present(VC, animated: true)
-
-                    let delegate: ImageDelegate = VC
-                    delegate.sendImages(images: images, index: (self?.boardDetailViewModel.board.value.images.firstIndex(of: imageURL))!)
-                }
-                self?.cellTapped = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
-                    self?.cellTapped = false
-                }
-            }
-        }
-    
+        
         return cell
     }
-
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath)
+    }
 }
 
 
@@ -615,28 +632,15 @@ extension BoardDetailView{
             self.image = image!
         }
     }
-    
-    func initPhotoView(imageURLs: [String]){
-        self.uiImages = [UIImage](repeating: UIImage(), count: imageURLs.count)
-        for i in 0..<imageURLs.count{
-            let imageURL = imageURLs[i]
-            DispatchQueue.main.async {
-                self.boardDetailViewModel.getImage(imageURL: imageURL){ data in
-                    let image = UIImage(data: data)?.resized(toWidth: 100)
-                    self.uiImages[i] = image!
-                }
-            }
-        }
-    }
-    
+
     func updataPhoptoViewConstrains(){
-        self.photosView.snp.removeConstraints()
-        self.photosView.snp.makeConstraints{ make in
+        self.photoView.snp.removeConstraints()
+        self.photoView.snp.makeConstraints{ make in
             make.top.equalTo(self.contentLabel.snp.bottom).offset(30)
             make.left.equalTo(self.view.safeAreaLayoutGuide).offset(20)
             make.right.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
             if (self.boardDetailViewModel.board.value.images.count) > 0 {
-                self.photosView.isHidden = false
+                self.photoView.isHidden = false
                 make.height.equalTo(120)
             }else{
                 make.height.equalTo(0)
@@ -672,9 +676,10 @@ extension BoardDetailView{
                 self?.photoLabel.text = "\(board.images.count)"
             }
             
-            self?.initPhotoView(imageURLs: board.images)
+            self?.uiImages = [UIImage](repeating: UIImage(), count: board.images.count)
             self?.updataPhoptoViewConstrains()
             self?.initRightBtn()
+            self?.photoView.reloadData()
         }
     }
     
