@@ -33,21 +33,6 @@ struct ReplyViewModel{
     mutating func addReply(reply:Comment){
         self.comment.value?.replyList.append(reply)
     }
-    
-    //새로 작성된 댓글을 반환해주는 함수
-    mutating func addLaterReply(lateReplys:[Comment]){
-        for lateReply in lateReplys{
-            var flag = true
-            for oldReply in self.comment.value!.replyList{
-                if oldReply.commentId == lateReply.commentId{
-                    flag = false
-                }
-            }
-            if flag{
-                self.newReplys.value.append(lateReply)
-            }
-        }
-    }
 }
 
 extension ReplyViewModel{

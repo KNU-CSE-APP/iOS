@@ -396,6 +396,36 @@
             </objects>
             <point key="canvasLocation" x="3172" y="2546"/>
         </scene>
+        <!--Picker View-->
+        <scene sceneID="t1K-Nc-ImA">
+            <objects>
+                <viewController storyboardIdentifier="PHPickerView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hgk-h5-3WY" customClass="PHPickerView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="iXo-BO-Fl0">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="AZx-4Q-jW3"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="m6B-wZ-CJt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3171" y="3242"/>
+        </scene>
+        <!--Detail Image View-->
+        <scene sceneID="oyH-7I-7Al">
+            <objects>
+                <viewController storyboardIdentifier="DetailImageView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="wT0-xp-bpt" customClass="DetailImageView" customModule="KNU_CSE" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="vVc-Ts-n2h">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="owQ-B6-6DV"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="reY-OJ-xJx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3906" y="2546"/>
+        </scene>
     </scenes>
     <resources>
         <image name="arrow.up.bin.fill" catalog="system" width="128" height="93"/>

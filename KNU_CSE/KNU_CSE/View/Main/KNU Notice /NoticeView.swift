@@ -1,4 +1,4 @@
-//
+ //
 //  NoticeView.swift
 //  KNU_CSE
 //

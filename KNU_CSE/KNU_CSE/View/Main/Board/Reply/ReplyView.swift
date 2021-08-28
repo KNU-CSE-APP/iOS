@@ -33,7 +33,6 @@ class ReplyView:BaseUIViewController, ViewProtocol{
         didSet{
             stackView.axis = .vertical
             stackView.distribution = .fill
-            stackView.InitToStackView(comments: [self.replyViewModel.comment.value!], board: self.replyViewModel.board)
         }
     }
     
@@ -100,6 +99,8 @@ class ReplyView:BaseUIViewController, ViewProtocol{
         self.BindingWriteReply()
         self.BindingGetComment()
         self.BindingDeleteComment()
+        
+        self.replyViewModel.getCommentRequest()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -110,7 +111,7 @@ class ReplyView:BaseUIViewController, ViewProtocol{
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.sendReplyToParent(replys: self.replyViewModel.newReplys.value)
+        self.sendReplyToParent(comment: self.replyViewModel.comment.value)
     }
     
     func initUI(){
@@ -128,7 +129,7 @@ class ReplyView:BaseUIViewController, ViewProtocol{
     func addView(){
         self.view.addSubview(scrollView)
         self.scrollView.addSubview(boardContentView)
-        _ = [ stackView].map { self.boardContentView.addSubview($0)}
+        _ = [stackView].map { self.boardContentView.addSubview($0)}
         
         self.view.addSubview(textFieldView)
         _ = [borderLine,textField,textFieldBtn].map{
@@ -205,11 +206,11 @@ extension ReplyView:CommentDataDelegate{
         self.replyViewModel.comment.value = comment
     }
     
-    func sendReplyToParent(replys:[Comment]){
+    func sendReplyToParent(comment:Comment?){
         if let index = self.navigationController?.children.count{
             if self.navigationController?.children != nil{
                 self.delegate = self.navigationController?.children[index-1] as? BoardDetailView
-                self.delegate?.sendReply(replys: replys, removedCommentId:self.replyViewModel.removedCommentId)
+                self.delegate?.sendReply(comment: comment)
             }
         }
     }
@@ -285,9 +286,11 @@ extension ReplyView:UITextViewDelegate{
     
     func completedWriteComment(){
         self.textField.text = ""
+        self.replyViewModel.replyBody.content = nil
         self.setPlaceHolder(self.textField)
         self.textField.resignFirstResponder()
         
+        self.textViewDidChange(self.textField)
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)){
             self.scrollView.scrollToBottom()
         }

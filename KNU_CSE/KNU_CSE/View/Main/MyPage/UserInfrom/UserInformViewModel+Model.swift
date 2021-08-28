@@ -18,6 +18,12 @@ struct UserInformViewModel{
         
     }
     
+    func storeNickName(nickName:String){
+        UserDefaults.standard.setValue(nickName, forKey: "nickName")
+    }
+}
+
+extension UserInformViewModel{
     func getUserInform(){
         let request = Request(requestBodyObject: nil, requestMethod: .get, enviroment: .getInform)
         request.sendRequest(request: request, responseType: Profile.self, errorType: errorHandler.self, action:self.getInformlistener)
@@ -83,7 +89,7 @@ class Profile:BaseObject{
         }
         
         if let image = imageData{
-            multipartFormData.append(image, withName: "image", fileName: "\(String(describing: nickname))_profile", mimeType: "image/jpeg")
+            multipartFormData.append(image, withName: "image", fileName: "\(String(describing: nickname))!_profile.jpg", mimeType: "image/jpeg")
         }else{
             multipartFormData.append(Data("".utf8), withName: "image")
         }

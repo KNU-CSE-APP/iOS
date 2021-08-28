@@ -11,7 +11,6 @@ struct BoardViewModel{
     var BoardsByPagingAction: BaseAction<BoardsWithPaging, errorHandler> = BaseAction()
     var getBoardAction:BaseAction<[Board], errorHandler> = BaseAction()
     
-    
     var boards : [Board] = []
     var category:Observable<String> = Observable("FREE")
     var page:Int = 0
@@ -58,7 +57,7 @@ extension BoardViewModel{
     }
     
     func getBoardsByMyBoards(){
-        let request = Request(requestBodyObject: nil, requestMethod: .get, enviroment: .getBoardMyBoard)
+        let request = Request(requestBodyObject: nil, requestMethod: .get, enviroment: .getMyBoard)
         request.sendRequest(request: request, responseType: [Board].self, errorType: errorHandler.self, action:self.getBoardAction)
     }
 }

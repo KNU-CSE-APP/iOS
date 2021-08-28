@@ -27,6 +27,14 @@ extension UIViewController{
         self.navigationController?.pushViewController(VC, animated: true)
     }
     
+    func pushView<T:UIViewController>(identifier:String, typeOfVC:T.Type, closure:((T)->())){
+        guard let VC = storyboard?.instantiateViewController(withIdentifier: identifier) as? T else{
+            return
+        }
+        closure(VC)
+        self.navigationController?.pushViewController(VC, animated: true)
+    }
+    
     func presentView<T:UIViewController>(identifier:String, typeOfVC:T.Type){
         guard let VC = storyboard?.instantiateViewController(withIdentifier: identifier) as? T else{
             return

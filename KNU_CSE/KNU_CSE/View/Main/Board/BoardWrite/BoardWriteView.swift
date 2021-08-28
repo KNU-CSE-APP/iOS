@@ -7,14 +7,19 @@
 
 import UIKit
 import BTNavigationDropdownMenu
+import PhotosUI
 
 class BoardWriteView:UIViewController, ViewProtocol{
     
     var boardWriteViewModel:BoardWriteViewModel = BoardWriteViewModel()
+    var editClosure:(()->())?
+    var parentType: ParentType!
     
     lazy var scrollView:UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.alwaysBounceVertical = true
+        scrollView.layer.borderWidth = 0.5
+        scrollView.layer.borderColor = UIColor.lightGray.cgColor
         return scrollView
     }()
     
@@ -29,7 +34,7 @@ class BoardWriteView:UIViewController, ViewProtocol{
             self.textFieldHeight = font.lineHeight + 20
         }
         titleField.bind{ [weak self] title in
-            self?.boardWriteViewModel.model.title = title
+            self?.boardWriteViewModel.model.value.title = title
         }
         return titleField
     }()
@@ -39,12 +44,6 @@ class BoardWriteView:UIViewController, ViewProtocol{
         borderLine.layer.borderWidth = 0.3
         borderLine.layer.borderColor = UIColor.lightGray.cgColor
         return borderLine
-    }()
-    
-    lazy var categoryLabel:UILabel = {
-        var categoryLabel = UILabel()
-        categoryLabel.text = "추천 카테고리"
-        return categoryLabel
     }()
     
     lazy var contentField:UITextView = {
@@ -70,10 +69,9 @@ class BoardWriteView:UIViewController, ViewProtocol{
         let rightItemButton = UIBarButtonItem()
         rightItemButton.title = "작성"
         rightItemButton.style = .plain
-        rightItemButton.tintColor = .white.withAlphaComponent(0.7)
+        rightItemButton.tintColor = .white.withAlphaComponent(0.5)
         rightItemButton.target = self
         rightItemButton.action = #selector(addTapped)
-        self.BindingBoardWrite()
         return rightItemButton
     }()
     
@@ -101,21 +99,81 @@ class BoardWriteView:UIViewController, ViewProtocol{
                 if let selfVC = self {
                     selfVC.categoryIndex = indexPath
                     selfVC.setRightItemColor()
-                    selfVC.boardWriteViewModel.model.category = selfVC.menuDict[selfVC.menu[indexPath]]!
+                    selfVC.boardWriteViewModel.model.value.category = selfVC.menuDict[selfVC.menu[indexPath]]!
                 }
             }
+            
             self.navigationItem.titleView = self.navigatiopDropDown
             self.navigationItem.rightBarButtonItem = rightItemButton
         }
     }
     
-    lazy var indicator:IndicatorView = {
+    var cellTapped: Bool = false
+    lazy var photosView:UICollectionView = {
+        var photoView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
+        photoView.backgroundColor = .white
+        photoView.dataSource = self
+        photoView.delegate = self
+        photoView.register(ImageCell.self, forCellWithReuseIdentifier: ImageCell.identifier)
+        photoView.isHidden = true
+        photoView.contentInset = UIEdgeInsets.init(top: 5, left: 10, bottom: -5, right: -10)
+        photoView.isMultipleTouchEnabled = false
+        
+        let layout = photoView.collectionViewLayout as! UICollectionViewFlowLayout
+        
+        layout.itemSize = CGSize(width: 100, height: 100)
+        layout.minimumInteritemSpacing = 10
+        layout.minimumLineSpacing = 30
+        layout.scrollDirection = .horizontal
+        
+        return photoView
+    }()
+    
+    var images: [UIImage] = []{
+        didSet{
+            self.photoLabel.text = "\(self.images.count)/10"
+        }
+    }
+    var imageURLs: [String] = []
+
+    lazy var photoBtn:UIButton = {
+        var photoBtn = UIButton()
+        photoBtn.setImage(UIImage.init(systemName: "photo.on.rectangle.angled"), for: .normal)
+        photoBtn.imageView?.tintColor = UIColor.lightGray
+        
+        photoBtn.addAction {
+            self.presentPhotoView()
+        }
+        
+        return photoBtn
+    }()
+    
+    lazy var photoLabel:UILabel! = {
+        var photoLabel = UILabel()
+        photoLabel.text = "0/10"
+        photoLabel.textColor = UIColor.lightGray
+        return photoLabel
+    }()
+    
+    lazy var resignBtn:UIButton! = {
+        var resignBtn = UIButton()
+        resignBtn.isHidden = true
+        resignBtn.setImage(UIImage.init(systemName: "keyboard.chevron.compact.down"), for: .normal)
+        resignBtn.imageView?.tintColor = UIColor.lightGray
+        resignBtn.addAction {
+            self.contentField.resignFirstResponder()
+        }
+        return resignBtn
+    }()
+    
+    lazy var indicator: IndicatorView = {
         let indicator = IndicatorView(viewController: self)
         return indicator
     }()
     
     override func viewWillAppear(_ animated: Bool) {
         self.setNavigationTitle(title: "게시물 작성")
+        self.hideBackTitle()
     }
     
     override func viewDidLoad() {
@@ -124,17 +182,22 @@ class BoardWriteView:UIViewController, ViewProtocol{
         self.addView()
         self.setUpConstraints()
         self.setKeyBoardAction()
+        
+        self.Binding()
     }
     
     
     func initUI() {
         self.navigatiopDropDown = BTNavigationDropdownMenu(title: "카테고리를 설정해주세요.", items: self.menu)
-        
     }
     
     func addView() {
         self.view.addSubview(scrollView)
-        _ = [self.titleField, self.borderLine, self.contentField, self.contentPlaceHolder, self.categoryLabel].map{
+        self.view.addSubview(self.photoBtn)
+        self.view.addSubview(self.photoLabel)
+        self.view.addSubview(self.resignBtn)
+        
+        _ = [self.titleField, self.borderLine, self.photosView, self.contentField, self.contentPlaceHolder].map{
             self.scrollView.addSubview($0)
         }
     }
@@ -148,7 +211,7 @@ class BoardWriteView:UIViewController, ViewProtocol{
             make.top.equalTo(self.view.safeAreaLayoutGuide)
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide)
+            make.bottom.equalTo(self.photoBtn.snp.top)
         }
         
         self.titleField.snp.makeConstraints{ make in
@@ -165,11 +228,23 @@ class BoardWriteView:UIViewController, ViewProtocol{
             make.height.equalTo(0.3)
         }
         
-        self.contentField.snp.makeConstraints{ make in
+        self.photosView.snp.makeConstraints{ make in
             make.top.equalTo(self.borderLine.snp.bottom).offset(10)
             make.left.equalTo(self.view.safeAreaLayoutGuide).offset(left_margin)
             make.right.equalTo(self.view.safeAreaLayoutGuide).offset(right_margin)
-            make.bottom.equalToSuperview()
+            if self.images.count > 0 {
+                self.photosView.isHidden = false
+                make.height.equalTo(100)
+            }else{
+                make.height.equalTo(0)
+            }
+        }
+        
+        self.contentField.snp.makeConstraints{ make in
+            make.top.equalTo(self.photosView.snp.bottom).offset(10)
+            make.left.equalTo(self.view.safeAreaLayoutGuide).offset(left_margin)
+            make.right.equalTo(self.view.safeAreaLayoutGuide).offset(right_margin)
+            make.bottom.equalTo(self.scrollView.snp.bottom).offset(-40)
         }
         
         self.contentPlaceHolder.snp.makeConstraints{ make in
@@ -178,6 +253,39 @@ class BoardWriteView:UIViewController, ViewProtocol{
             make.right.equalToSuperview().offset(right_margin)
             make.height.equalTo(self.contentField.snp.height)
         }
+        
+        self.photoBtn.snp.makeConstraints{ make in
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide)
+            make.height.equalTo(50)
+            make.width.equalTo(50)
+            make.left.equalTo(self.view.safeAreaLayoutGuide).offset(5)
+        }
+        
+        self.photoLabel.snp.makeConstraints{ make in
+            make.height.width.bottom.equalTo(self.photoBtn)
+            make.left.equalTo(self.photoBtn.snp.right).offset(5)
+        }
+        
+        self.resignBtn.snp.makeConstraints{ make in
+            make.height.width.bottom.equalTo(self.photoBtn)
+            make.right.equalTo(self.view.safeAreaLayoutGuide).offset(-5)
+        }
+    }
+}
+
+extension BoardWriteView: BoardDataforEditDelegate{
+    func sendBoard(board: Board?, images: [UIImage]?, imageURLs: [String]?, closure:@escaping ()->()) {
+        self.rightItemButton.title = "수정"
+        
+        if let board = board, let uiImages = images, let imageURLs = imageURLs{
+            self.boardWriteViewModel.model.value.title = board.title
+            self.boardWriteViewModel.model.value.content = board.content
+            self.boardWriteViewModel.model.value.category = menuDict[board.category]!
+            self.boardWriteViewModel.boardId = board.boardId
+            self.images = uiImages
+            self.imageURLs = imageURLs
+        }
+        self.editClosure = closure
     }
 }
 
@@ -190,15 +298,18 @@ extension BoardWriteView{
     
     @objc func keyboardWillShow(notification: NSNotification) {
         animateWithKeyboard(notification: notification) { (keyboardFrame) in
-            self.scrollView.snp.updateConstraints{ make in
-                make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-keyboardFrame.height+self.view.safeAreaInsets.bottom-20)
+            self.resignBtn.isHidden = false
+            self.photoBtn.snp.updateConstraints{ make in
+                make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-keyboardFrame.height+self.view.safeAreaInsets.bottom)
             }
+            
         }
     }
 
     @objc func keyboardWillHide(notification: NSNotification) {
         animateWithKeyboard(notification: notification) { (keyboardFrame) in
-            self.scrollView.snp.updateConstraints{ make in
+            self.resignBtn.isHidden = true
+            self.photoBtn.snp.updateConstraints{ make in
                 make.bottom.equalTo(self.view.safeAreaLayoutGuide)
             }
         }
@@ -206,8 +317,8 @@ extension BoardWriteView{
     
     @objc func addTapped(){
         if contentCheck{
-            print(self.boardWriteViewModel.model.category, self.boardWriteViewModel.model.content, self.boardWriteViewModel.model.title)
-            self.boardWriteViewModel.BoardWriteRequest()
+            //let model = self.boardWriteViewModel.model.value
+            self.boardWriteViewModel.request(parentType: self.parentType)
         }
     }
 }
@@ -217,7 +328,7 @@ extension BoardWriteView:UITextViewDelegate{
         self.contentPlaceHolder.isHidden = !textView.text.isEmpty
         self.setRightItemColor()
         if textView == self.contentField{
-            self.boardWriteViewModel.model.content = textView.text
+            self.boardWriteViewModel.model.value.content = textView.text
         }
     }
     
@@ -236,17 +347,129 @@ extension BoardWriteView:UITextFieldDelegate{
     @objc func setRightItemColor(){
         if self.titleField.text != "" && self.contentField.text != "" && self.categoryIndex != -1{
             self.contentCheck = true
-            rightItemButton.tintColor = .white
+            self.rightItemButton.tintColor = .white
         }else{
             self.contentCheck = false
-            rightItemButton.tintColor = .white.withAlphaComponent(0.7)
+            self.rightItemButton.tintColor = .white.withAlphaComponent(0.5)
         }
     }
 }
 
+extension BoardWriteView:UICollectionViewDataSource, UICollectionViewDelegate{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.images.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.identifier, for: indexPath) as? ImageCell else{
+            return UICollectionViewCell()
+        }
+        
+        cell.imageURL = imageURLs[indexPath.row]
+        cell.calledType = .boardWrite
+        cell.deleteBtn.addAction { [weak self] in
+            if (self?.cellTapped) == false{
+                for i in (0..<(self?.images.count)!){
+                    if cell.imageURL == self?.imageURLs[i]{
+                        self?.images.remove(at: i)
+                        self?.imageURLs.remove(at: i)
+                        self?.boardWriteViewModel.model.value.deleteUrl.append(cell.imageURL)
+                        break
+                    }
+                }
+                self?.photosView.reloadData()
+                self?.cellTapped = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+                    self?.cellTapped = false
+                }
+            }
+        }
+        
+        cell.imageView.addAction { [weak self] in
+            if self?.cellTapped == false{
+                if let VC = self?.storyboard?.instantiateViewController(withIdentifier: "DetailImageView") as? DetailImageView, let images = self?.images{
+                    VC.modalPresentationStyle = .fullScreen
+                    self?.present(VC, animated: true)
+                    
+                    let delegate: ImageDelegate = VC
+                    delegate.sendImages(images: images, index: indexPath.row)
+                }
+                
+                self?.cellTapped = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+                    self?.cellTapped = false
+                }
+            }
+        }
+        cell.setImage(image: images[indexPath.row])
+        return cell
+    }
+}
+
 extension BoardWriteView{
+    func presentPhotoView(){
+        guard let VC = storyboard?.instantiateViewController(withIdentifier: "PhotoView") as? PhotoView else{
+            return
+        }
+        VC.modalPresentationStyle = .overFullScreen
+        VC.isMutltiSelection = true
+        VC.setListener{ [weak self] image, url in
+            do{
+                DispatchQueue.main.async {
+                    self?.images.append(image)
+                    self?.imageURLs.append(url)
+                    self?.boardWriteViewModel.imageData.append(image.jpegData(compressionQuality: 0.4)!)
+                    self?.photosView.reloadData()
+                }
+            }
+        }
+        
+        VC.setInitListener { [weak self] in
+            self?.photosView.isHidden = false
+            self?.photosView.snp.updateConstraints{ make in
+                make.height.equalTo(100)
+            }
+            self?.boardWriteViewModel.model.value.deleteUrl = (self?.imageURLs)!
+            self?.images = []
+            self?.imageURLs = []
+            self?.boardWriteViewModel.imageData = []
+        }
+        
+        self.navigationController?.present(VC, animated: true, completion: nil)
+    }
+}
+
+extension BoardWriteView{
+    
+    func Binding(){
+        self.BindingBoardWrite()
+        self.BindingModel()
+        self.BindingBoardEdit()
+    }
+    
+    func BindingModel(){
+        if parentType == .Edit{
+            self.boardWriteViewModel.model.bind{ [weak self] board in
+                self?.titleField.text = board.title
+                self?.contentField.text = board.content
+                self?.contentPlaceHolder.isHidden = !((self?.contentField.text.isEmpty)!)
+                
+                if let menuDict = self?.menuDict{
+                    for (key, value) in menuDict{
+                        if value == board.category, let index =
+                            self?.menu.firstIndex(of: key){
+                            self?.categoryIndex = index
+                            self?.navigatiopDropDown.setSelected(index: index)
+                        }
+                    }
+                }
+                self?.setRightItemColor()
+            }
+        }
+    }
+    
     func BindingBoardWrite(){
-        self.boardWriteViewModel.Listener.binding(successHandler: { response in
+        self.boardWriteViewModel.writeListener.binding(successHandler: { response in
             if response.success{
                 self.boardWriteViewModel.shouldbeReload.value = true
                 
@@ -256,6 +479,25 @@ extension BoardWriteView{
                 }
                 
                 self.navigationController?.popViewController(animated: true)
+            }
+        }, failHandler: { Error in
+            Alert(title: "작성 실패", message: "네트워크 상태를 확인하세요.", viewController: self).popUpDefaultAlert(action: nil)
+        }, asyncHandler: {
+            self.indicator.startIndicator()
+        }, endHandler: {
+            self.indicator.stopIndicator()
+        })
+    }
+    
+    func BindingBoardEdit(){
+        self.boardWriteViewModel.editListener.binding(successHandler: { result in
+            if result.success{
+                Alert(title: "게시글 수정 성공", message: (result.response)!, viewController: self).popUpDefaultAlert(action: { action in
+                    self.navigationController?.popViewController(animated: true)
+                })
+            }else {
+                let message = result.response ?? "게시글 수정 실패"
+                Alert(title: "게시글 수정 실패", message: message, viewController: self).popUpDefaultAlert(action:nil)
             }
         }, failHandler: { Error in
             Alert(title: "작성 실패", message: "네트워크 상태를 확인하세요.", viewController: self).popUpDefaultAlert(action: nil)

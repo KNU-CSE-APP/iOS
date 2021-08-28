@@ -7,10 +7,12 @@
 
 class Observable<T> {
     private var listener: ((T) -> Void)?
+    private var secondlistener : ((T) -> Void)?
     
     var value: T {
         didSet {
             listener?(value)
+            secondlistener?(value)
         }
     }
     
@@ -21,5 +23,9 @@ class Observable<T> {
     func bind(_ closure: @escaping (T) -> Void) {
         closure(value)
         listener = closure
+    }
+    
+    func secondBind(_ closure: @escaping (T) -> Void) {
+        secondlistener = closure
     }
 }

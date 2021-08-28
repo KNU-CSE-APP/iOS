@@ -12,10 +12,10 @@ enum ParentType{
     case BoardTap
     case Search
     case Write
+    case Edit
 }
 
 class BoardView : BaseUIViewController, ViewProtocol{
-
     var parentType:ParentType!{
         didSet{
             self.actionBinding()
@@ -36,6 +36,10 @@ class BoardView : BaseUIViewController, ViewProtocol{
             self.boardTableView.tableFooterView = UIView(frame: .zero)
             self.boardTableView.separatorInset.left = 0
             self.boardTableView.showsVerticalScrollIndicator = true
+            
+            let refresh = UIRefreshControl()
+            refresh.addTarget(self, action: #selector(self.refresh(refresh:)), for: .valueChanged)
+            self.boardTableView.refreshControl = refresh
         }
     }
     
@@ -70,18 +74,17 @@ class BoardView : BaseUIViewController, ViewProtocol{
 }
 
 extension BoardView : UITableViewDataSource{
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.boardViewModel.boards.count == 0 && self.dataLoaded{
             switch self.parentType {
             case .BoardTap:
                     self.setTablViewBackgroundView(text: "")
-                case .Search:
-                    self.setTablViewBackgroundView(text: "검색 결과가 없습니다")
-                case .Write:
-                    self.setTablViewBackgroundView(text: "작성한 게시글이 없습니다")
-                case .none:
-                    break
+            case .Search:
+                self.setTablViewBackgroundView(text: "검색 결과가 없습니다")
+            case .Write:
+                self.setTablViewBackgroundView(text: "작성한 게시글이 없습니다")
+            default:
+                break
             }
             return 0
         }else{
@@ -92,10 +95,11 @@ extension BoardView : UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FreeBoardCell.identifier, for: indexPath) as! FreeBoardCell
-        let board = self.boardViewModel.boards[indexPath.row]
-        cell.selectionStyle = .none
-        cell.board = board
+        
+        cell.board =  self.boardViewModel.boards[indexPath.row]
         cell.height = self.cellRowHeight * 0.115
+        cell.selectionStyle = .none
+        
         return cell
     }
     
@@ -117,7 +121,7 @@ extension BoardView : UITableViewDataSource{
 extension BoardView:UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)// remove selection style
-        self.pushDetaiView(board: self.boardViewModel.boards[indexPath.row])
+        self.pushDetaiView(indexPath.row)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -128,7 +132,6 @@ extension BoardView:UITableViewDelegate{
             let requested = self.boardViewModel.requested
             let isLastPage = self.boardViewModel.isLastPage
             
-            //print(offsetY, contentHeight, height, contentHeight-height)
             if offsetY * 1.3 > (contentHeight - height) && !requested && !isLastPage{
                 self.boardViewModel.getBoardsByPaging()
                 self.boardViewModel.requested = true
@@ -141,13 +144,40 @@ extension BoardView:UITableViewDelegate{
 }
 
 extension BoardView{
-    func pushDetaiView(board:Board){
+    func pushDetaiView(_ index: Int){
         let pushVC = (self.storyboard?.instantiateViewController(withIdentifier: "BoardDetailView")) as? BoardDetailView
         if !(self.navigationController!.viewControllers.contains(pushVC!)){
+            pushVC?.boardDetailViewModel.board.secondBind{ [weak self] board in
+                self?.boardViewModel.boards[index] = board
+                self?.boardTableView.reloadData()
+            }
+            
             self.boardDelegate = pushVC
-            self.boardDelegate?.sendBoard(board: board)
+            self.boardDelegate?.sendBoardData(board:self.boardViewModel.boards[index])
+            self.boardDelegate?.deleteBoard {
+                self.boardViewModel.boards.remove(at: index)
+                self.boardTableView.reloadData()
+            }
+            
+            self.boardDelegate?.editBoard {
+                //self.boardViewModel
+            }
             self.navigationController?.pushViewController(pushVC!, animated: true)
         }
+    }
+    
+    @objc func refresh(refresh: UIRefreshControl){
+        switch parentType {
+            case .BoardTap:
+                self.boardViewModel.getBoardsByFirstPage()
+            case .Search:
+                break
+            case .Write:
+                break
+            default:
+                break
+        }
+        refresh.endRefreshing()
     }
 }
 
@@ -160,7 +190,7 @@ extension BoardView{
                 self.BindingGetBoard()
             case .Write:
                 self.BindingGetBoard()
-            case .none:
+            default:
                 break
         }
         self.BindingCategory()

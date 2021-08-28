@@ -77,6 +77,7 @@ extension TabView:UITabBarControllerDelegate{
     
     @objc func pushBoardWriteView(){
         let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "BoardWriteView") as? BoardWriteView
+        pushVC?.parentType = .Write
         self.navigationController?.pushViewController(pushVC!, animated: true)
     }
     
