@@ -31,7 +31,7 @@ class CommentView: UIStackView {
     lazy var label : UILabel = {
         var label = UILabel()
         label.text = "작성된 댓글이 없습니다"
-        label.font = UIFont.systemFont(ofSize: 20, weight: .thin)
+        label.font = UIFont.systemFont(ofSize: 20, weight: .ultraLight)
         label.tintColor = .lightGray
         label.textAlignment = .center
         

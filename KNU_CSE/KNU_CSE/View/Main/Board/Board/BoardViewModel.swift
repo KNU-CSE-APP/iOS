@@ -57,7 +57,7 @@ extension BoardViewModel{
     }
     
     func getBoardsByMyBoards(){
-        let request = Request(requestBodyObject: nil, requestMethod: .get, enviroment: .getBoardMyBoard)
+        let request = Request(requestBodyObject: nil, requestMethod: .get, enviroment: .getMyBoard)
         request.sendRequest(request: request, responseType: [Board].self, errorType: errorHandler.self, action:self.getBoardAction)
     }
 }

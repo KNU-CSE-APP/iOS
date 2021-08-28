@@ -52,7 +52,7 @@ class ImageCell : UICollectionViewCell {
     func draw(){
         initUI()
         addView()
-        
+
     }
     
     func initUI(){

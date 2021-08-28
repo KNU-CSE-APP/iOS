@@ -9,7 +9,9 @@ import Foundation
 import UIKit
 
 protocol BoardDataDelegate{
-    func sendBoard(board:Board)
+    func sendBoardData(board:Board)
+    func deleteBoard(deleteBoard: @escaping ()->Void)
+    func editBoard(editBoard: @escaping ()->Void)
 }
 
 protocol CommentDataDelegate {
@@ -22,4 +24,8 @@ protocol ReplyDataDelegate{
 
 protocol ImageDelegate{
     func sendImages(images:[UIImage], index:Int)
+}
+
+protocol BoardDataforEditDelegate{
+    func sendBoard(board: Board?, images: [UIImage]?, imageURLs: [String]?, closure:@escaping ()->())
 }

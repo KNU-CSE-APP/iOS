@@ -254,11 +254,13 @@ extension UserInformView{
             if result.success{
                 self.removeBtnAction()
                 Alert(title: "성공", message: "회원정보가 변경되었습니다.", viewController: self).popUpDefaultAlert(action:nil)
+                
+                if let nickName = result.response?.newNickName {
+                    self.userInformationViewModel.storeNickName(nickName: nickName)
+                }
             }else{
                 if let error = result.error?.message {
-                    Alert(title: "실패", message: error, viewController: self).popUpDefaultAlert(action: { action in
-                        self.navigationController?.popViewController(animated: true)
-                    })
+                    Alert(title: "실패", message: error, viewController: self).popUpDefaultAlert(action: nil)
                 }
             }
         }, failHandler: { Error in
@@ -277,12 +279,9 @@ extension UserInformView{
                 self?.setOriginProfile()
             }else{
                 if let error = result.error?.message {
-                    Alert(title: "실패", message: error, viewController: self!).popUpDefaultAlert(action: { action in
-                    self?.navigationController?.popViewController(animated: true)
-                })
+                    Alert(title: "실패", message: error, viewController: self!).popUpDefaultAlert(action: nil)
                 }
             }
-            
         }, failHandler: { Error in
             Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self).popUpDefaultAlert(action: nil)
         }, asyncHandler: {
@@ -291,4 +290,5 @@ extension UserInformView{
             
         })
     }
+    
 }

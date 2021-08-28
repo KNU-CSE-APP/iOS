@@ -12,10 +12,10 @@ enum ParentType{
     case BoardTap
     case Search
     case Write
+    case Edit
 }
 
 class BoardView : BaseUIViewController, ViewProtocol{
-
     var parentType:ParentType!{
         didSet{
             self.actionBinding()
@@ -74,18 +74,17 @@ class BoardView : BaseUIViewController, ViewProtocol{
 }
 
 extension BoardView : UITableViewDataSource{
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.boardViewModel.boards.count == 0 && self.dataLoaded{
             switch self.parentType {
             case .BoardTap:
                     self.setTablViewBackgroundView(text: "")
-                case .Search:
-                    self.setTablViewBackgroundView(text: "검색 결과가 없습니다")
-                case .Write:
-                    self.setTablViewBackgroundView(text: "작성한 게시글이 없습니다")
-                case .none:
-                    break
+            case .Search:
+                self.setTablViewBackgroundView(text: "검색 결과가 없습니다")
+            case .Write:
+                self.setTablViewBackgroundView(text: "작성한 게시글이 없습니다")
+            default:
+                break
             }
             return 0
         }else{
@@ -133,7 +132,6 @@ extension BoardView:UITableViewDelegate{
             let requested = self.boardViewModel.requested
             let isLastPage = self.boardViewModel.isLastPage
             
-            //print(offsetY, contentHeight, height, contentHeight-height)
             if offsetY * 1.3 > (contentHeight - height) && !requested && !isLastPage{
                 self.boardViewModel.getBoardsByPaging()
                 self.boardViewModel.requested = true
@@ -155,7 +153,15 @@ extension BoardView{
             }
             
             self.boardDelegate = pushVC
-            self.boardDelegate?.sendBoard(board:self.boardViewModel.boards[index])
+            self.boardDelegate?.sendBoardData(board:self.boardViewModel.boards[index])
+            self.boardDelegate?.deleteBoard {
+                self.boardViewModel.boards.remove(at: index)
+                self.boardTableView.reloadData()
+            }
+            
+            self.boardDelegate?.editBoard {
+                //self.boardViewModel
+            }
             self.navigationController?.pushViewController(pushVC!, animated: true)
         }
     }
@@ -168,10 +174,9 @@ extension BoardView{
                 break
             case .Write:
                 break
-            case .none:
+            default:
                 break
         }
-        
         refresh.endRefreshing()
     }
 }
@@ -185,7 +190,7 @@ extension BoardView{
                 self.BindingGetBoard()
             case .Write:
                 self.BindingGetBoard()
-            case .none:
+            default:
                 break
         }
         self.BindingCategory()

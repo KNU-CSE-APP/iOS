@@ -69,4 +69,8 @@ extension SignInViewModel{
             return true
         }
     }
+    
+    func storeNickName(nickName:String){
+        UserDefaults.standard.setValue(nickName, forKey: "nickName")
+    }
 }

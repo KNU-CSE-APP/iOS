@@ -18,6 +18,12 @@ struct UserInformViewModel{
         
     }
     
+    func storeNickName(nickName:String){
+        UserDefaults.standard.setValue(nickName, forKey: "nickName")
+    }
+}
+
+extension UserInformViewModel{
     func getUserInform(){
         let request = Request(requestBodyObject: nil, requestMethod: .get, enviroment: .getInform)
         request.sendRequest(request: request, responseType: Profile.self, errorType: errorHandler.self, action:self.getInformlistener)

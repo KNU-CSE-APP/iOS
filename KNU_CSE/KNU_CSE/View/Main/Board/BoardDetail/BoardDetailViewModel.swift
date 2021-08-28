@@ -13,11 +13,17 @@ struct BoardDetailViewModel{
     var getCommentListener:BaseAction<[Comment], errorHandler> = BaseAction()
     var writeCommentListener:BaseAction<Comment, errorHandler> = BaseAction()
     var deleteCommentListener:BaseAction<String, errorHandler> = BaseAction()
-        
+    var deleteBoardListener:BaseAction<String, errorHandler> = BaseAction()
+    
     var board:Observable<Board> = Observable(Board(boardId: 0, category: "", title: "", content: "", author: "", time: "", profileImg: "", commentCnt: 0, images: []))
     
     var comments:Observable<[Comment]> = Observable([])
     var comment:CommentTextModel = CommentTextModel()
+    var deleteBoardClosure:(()->Void)?
+    var editBoardClosure:(()->Void)?
+    
+    var userNickName = UserDefaults.standard.string(forKey: "nickName")
+    
     var listener:((String)->Void)?
     
     init(){
@@ -26,6 +32,14 @@ struct BoardDetailViewModel{
     
     mutating func bind(listener:((String)->Void)?) {
         self.listener = listener
+    }
+    
+    func checkNickName()->Bool {
+        if self.board.value.author == userNickName{
+            return true
+        }else{
+            return false
+        }
     }
 }
 
@@ -62,5 +76,11 @@ extension BoardDetailViewModel{
                 break
             }
         }
+    }
+    
+    public func deleteBoard(){
+        self.comment.boardId = self.board.value.boardId
+        let request = Request(requestBodyObject: nil, requestMethod: .delete, enviroment: .deleteBoard(board.value.boardId))
+        request.sendRequest(request: request, responseType: String.self, errorType: errorHandler.self, action:self.deleteBoardListener)
     }
 }

@@ -100,7 +100,6 @@ class BoardSearchView:UIViewController, ViewProtocol{
 }
 
 extension BoardSearchView{
-
     func addBoardView(){
         self.addChild(self.BoardVC)
         self.view.addSubview(self.BoardVC.view)

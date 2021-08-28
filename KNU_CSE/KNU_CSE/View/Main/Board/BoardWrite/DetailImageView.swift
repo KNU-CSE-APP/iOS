@@ -19,6 +19,7 @@ class DetailImageView:UIViewController, ViewProtocol{
         pageVC.backBtn.addAction {
             self.dismiss(animated: true)
         }
+        print(images, self.index)
         let firstVC = instantiateViewController(image: images[index], index: self.index)
         pageVC.setViewControllers([firstVC], direction: .forward, animated: true, completion: nil)
         pageVC.didMove(toParent: self)

@@ -259,12 +259,16 @@ extension ViewController: UITextFieldDelegate{
 
 extension ViewController{
     func setSignInAction(){
-        self.signInViewModel.signInListener.binding(successHandler: { response in
-            if response.success {
+        self.signInViewModel.signInListener.binding(successHandler: { result in
+            if result.success {
                 self.pushTabView()
                 self.saveKeyChain()
+                
+                if let nickName = result.response?.nickname{
+                    self.signInViewModel.storeNickName(nickName: nickName)
+                }
             } else{
-                Alert(title: "로그인 실패", message: "\((response.error?.message)!)", viewController: self).popUpDefaultAlert(action: nil)
+                Alert(title: "로그인 실패", message: "\((result.error?.message)!)", viewController: self).popUpDefaultAlert(action: nil)
             }
         }, failHandler: { Error in
             let alert = Alert(title: "로그인 실패", message: "네트워크 상태를 확인하세요", viewController: self)

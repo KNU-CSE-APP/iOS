@@ -88,7 +88,7 @@ class BoardTabView:UIViewController, ViewProtocol{
         self.reloadNavigationItems(selectedTabIndex:self.selectedTabIndex)
         
         if isSecondLoaded{
-            //self.BoardVC.boardViewModel.getBoardsByPaging()
+            //self.BoardVC.boardViewModel.getBoardsByFirstPage()
         }else{
             isSecondLoaded = true
         }
@@ -129,6 +129,7 @@ class BoardTabView:UIViewController, ViewProtocol{
         }
     }
 }
+
 
 extension BoardTabView{
     func addBoardVC(){
@@ -182,6 +183,7 @@ extension BoardTabView{
     
     @objc func pushBoardWriteView(){
         let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "BoardWriteView") as? BoardWriteView
+        pushVC?.parentType = .Write
         self.navigationController?.pushViewController(pushVC!, animated: true)
     }
     
@@ -194,7 +196,7 @@ extension BoardTabView{
         let pushVC = (self.storyboard?.instantiateViewController(withIdentifier: "BoardDetailView")) as? BoardDetailView
         if !(self.navigationController!.viewControllers.contains(pushVC!)){
             self.boardDelegate = pushVC
-            self.boardDelegate?.sendBoard(board: board)
+            self.boardDelegate?.sendBoardData(board: board)
             self.navigationController?.pushViewController(pushVC!, animated: true)
         }
     }

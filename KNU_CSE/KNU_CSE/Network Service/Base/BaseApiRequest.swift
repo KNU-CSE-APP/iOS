@@ -112,8 +112,12 @@ extension BaseApiRequest{
             return getAddress(domain: "board/findAuthor?author=\(author)")
         case .getBoardWithCategory(let category):
             return getAddress(domain: "board/findCategory?category=\(category)")
-        case .getBoardMyBoard:
+        case .getMyBoard:
             return getAddress(domain: "board/findMyBoards")
+        case .deleteBoard(let boardId):
+            return getAddress(domain: "board/\(boardId)")
+        case .editBoard(let boardId):
+            return getAddress(domain: "board/\(boardId)")
         case .writeComment:
             return getAddress(domain: "comment/write")
         case .getComment(let commentId):
@@ -167,7 +171,9 @@ enum Environment{
     case getBoardWithContent(String)
     case getBoardWithAuthor(String)
     case getBoardWithCategory(String)
-    case getBoardMyBoard
+    case getMyBoard
+    case deleteBoard(Int)
+    case editBoard(Int)
     case writeComment
     case getComment(Int)
     case deleteComment(Int)

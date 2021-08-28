@@ -12,6 +12,8 @@ import PhotosUI
 class BoardWriteView:UIViewController, ViewProtocol{
     
     var boardWriteViewModel:BoardWriteViewModel = BoardWriteViewModel()
+    var editClosure:(()->())?
+    var parentType: ParentType!
     
     lazy var scrollView:UIScrollView = {
         let scrollView = UIScrollView()
@@ -32,7 +34,7 @@ class BoardWriteView:UIViewController, ViewProtocol{
             self.textFieldHeight = font.lineHeight + 20
         }
         titleField.bind{ [weak self] title in
-            self?.boardWriteViewModel.model.title = title
+            self?.boardWriteViewModel.model.value.title = title
         }
         return titleField
     }()
@@ -42,12 +44,6 @@ class BoardWriteView:UIViewController, ViewProtocol{
         borderLine.layer.borderWidth = 0.3
         borderLine.layer.borderColor = UIColor.lightGray.cgColor
         return borderLine
-    }()
-    
-    lazy var categoryLabel:UILabel = {
-        var categoryLabel = UILabel()
-        categoryLabel.text = "추천 카테고리"
-        return categoryLabel
     }()
     
     lazy var contentField:UITextView = {
@@ -76,7 +72,6 @@ class BoardWriteView:UIViewController, ViewProtocol{
         rightItemButton.tintColor = .white.withAlphaComponent(0.5)
         rightItemButton.target = self
         rightItemButton.action = #selector(addTapped)
-        self.BindingBoardWrite()
         return rightItemButton
     }()
     
@@ -104,9 +99,10 @@ class BoardWriteView:UIViewController, ViewProtocol{
                 if let selfVC = self {
                     selfVC.categoryIndex = indexPath
                     selfVC.setRightItemColor()
-                    selfVC.boardWriteViewModel.model.category = selfVC.menuDict[selfVC.menu[indexPath]]!
+                    selfVC.boardWriteViewModel.model.value.category = selfVC.menuDict[selfVC.menu[indexPath]]!
                 }
             }
+            
             self.navigationItem.titleView = self.navigatiopDropDown
             self.navigationItem.rightBarButtonItem = rightItemButton
         }
@@ -146,7 +142,6 @@ class BoardWriteView:UIViewController, ViewProtocol{
         photoBtn.imageView?.tintColor = UIColor.lightGray
         
         photoBtn.addAction {
-            //self.present(self.pickerView, animated: true, completion: nil)
             self.presentPhotoView()
         }
         
@@ -171,13 +166,14 @@ class BoardWriteView:UIViewController, ViewProtocol{
         return resignBtn
     }()
     
-    lazy var indicator:IndicatorView = {
+    lazy var indicator: IndicatorView = {
         let indicator = IndicatorView(viewController: self)
         return indicator
     }()
     
     override func viewWillAppear(_ animated: Bool) {
         self.setNavigationTitle(title: "게시물 작성")
+        self.hideBackTitle()
     }
     
     override func viewDidLoad() {
@@ -186,12 +182,13 @@ class BoardWriteView:UIViewController, ViewProtocol{
         self.addView()
         self.setUpConstraints()
         self.setKeyBoardAction()
+        
+        self.Binding()
     }
     
     
     func initUI() {
         self.navigatiopDropDown = BTNavigationDropdownMenu(title: "카테고리를 설정해주세요.", items: self.menu)
-        
     }
     
     func addView() {
@@ -200,7 +197,7 @@ class BoardWriteView:UIViewController, ViewProtocol{
         self.view.addSubview(self.photoLabel)
         self.view.addSubview(self.resignBtn)
         
-        _ = [self.titleField, self.borderLine, self.photosView, self.contentField, self.contentPlaceHolder, self.categoryLabel].map{
+        _ = [self.titleField, self.borderLine, self.photosView, self.contentField, self.contentPlaceHolder].map{
             self.scrollView.addSubview($0)
         }
     }
@@ -235,7 +232,12 @@ class BoardWriteView:UIViewController, ViewProtocol{
             make.top.equalTo(self.borderLine.snp.bottom).offset(10)
             make.left.equalTo(self.view.safeAreaLayoutGuide).offset(left_margin)
             make.right.equalTo(self.view.safeAreaLayoutGuide).offset(right_margin)
-            make.height.equalTo(0)
+            if self.images.count > 0 {
+                self.photosView.isHidden = false
+                make.height.equalTo(100)
+            }else{
+                make.height.equalTo(0)
+            }
         }
         
         self.contentField.snp.makeConstraints{ make in
@@ -271,6 +273,22 @@ class BoardWriteView:UIViewController, ViewProtocol{
     }
 }
 
+extension BoardWriteView: BoardDataforEditDelegate{
+    func sendBoard(board: Board?, images: [UIImage]?, imageURLs: [String]?, closure:@escaping ()->()) {
+        self.rightItemButton.title = "수정"
+        
+        if let board = board, let uiImages = images, let imageURLs = imageURLs{
+            self.boardWriteViewModel.model.value.title = board.title
+            self.boardWriteViewModel.model.value.content = board.content
+            self.boardWriteViewModel.model.value.category = menuDict[board.category]!
+            self.boardWriteViewModel.boardId = board.boardId
+            self.images = uiImages
+            self.imageURLs = imageURLs
+        }
+        self.editClosure = closure
+    }
+}
+
 extension BoardWriteView{
     func setKeyBoardAction(){
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil);
@@ -299,8 +317,8 @@ extension BoardWriteView{
     
     @objc func addTapped(){
         if contentCheck{
-            print(self.boardWriteViewModel.model.category, self.boardWriteViewModel.model.content, self.boardWriteViewModel.model.title)
-            self.boardWriteViewModel.BoardWriteRequest()
+            //let model = self.boardWriteViewModel.model.value
+            self.boardWriteViewModel.request(parentType: self.parentType)
         }
     }
 }
@@ -310,7 +328,7 @@ extension BoardWriteView:UITextViewDelegate{
         self.contentPlaceHolder.isHidden = !textView.text.isEmpty
         self.setRightItemColor()
         if textView == self.contentField{
-            self.boardWriteViewModel.model.content = textView.text
+            self.boardWriteViewModel.model.value.content = textView.text
         }
     }
     
@@ -355,6 +373,7 @@ extension BoardWriteView:UICollectionViewDataSource, UICollectionViewDelegate{
                     if cell.imageURL == self?.imageURLs[i]{
                         self?.images.remove(at: i)
                         self?.imageURLs.remove(at: i)
+                        self?.boardWriteViewModel.model.value.deleteUrl.append(cell.imageURL)
                         break
                     }
                 }
@@ -410,7 +429,7 @@ extension BoardWriteView{
             self?.photosView.snp.updateConstraints{ make in
                 make.height.equalTo(100)
             }
-            
+            self?.boardWriteViewModel.model.value.deleteUrl = (self?.imageURLs)!
             self?.images = []
             self?.imageURLs = []
             self?.boardWriteViewModel.imageData = []
@@ -421,8 +440,36 @@ extension BoardWriteView{
 }
 
 extension BoardWriteView{
+    
+    func Binding(){
+        self.BindingBoardWrite()
+        self.BindingModel()
+        self.BindingBoardEdit()
+    }
+    
+    func BindingModel(){
+        if parentType == .Edit{
+            self.boardWriteViewModel.model.bind{ [weak self] board in
+                self?.titleField.text = board.title
+                self?.contentField.text = board.content
+                self?.contentPlaceHolder.isHidden = !((self?.contentField.text.isEmpty)!)
+                
+                if let menuDict = self?.menuDict{
+                    for (key, value) in menuDict{
+                        if value == board.category, let index =
+                            self?.menu.firstIndex(of: key){
+                            self?.categoryIndex = index
+                            self?.navigatiopDropDown.setSelected(index: index)
+                        }
+                    }
+                }
+                self?.setRightItemColor()
+            }
+        }
+    }
+    
     func BindingBoardWrite(){
-        self.boardWriteViewModel.Listener.binding(successHandler: { response in
+        self.boardWriteViewModel.writeListener.binding(successHandler: { response in
             if response.success{
                 self.boardWriteViewModel.shouldbeReload.value = true
                 
@@ -432,6 +479,25 @@ extension BoardWriteView{
                 }
                 
                 self.navigationController?.popViewController(animated: true)
+            }
+        }, failHandler: { Error in
+            Alert(title: "작성 실패", message: "네트워크 상태를 확인하세요.", viewController: self).popUpDefaultAlert(action: nil)
+        }, asyncHandler: {
+            self.indicator.startIndicator()
+        }, endHandler: {
+            self.indicator.stopIndicator()
+        })
+    }
+    
+    func BindingBoardEdit(){
+        self.boardWriteViewModel.editListener.binding(successHandler: { result in
+            if result.success{
+                Alert(title: "게시글 수정 성공", message: (result.response)!, viewController: self).popUpDefaultAlert(action: { action in
+                    self.navigationController?.popViewController(animated: true)
+                })
+            }else {
+                let message = result.response ?? "게시글 수정 실패"
+                Alert(title: "게시글 수정 실패", message: message, viewController: self).popUpDefaultAlert(action:nil)
             }
         }, failHandler: { Error in
             Alert(title: "작성 실패", message: "네트워크 상태를 확인하세요.", viewController: self).popUpDefaultAlert(action: nil)
