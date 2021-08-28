@@ -363,8 +363,8 @@ extension ReplyView{
         
         self.stackView.setDeleteAction{ commentId in
             Alert(title: "삭제", message: "댓글을 삭제하겠습니까?", viewController: self).popUpNormalAlert(){ [weak self] action in
-                self?.replyViewModel.deleteCommentRequest(commentId: commentId)
                 self?.replyViewModel.removedCommentId = commentId
+                self?.replyViewModel.deleteCommentRequest(commentId: commentId)
             }
         }
     }

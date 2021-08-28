@@ -34,7 +34,7 @@ class BoardWriteView:UIViewController, ViewProtocol{
             self.textFieldHeight = font.lineHeight + 20
         }
         titleField.bind{ [weak self] title in
-            self?.boardWriteViewModel.model.value.title = title
+            self?.boardWriteViewModel.model.value.title = title.trimmingCharacters(in: .whitespacesAndNewlines)
         }
         return titleField
     }()
@@ -134,6 +134,7 @@ class BoardWriteView:UIViewController, ViewProtocol{
             self.photoLabel.text = "\(self.images.count)/10"
         }
     }
+    var originURLs: [String] = []
     var imageURLs: [String] = []
 
     lazy var photoBtn:UIButton = {
@@ -284,6 +285,7 @@ extension BoardWriteView: BoardDataforEditDelegate{
             self.boardWriteViewModel.boardId = board.boardId
             self.images = uiImages
             self.imageURLs = imageURLs
+            self.originURLs = imageURLs
         }
         self.editClosure = closure
     }
@@ -328,7 +330,7 @@ extension BoardWriteView:UITextViewDelegate{
         self.contentPlaceHolder.isHidden = !textView.text.isEmpty
         self.setRightItemColor()
         if textView == self.contentField{
-            self.boardWriteViewModel.model.value.content = textView.text
+            self.boardWriteViewModel.model.value.content = textView.text.trimmingCharacters(in: .whitespacesAndNewlines)
         }
     }
     
@@ -429,7 +431,7 @@ extension BoardWriteView{
             self?.photosView.snp.updateConstraints{ make in
                 make.height.equalTo(100)
             }
-            self?.boardWriteViewModel.model.value.deleteUrl = (self?.imageURLs)!
+            self?.boardWriteViewModel.model.value.deleteUrl = (self?.originURLs)!
             self?.images = []
             self?.imageURLs = []
             self?.boardWriteViewModel.imageData = []

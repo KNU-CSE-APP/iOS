@@ -14,6 +14,7 @@ class ImageCell : UICollectionViewCell {
     var image: UIImage!{
         didSet{
             self.imageView.setImage(image, for: .normal)
+            
         }
     }
     
@@ -21,7 +22,7 @@ class ImageCell : UICollectionViewCell {
         var imageView = UIButton()
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 15
-        
+        imageView.imageView?.contentMode = .scaleToFill
         return imageView
     }()
     
@@ -34,15 +35,7 @@ class ImageCell : UICollectionViewCell {
         return deleteBtn
     }()
     
-    var imageURL: String = ""{
-        didSet{
-            self.getImage(imageURL: imageURL, index:0){ [self] data, index in
-                if let image = UIImage(data: data)?.resized(toWidth: 100) {
-                    self.setImage(image: image)
-                }
-            }
-        }
-    }
+    var imageURL: String = ""
     var calledType: CalledType!{
         didSet{
             self.setUpConstraints()
@@ -113,19 +106,6 @@ class ImageCell : UICollectionViewCell {
 extension ImageCell{
     func setImage(image: UIImage) {
         self.image = image
-    }
-    
-    public func getImage(imageURL:String, index:Int, successHandler: @escaping (Data, Int)->()){
-        AF.request(imageURL, method: .get).responseData{ response in
-            switch response.result {
-            case .success(_):
-                if let data = response.data {
-                    successHandler(data, index)
-                }
-            case .failure(_):
-                break
-            }
-        }
     }
 }
 

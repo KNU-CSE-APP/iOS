@@ -41,7 +41,7 @@ class DetailImageView:UIViewController, ViewProtocol{
     }
     
     func initUI() {
-      
+       
     }
     
     func addView() {
@@ -65,9 +65,12 @@ extension DetailImageView: UIPageViewControllerDataSource {
             return nil
         }
         
-        let nextIndex = index > 0 ? index - 1 : images.count - 1
-        let nextVC = instantiateViewController(image: images[nextIndex], index: nextIndex)
-        return nextVC
+        if index - 1 >= 0 {
+            let beforeIndex = index - 1
+            let beforeVC = instantiateViewController(image: images[beforeIndex], index: beforeIndex)
+            return beforeVC
+        }
+        return nil
     }
     
     //  다음 컨텐츠 뷰컨을 리턴해주시면 됩니다. 위에 메서드랑 똑같은데 다음 컨텐츠를 담으면 됨
@@ -77,9 +80,12 @@ extension DetailImageView: UIPageViewControllerDataSource {
             return nil
         }
         
-        let nextIndex = (index + 1) % images.count
-        let nextVC = instantiateViewController(image: images[nextIndex], index: nextIndex)
-        return nextVC
+        if index + 1 < images.count {
+            let nextIndex = (index + 1)
+            let nextVC = instantiateViewController(image: images[nextIndex], index: nextIndex)
+            return nextVC
+        }
+        return nil
     }
 }
 

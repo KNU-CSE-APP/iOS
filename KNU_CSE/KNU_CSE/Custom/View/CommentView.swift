@@ -29,20 +29,14 @@ class CommentView: UIStackView {
     }()
     
     lazy var label : UILabel = {
+      
+        
         var label = UILabel()
         label.text = "작성된 댓글이 없습니다"
         label.font = UIFont.systemFont(ofSize: 20, weight: .ultraLight)
         label.tintColor = .lightGray
         label.textAlignment = .center
-        
-        self.addSubview(self.borderLine)
-        self.borderLine.snp.makeConstraints{ make in
-            make.top.equalToSuperview()
-            make.left.equalToSuperview().offset(10)
-            make.right.equalToSuperview().offset(-10)
-            make.height.equalTo(0.5)
-        }
-        
+        label.sizeToFit()
         return label
     }()
     
@@ -52,6 +46,14 @@ class CommentView: UIStackView {
         self.currentVC = currentVC
         self.isHiddenReplyBtn = isHiddenReplyBtn
         super.init(frame: CGRect.zero)
+        
+        self.addSubview(self.borderLine)
+        self.borderLine.snp.makeConstraints{ make in
+            make.top.equalToSuperview()
+            make.left.equalToSuperview().offset(10)
+            make.right.equalToSuperview().offset(-10)
+            make.height.equalTo(0.5)
+        }
     }
     
     required init(coder: NSCoder) {
@@ -59,16 +61,25 @@ class CommentView: UIStackView {
     }
     
     func addInitialView(){
-        self.addSubview(self.label)
-        self.label.snp.makeConstraints{ make in
-            make.left.right.equalToSuperview()
-            make.height.equalTo(200)
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(0)){
+            //self.scrollView.scrollToBottom()
+            self.addSubview(self.label)
+            self.addArrangedSubview(self.label)
+            self.label.snp.makeConstraints{ make in
+                make.height.equalTo(300)
+            }
         }
+        
+        
     }
     
     func removeInitialView(){
-        self.label.removeFromSuperview()
-        self.label.snp.removeConstraints()
+        DispatchQueue.main.asyncAfter(deadline: .now() +
+                                        .milliseconds(0)){
+            self.label.snp.removeConstraints()
+            self.label.removeFromSuperview()
+            self.removeArrangedSubview(self.label)
+        }
     }
     
     /// StackView에 CommentCell, ReplyCell 추가
@@ -137,7 +148,6 @@ class CommentView: UIStackView {
                 for reply in target.replyList{
                     self.insertReplyToStackView(reply: reply, index: targetIndex)
                     targetIndex += 1
-                    
                 }
             }
             targetIndex += 1

@@ -213,7 +213,7 @@ extension UserInformView{
                 self?.profileBtn.setImage(image.resized(toWidth: (self?.profile_width_hegiht)!), for: .normal)
                 if self?.userInformationViewModel.model.imagePath != url{
                     self?.addBtnAction()
-                    self?.userInformationViewModel.model.imageData = image.jpegData(compressionQuality: 0.5)
+                    self?.userInformationViewModel.model.imageData = image.jpegData(compressionQuality: 0.1)
                 }
             }
         }

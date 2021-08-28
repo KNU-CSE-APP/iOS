@@ -16,15 +16,17 @@ class PhotoView:UIViewController,ViewProtocol{
     var isMutltiSelection: Bool = false
     var picker:YPImagePicker!{
         didSet{
+            
+            
             picker.didFinishPicking { [weak self] items, cancelled in
                 if cancelled {
 
                 }else{
-                    self?.initlistener?()
                     for item in items{
                         switch item{
                             case .photo(let p):
-                                if let action = self?.listener{
+                                self?.initlistener?()
+                                if let action = self?.listener {
                                     let photo = p
                                     let imgName = "\(UUID().uuidString).jpg"
                                     let documentDirectory = NSTemporaryDirectory()
@@ -57,7 +59,6 @@ class PhotoView:UIViewController,ViewProtocol{
             config.wordings.next = "확인"
             config.wordings.cancel = "취소"
             config.wordings.done = "확인"
-            
             if isMutltiSelection {
                 config.library.maxNumberOfItems = 10
             }

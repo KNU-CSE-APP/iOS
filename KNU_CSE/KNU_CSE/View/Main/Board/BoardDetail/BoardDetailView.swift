@@ -32,6 +32,10 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
             let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
             self.scrollView.addGestureRecognizer(tap)
             self.scrollView.showsVerticalScrollIndicator = true
+            
+            let refresh = UIRefreshControl()
+            refresh.addTarget(self, action: #selector(self.refresh(refresh:)), for: .valueChanged)
+            self.scrollView.refreshControl = refresh
         }
     }
     
@@ -54,7 +58,6 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
             self.authorImageView.layer.cornerRadius = imageSize / 4
             self.authorImageView.frame.size = CGSize(width: imageSize, height: imageSize)
             self.authorImageView.tintColor = .lightGray
-            self.authorImageView.image = UIImage(systemName: "person.crop.square.fill")?.resized(toWidth: 100)?.withTintColor(.lightGray)
         }
     }
     
@@ -96,29 +99,28 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
     }
     
     var cellTapped: Bool = false
-    var uiImages: [UIImage]!{
-        didSet{
-            //self.photoView.reloadData()
-        }
-    }
     
-    lazy var photoView:UICollectionView = {
-        var photoView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
-        photoView.backgroundColor = .white
-        photoView.dataSource = self
-        photoView.delegate = self
-        photoView.register(ImageCell.self, forCellWithReuseIdentifier: ImageCell.identifier)
-        photoView.contentInset = UIEdgeInsets.init(top: 5, left: 5, bottom: -5, right: -5)
-        photoView.isMultipleTouchEnabled = false
-        
-        photoView.isHidden = true
-        
-        let layout = photoView.collectionViewLayout as! UICollectionViewFlowLayout
-        layout.itemSize = CGSize(width: 100, height: 100)
-        layout.minimumInteritemSpacing = 5
-        layout.minimumLineSpacing = 5
-        layout.scrollDirection = .horizontal
-        
+    var uiImages: [UIImage] = []
+    var photoCells: [ImageView] = []
+    
+    lazy var photoScrollView:UIScrollView = {
+        var photoScrollView = UIScrollView()
+        photoScrollView.alwaysBounceHorizontal = true
+        let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
+        photoScrollView.addGestureRecognizer(tap)
+        photoScrollView.showsHorizontalScrollIndicator = true
+        photoScrollView.addSubview(self.photoView)
+        return photoScrollView
+    }()
+    
+    lazy var photoView:UIStackView = {
+        var photoView = UIStackView()
+        photoView.axis = .horizontal
+        photoView.alignment = .center
+        photoView.distribution = .equalSpacing
+        photoView.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        photoView.isLayoutMarginsRelativeArrangement = true
+        photoView.spacing = 8
         return photoView
     }()
     
@@ -227,7 +229,7 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.initImage()
+        
         self.initUI()
         self.addView()
         self.setUpConstraints()
@@ -236,13 +238,11 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
         
         self.Binding()
         self.boardDetailViewModel.getCommentRequest()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.boardDetailViewModel.getBoardRequest()
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -275,7 +275,7 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
     func addView(){
         self.view.addSubview(scrollView)
         self.scrollView.addSubview(boardContentView)
-        _ = [authorLabel,authorImageView, dateLabel, titleLabel, contentLabel, photoView, categoryLabel, photoImage, photoLabel, commentImage, commentLabel, stackView].map { self.boardContentView.addSubview($0)}
+        _ = [authorLabel,authorImageView, dateLabel, titleLabel, contentLabel, categoryLabel, photoScrollView, photoImage, photoLabel, commentImage, commentLabel, stackView].map { self.boardContentView.addSubview($0)}
         
         self.view.addSubview(textFieldView)
         _ = [borderLine,textField,textFieldBtn].map{
@@ -333,7 +333,7 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
             make.right.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
         }
         
-        self.photoView.snp.makeConstraints{ make in
+        self.photoScrollView.snp.makeConstraints{ make in
             make.top.equalTo(self.contentLabel.snp.bottom).offset(30)
             make.left.equalTo(self.view.safeAreaLayoutGuide).offset(20)
             make.right.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
@@ -345,22 +345,26 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
             }
         }
         
+        self.photoView.snp.makeConstraints{ make in
+            make.left.right.top.bottom.equalToSuperview()
+        }
+        
         self.photoImage.snp.makeConstraints{ make in
-            make.top.equalTo(self.photoView.snp.bottom).offset(10)
+            make.top.equalTo(self.photoScrollView.snp.bottom).offset(10)
             make.right.equalTo(photoLabel.snp.left).offset(-5)
             make.height.equalTo(height*0.1)
             make.width.equalTo(height*0.1)
         }
 
         self.photoLabel.snp.makeConstraints{ make in
-            make.top.equalTo(self.photoView.snp.bottom).offset(10)
+            make.top.equalTo(self.photoScrollView.snp.bottom).offset(10)
             make.right.equalTo(commentImage.snp.left).offset(-10)
             make.height.equalTo(height*0.1)
             //make.width.equalTo(height*0.15)
         }
         
         self.commentLabel.snp.makeConstraints{ make in
-            make.top.equalTo(self.photoView.snp.bottom).offset(10)
+            make.top.equalTo(self.photoScrollView.snp.bottom).offset(10)
             make.right.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
             make.height.equalTo(height*0.1)
             //make.width.equalTo(height*0.1)
@@ -448,7 +452,9 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
             }
             
         }, remove_text: "게시글 삭제", removeAction:{ [weak self] action in
-            self?.boardDetailViewModel.deleteBoard()
+            Alert(title: "게시글 삭제", message: "게시글을 삭제하시겠습니까?", viewController: self!).popUpNormalAlert{ (action) in
+                self?.boardDetailViewModel.deleteBoard()
+            }
         }, cancel_text: "취소")
     }
 }
@@ -457,8 +463,7 @@ extension BoardDetailView:BoardDataDelegate, ReplyDataDelegate{
     
     /// BoardView로 부터의 Delegation을 전달받음
     func sendBoardData(board: Board) {
-        self.boardDetailViewModel.board.value.boardId = board.boardId
-//        self.initPhotoView(imageURLs: board.images)
+        self.boardDetailViewModel.boardId = board.boardId
     }
     
     func deleteBoard(deleteBoard: @escaping () -> ()) {
@@ -481,68 +486,8 @@ extension BoardDetailView:BoardDataDelegate, ReplyDataDelegate{
     }
 }
 
-extension BoardDetailView:UICollectionViewDataSource, UICollectionViewDelegate{
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.boardDetailViewModel.board.value.images.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.identifier, for: indexPath) as? ImageCell else{
-            return UICollectionViewCell()
-        }
-        let imageURL = self.boardDetailViewModel.board.value.images[indexPath.row]
 
-        cell.imageURL = imageURL
-        cell.calledType = .boardDetail
-    
-//        self.boardDetailViewModel.getImage(imageURL: imageURL, index:indexPath.row){ [self] data, index in
-//            if let image = UIImage(data: data)?.resized(toWidth: 100) {
-//                print("loaddid image \(index)")
-//                //let imageURLs = self.boardDetailViewModel.board.value.images
-//                self.uiImages[index] = image
-//                //cell.setImage(image: self.uiImages[index])
-//            }
-//        }
-//
-        cell.imageView.addAction { [weak self] in
-            print("touched \(indexPath.row)")
-            self?.cellTapped = false
-            if self?.cellTapped == false{
-                
-                if let VC = self?.storyboard?.instantiateViewController(withIdentifier: "DetailImageView") as? DetailImageView, let images = self?.uiImages{
-                    for i in 0..<images.count{
-                        if self?.boardDetailViewModel.board.value.images[i] == cell.imageURL{
-                            VC.modalPresentationStyle = .fullScreen
-                            self?.present(VC, animated: true)
-                            let delegate: ImageDelegate = VC
-                            delegate.sendImages(images: images, index: i)
-                            self?.cellTapped = true
-                            break
-                        }
-                    }
-                }
-            }
-        }
-        
-        if indexPath.row == 0 {
-            cell.backgroundColor = .green
-        }else if indexPath.row == 1 {
-            cell.backgroundColor = .blue
-        }else{
-            cell.backgroundColor = .yellow
-        }
-        
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath)
-    }
-}
-
-
-//about keyboard action
+//about keyboard action, refresh
 extension BoardDetailView{
     func setKeyBoardAction(){
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil);
@@ -565,6 +510,13 @@ extension BoardDetailView{
             }
         }
     }
+    
+    @objc func refresh(refresh: UIRefreshControl){
+        self.boardDetailViewModel.getCommentRequest()
+        self.boardDetailViewModel.getBoardRequest()
+        refresh.endRefreshing()
+    }
+    
 }
 
 //textView 관련
@@ -593,7 +545,7 @@ extension BoardDetailView:UITextViewDelegate{
     
     func textViewBinding(){
         boardDetailViewModel.bind{ text in
-            self.boardDetailViewModel.comment.content = text
+            self.boardDetailViewModel.comment.content = text.trimmingCharacters(in: .whitespacesAndNewlines)
         }
     }
     
@@ -625,17 +577,54 @@ extension BoardDetailView:UITextViewDelegate{
 
 //이미지 초기화, 포토뷰 초기화
 extension BoardDetailView{
-    func initImage(){
-        let imageURL = self.boardDetailViewModel.board.value.profileImg
-        self.boardDetailViewModel.getImage(imageURL: imageURL){ data in
-            let image = UIImage(data: data)?.resized(toWidth: 100)
-            self.image = image!
+    func initProfileImage(url:String){
+        if url == ""{
+            self.authorImageView.image = UIImage(systemName: "person.crop.square.fill")?.resized(toWidth: 100)?.withTintColor(.lightGray)
+        }else{
+            self.boardDetailViewModel.getImage(imageURL: url, successHandler: { data in
+                let image = UIImage(data: data)
+                self.image = image!
+            }, failHandler: {
+                self.authorImageView.image = UIImage(systemName: "person.crop.square.fill")?.resized(toWidth: 100)?.withTintColor(.lightGray)
+            })
         }
     }
 
+    func initPhotoView(imageURLs:[String]){
+        let count = imageURLs.count
+        self.photoCells.removeAll()
+        self.uiImages = [UIImage](repeating: UIImage(), count: count)
+        
+        for view in self.photoView.arrangedSubviews{
+            view.removeFromSuperview()
+        }
+        
+        for i in 0..<imageURLs.count{
+            let cell = ImageView()
+            cell.draw()
+            cell.btn.addAction { [weak self] in
+                if let VC = self?.storyboard?.instantiateViewController(withIdentifier: "DetailImageView") as? DetailImageView, let images = self?.uiImages{
+                       VC.modalPresentationStyle = .fullScreen
+                       self?.present(VC, animated: true)
+                       let delegate: ImageDelegate = VC
+                       delegate.sendImages(images: images, index: i)
+               }
+           }
+            
+            self.photoView.addArrangedSubview(cell)
+            self.photoCells.append(cell)
+            self.boardDetailViewModel.getImage(imageURL: imageURLs[i], successHandler: { [weak self] data in
+                if let image = UIImage(data: data) {
+                    self?.uiImages[i] = image
+                    self?.photoCells[i].image = image
+               }
+            }, failHandler:{})
+        }
+    }
+    
     func updataPhoptoViewConstrains(){
-        self.photoView.snp.removeConstraints()
-        self.photoView.snp.makeConstraints{ make in
+        self.photoScrollView.snp.removeConstraints()
+        self.photoScrollView.snp.makeConstraints{ make in
             make.top.equalTo(self.contentLabel.snp.bottom).offset(30)
             make.left.equalTo(self.view.safeAreaLayoutGuide).offset(20)
             make.right.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
@@ -663,23 +652,26 @@ extension BoardDetailView{
     
     func BindingBoard(){
         self.boardDetailViewModel.board.bind{ [weak self] board in
-            self?.contentLabel.text = board.content
-            self?.titleLabel.text = board.title
-            self?.authorLabel.text = board.author
-            self?.dateLabel.text = board.time
-            self?.categoryLabel.text = "#\(board.category)"
-            self?.commentLabel.text = String(board.commentCnt)
-            
-            if board.images.count > 0 {
-                self?.photoImage.isHidden = false
-                self?.photoLabel.isHidden = false
-                self?.photoLabel.text = "\(board.images.count)"
+            //초기 세팅이 아닐 경우 진행
+            if board.boardId != -1 {
+                self?.contentLabel.text = board.content
+                self?.titleLabel.text = board.title
+                self?.authorLabel.text = board.author
+                self?.dateLabel.text = board.time
+                self?.categoryLabel.text = "#\(board.category)"
+                self?.commentLabel.text = String(board.commentCnt)
+                
+                if board.images.count > 0 {
+                    self?.photoImage.isHidden = false
+                    self?.photoLabel.isHidden = false
+                    self?.photoLabel.text = "\(board.images.count)"
+                }
+                
+                self?.initProfileImage(url:board.profileImg)
+                self?.initPhotoView(imageURLs: board.images)
+                self?.updataPhoptoViewConstrains()
+                self?.initRightBtn()
             }
-            
-            self?.uiImages = [UIImage](repeating: UIImage(), count: board.images.count)
-            self?.updataPhoptoViewConstrains()
-            self?.initRightBtn()
-            self?.photoView.reloadData()
         }
     }
     
@@ -687,8 +679,10 @@ extension BoardDetailView{
         self.boardDetailViewModel.comments.bind{ [weak self] comment in
             if comment.count > 0 {
                 self?.stackView.removeInitialView()
+                
             }else{
                 self?.stackView.addInitialView()
+                
             }
         }
     }
@@ -711,10 +705,9 @@ extension BoardDetailView{
         self.boardDetailViewModel.getCommentListener.binding(successHandler: { result in
             if result.success{
                 if let comments = result.response{
-                    for comment in comments{
-                        self.boardDetailViewModel.comments.value.append(comment)
-                        self.stackView.addCommentToStackView(comment, self.boardDetailViewModel.board.value)
-                    }
+                    self.boardDetailViewModel.comments.value = comments
+                    self.stackView.removeAllToStackView()
+                    self.stackView.InitToStackView(comments: self.boardDetailViewModel.comments.value, board: self.boardDetailViewModel.board.value)
                 }else{
                     if let error = result.error?.message {
                         Alert(title: "실패", message: error, viewController: self).popUpDefaultAlert(action: { action in
@@ -761,6 +754,7 @@ extension BoardDetailView{
         self.boardDetailViewModel.deleteCommentListener.binding(successHandler: { [weak self] result in
             if result.success{
                 Alert(title: "성공", message: result.response!, viewController: self!).popUpDefaultAlert(action: nil)
+                self?.boardDetailViewModel.getCommentRequest()
             }else if !result.success, let message = result.error?.message{
                 Alert(title: "실패", message: message, viewController: self!).popUpDefaultAlert(action: nil)
             }
@@ -770,7 +764,7 @@ extension BoardDetailView{
         }, asyncHandler: {
             
         }, endHandler: {
-            self.stackView.resetAction?()
+            
         })
     }
     
@@ -779,16 +773,6 @@ extension BoardDetailView{
             Alert(title: "삭제", message: "댓글을 삭제하겠습니까?", viewController: self).popUpNormalAlert(){ action in
                 self.boardDetailViewModel.deleteCommentRequest(commentId: commentId)
             }
-        }
-        
-        //댓글이 삭제되거나, 답글달기 페이지에서 삭제됐을 경우 comment를 다시 불러옴
-        self.stackView.setResetAction { [weak self] in
-            self?.boardDetailViewModel.comments.value = []
-            self?.boardDetailViewModel.getCommentRequest()
-            self?.boardDetailViewModel.getBoardRequest()
-            
-            self?.stackView.removeAllToStackView()
-            self?.stackView.InitToStackView(comments: (self?.boardDetailViewModel.comments.value)!, board: (self?.boardDetailViewModel.board.value)!)
         }
     }
     

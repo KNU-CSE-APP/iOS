@@ -15,8 +15,8 @@ struct BoardDetailViewModel{
     var deleteCommentListener:BaseAction<String, errorHandler> = BaseAction()
     var deleteBoardListener:BaseAction<String, errorHandler> = BaseAction()
     
-    var board:Observable<Board> = Observable(Board(boardId: 0, category: "", title: "", content: "", author: "", time: "", profileImg: "", commentCnt: 0, images: []))
-    
+    var board:Observable<Board> = Observable(Board(boardId: -1, category: "", title: "", content: "", author: "", time: "", profileImg: "", commentCnt: 0, images: []))
+    var boardId: Int!
     var comments:Observable<[Comment]> = Observable([])
     var comment:CommentTextModel = CommentTextModel()
     var deleteBoardClosure:(()->Void)?
@@ -45,12 +45,12 @@ struct BoardDetailViewModel{
 
 extension BoardDetailViewModel{
     public func getBoardRequest() {
-        let request = Request(requestBodyObject: nil, requestMethod: .get, enviroment: .getBoard(board.value.boardId))
+        let request = Request(requestBodyObject: nil, requestMethod: .get, enviroment: .getBoard(self.boardId))
         request.sendRequest(request: request, responseType: Board.self, errorType: errorHandler.self, action:self.getBoardListener)
     }
     
     public func getCommentRequest() {
-        let request = Request(requestBodyObject: nil, requestMethod: .get, enviroment: .findContentsByBoardId(board.value.boardId))
+        let request = Request(requestBodyObject: nil, requestMethod: .get, enviroment: .findContentsByBoardId(self.boardId))
         request.sendRequest(request: request, responseType: [Comment].self, errorType: errorHandler.self, action:self.getCommentListener)
     }
     
@@ -65,7 +65,7 @@ extension BoardDetailViewModel{
         request.sendRequest(request: request, responseType: String.self, errorType: errorHandler.self, action:self.deleteCommentListener)
     }
     
-    public func getImage(imageURL:String, successHandler: @escaping (Data)->()){
+    public func getImage(imageURL:String, successHandler: @escaping (Data)->(), failHandler: @escaping()->()){
         AF.request(imageURL, method: .get).responseData{ response in
             switch response.result {
             case .success(_):
@@ -73,27 +73,14 @@ extension BoardDetailViewModel{
                     successHandler(data)
                 }
             case .failure(_):
-                break
-            }
-        }
-    }
-    
-    public func getImage(imageURL:String, index:Int, successHandler: @escaping (Data, Int)->()){
-        AF.request(imageURL, method: .get).responseData{ response in
-            switch response.result {
-            case .success(_):
-                if let data = response.data {
-                    successHandler(data, index)
-                }
-            case .failure(_):
-                break
+                failHandler()
             }
         }
     }
     
     public func deleteBoard(){
-        self.comment.boardId = self.board.value.boardId
-        let request = Request(requestBodyObject: nil, requestMethod: .delete, enviroment: .deleteBoard(board.value.boardId))
+        self.comment.boardId = self.boardId
+        let request = Request(requestBodyObject: nil, requestMethod: .delete, enviroment: .deleteBoard(self.boardId))
         request.sendRequest(request: request, responseType: String.self, errorType: errorHandler.self, action:self.deleteBoardListener)
     }
 }
