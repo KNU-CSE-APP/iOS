@@ -9,16 +9,16 @@ import Foundation
 
 struct ClassRoomViewModel{
     var classrooms : [ClassRoom] = []
-   
+    var classRoomsAction:BaseAction<[ClassRoom], errorHandler> = BaseAction(
+    )
+    
     init(){
-        self.setUpLecture()
+        
     }
     
-    mutating func setUpLecture(){
-        classrooms.append(ClassRoom(roomId: 101, roomNum: 101, building: "IT4", totalSeat: 30, currentSeat: 10))
-        classrooms.append(ClassRoom(roomId: 102, roomNum: 102, building: "IT4", totalSeat: 30, currentSeat: 11))
-        classrooms.append(ClassRoom(roomId: 103, roomNum: 103, building: "IT4", totalSeat: 30, currentSeat: 12))
-        classrooms.append(ClassRoom(roomId: 104, roomNum: 104, building: "IT4", totalSeat: 30, currentSeat: 13))
+    func getClassRooms(){
+        let request = Request(requestBodyObject: nil, requestMethod: .get, enviroment: .getAllClassRoom)
+        request.sendRequest(request: request, responseType: [ClassRoom].self, errorType: errorHandler.self, action:self.classRoomsAction)
     }
 }
 

@@ -130,6 +130,8 @@ extension BaseApiRequest{
             return getAddress(domain: "comment/findContentsByBoardId?boardId=\(boardId)")
         case .searchSeat(let building, let roomNumber):
             return getAddress(domain: "classRoom/searchSeats/\(building)/\(roomNumber)")
+        case .getAllClassRoom:
+            return getAddress(domain: "classRoom/searchAllClassRoom")
         case .reservation:
             return getAddress(domain: "reservation/reservation")
         case .reservationFind:
@@ -138,6 +140,8 @@ extension BaseApiRequest{
             return getAddress(domain: "reservation/delete")
         case .reservationExtension:
             return getAddress(domain: "reservation/extension")
+        case .myReservation:
+            return getAddress(domain: "reservation/findReservation")
         case .none:
             return ""
         }
@@ -180,10 +184,12 @@ enum Environment{
     case writeReply
     case findContentsByBoardId(Int)
     case searchSeat(String, Int)
+    case getAllClassRoom
     case reservation
     case reservationFind
     case reservationDelete
     case reservationExtension
+    case myReservation
 }
 
 

@@ -22,6 +22,13 @@ struct BoardDetailViewModel{
     var deleteBoardClosure:(()->Void)?
     var editBoardClosure:(()->Void)?
     
+    //이미 불러온 URL check
+    var loadedURLs = [String]()
+    //URL을 전부 다운로드 완료하면 사진 상세보기 화면 터치가능
+    var isAbleTouched:Bool = false
+    
+    
+    //UserDefault로 부터 닉네임을 불러옴 for 작성자라면 게시글 수정, 삭제가능
     var userNickName = UserDefaults.standard.string(forKey: "nickName")
     
     var listener:((String)->Void)?
@@ -36,6 +43,35 @@ struct BoardDetailViewModel{
     
     func checkNickName()->Bool {
         if self.board.value.author == userNickName{
+            return true
+        }else{
+            return false
+        }
+    }
+    
+    func checkSameURL(newURLs:[String])->Bool{
+        let count = loadedURLs.count
+        if count != newURLs.count{
+            return false
+        }else{
+            var sameCount = 0
+            for i in 0..<count{
+                for j in 0..<count{
+                    if loadedURLs[i] == newURLs[j]{
+                        sameCount += 1
+                    }
+                }
+            }
+            if sameCount == count{
+                return true
+            }else{
+                return false
+            }
+        }
+    }
+    
+    func checkAllLoaded()->Bool{
+        if self.loadedURLs.count == self.board.value.images.count{
             return true
         }else{
             return false

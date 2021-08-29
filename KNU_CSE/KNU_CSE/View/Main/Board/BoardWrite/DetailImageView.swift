@@ -19,6 +19,7 @@ class DetailImageView:UIViewController, ViewProtocol{
         pageVC.backBtn.addAction {
             self.dismiss(animated: true)
         }
+        print(index, images)
         let firstVC = instantiateViewController(image: images[index], index: self.index)
         pageVC.setViewControllers([firstVC], direction: .forward, animated: true, completion: nil)
         pageVC.didMove(toParent: self)
@@ -31,7 +32,7 @@ class DetailImageView:UIViewController, ViewProtocol{
         let pc = UIPageControl()
         pc.numberOfPages = self.images.count
         pc.currentPage = self.index
-        pc.currentPageIndicatorTintColor = .black   // 현재 페이지 인디케이터 색
+        pc.currentPageIndicatorTintColor = .white   // 현재 페이지 인디케이터 색
         pc.pageIndicatorTintColor = .lightGray        // 나머지 페이지 인디케이터 색
         return pc
     }()
@@ -41,7 +42,7 @@ class DetailImageView:UIViewController, ViewProtocol{
     }
     
     func initUI() {
-       
+        self.view.backgroundColor = .black
     }
     
     func addView() {
@@ -52,19 +53,17 @@ class DetailImageView:UIViewController, ViewProtocol{
     func setUpConstraints() {
         self.pageControl.snp.makeConstraints{ make in
             make.left.right.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-100)
+            make.bottom.equalToSuperview().offset(-50)
         }
     }
 }
 
 extension DetailImageView: UIPageViewControllerDataSource {
-    
     //  이전 컨텐츠 뷰컨을 리턴해주시면 됨
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let index = pageViewController.viewControllers?.first?.view.tag else {
             return nil
         }
-        
         if index - 1 >= 0 {
             let beforeIndex = index - 1
             let beforeVC = instantiateViewController(image: images[beforeIndex], index: beforeIndex)
@@ -72,7 +71,6 @@ extension DetailImageView: UIPageViewControllerDataSource {
         }
         return nil
     }
-    
     //  다음 컨텐츠 뷰컨을 리턴해주시면 됩니다. 위에 메서드랑 똑같은데 다음 컨텐츠를 담으면 됨
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         

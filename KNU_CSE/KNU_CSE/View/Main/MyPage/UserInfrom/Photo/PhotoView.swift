@@ -16,8 +16,6 @@ class PhotoView:UIViewController,ViewProtocol{
     var isMutltiSelection: Bool = false
     var picker:YPImagePicker!{
         didSet{
-            
-            
             picker.didFinishPicking { [weak self] items, cancelled in
                 if cancelled {
 
@@ -33,7 +31,7 @@ class PhotoView:UIViewController,ViewProtocol{
                                     let localPath = documentDirectory.appending(imgName)
 
                                     let image = photo.image
-                                    let data = image.jpegData(compressionQuality: 0.5)! as NSData
+                                    let data = image.jpegData(compressionQuality: 0)! as NSData
                                     data.write(toFile: localPath, atomically: true)
                                     //let url = URL.init(fileURLWithPath: localPath)
                                     action(photo.image, localPath)
@@ -42,7 +40,6 @@ class PhotoView:UIViewController,ViewProtocol{
                                 break
                         }
                     }
-                    
                 }
                 self?.dismiss(animated: true, completion: nil)
             }

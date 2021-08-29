@@ -8,9 +8,10 @@
 import Foundation
 
 class ClassRoom:BaseObject{
-    var roomId : Int
-    var roomNum : Int
+    var roomId : Int!
+    
     var building : String
+    var roomNum : Int
     var totalSeat : Int
     var currentSeat : Int
     
@@ -24,6 +25,16 @@ class ClassRoom:BaseObject{
     }
     
     required init(from decoder: Decoder) throws {
-        fatalError("init(from:) has not been implemented")
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.building = (try! container.decode(String.self, forKey: .building))
+        self.roomNum = (try! container.decode(Int.self, forKey: .roomNumber))
+        self.totalSeat = (try! container.decode(Int.self, forKey: .totalSeatNumber))
+        self.currentSeat = (try! container.decode(Int.self, forKey: .reservedSeatNumber))
+        
+        super.init()
     }
+    
+    enum CodingKeys: CodingKey {
+        case building, roomNumber, totalSeatNumber, reservedSeatNumber
+     }
 }
