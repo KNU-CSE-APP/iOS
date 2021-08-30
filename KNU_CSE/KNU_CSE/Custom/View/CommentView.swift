@@ -11,16 +11,16 @@ import SnapKit
 
 class CommentView: UIStackView {
     
-    var delegate:CommentDataDelegate?
-    var storyboard:UIStoryboard?
-    var navigationVC:UINavigationController?
-    var currentVC:UIViewController?
-    var isHiddenReplyBtn:Bool
-    var resetAction:(()->Void)?
-    var deleteAction:((Int)->Void)?
-    var stackViews:[UIView] = []
+    private var delegate:CommentDataDelegate?
+    private var storyboard:UIStoryboard?
+    private var navigationVC:UINavigationController?
+    private var isHiddenReplyBtn:Bool
+    private var resetAction:(()->Void)?
+    private var deleteAction:((Int)->Void)?
+    private var popUpActionSheet: ((Int, ((Int)->Void)?)->Void)?
+    private var stackViews:[UIView] = []
     
-    var borderLine:UIView = {
+    private var borderLine:UIView = {
         var borderLine = UIView()
         borderLine.layer.borderWidth = 0.5
         borderLine.layer.borderColor = UIColor.lightGray.cgColor
@@ -28,7 +28,7 @@ class CommentView: UIStackView {
         return borderLine
     }()
     
-    lazy var label : UILabel = {
+    private lazy var label : UILabel = {
         var label = UILabel()
         label.text = "작성된 댓글이 없습니다"
         label.font = UIFont.systemFont(ofSize: 20, weight: .ultraLight)
@@ -38,10 +38,9 @@ class CommentView: UIStackView {
         return label
     }()
     
-    init(storyboard:UIStoryboard?, navigationVC:UINavigationController?, currentVC:UIViewController?, isHiddenReplyBtn:Bool){
+    init(storyboard:UIStoryboard?, navigationVC:UINavigationController?, isHiddenReplyBtn:Bool){
         self.storyboard = storyboard
         self.navigationVC = navigationVC
-        self.currentVC = currentVC
         self.isHiddenReplyBtn = isHiddenReplyBtn
         super.init(frame: CGRect.zero)
         
@@ -139,7 +138,6 @@ class CommentView: UIStackView {
     
     func updateReply(comments:[Comment]?, target:Comment?){
         var targetIndex = 1
-        
         if let comments = comments, let target = target{
             for comment in comments{
                 if comment.commentId == target.commentId{
@@ -171,11 +169,7 @@ class CommentView: UIStackView {
 
 extension CommentView{
     func addActionSheet(commentId:Int){
-        var actionSheet = ActionSheet(viewController: currentVC)
-        actionSheet.popUpDeleteActionSheet(remove_text: "댓글 삭제", removeAction:{ [weak self] action in
-            self?.deleteAction?(commentId)
-        }
-        , cancel_text: "취소")
+        self.popUpActionSheet?(commentId, self.deleteAction)
     }
     
     func pushView(_ board:Board, _ comment:Comment){
@@ -189,7 +183,11 @@ extension CommentView{
         self.resetAction = action
     }
     
-    func setDeleteAction(action:@escaping (Int)->Void){
+    func setDeleteAlertAction(action:@escaping (Int)->Void){
         self.deleteAction = action
+    }
+    
+    func setActionSheetAction(action:@escaping (Int, ((Int)->Void)?)->Void){
+        self.popUpActionSheet = action
     }
 }

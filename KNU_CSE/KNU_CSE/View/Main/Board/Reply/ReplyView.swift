@@ -96,10 +96,7 @@ class ReplyView:BaseUIViewController, ViewProtocol{
         self.setKeyBoardAction()
         self.textViewBinding()
         
-        self.BindingWriteReply()
-        self.BindingGetComment()
-        self.BindingDeleteComment()
-        
+        self.Binding()
         self.replyViewModel.getCommentRequest()
     }
     
@@ -117,7 +114,7 @@ class ReplyView:BaseUIViewController, ViewProtocol{
     func initUI(){
         scrollView = UIScrollView()
         
-        stackView = CommentView(storyboard: nil, navigationVC: nil, currentVC: self, isHiddenReplyBtn: true)
+        stackView = CommentView(storyboard: nil, navigationVC: nil, isHiddenReplyBtn: true)
         
         textFieldView = UIView()
         borderLine = UIView()
@@ -298,6 +295,13 @@ extension ReplyView:UITextViewDelegate{
 }
 
 extension ReplyView{
+    func Binding(){
+        self.BindingWriteReply()
+        self.BindingGetComment()
+        self.BindingDeleteComment()
+        self.BindingStackAction()
+    }
+    
     func BindingWriteReply(){
         self.replyViewModel.writeReplyListener.binding(successHandler: { result in
             
@@ -360,8 +364,21 @@ extension ReplyView{
         }, endHandler: {[weak self] in
             self?.replyViewModel.getCommentRequest()
         })
+    }
+    
+    func BindingStackAction(){
+        self.stackView.setActionSheetAction{ [weak self] commentId, deleteAction in
+            if self?.presentedViewController != nil {
+                self?.dismiss(animated: false, completion: nil)
+            }
+            var actionSheet = ActionSheet(viewController: self)
+            actionSheet.popUpDeleteActionSheet(remove_text: "댓글 삭제", removeAction:{ action in
+                deleteAction?(commentId)
+            }
+            , cancel_text: "취소")
+        }
         
-        self.stackView.setDeleteAction{ commentId in
+        self.stackView.setDeleteAlertAction{ commentId in
             Alert(title: "삭제", message: "댓글을 삭제하겠습니까?", viewController: self).popUpNormalAlert(){ [weak self] action in
                 self?.replyViewModel.removedCommentId = commentId
                 self?.replyViewModel.deleteCommentRequest(commentId: commentId)

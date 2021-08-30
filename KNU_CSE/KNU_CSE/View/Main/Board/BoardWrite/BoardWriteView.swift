@@ -109,6 +109,7 @@ class BoardWriteView:UIViewController, ViewProtocol{
     }
     
     var cellTapped: Bool = false
+    
     lazy var photoView:UICollectionView = {
         var photoView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
         photoView.backgroundColor = .white

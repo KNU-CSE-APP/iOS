@@ -9,24 +9,24 @@ import UIKit
 
 class BoardDetailView:BaseUIViewController, ViewProtocol{
     
-    var boardDetailViewModel = BoardDetailViewModel()
-    var delegate:CommentDataDelegate?
+    private var boardDetailViewModel = BoardDetailViewModel()
+    private var delegate:CommentDataDelegate?
 
-    let commentPlaceHolder = "댓글을 입력해주세요."
-    var stackViewSize: Int = 0
+    private let commentPlaceHolder = "댓글을 입력해주세요."
+    private var stackViewSize: Int = 0
     
-    let titleHeight:CGFloat = 30
-    var imageSize:CGFloat!
-    var textViewHeight:CGFloat!
-    var textViewPadding:CGFloat = 5
-    var imageWidth:CGFloat!
+    private let titleHeight:CGFloat = 30
+    private var imageSize:CGFloat!
+    private var textViewHeight:CGFloat!
+    private var textViewPadding:CGFloat = 5
+    private var imageWidth:CGFloat!
     
-    lazy var rightBtn:UIBarButtonItem = {
+    private lazy var rightBtn:UIBarButtonItem = {
         var rightBtn = UIBarButtonItem(image: UIImage.init(systemName: "ellipsis")?.rotate(radians: .pi/2)?.withTintColor(UIColor.lightGray), style: .plain, target: self, action: #selector(addActionSheet))
         return rightBtn
     }()
 
-    var scrollView:UIScrollView!{
+    private var scrollView:UIScrollView!{
         didSet{
             self.scrollView.alwaysBounceVertical = true
             let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
@@ -39,15 +39,15 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
         }
     }
     
-    var boardContentView:UIView = UIView()
+    private var boardContentView:UIView = UIView()
     
-    var image:UIImage!{
+    private var image:UIImage!{
         didSet{
             self.authorImageView.image = self.image
         }
     }
     
-    var authorImageView:UIImageView!{
+    private var authorImageView:UIImageView!{
         didSet{
             self.imageSize = self.authorLabel.font.lineHeight + 10
             self.authorImageView.image = self.image
@@ -61,7 +61,7 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
         }
     }
     
-    var authorLabel:UILabel!{
+    private var authorLabel:UILabel!{
         didSet{
             self.authorLabel.textAlignment = .left
             self.authorLabel.textColor = UIColor.black
@@ -70,7 +70,7 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
         }
     }
     
-    var dateLabel:UILabel!{
+    private var dateLabel:UILabel!{
         didSet{
             self.dateLabel.textAlignment = .right
             self.dateLabel.textColor = UIColor.black
@@ -79,7 +79,7 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
         }
     }
     
-    var titleLabel:UILabel!{
+    private var titleLabel:UILabel!{
         didSet{
             self.titleLabel.textAlignment = .left
             self.titleLabel.textColor = UIColor.black
@@ -89,7 +89,7 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
         }
     }
     
-    var contentLabel:UILabel!{
+    private var contentLabel:UILabel!{
         didSet{
             self.contentLabel.textAlignment = .left
             self.contentLabel.textColor = UIColor.black
@@ -98,12 +98,12 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
         }
     }
     
-    var cellTapped: Bool = false
+    private var cellTapped: Bool = false
     
-    var uiImages: [UIImage] = []
-    var photoCells: [ImageView] = []
+    private var uiImages: [UIImage] = []
+    private var photoCells: [ImageView] = []
     
-    lazy var photoScrollView:UIScrollView = {
+    private lazy var photoScrollView:UIScrollView = {
         var photoScrollView = UIScrollView()
         photoScrollView.alwaysBounceHorizontal = true
         let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
@@ -113,7 +113,7 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
         return photoScrollView
     }()
     
-    lazy var photoView:UIStackView = {
+    private lazy var photoView:UIStackView = {
         var photoView = UIStackView()
         photoView.axis = .horizontal
         photoView.alignment = .center
@@ -124,7 +124,7 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
         return photoView
     }()
     
-    var categoryLabel:UILabel!{
+    private var categoryLabel:UILabel!{
         didSet{
             self.categoryLabel.textAlignment = .center
             self.categoryLabel.textColor = UIColor.lightGray
@@ -132,7 +132,7 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
         }
     }
     
-    var photoImage:UIImageView!{
+    private var photoImage:UIImageView!{
         didSet{
             photoImage.image = UIImage(systemName: "photo")
             photoImage.tintColor = .lightGray
@@ -140,7 +140,7 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
         }
     }
     
-    var photoLabel:UILabel!{
+    private var photoLabel:UILabel!{
         didSet{
             photoLabel.textAlignment = .left
             photoLabel.textColor = UIColor.black
@@ -150,7 +150,7 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
         }
     }
     
-    var commentImage:UIImageView!{
+    private var commentImage:UIImageView!{
         didSet{
             let image = UIImage(systemName: "text.bubble.fill")
             self.commentImage.image = image
@@ -158,7 +158,7 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
         }
     }
     
-    var commentLabel:UILabel!{
+    private var commentLabel:UILabel!{
         didSet{
             self.commentLabel.textAlignment = .left
             self.commentLabel.textColor = UIColor.black
@@ -167,27 +167,27 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
         }
     }
     
-    var stackView:CommentView!{
+    private var stackView:CommentView!{
         didSet{
             self.stackView.axis = .vertical
             self.stackView.distribution = .fill
         }
     }
         
-    var textFieldView:UIView!{
+    private var textFieldView:UIView!{
         didSet{
             textFieldView.backgroundColor = .white
         }
     }
     
-    var borderLine:UIView!{
+    private var borderLine:UIView!{
         didSet{
             self.borderLine.layer.borderWidth = 0.3
             self.borderLine.layer.borderColor = UIColor.lightGray.cgColor
         }
     }
     
-    var textField:UITextView!{
+    private var textField:UITextView!{
         didSet{
             self.textField.delegate = self
             self.textField.backgroundColor = UIColor.gray.withAlphaComponent(0.1)
@@ -205,7 +205,7 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
         }
     }
 
-    var placeholderLabel : UILabel!{
+    private var placeholderLabel : UILabel!{
         didSet{
             self.placeholderLabel.text = commentPlaceHolder
             self.placeholderLabel.font = textField.font
@@ -214,7 +214,7 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
         }
     }
     
-    var textFieldBtn:UIButton!{
+    private var textFieldBtn:UIButton!{
         didSet{
             let image = UIImage(systemName: "paperplane.circle.fill")?.resized(toWidth: imageWidth)
             self.textFieldBtn.setImage(image?.withTintColor(Color.mainColor), for: .normal)
@@ -248,7 +248,7 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
         super.viewWillDisappear(animated)
         print("DetailViwe \(CFGetRetainCount(self))")
         print("stackView \(CFGetRetainCount(self.stackView))")
-        print("photoView \(CFGetRetainCount(photoView))")
+        print("photoView \(CFGetRetainCount(self.photoView))")
     }
     
     func initUI(){
@@ -265,7 +265,7 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
         self.commentImage = UIImageView()
         self.commentLabel = UILabel()
         
-        self.stackView = CommentView(storyboard: self.storyboard, navigationVC: self.navigationController, currentVC: self, isHiddenReplyBtn: false)
+        self.stackView = CommentView(storyboard: self.storyboard, navigationVC: self.navigationController, isHiddenReplyBtn: false)
         
         self.textFieldView = UIView()
         self.borderLine = UIView()
@@ -455,7 +455,6 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
                     self?.boardDetailViewModel.getBoardRequest()
                 }
             }
-            
         }, remove_text: "게시글 삭제", removeAction:{ [weak self] action in
             Alert(title: "게시글 삭제", message: "게시글을 삭제하시겠습니까?", viewController: self).popUpNormalAlert{ (action) in
                 self?.boardDetailViewModel.deleteBoard()
@@ -782,7 +781,18 @@ extension BoardDetailView{
     }
     
     func BindingStackAction(){
-        self.stackView.setDeleteAction{ [weak self] commentId in
+        self.stackView.setActionSheetAction{ [weak self] commentId, deleteAction in
+            if self?.presentedViewController != nil {
+                self?.dismiss(animated: false, completion: nil)
+            }
+            var actionSheet = ActionSheet(viewController: self)
+            actionSheet.popUpDeleteActionSheet(remove_text: "댓글 삭제", removeAction:{ action in
+                deleteAction?(commentId)
+            }
+            , cancel_text: "취소")
+        }
+        
+        self.stackView.setDeleteAlertAction{ [weak self] commentId in
             Alert(title: "삭제", message: "댓글을 삭제하겠습니까?", viewController: self).popUpNormalAlert(){ action in
                 self?.boardDetailViewModel.deleteCommentRequest(commentId: commentId)
             }
@@ -806,5 +816,9 @@ extension BoardDetailView{
         }, endHandler: {
             
         })
+    }
+    
+    func BindingBoardSecond(closure: @escaping (Board)->Void){
+        self.boardDetailViewModel.board.secondBind(closure)
     }
 }

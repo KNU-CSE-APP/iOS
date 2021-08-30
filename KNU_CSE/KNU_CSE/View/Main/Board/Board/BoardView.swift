@@ -155,7 +155,7 @@ extension BoardView{
     func pushDetaiView(_ index: Int){
         if let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "BoardDetailView") as? BoardDetailView{
             if !(self.navigationController!.viewControllers.contains(pushVC)){
-                pushVC.boardDetailViewModel.board.secondBind{ [weak self] board in
+                pushVC.BindingBoardSecond{ [weak self] board in
                     self?.boardViewModel.boards[index] = board
                     self?.boardTableView.reloadData()
                 }

@@ -10,11 +10,11 @@ import YPImagePicker
 
 class PhotoView:UIViewController,ViewProtocol{
     
-    var listener:((UIImage, String) -> Void)?
-    var initlistener: (()->Void)?
+    private var listener:((UIImage, String) -> Void)?
+    private var initlistener: (()->Void)?
     
-    var isMutltiSelection: Bool = false
-    var picker:YPImagePicker!{
+    public var isMutltiSelection: Bool = false
+    private var picker:YPImagePicker!{
         didSet{
             picker.didFinishPicking { [weak self] items, cancelled in
                 if cancelled {
@@ -46,7 +46,7 @@ class PhotoView:UIViewController,ViewProtocol{
         }
     }
 
-    var config:YPImagePickerConfiguration!{
+    private var config:YPImagePickerConfiguration!{
         didSet{
             config.screens = [.library]
             config.library.mediaType = .photo
@@ -61,11 +61,6 @@ class PhotoView:UIViewController,ViewProtocol{
             }
         }
    }
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-      
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
