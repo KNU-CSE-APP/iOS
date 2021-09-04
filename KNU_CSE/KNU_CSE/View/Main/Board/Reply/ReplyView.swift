@@ -386,9 +386,3 @@ extension ReplyView{
         }
     }
 }
-
-extension ReplyView{
-    func addReplys(replys:[Comment]){
-        
-    }
-}
