@@ -10,11 +10,13 @@ import UIKit
 class DetailImageViewController : UIViewController {
     var image: UIImage!
     
-    
-    lazy var imageView: UIImageView = {
-        var imageView = UIImageView()
+    lazy var imageView: ISImageView! = {
+        var imageView = ISImageView()
+        imageView.isInteractable = true
         return imageView
     }()
+    var isZooming: Bool = false
+    var originalImageCenter:CGPoint?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,8 +25,12 @@ class DetailImageViewController : UIViewController {
         self.setUpConstraints()
     }
     
+    deinit {
+        print("deinit DetailImageVC")
+    }
+    
     func initUI(){
-        
+
     }
     
     func addView(){
@@ -43,6 +49,11 @@ class DetailImageViewController : UIViewController {
 extension DetailImageViewController{
     func setImage(image: UIImage) {
         self.image = image
+        if image.size.height < image.size.width{
+            self.imageView.contentMode = .scaleAspectFit
+        }else{
+            self.imageView.contentMode = .scaleAspectFill
+        }
         self.imageView.image = image
     }
 }

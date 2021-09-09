@@ -91,6 +91,7 @@ class ReservationHistView: UIViewController, ViewProtocol{
         self.reservationHistViewModel = ReservationHistViewModel()
         
         self.Binding()
+        self.reservationHistViewModel.getMyReservation()
     }
     
     func initUI() {
@@ -191,6 +192,7 @@ extension ReservationHistView{
     func Binding(){
         self.BindingDeleteAction()
         self.BindingExtensionAction()
+        self.BindingGetMyReservation()
     }
     
     func BindingDeleteAction(){
@@ -217,6 +219,8 @@ extension ReservationHistView{
         self.reservationHistViewModel.extensionAction.binding(successHandler: { [weak self] result in
             if result.success, let response = result.response{
                 Alert(title: "성공", message: "해당 좌석을 연장했습니다.", viewController: self!).popUpDefaultAlert(action: nil)
+                self?.reservationHistViewModel.reservationHistModel = result.response
+                self?.reserTableView.reloadData()
             }else{
                 if let message = result.error?.message {
                     Alert(title: "실패", message: message, viewController: self!).popUpDefaultAlert(action: nil)
@@ -224,6 +228,22 @@ extension ReservationHistView{
             }
         }, failHandler: { Error in
             Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self).popUpDefaultAlert(action: nil)
+        }, asyncHandler: {
+            
+        }, endHandler: {
+            
+        })
+    }
+    
+    func BindingGetMyReservation(){
+        self.reservationHistViewModel.getReservationAction.binding(successHandler: { [weak self] result in
+            if result.success{
+                self?.reservationHistViewModel.reservationHistModel = result.response
+                self?.reserTableView.reloadData()
+            }
+            
+        }, failHandler: { Error in
+            
         }, asyncHandler: {
             
         }, endHandler: {

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class CommentCell : UIView {
     let titleHeight:CGFloat = 30
@@ -18,7 +19,11 @@ class CommentCell : UIView {
         }
     }
     
-    var image:UIImage!
+    var image:UIImage!{
+        didSet{
+            authorImageView.image = image
+        }
+    }
     
     var authorImageView:UIImageView!{
         didSet{
@@ -84,10 +89,10 @@ class CommentCell : UIView {
     init(comment:Comment) {
         self.comment = comment
         super.init(frame: CGRect())
-        self.setImage()
         self.initUI()
         self.addView()
         self.setUpConstraints()
+        self.setImage()
     }
     
     required init?(coder: NSCoder) {
@@ -95,16 +100,15 @@ class CommentCell : UIView {
     }
     
     func setImage(){
-        do {
-            if let loadedImage = self.comment.image, let url = URL(string: loadedImage){
-                let data =  try Data(contentsOf: url)
-                self.image = UIImage(data: data)
-            }else{
-                self.image = UIImage(systemName: "person.crop.square.fill")?.resized(toWidth: 100)?.withTintColor(.lightGray)
-            }
-            
-        } catch  {
+        if self.comment.image == ""{
             self.image = UIImage(systemName: "person.crop.square.fill")?.resized(toWidth: 100)?.withTintColor(.lightGray)
+        }else{
+            self.getImage(imageURL: self.comment.image, successHandler: { data in
+                let image = UIImage(data: data)
+                self.image = image
+            }, failHandler: {
+                self.image = UIImage(systemName: "person.crop.square.fill")?.resized(toWidth: 100)?.withTintColor(.lightGray)
+            })
         }
     }
     
@@ -175,6 +179,21 @@ class CommentCell : UIView {
             make.top.equalTo(self.contentLabel.snp.bottom).offset(3)
             make.left.equalTo(self.dateLabel.snp.right).offset(10)
             make.bottom.equalToSuperview().offset(bottom_margin)
+        }
+    }
+}
+
+extension CommentCell{
+    public func getImage(imageURL:String, successHandler: @escaping (Data)->(), failHandler: @escaping()->()){
+        AF.request(imageURL, method: .get).responseData{ response in
+            switch response.result {
+            case .success(_):
+                if let data = response.data {
+                    successHandler(data)
+                }
+            case .failure(_):
+                failHandler()
+            }
         }
     }
 }

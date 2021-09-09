@@ -13,6 +13,8 @@
 		6801765A26D6B3F000C1EC67 /* DetailImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6801765926D6B3F000C1EC67 /* DetailImageView.swift */; };
 		6801765C26D6B56A00C1EC67 /* DetailImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6801765B26D6B56A00C1EC67 /* DetailImageCell.swift */; };
 		6801765E26D6D4B600C1EC67 /* CustomPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6801765D26D6D4B600C1EC67 /* CustomPageView.swift */; };
+		6801766A26DA6AD100C1EC67 /* DetailImageBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6801766926DA6AD100C1EC67 /* DetailImageBtn.swift */; };
+		68183AF326DBC4C300C3E841 /* ISImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68183AF226DBC4C300C3E841 /* ISImageView.swift */; };
 		681D37B526A419F3000D9FE8 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37B426A419F3000D9FE8 /* MyPageView.swift */; };
 		681D37B726A42748000D9FE8 /* NoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37B626A42748000D9FE8 /* NoticeView.swift */; };
 		681D37B926A42782000D9FE8 /* ClassRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D37B826A42782000D9FE8 /* ClassRoomView.swift */; };
@@ -141,6 +143,8 @@
 		6801765926D6B3F000C1EC67 /* DetailImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailImageView.swift; sourceTree = "<group>"; };
 		6801765B26D6B56A00C1EC67 /* DetailImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailImageCell.swift; sourceTree = "<group>"; };
 		6801765D26D6D4B600C1EC67 /* CustomPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPageView.swift; sourceTree = "<group>"; };
+		6801766926DA6AD100C1EC67 /* DetailImageBtn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailImageBtn.swift; sourceTree = "<group>"; };
+		68183AF226DBC4C300C3E841 /* ISImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISImageView.swift; sourceTree = "<group>"; };
 		681D37B426A419F3000D9FE8 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		681D37B626A42748000D9FE8 /* NoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeView.swift; sourceTree = "<group>"; };
 		681D37B826A42782000D9FE8 /* ClassRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomView.swift; sourceTree = "<group>"; };
@@ -342,6 +346,7 @@
 				68C7629026B96EFA00792498 /* CategoryCell.swift */,
 				6801764426D56ED000C1EC67 /* ImageCell.swift */,
 				6801765B26D6B56A00C1EC67 /* DetailImageCell.swift */,
+				6801766926DA6AD100C1EC67 /* DetailImageBtn.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -635,6 +640,7 @@
 				68F861E026B2EA0C00934BD2 /* UIViewController+extension.swift */,
 				68C762A526C40FEC00792498 /* Extension+StackView.swift */,
 				68C762A726C4115D00792498 /* Extension+ScrollView.swift */,
+				68183AF226DBC4C300C3E841 /* ISImageView.swift */,
 			);
 			path = ExtensionUI;
 			sourceTree = "<group>";
@@ -1012,6 +1018,7 @@
 				68F861E926B427BE00934BD2 /* PhotoView.swift in Sources */,
 				68F1A5B826A0088B007B4B86 /* AppDelegate.swift in Sources */,
 				68F1A61426A32356007B4B86 /* StorageManager.swift in Sources */,
+				6801766A26DA6AD100C1EC67 /* DetailImageBtn.swift in Sources */,
 				68F1A60C26A307AB007B4B86 /* StringSet.swift in Sources */,
 				681D382326ADC5D4000D9FE8 /* BoardSearchView.swift in Sources */,
 				681D37D926A4A75F000D9FE8 /* ClassDataDelegate.swift in Sources */,
@@ -1073,6 +1080,7 @@
 				68F1A5EC26A008FF007B4B86 /* Request.swift in Sources */,
 				681D37F426A737AE000D9FE8 /* SignInNavigationView.swift in Sources */,
 				68F1A5EE26A008FF007B4B86 /* BaseObject.swift in Sources */,
+				68183AF326DBC4C300C3E841 /* ISImageView.swift in Sources */,
 				681D37B926A42782000D9FE8 /* ClassRoomView.swift in Sources */,
 				686889CD26D2A2B400486985 /* DeleteAccountViewModel+Model.swift in Sources */,
 				681D37F926A73F71000D9FE8 /* BoardTitleCollectionCell.swift in Sources */,

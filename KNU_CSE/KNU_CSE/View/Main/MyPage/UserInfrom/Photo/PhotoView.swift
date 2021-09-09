@@ -10,28 +10,28 @@ import YPImagePicker
 
 class PhotoView:UIViewController,ViewProtocol{
     
-    var listener:((UIImage, String) -> Void)?
-    var initlistener: (()->Void)?
+    private var listener:((UIImage, String) -> Void)?
+    private var initlistener: (()->Void)?
     
-    var isMutltiSelection: Bool = false
-    var picker:YPImagePicker!{
+    public var isMutltiSelection: Bool = false
+    private var picker:YPImagePicker!{
         didSet{
             picker.didFinishPicking { [weak self] items, cancelled in
                 if cancelled {
 
                 }else{
-                    self?.initlistener?()
                     for item in items{
                         switch item{
                             case .photo(let p):
-                                if let action = self?.listener{
+                                self?.initlistener?()
+                                if let action = self?.listener {
                                     let photo = p
                                     let imgName = "\(UUID().uuidString).jpg"
                                     let documentDirectory = NSTemporaryDirectory()
                                     let localPath = documentDirectory.appending(imgName)
 
                                     let image = photo.image
-                                    let data = image.jpegData(compressionQuality: 0.5)! as NSData
+                                    let data = image.jpegData(compressionQuality: 0)! as NSData
                                     data.write(toFile: localPath, atomically: true)
                                     //let url = URL.init(fileURLWithPath: localPath)
                                     action(photo.image, localPath)
@@ -40,14 +40,13 @@ class PhotoView:UIViewController,ViewProtocol{
                                 break
                         }
                     }
-                    
                 }
                 self?.dismiss(animated: true, completion: nil)
             }
         }
     }
 
-    var config:YPImagePickerConfiguration!{
+    private var config:YPImagePickerConfiguration!{
         didSet{
             config.screens = [.library]
             config.library.mediaType = .photo
@@ -57,17 +56,11 @@ class PhotoView:UIViewController,ViewProtocol{
             config.wordings.next = "확인"
             config.wordings.cancel = "취소"
             config.wordings.done = "확인"
-            
             if isMutltiSelection {
                 config.library.maxNumberOfItems = 10
             }
         }
    }
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-      
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

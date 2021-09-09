@@ -24,7 +24,7 @@ class UserInformView:BaseUIViewController, ViewProtocol{
                     profileBtn.setImage(image, for: .normal)
                 }else {
                     let image = UIImage(systemName: "person.circle.fill")!.resized(toWidth: profile_width_hegiht)!
-                    self.profileBtn.setImage(image.withTintColor(.lightGray.withAlphaComponent(0.4)), for: .normal)
+                    self.profileBtn.setImage(image.withTintColor(.lightGray.withAlphaComponent(0)), for: .normal)
                 }
                 
                 profileBtn.clipsToBounds = true
@@ -79,7 +79,6 @@ class UserInformView:BaseUIViewController, ViewProtocol{
             confirmBtn.isEnabled = false
             self.BindingSetUserInform()
             confirmBtn.addAction {
-//                self.navigationController?.popViewController(animated: true)
                 self.userInformationViewModel.setUserInform()
             }
         }
@@ -176,7 +175,6 @@ extension UserInformView:UITableViewDataSource{
         default:
             break
         }
-        
         return cell
     }
     
@@ -213,7 +211,7 @@ extension UserInformView{
                 self?.profileBtn.setImage(image.resized(toWidth: (self?.profile_width_hegiht)!), for: .normal)
                 if self?.userInformationViewModel.model.imagePath != url{
                     self?.addBtnAction()
-                    self?.userInformationViewModel.model.imageData = image.jpegData(compressionQuality: 0.5)
+                    self?.userInformationViewModel.model.imageData = image.jpegData(compressionQuality: 0.1)
                 }
             }
         }

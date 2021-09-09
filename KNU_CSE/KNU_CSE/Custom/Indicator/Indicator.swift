@@ -15,24 +15,31 @@ struct IndicatorView{
                                             color: .black.withAlphaComponent(0.6),
                                             padding: 0)
     let loadingView = UIView()
-    var viewController : UIViewController
+    var viewController: UIViewController?
     
-    init(viewController : UIViewController){
+    init(viewController: UIViewController?){
         self.viewController = viewController
+    }
+    
+    init(viewController: UIViewController?, color:UIColor){
+        self.viewController = viewController
+        self.indicator.color = color
     }
     
     func startIndicator(){
         DispatchQueue.main.async {
-            self.viewController.view.addSubview(self.loadingView)
-            self.viewController.view.addSubview(self.indicator)
+            self.viewController?.view.addSubview(self.loadingView)
+            self.viewController?.view.addSubview(self.indicator)
             self.loadingView.backgroundColor = UIColor.init(cgColor: CGColor(red: 220, green: 220, blue: 220, alpha: 0.5))
-            self.loadingView.snp.makeConstraints{ make in
-                make.top.left.right.bottom.equalTo(self.viewController.view).offset(0)
-            }
-            self.indicator.snp.makeConstraints{ make in
-                make.width.equalToSuperview().multipliedBy(0.1)
-                make.height.equalToSuperview().multipliedBy(0.1)
-                make.center.equalTo(self.viewController.view)
+            if let VC = self.viewController {
+                self.loadingView.snp.makeConstraints{ make in
+                    make.top.left.right.bottom.equalTo(VC.view).offset(0)
+                }
+                self.indicator.snp.makeConstraints{ make in
+                    make.width.equalToSuperview().multipliedBy(0.1)
+                    make.height.equalToSuperview().multipliedBy(0.1)
+                    make.center.equalTo(VC.view)
+                }
             }
             self.indicator.startAnimating()
         }

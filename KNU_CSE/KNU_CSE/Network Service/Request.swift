@@ -17,7 +17,7 @@ struct Request: BaseApiRequest {
         self.requestBodyObject = bodyObject
     }
     
-    func sendRequest<T:Codable,V:Codable>( request:BaseApiRequest, responseType :T.Type,errorType:V.Type, action:BaseAction<T,V>){
+    func sendRequest<T:Codable,V:Codable>( request:BaseApiRequest, responseType :T.Type, errorType:V.Type, action:BaseAction<T,V>){
         action.asyncHandler?()
         AF.request(request.request()).responseDecodable { (response:AFDataResponse<ResponseBody<T,V>>) in
              switch response.result{

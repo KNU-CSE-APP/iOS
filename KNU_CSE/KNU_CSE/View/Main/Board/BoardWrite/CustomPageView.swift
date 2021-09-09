@@ -13,8 +13,8 @@ class PageViewController: UIPageViewController, ViewProtocol{
     
     lazy var backBtn:UIButton = {
         var btn = UIButton()
-        btn.setImage(UIImage.init(systemName: "xmark")?.resized(toWidth: self.size), for: .normal)
-        btn.imageView?.tintColor = .black
+        btn.setImage(UIImage.init(systemName: "xmark")?.resized(toWidth: self.size)?.withTintColor(.white), for: .normal)
+        //btn.imageView?.tintColor = .white
         btn.addAction {
             self.dismiss(animated: true)
         }
@@ -40,7 +40,7 @@ class PageViewController: UIPageViewController, ViewProtocol{
         self.backBtn.snp.makeConstraints{ make in
             make.right.equalToSuperview().offset(-15)
             make.width.height.equalTo(self.size)
-            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(100)
+            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(30)
         }
     }
 }

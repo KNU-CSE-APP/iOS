@@ -68,9 +68,9 @@ class BoardTabView:UIViewController, ViewProtocol{
     var pageView:UIView!
     
     
-    var BoardVC:BoardView!{
+    weak var BoardVC:BoardView?{
         didSet{
-            self.BoardVC.parentType = .BoardTap
+            self.BoardVC?.parentType = .BoardTap
         }
     }
     
@@ -133,12 +133,14 @@ class BoardTabView:UIViewController, ViewProtocol{
 
 extension BoardTabView{
     func addBoardVC(){
-        self.addChild(BoardVC)
-        self.pageView.addSubview(BoardVC.view)
-        self.BoardVC.view.snp.makeConstraints{ make in
-            make.left.right.top.bottom.equalToSuperview()
+        if let boardVC = BoardVC {
+            self.addChild(boardVC)
+            self.pageView.addSubview(boardVC.view)
+            boardVC.view.snp.makeConstraints{ make in
+                make.left.right.top.bottom.equalToSuperview()
+            }
+            boardVC.didMove(toParent: self)
         }
-        self.BoardVC.didMove(toParent: self)
     }
     
     func selectCell(){
@@ -163,15 +165,15 @@ extension BoardTabView:UICollectionViewDataSource, UICollectionViewDelegate{
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if collectionView == tabCollectionView {
+        if collectionView == tabCollectionView, let boardVC = BoardVC{
             self.reloadNavigationItems(selectedTabIndex: indexPath.row)
             self.upDateHighlightView(indexPath: indexPath)
             if indexPath.row == 0{
-                self.BoardVC.boardViewModel.category.value = "FREE"
-                self.BoardVC.boardViewModel.getBoardsByPaging()
+                boardVC.boardViewModel.category.value = "FREE"
+                boardVC.boardViewModel.getBoardsByPaging()
             }else if indexPath.row == 1{
-                self.BoardVC.boardViewModel.category.value = "QNA"
-                self.BoardVC.boardViewModel.getBoardsByPaging()
+                boardVC.boardViewModel.category.value = "QNA"
+                boardVC.boardViewModel.getBoardsByPaging()
             }else{
                 
             }
@@ -203,12 +205,14 @@ extension BoardTabView{
     
     func upDateHighlightView(indexPath:IndexPath){
         let leading = cellWidth * CGFloat(indexPath.row) + (CGFloat(indexPath.row) * 24) + title_left_Margin
-        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseOut, animations: {
-            self.highlightView.snp.updateConstraints{ make in
-                make.top.equalTo(self.tabCollectionView.snp.bottom).offset(0)
-                make.leading.equalTo(leading)
-                make.width.equalTo(self.cellWidth)
-                make.height.equalTo(self.collectionViewHeihgt*0.1)
+        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseOut, animations: { [weak self] in
+            if let VC = self {
+                VC.highlightView.snp.updateConstraints{ make in
+                    make.top.equalTo(VC.tabCollectionView.snp.bottom).offset(0)
+                    make.leading.equalTo(leading)
+                    make.width.equalTo(VC.cellWidth)
+                    make.height.equalTo(VC.collectionViewHeihgt*0.1)
+                }
             }
         }, completion: nil)
     }

@@ -169,7 +169,6 @@ extension ReservationView:UICollectionViewDataSource, UICollectionViewDelegate{
             guard let classRoom = self?.reservationViewModel.classRoom, let classSeat = self?.reservationViewModel.classSeats[indexPath.row] else{
                 return
             }
-            
             let alert = Alert(title: "좌석 확인", message: "다음 좌석을 예약하시겠습니까?\n\(classRoom.building)-\(classRoom.roomNum)호 \(classSeat.seatNumber)번\n\n *반드시 착석 후 좌석을 예약해주세요.", viewController: self!)
             alert.popUpNormalAlert{ (action) in
                 self?.reservationViewModel.seatIndex = indexPath.row

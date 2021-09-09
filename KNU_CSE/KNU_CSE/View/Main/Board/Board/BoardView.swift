@@ -52,6 +52,12 @@ class BoardView : BaseUIViewController, ViewProtocol{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print("Boardview \(CFGetRetainCount(self))")
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        print("Boardview \(CFGetRetainCount(self))")
     }
     
     func initUI(){
@@ -94,7 +100,9 @@ extension BoardView : UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: FreeBoardCell.identifier, for: indexPath) as! FreeBoardCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: FreeBoardCell.identifier, for: indexPath) as? FreeBoardCell else{
+            return UITableViewCell()
+        }
         
         cell.board =  self.boardViewModel.boards[indexPath.row]
         cell.height = self.cellRowHeight * 0.115
@@ -135,8 +143,8 @@ extension BoardView:UITableViewDelegate{
             if offsetY * 1.3 > (contentHeight - height) && !requested && !isLastPage{
                 self.boardViewModel.getBoardsByPaging()
                 self.boardViewModel.requested = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                    self.boardViewModel.requested = false
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
+                    self?.boardViewModel.requested = false
                 }
             }
         }
@@ -145,24 +153,24 @@ extension BoardView:UITableViewDelegate{
 
 extension BoardView{
     func pushDetaiView(_ index: Int){
-        let pushVC = (self.storyboard?.instantiateViewController(withIdentifier: "BoardDetailView")) as? BoardDetailView
-        if !(self.navigationController!.viewControllers.contains(pushVC!)){
-            pushVC?.boardDetailViewModel.board.secondBind{ [weak self] board in
-                self?.boardViewModel.boards[index] = board
-                self?.boardTableView.reloadData()
+        if let pushVC = self.storyboard?.instantiateViewController(withIdentifier: "BoardDetailView") as? BoardDetailView{
+            if !(self.navigationController!.viewControllers.contains(pushVC)){
+                pushVC.BindingBoardSecond{ [weak self] board in
+                    self?.boardViewModel.boards[index] = board
+                    self?.boardTableView.reloadData()
+                }
+                
+                self.boardDelegate = pushVC
+                self.boardDelegate?.sendBoardData(board:self.boardViewModel.boards[index])
+                
+                //Detailview에서 게시판이 삭제됐을 경우
+                self.boardDelegate?.deleteBoard { [weak self] in
+                    self?.boardViewModel.boards.remove(at: index)
+                    self?.boardTableView.reloadData()
+                }
+                
+                self.navigationController?.pushViewController(pushVC, animated: true)
             }
-            
-            self.boardDelegate = pushVC
-            self.boardDelegate?.sendBoardData(board:self.boardViewModel.boards[index])
-            self.boardDelegate?.deleteBoard {
-                self.boardViewModel.boards.remove(at: index)
-                self.boardTableView.reloadData()
-            }
-            
-            self.boardDelegate?.editBoard {
-                //self.boardViewModel
-            }
-            self.navigationController?.pushViewController(pushVC!, animated: true)
         }
     }
     
@@ -198,53 +206,53 @@ extension BoardView{
     
     //카테고리가 바뀌면 page를 0으로 설정
     func BindingCategory(){
-        self.boardViewModel.category.bind{ _ in
-            self.boardViewModel.page = 0
+        self.boardViewModel.category.bind{ [weak self] _ in
+            self?.boardViewModel.page = 0
         }
     }
     
     func BindingGetBoard(){
-        self.boardViewModel.getBoardAction.binding(successHandler: { result in
+        self.boardViewModel.getBoardAction.binding(successHandler: { [weak self] result in
             if result.success, let boards = result.response{
-                self.boardViewModel.boards = boards
+                self?.boardViewModel.boards = boards
             }
-        }, failHandler: { Error in
+        }, failHandler: { [weak self] Error in
             Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self).popUpDefaultAlert(action: nil)
         }
-        , asyncHandler: {
-            self.indicator.startIndicator()
+        , asyncHandler: { [weak self] in
+            self?.indicator.startIndicator()
         }
-        , endHandler: {
-            self.dataLoaded = true
-            self.indicator.stopIndicator()
-            self.boardTableView.reloadData()
+        , endHandler: { [weak self] in
+            self?.dataLoaded = true
+            self?.indicator.stopIndicator()
+            self?.boardTableView.reloadData()
         })
     }
     
     func BindingGetBoardWithPaging(){
-        self.boardViewModel.BoardsByPagingAction.binding(successHandler: { result in
+        self.boardViewModel.BoardsByPagingAction.binding(successHandler: { [weak self] result in
             if result.success, let response = result.response{
                 if let boards = response.content{
                     if response.first{
-                        self.boardViewModel.boards = boards
+                        self?.boardViewModel.boards = boards
                     }else{
                         for board in boards{
-                            self.boardViewModel.boards.append(board)
+                            self?.boardViewModel.boards.append(board)
                         }
                     }
                     if !response.last{
-                        self.boardViewModel.page += 1
+                        self?.boardViewModel.page += 1
                     }
                 }
-                self.boardViewModel.isLastPage = response.last
+                self?.boardViewModel.isLastPage = response.last
             }
-        }, failHandler: { Error in
+        }, failHandler: { [weak self] Error in
             Alert(title: "실패", message: "네트워크 상태를 확인하세요", viewController: self).popUpDefaultAlert(action: nil)
         }, asyncHandler: {
     
-        }, endHandler: {
-            self.dataLoaded = true
-            self.boardTableView.reloadData()
+        }, endHandler: { [weak self] in
+            self?.dataLoaded = true
+            self?.boardTableView.reloadData()
         })
     }
 }

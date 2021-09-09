@@ -11,9 +11,9 @@ struct Alert{
     var alert : UIAlertController
     var title : String
     var message : String
-    var viewController : UIViewController
+    var viewController : UIViewController?
     
-    init(title:String, message:String, viewController:UIViewController) {
+    init(title:String, message:String, viewController:UIViewController?) {
         self.title = title
         self.message = message
         self.alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -23,7 +23,7 @@ struct Alert{
     func popUpDefaultAlert(action:((UIAlertAction)->())?){
         let actionDefault = UIAlertAction(title: "확인", style: .default,handler: action)
         self.alert.addAction(actionDefault)
-        self.viewController.present(alert, animated: true, completion: nil)
+        self.viewController?.present(alert, animated: true, completion: nil)
     }
     
     func popUpNormalAlert(action:((UIAlertAction)->())?){
@@ -31,7 +31,7 @@ struct Alert{
         let actionDefault = UIAlertAction(title: "확인", style: .default,handler: action)
         self.alert.addAction(actionCancel)
         self.alert.addAction(actionDefault)
-        self.viewController.present(alert, animated: true, completion: nil)
+        self.viewController?.present(alert, animated: true, completion: nil)
     }
 }
 
@@ -39,11 +39,11 @@ import YPImagePicker
 
 struct ActionSheet{
     let actionSheet = UIAlertController()
-    var viewController : UIViewController
+    var viewController : UIViewController?
     var editActioon:((UIAlertAction) -> Void)?
     var removeAction:((UIAlertAction) -> Void)?
     
-    init(viewController:UIViewController) {
+    init(viewController:UIViewController?) {
         self.viewController = viewController
     }
     
@@ -62,7 +62,7 @@ struct ActionSheet{
         self.actionSheet.addAction(removeBtn)
         self.actionSheet.addAction(cancelBtn)
         
-        self.viewController.present(self.actionSheet, animated: true, completion: nil)
+        self.viewController?.present(self.actionSheet, animated: true, completion: nil)
     }
     
     mutating func popUpDeleteActionSheet(remove_text:String, removeAction:@escaping((UIAlertAction) -> Void), cancel_text:String){
@@ -76,7 +76,7 @@ struct ActionSheet{
         self.actionSheet.addAction(removeBtn)
         self.actionSheet.addAction(cancelBtn)
         
-        self.viewController.present(self.actionSheet, animated: true, completion: nil)
+        self.viewController?.present(self.actionSheet, animated: true, completion: nil)
     }
     
 }

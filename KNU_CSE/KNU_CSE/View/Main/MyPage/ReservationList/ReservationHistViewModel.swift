@@ -11,16 +11,13 @@ struct ReservationHistViewModel{
     
     var reservationHistModel:ReservationHistModel!
     var deleteAction: BaseAction<String, errorHandler> = BaseAction()
-    var extensionAction: BaseAction<Int, errorHandler> = BaseAction()
+    var extensionAction: BaseAction<ReservationHistModel, errorHandler> = BaseAction()
+    var getReservationAction: BaseAction<ReservationHistModel, errorHandler> = BaseAction()
     
     init(){
-        self.setReservation()
+
     }
 
-    mutating func setReservation(){
-        self.reservationHistModel = ReservationHistModel(building: "IT4", roomNumber: 104, seatNumber: 5,extension_cnt: 1, startDate: "2021-07-27 22:11:55", endDate: "2021-07-28 05:11:55")
-    }
-    
     func getContentText()->[String]{
         
         let seatInfo = "\(reservationHistModel.building) \(reservationHistModel.roomNumber)호 \(reservationHistModel.seatNumber)번"
@@ -48,6 +45,12 @@ extension ReservationHistViewModel{
     
     func reservationExtend(){
         let request = Request(requestBodyObject: nil, requestMethod: .post, enviroment: .reservationExtension)
-        request.sendRequest(request: request, responseType: Int.self, errorType: errorHandler.self, action:self.extensionAction)
+        request.sendRequest(request: request, responseType: ReservationHistModel.self, errorType: errorHandler.self, action:self.extensionAction)
     }
+    
+    func getMyReservation(){
+        let request = Request(requestBodyObject: nil, requestMethod: .post, enviroment: .myReservation)
+        request.sendRequest(request: request, responseType: ReservationHistModel.self, errorType: errorHandler.self, action:self.getReservationAction)
+    }
+    
 }

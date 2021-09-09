@@ -10,7 +10,7 @@ import UIKit
 
 class ClassRoomView : UIViewController{
 
-    let classRoomViewModel : ClassRoomViewModel = ClassRoomViewModel()
+    var classRoomViewModel : ClassRoomViewModel = ClassRoomViewModel()
     var delegate: ClassDataDelegate?
     
     var cellRowHeight : CGFloat!
@@ -28,14 +28,20 @@ class ClassRoomView : UIViewController{
     }
     
     override func viewDidLoad() {
-        initUI()
-        addView()
-        setupConstraints()
+        self.initUI()
+        self.addView()
+        self.setupConstraints()
+        self.Binding()
+        self.classRoomViewModel.getClassRooms()
+    }
+    
+    deinit {
+        print("ClassRoomView deinit")
     }
     
     func initUI(){
         cellRowHeight = self.view.frame.height
-        classTableView = UITableView()
+        classTableView = UITableView(frame: CGRect.zero, style: .insetGrouped)
     }
     
     func addView(){
@@ -76,5 +82,23 @@ extension ClassRoomView:UITableViewDelegate{
         self.navigationController?.pushViewController(pushVC!, animated: true)
         self.delegate = pushVC
         self.delegate?.sendData(data: self.classRoomViewModel.classrooms[indexPath.row])
+    }
+}
+
+extension ClassRoomView{
+    func Binding(){
+        self.classRoomViewModel.classRoomsAction.binding(successHandler: {
+            [weak self] result in
+            if result.success, let classRooms = result.response{
+                self?.classRoomViewModel.classrooms = classRooms
+                self?.classTableView.reloadData()
+            }
+        }, failHandler: { Error in
+            
+        }, asyncHandler: {
+            
+        }, endHandler: {
+            
+        })
     }
 }

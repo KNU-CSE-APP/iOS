@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class ImageCell : UICollectionViewCell {
     static let identifier = "ImageCell"
@@ -13,6 +14,7 @@ class ImageCell : UICollectionViewCell {
     var image: UIImage!{
         didSet{
             self.imageView.setImage(image, for: .normal)
+            
         }
     }
     
@@ -20,7 +22,7 @@ class ImageCell : UICollectionViewCell {
         var imageView = UIButton()
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 15
-        
+        imageView.imageView?.contentMode = .scaleToFill
         return imageView
     }()
     
@@ -52,7 +54,6 @@ class ImageCell : UICollectionViewCell {
     func draw(){
         initUI()
         addView()
-
     }
     
     func initUI(){

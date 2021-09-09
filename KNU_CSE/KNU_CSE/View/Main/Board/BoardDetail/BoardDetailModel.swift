@@ -35,13 +35,13 @@ class Comment:BaseObject{
         self.author = (try? container.decode(String.self, forKey: .author)) ?? ""
         self.content = (try? container.decode(String.self, forKey: .content)) ?? ""
         self.time = (try? container.decode(String.self, forKey: .time)) ?? ""
-        self.image = (try? container.decode(String.self, forKey: .image)) ?? ""
+        self.image = (try? container.decode(String.self, forKey: .profileImage)) ?? ""
         self.replyList = (try? container.decode([Comment].self, forKey: .replyList)) ?? []
         super.init()
     }
     
     enum CodingKeys: CodingKey {
-        case boardId, commentId, parentId, author, content, time, image, replyList
+        case boardId, commentId, parentId, author, content, time, profileImage, replyList
      }
     
 }
