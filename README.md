@@ -13,6 +13,7 @@
 ### Views
 
 - 학부 공지(WebKit 사용), 컴퓨터 학부 사이트 웹뷰로 볼 수 있음
+![title](https://user-images.githubusercontent.com/40800157/134705006-cb0f2d12-3ffd-4b72-8694-ff50d5ac9fba.gif){: width="30%" height="30%"){: .left}
 <img src = "https://user-images.githubusercontent.com/40800157/134705006-cb0f2d12-3ffd-4b72-8694-ff50d5ac9fba.gif" width="30%" height="30%">
 
 - 강의실 예약, 해당 배치도를 보고 원하는 번호에 좌석을 예약할 수 있음
