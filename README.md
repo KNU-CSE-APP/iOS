@@ -16,7 +16,7 @@
 <img src = "https://user-images.githubusercontent.com/40800157/134705006-cb0f2d12-3ffd-4b72-8694-ff50d5ac9fba.gif" width="30%" height="30%">
 
 - 강의실 예약, 해당 배치도를 보고 원하는 번호에 좌석을 예약할 수 있음
-<img src = "https://user-images.githubusercontent.com/40800157/130425286-1eb4bf1a-92b9-4a72-b3f2-293f74fc81d0.png" width="30%" height="30%">
+<img src = "https://user-images.githubusercontent.com/40800157/134705374-6743c84f-8812-4f87-a582-10f8ed67500d.gif" width="30%" height="30%">
 
 - 게시판 구현(Category : 자유게시판, QNA, 학생회공지)
  * 댓글 작성과, 게시글 작성 시 이미지 업로드 까지 가능!
