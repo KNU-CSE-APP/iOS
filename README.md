@@ -21,6 +21,7 @@
 - 게시판 구현(Category : 자유게시판, QNA, 학생회공지)
 
 1.게시글, 댓글 작성자의 프로필 구현. 댓글 및 대댓글 작성 가능
+
 <img src = "https://user-images.githubusercontent.com/40800157/134704699-0a45a76b-3cef-4bfc-a946-6c3fbd45ec25.gif" width="30%" height="30%">
 
 2.무한 스크롤
