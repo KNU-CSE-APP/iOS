@@ -11,7 +11,7 @@ import SnapKit
 
 class CommentView: UIStackView {
     
-    private var delegate:CommentDataDelegate?
+    weak var delegate:CommentDataDelegate?
     private var storyboard:UIStoryboard?
     private var navigationVC:UINavigationController?
     private var isHiddenReplyBtn:Bool

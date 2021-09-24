@@ -174,8 +174,9 @@ extension BoardTabView:UICollectionViewDataSource, UICollectionViewDelegate{
             }else if indexPath.row == 1{
                 boardVC.boardViewModel.category.value = "QNA"
                 boardVC.boardViewModel.getBoardsByPaging()
-            }else{
-                
+            }else if indexPath.row == 2{
+                boardVC.boardViewModel.category.value = "ADMIN"
+                boardVC.boardViewModel.getBoardsByPaging()
             }
         }
     }

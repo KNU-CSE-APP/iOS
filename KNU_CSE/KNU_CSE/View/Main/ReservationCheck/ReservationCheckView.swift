@@ -134,7 +134,7 @@ extension ReservationCheckView : UITableViewDataSource{
 
 extension ReservationCheckView:ReservationCheckDelegate{
     func sendData(classRoom: ClassRoom, classSeat: ClassSeat) {
-        self.reservationCheckViewModel = ReservationCheckViewModel(email: "sdfsdfs", building: classRoom.building, classSeat: classSeat, classRoom: classRoom)
+        self.reservationCheckViewModel = ReservationCheckViewModel(email: "", building: classRoom.building, classSeat: classSeat, classRoom: classRoom)
         
         contentList = [contentText.inform(classRoom.building,String(classRoom.roomNum),String(classSeat.seatNumber)), contentText.status("예약 완료"), contentText.startTime(""), contentText.endTime("")]
     }

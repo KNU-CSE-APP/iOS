@@ -25,7 +25,7 @@ class BoardView : BaseUIViewController, ViewProtocol{
     
     var boardViewModel : BoardViewModel = BoardViewModel()
     var cellRowHeight : CGFloat!
-    var boardDelegate:BoardDataDelegate?
+    weak var boardDelegate:BoardDataDelegate?
     
     var boardTableView :UITableView!{
         didSet{

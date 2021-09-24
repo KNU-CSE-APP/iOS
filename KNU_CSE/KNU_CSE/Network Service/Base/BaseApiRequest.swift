@@ -29,7 +29,7 @@ extension BaseApiRequest{
 //        let port = "5002"
 //
         let ip = "3.34.14.12"
-        let port = ""
+        let port = "8089"
         
         if port == ""{
             return  "http://\(ip)/\(domain)"
