@@ -46,7 +46,7 @@
 
 <img src = "https://user-images.githubusercontent.com/40800157/130425471-ac16a1e2-fe6a-49ee-a5c0-ef28221146af.png" width="30%" height="30%">
 
-1. 회원 정보 수정
+1. 회원 정보 수정(닉네임이랑 프로필 사진 변경 및 삭제 가능)
 
 <img src = "https://user-images.githubusercontent.com/40800157/134709030-8742e6a2-121c-44d9-8541-b56428340bb3.gif" width="30%" height="30%">
 
