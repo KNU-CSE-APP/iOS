@@ -10,7 +10,7 @@ import UIKit
 class BoardDetailView:BaseUIViewController, ViewProtocol{
     
     private var boardDetailViewModel = BoardDetailViewModel()
-    private var delegate:CommentDataDelegate?
+    weak var delegate:CommentDataDelegate?
 
     private let commentPlaceHolder = "댓글을 입력해주세요."
     private var stackViewSize: Int = 0
@@ -20,6 +20,7 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
     private var textViewHeight:CGFloat!
     private var textViewPadding:CGFloat = 5
     private var imageWidth:CGFloat!
+    var test = 10
     
     private lazy var rightBtn:UIBarButtonItem = {
         var rightBtn = UIBarButtonItem(image: UIImage.init(systemName: "ellipsis")?.rotate(radians: .pi/2)?.withTintColor(UIColor.lightGray), style: .plain, target: self, action: #selector(addActionSheet))
@@ -242,13 +243,18 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.boardDetailViewModel.getBoardRequest()
+        
+//        print("DetailView \(CFGetRetainCount(self))")
+//        print("stackView \(CFGetRetainCount(self.stackView))")
+//        print("photoScrollView \(CFGetRetainCount(self.photoView))")
+//        print("photoView \(CFGetRetainCount(self.photoView))")
+//        
+//        print("textFieldBtn \(CFGetRetainCount(self.textFieldBtn))")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        print("DetailViwe \(CFGetRetainCount(self))")
-        print("stackView \(CFGetRetainCount(self.stackView))")
-        print("photoView \(CFGetRetainCount(self.photoView))")
+        
     }
     
     func initUI(){
@@ -446,10 +452,9 @@ class BoardDetailView:BaseUIViewController, ViewProtocol{
         
         var actionSheet = ActionSheet(viewController: self)
         actionSheet.popUpActionSheet(edit_text: "게시글 수정", editAction: { [weak self] action in
-            
             self?.pushView(identifier: "BoardWriteView", typeOfVC: BoardWriteView.self){ VC in
                 VC.parentType = .Edit
-                var delegate: BoardDataforEditDelegate?
+                weak var delegate: BoardDataforEditDelegate?
                 delegate = VC
                 delegate?.sendBoard(board: (self?.boardDetailViewModel.board.value), images: (self?.uiImages), imageURLs: self?.boardDetailViewModel.board.value.images){ [weak self] in
                     self?.boardDetailViewModel.getBoardRequest()
@@ -616,8 +621,8 @@ extension BoardDetailView{
                         if let VC = self?.storyboard?.instantiateViewController(withIdentifier: "DetailImageView") as? DetailImageView, let images = self?.uiImages{
                                VC.modalPresentationStyle = .fullScreen
                                self?.present(VC, animated: true)
-                               let delegate: ImageDelegate = VC
-                               delegate.sendImages(images: images, index: i)
+                                weak var delegate: ImageDelegate? = VC
+                               delegate?.sendImages(images: images, index: i)
                        }
                     }
                }

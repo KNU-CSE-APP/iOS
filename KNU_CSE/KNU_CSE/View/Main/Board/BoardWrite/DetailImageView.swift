@@ -16,10 +16,9 @@ class DetailImageView:UIViewController, ViewProtocol{
         var pageVC = PageViewController(transitionStyle: .scroll,navigationOrientation: .horizontal)
         pageVC.dataSource = self
         pageVC.delegate = self
-        pageVC.backBtn.addAction {
-            self.dismiss(animated: true)
+        pageVC.backBtn.addAction { [weak self] in
+            self?.dismiss(animated: true)
         }
-        print(index, images)
         let firstVC = instantiateViewController(image: images[index], index: self.index)
         pageVC.setViewControllers([firstVC], direction: .forward, animated: true, completion: nil)
         pageVC.didMove(toParent: self)
@@ -39,6 +38,10 @@ class DetailImageView:UIViewController, ViewProtocol{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    deinit {
+        print("deinit DetailImageView")
     }
     
     func initUI() {

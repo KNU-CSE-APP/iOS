@@ -8,24 +8,24 @@
 import Foundation
 import UIKit
 
-protocol BoardDataDelegate{
+protocol BoardDataDelegate: AnyObject{
     func sendBoardData(board:Board)
     func deleteBoard(deleteBoard: @escaping ()->Void)
     func editBoard(editBoard: @escaping ()->Void)
 }
 
-protocol CommentDataDelegate {
+protocol CommentDataDelegate: AnyObject{
     func sendComment(board:Board, comment:Comment)
 }
 
-protocol ReplyDataDelegate{
+protocol ReplyDataDelegate: AnyObject{
     func sendReply(comment:Comment?)
 }
 
-protocol ImageDelegate{
+protocol ImageDelegate: AnyObject{
     func sendImages(images:[UIImage], index:Int)
 }
 
-protocol BoardDataforEditDelegate{
+protocol BoardDataforEditDelegate: AnyObject{
     func sendBoard(board: Board?, images: [UIImage]?, imageURLs: [String]?, closure:@escaping ()->())
 }

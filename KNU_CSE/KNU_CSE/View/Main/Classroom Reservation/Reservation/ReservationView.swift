@@ -191,7 +191,7 @@ extension ReservationView:UICollectionViewDataSource, UICollectionViewDelegate{
 extension ReservationView:ClassDataDelegate{
     func sendData(data: ClassRoom) {
         self.reservationViewModel.setClassRoom(classRoom: data)
-        self.setNavigationTitle(title: "\(data.building)-\(data.roomId)호")
+        self.setNavigationTitle(title: "\(data.building)-\(data.roomNum)호")
     }
 }
 

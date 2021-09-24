@@ -37,7 +37,6 @@ class UserInformView:BaseUIViewController, ViewProtocol{
                     self?.addActionSheet()
                 }
             }catch {}
-           
         }
     }
     

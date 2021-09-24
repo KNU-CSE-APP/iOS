@@ -84,7 +84,6 @@ class ReplyCell : UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     func setImage(){
         do {
             if let loadedImage = self.reply.image, let url = URL(string: loadedImage){
