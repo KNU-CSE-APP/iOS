@@ -17,9 +17,9 @@
 
 - 강의실 예약, 해당 배치도를 보고 원하는 번호에 좌석을 예약할 수 있음
 <img src = "https://user-images.githubusercontent.com/40800157/130425286-1eb4bf1a-92b9-4a72-b3f2-293f74fc81d0.png" width="30%" height="30%">
-https://user-images.githubusercontent.com/40800157/134704021-ad8b9465-4d90-486a-9af2-a40d7d97427b.mp4
 
 - 게시판 구현(Category : 자유게시판, QNA, 학생회공지)
+ * 댓글 작성과, 게시글 작성 시 이미지 업로드 까지 가능!
 <img src = "https://user-images.githubusercontent.com/40800157/134704699-0a45a76b-3cef-4bfc-a946-6c3fbd45ec25.gif" width="30%" height="30%">
 
 - 마이페이지에서 다수 기능 구현(회원정보보기, 비밀번호 변경, 회원탈퇴, 예약내역, 내가 쓴 글, 환경설정, 로그아웃)
