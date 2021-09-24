@@ -25,13 +25,17 @@
 <img src = "https://user-images.githubusercontent.com/40800157/134704699-0a45a76b-3cef-4bfc-a946-6c3fbd45ec25.gif" width="30%" height="30%">
 
 2.무한 스크롤
+
 <img src = "https://user-images.githubusercontent.com/40800157/134705745-79230b20-930b-4423-892b-51637044922b.gif" width="30%" height="30%">
 
 3.게시글 작성
+
 <img src = "https://user-images.githubusercontent.com/40800157/134706314-13f7c8c9-ce89-4b45-b2a4-9fc6ff355de3.gif" width="30%" height="30%">
 
 4.게시글 검색
+
 <img src = "https://user-images.githubusercontent.com/40800157/134706677-4eb242d2-8a9d-4603-89a6-0d09981b04bf.gif" width="30%" height="30%">
 
 - 마이페이지에서 다수 기능 구현(회원정보보기, 비밀번호 변경, 회원탈퇴, 예약내역, 내가 쓴 글, 환경설정, 로그아웃)
+
 <img src = "https://user-images.githubusercontent.com/40800157/130425471-ac16a1e2-fe6a-49ee-a5c0-ef28221146af.png" width="30%" height="30%">
