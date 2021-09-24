@@ -39,3 +39,11 @@
 - 마이페이지에서 다수 기능 구현(회원정보보기, 비밀번호 변경, 회원탈퇴, 예약내역, 내가 쓴 글, 환경설정, 로그아웃)
 
 <img src = "https://user-images.githubusercontent.com/40800157/130425471-ac16a1e2-fe6a-49ee-a5c0-ef28221146af.png" width="30%" height="30%">
+
+1. 회원 정보 수정
+
+<img src = "https://user-images.githubusercontent.com/40800157/134709030-8742e6a2-121c-44d9-8541-b56428340bb3.gif" width="30%" height="30%">
+
+2. 그 외 기능 
+
+<img src = "https://user-images.githubusercontent.com/40800157/134709137-d6714e1c-e6c3-4eef-8bcb-3a6df42800ad.gif" width="30%" height="30%">
